@@ -20,7 +20,7 @@ import java.util.Scanner;
 // todo Refactor this entire class. It's a trainwreck.
 public class Driver {
     /** The current version of the program. Whenever a significant change is made, this should be changed along with the online file. */
-    private static final String PROGRAM_VERSION = "0.1";
+    private static final String PROGRAM_VERSION = "0.2";
 
     public static void main(final String[] args) {
         // Check for new version:
