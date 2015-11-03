@@ -4,22 +4,25 @@ import gui.MainScreenController;
 import misc.Logger;
 
 import java.io.File;
+import java.util.Formatter;
+import java.util.Locale;
 
 public class ArchiveHandler {
     public File packFile(final File selectedFile, final MainScreenController controller,  final ConfigHandler configHandler) {
         // Basic command settings ripped from http://superuser.com/a/742034
-        String commands = "";
-        commands += "\"" + configHandler.getCompressionProgramPath() + "\"";
-        commands += " ";
-        commands += configHandler.getCompressionCommands();
-        commands += " ";
-        commands += "\"" + selectedFile.getAbsolutePath() + "." + configHandler.getDecodeFormat() + "\"";
-        commands += " ";
-        commands += "\"" + selectedFile.getAbsolutePath() + "\"";
+        final StringBuilder stringBuilder = new StringBuilder();
+        final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
-        controller.getView().getTextArea_ffmpegOutput().append(commands + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+        formatter.format("\"%s\" %s \"%s.%s\" \"%s\"",
+                        configHandler.getCompressionProgramPath(),
+                        configHandler.getCompressionCommands(),
+                        selectedFile.getAbsolutePath(),
+                        configHandler.getDecodeFormat(),
+                        selectedFile.getAbsolutePath());
 
-        CommandHandler.runProgram(commands, controller);
+        controller.getView().getTextArea_ffmpegOutput().append(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+
+        CommandHandler.runProgram(stringBuilder.toString(), controller);
 
         // Return a File poingint to the newly created archive:
         final File file = new File(selectedFile.getAbsoluteFile() + "." + configHandler.getDecodeFormat());
@@ -34,21 +37,24 @@ public class ArchiveHandler {
 
     public File packFiles(final File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler, final String archiveName) {
         // Basic command settings ripped from http://superuser.com/a/742034
-        String commands = "";
-        commands += "\"" + configHandler.getCompressionProgramPath() + "\"";
-        commands += " ";
-        commands += configHandler.getCompressionCommands();
-        commands += " ";
-        commands += "\"" + archiveName  + "." + configHandler.getDecodeFormat() + "\""; // todo PUT FILENAME HERE. ARCHIVE.7Z OR WHATEVER.
+        final StringBuilder stringBuilder = new StringBuilder();
+        final Formatter formatter = new Formatter(stringBuilder, Locale.US);
+
+        formatter.format("\"%s\" %s \"%s.%s\"",
+                        configHandler.getCompressionProgramPath(),
+                        configHandler.getCompressionCommands(),
+                        archiveName,
+                        configHandler.getDecodeFormat());
 
         for(final File f : selectedFiles) {
-            commands += " ";
-            commands += "\"" + f.getAbsolutePath() + "\"";
+            // todo If it's possible to do the below to lines with the formatter, then do so.
+            stringBuilder.append(" ");
+            stringBuilder.append("\"" + f.getAbsolutePath() + "\"");
         }
 
-        controller.getView().getTextArea_ffmpegOutput().append(commands + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+        controller.getView().getTextArea_ffmpegOutput().append(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
-        CommandHandler.runProgram(commands, controller);
+        CommandHandler.runProgram(stringBuilder.toString(), controller);
 
         // Return a File int to the newly created archive:
         final File file = new File(archiveName + "." + configHandler.getDecodeFormat());
