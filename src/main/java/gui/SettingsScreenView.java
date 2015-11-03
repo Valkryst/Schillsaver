@@ -354,6 +354,8 @@ public class SettingsScreenView extends JDialog {
         field_encodedVideoHeight.setErrorState(false);
         field_encodedFramerate.setErrorState(false);
         field_macroBlockDimensions.setErrorState(false);
+        field_fullyCustomFfmpegEncodingOptions.setErrorState(false);
+        field_fullyCustomFfmpegDecodingptions.setErrorState(false);
         field_splashScreenDisplayTime.setErrorState(false);
 
         field_ffmpegPath.resetTooltip();
@@ -362,6 +364,8 @@ public class SettingsScreenView extends JDialog {
         field_encodedVideoHeight.resetTooltip();
         field_encodedFramerate.resetTooltip();
         field_macroBlockDimensions.resetTooltip();
+        field_fullyCustomFfmpegEncodingOptions.resetTooltip();
+        field_fullyCustomFfmpegDecodingptions.resetTooltip();
         field_splashScreenDisplayTime.resetTooltip();
     }
 
@@ -454,6 +458,21 @@ public class SettingsScreenView extends JDialog {
             errorFound = true;
         }
 
+        // If the fully-custom ffmpeg options are enabled, then ensure that both fields are filled out.
+        if(vRadioButton_useFullyCustomEncodingOptions_yes.isSelected()) {
+            if(!field_fullyCustomFfmpegEncodingOptions.hasTextBeenEntered()) {
+                field_fullyCustomFfmpegEncodingOptions.setErrorState(true);
+                field_fullyCustomFfmpegEncodingOptions.appendToTooltip("Error - Because you have enabled the fully-custom FFMPEG settings you must enter your own encoding commands</br>Read the readme for more information.");
+                errorFound = true;
+            }
+
+            if(!field_fullyCustomFfmpegDecodingptions.hasTextBeenEntered()) {
+                field_fullyCustomFfmpegDecodingptions.setErrorState(true);
+                field_fullyCustomFfmpegDecodingptions.appendToTooltip("Error - Because you have enabled the fully-custom FFMPEG settings you must enter your own decoding commands</br>Read the readme for more information.");
+                errorFound = true;
+            }
+        }
+
         return errorFound;
     }
 
@@ -479,6 +498,9 @@ public class SettingsScreenView extends JDialog {
             configHandler.setEncodedVideoHeight(Integer.valueOf(field_encodedVideoHeight.getText()));
             configHandler.setEncodedFramerate(Integer.valueOf(field_encodedFramerate.getText()));
             configHandler.setMacroBlockDimensions(Integer.valueOf(field_macroBlockDimensions.getText()));
+            configHandler.setUseFullyCustomFfmpegOptions(vRadioButton_useFullyCustomEncodingOptions_yes.isSelected());
+            configHandler.setFullyCustomFfmpegEncodingOptions(field_fullyCustomFfmpegEncodingOptions.getText());
+            configHandler.setFullyCustomFfmpegDecodingOptions(field_fullyCustomFfmpegDecodingptions.getText());
             configHandler.setEncodingLibrary(field_encodingLibrary.getText());
             configHandler.setFfmpegLogLevel((String) comboBox_ffmpegLogLevel.getSelectedItem()); // The combo box stores strings, so casting to a String is fine.
             configHandler.setDeleteOriginalFileWhenEncoding(vRadioButton_deleteOriginalFileWhenEncoding_yes.isSelected());
