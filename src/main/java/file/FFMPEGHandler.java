@@ -83,11 +83,6 @@ public class FFMPEGHandler {
         controller.getView().enableButtons();
     }
 
-    // todo JavaDoc
-    public void encodeVideoToYouTube(final File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
-        // todo Write code. =P
-    }
-
     /**
      * Decodes the specified file(s) using the settings in the specified
      * configuration handler.
