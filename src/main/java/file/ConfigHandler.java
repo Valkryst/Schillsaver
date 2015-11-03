@@ -11,13 +11,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.List;
 
 public class ConfigHandler {
     /** The name of the configuration file. */
     private static final String FILENAME_CONFIG = "config.ini";
 
+    /** The logging levels supported by FFMPEG as of 2015/Nov/1. */
     public static final String[] FFMPEG_LOG_LEVELS = {"quiet", "panic", "fatal", "error", "warning", "info", "verbose", "debug", "trace"};
 
     /** The absolute path to ffmpeg/ffmpeg.exe. */
@@ -90,12 +90,9 @@ public class ConfigHandler {
 
         try {
             List<String> lines = FileInput.readEntireFile(Paths.get(FILENAME_CONFIG), true);
-            Iterator<String> it = lines.iterator();
 
 
-            while(it.hasNext()) {
-                String currentLine = it.next();
-
+            for(String currentLine : lines) {
                 if(currentLine.contains("ffmpegPath ")) {
                     ffmpegPath = currentLine.replace("ffmpegPath ", "");
                 }
