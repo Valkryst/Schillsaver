@@ -41,6 +41,7 @@ public class FFMPEGHandler {
 
             // Use the fully custom settings if they're enabled:
             if(configHandler.getUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegEncodingOptions().isEmpty()) {
+                stringBuilder.append(configHandler.getFfmpegPath());
                 stringBuilder.append(" ");
                 stringBuilder.append(configHandler.getFullyCustomFfmpegEncodingOptions());
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
@@ -102,6 +103,7 @@ public class FFMPEGHandler {
 
             // Use the fully custom settings if they're enabled:
             if(configHandler.getUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegDecodingOptions().isEmpty()) {
+                stringBuilder.append(configHandler.getFfmpegPath());
                 stringBuilder.append(" ");
                 stringBuilder.append(configHandler.getFullyCustomFfmpegEncodingOptions());
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
