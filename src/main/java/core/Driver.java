@@ -7,14 +7,12 @@ import gui.SettingsScreenController;
 import misc.Logger;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
@@ -80,7 +78,7 @@ public class Driver {
     public static void showSplashscreen(final ConfigHandler configHandler) {
         if(configHandler.getShowSplashScreen()) {
             try {
-                final ImageIcon image = new ImageIcon(ImageIO.read(new File(configHandler.getSplashScreenFilePath())));
+                final ImageIcon image = new ImageIcon(configHandler.getSplashScreenFilePath());
                 final JWindow window = new JWindow();
                 window.getContentPane().add(new JLabel("", image, SwingConstants.CENTER));
                 window.pack();
@@ -91,7 +89,7 @@ public class Driver {
 
                 window.setVisible(false);
                 window.dispose();
-            } catch(final InterruptedException | IOException e) {
+            } catch(final InterruptedException | NullPointerException e) {
                 Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_WARNING);
             }
         }
