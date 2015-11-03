@@ -44,7 +44,7 @@ public class FFMPEGHandler {
                 stringBuilder.append(" ");
                 stringBuilder.append(configHandler.getFullyCustomFfmpegEncodingOptions());
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
-                formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:=1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s%s.%s\"",
+                formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s%s.%s\"",
                         configHandler.getFfmpegPath(),
                         (configHandler.getEncodedVideoWidth() / configHandler.getMacroBlockDimensions()),
                         (configHandler.getEncodedVideoHeight() / configHandler.getMacroBlockDimensions()),
