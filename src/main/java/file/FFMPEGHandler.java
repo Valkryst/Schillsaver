@@ -41,9 +41,16 @@ public class FFMPEGHandler {
 
             // Use the fully custom settings if they're enabled:
             if(configHandler.getUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegEncodingOptions().isEmpty()) {
-                stringBuilder.append(configHandler.getFfmpegPath());
-                stringBuilder.append(" ");
-                stringBuilder.append(configHandler.getFullyCustomFfmpegEncodingOptions());
+                formatter.format("\"%s\" %s",
+                        configHandler.getFfmpegPath(),
+                        configHandler.getFullyCustomFfmpegEncodingOptions());
+
+                // Insert the input filename:
+                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", FilenameUtils.getFullPath(f.getAbsolutePath())));
+
+                // Insert the output filename:
+                final String outputFilename = "\"" + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
+                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
                 formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s%s.%s\"",
                         configHandler.getFfmpegPath(),
@@ -103,9 +110,16 @@ public class FFMPEGHandler {
 
             // Use the fully custom settings if they're enabled:
             if(configHandler.getUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegDecodingOptions().isEmpty()) {
-                stringBuilder.append(configHandler.getFfmpegPath());
-                stringBuilder.append(" ");
-                stringBuilder.append(configHandler.getFullyCustomFfmpegEncodingOptions());
+                formatter.format("\"%s\" %s",
+                        configHandler.getFfmpegPath(),
+                        configHandler.getFullyCustomFfmpegEncodingOptions());
+
+                // Insert the input filename:
+                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", FilenameUtils.getFullPath(f.getAbsolutePath())));
+
+                // Insert the output filename:
+                final String outputFilename = "\"" + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
+                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
                 formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s.%s\"",
                         configHandler.getFfmpegPath(),
