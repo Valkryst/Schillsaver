@@ -494,10 +494,10 @@ public class SettingsScreenView extends JDialog {
             configHandler.setCompressionProgramPath(field_compressionProgramPath.getText());
             configHandler.setEncodeFormat(field_encodeFormat.getText());
             configHandler.setDecodeFormat(field_decodeFormat.getText());
-            configHandler.setEncodedVideoWidth(Integer.valueOf(field_encodedVideoWidth.getText()));
-            configHandler.setEncodedVideoHeight(Integer.valueOf(field_encodedVideoHeight.getText()));
-            configHandler.setEncodedFramerate(Integer.valueOf(field_encodedFramerate.getText()));
-            configHandler.setMacroBlockDimensions(Integer.valueOf(field_macroBlockDimensions.getText()));
+            configHandler.setEncodedVideoWidth(field_encodedVideoWidth.getTextAsInteger());
+            configHandler.setEncodedVideoHeight(field_encodedVideoHeight.getTextAsInteger());
+            configHandler.setEncodedFramerate(field_encodedFramerate.getTextAsInteger());
+            configHandler.setMacroBlockDimensions(field_macroBlockDimensions.getTextAsInteger());
             configHandler.setUseFullyCustomFfmpegOptions(vRadioButton_useFullyCustomEncodingOptions_yes.isSelected());
             configHandler.setFullyCustomFfmpegEncodingOptions(field_fullyCustomFfmpegEncodingOptions.getText());
             configHandler.setFullyCustomFfmpegDecodingOptions(field_fullyCustomFfmpegDecodingptions.getText());
@@ -515,7 +515,7 @@ public class SettingsScreenView extends JDialog {
             }
 
             configHandler.setSplashScreenFilePath(field_splashScreenFilePath.getText());
-            configHandler.setSplashScreenDisplayTime(Integer.valueOf(field_splashScreenDisplayTime.getText()));
+            configHandler.setSplashScreenDisplayTime(field_splashScreenDisplayTime.getTextAsInteger());
             configHandler.setCompressionCommands(field_compressionCommands.getText());
             configHandler.createConfigFile();
 
