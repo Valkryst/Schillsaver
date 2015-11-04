@@ -46,10 +46,11 @@ public class FFMPEGHandler {
                         configHandler.getFullyCustomFfmpegEncodingOptions());
 
                 // Insert the input filename:
-                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", FilenameUtils.getFullPath(f.getAbsolutePath())));
+                final String inputFilename = "\"" + f.getAbsolutePath() + "\"";
+                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", inputFilename));
 
                 // Insert the output filename:
-                final String outputFilename = "\"" + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
+                final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
                 stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
                 formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s%s.%s\"",
@@ -115,10 +116,11 @@ public class FFMPEGHandler {
                         configHandler.getFullyCustomFfmpegEncodingOptions());
 
                 // Insert the input filename:
-                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", FilenameUtils.getFullPath(f.getAbsolutePath())));
+                final String inputFilename = "\"" + f.getAbsolutePath() + "\"";
+                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", inputFilename));
 
                 // Insert the output filename:
-                final String outputFilename = "\"" + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
+                final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
                 stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
                 formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s.%s\"",
