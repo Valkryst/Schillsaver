@@ -1,4 +1,4 @@
-package file;
+package handler;
 
 import misc.Logger;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -9,12 +9,12 @@ import java.io.IOException;
 
 public class FileHandler {
     /**
-     * Pads the specified file to ensure it contains enough data to
+     * Pads the specified handler to ensure it contains enough data to
      * have an exact number of frames. If there are, for example,
      * 1401 bytes and the frame size is 1400 bytes, then ffmpeg will
      * display an error about not having a full frame worth of bytes.
-     * @param file The file to pad.
-     * @param configHandler The settings to use when padding the file.
+     * @param file The handler to pad.
+     * @param configHandler The settings to use when padding the handler.
      */
     public static void padFile(final File file, final ConfigHandler configHandler) {
         try {

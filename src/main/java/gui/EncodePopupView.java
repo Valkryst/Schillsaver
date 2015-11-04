@@ -1,7 +1,7 @@
 package gui;
 
 import component.*;
-import file.ConfigHandler;
+import handler.ConfigHandler;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -15,26 +15,26 @@ public class EncodePopupView extends JDialog {
     /** The radio button that says that each of the currently selected files should be archived individually before encoding them individually. */
     private final VRadioButton radioButton_singleArchive_no = new VRadioButton("No");
 
-    /** The button group of the "archive just this file before encoding" yes/no radio buttons. */
+    /** The button group of the "archive just this handler before encoding" yes/no radio buttons. */
     private final ButtonGroup buttonGroup_individualArchives = new ButtonGroup();
-    /** The radio button that says that each file should be archived individually before encoding each of them individually. */
+    /** The radio button that says that each handler should be archived individually before encoding each of them individually. */
     private final VRadioButton radioButton_individualArchives_yes = new VRadioButton("Yes");
-    /** The radio button that says that each file should not be archived individually before encoding each of them individually. */
+    /** The radio button that says that each handler should not be archived individually before encoding each of them individually. */
     private final VRadioButton radioButton_individualArchives_no = new VRadioButton("No");
 
-    /** The text field for the name of the resulting archive/encoded file to use if the "Yes" radio button is selected. */
-    private final VTextField textField_archiveName = new VTextField(64, "Enter a name for the encoded file.", "The name to give the encoded file. Do not include an extension.");
+    /** The text field for the name of the resulting archive/encoded handler to use if the "Yes" radio button is selected. */
+    private final VTextField textField_archiveName = new VTextField(64, "Enter a name for the encoded handler.", "The name to give the encoded handler. Do not include an extension.");
     /** The button to select the folder to use when archiving/encoding the all-in-one archive if the "Yes" radio button is selected. */
     private final VButton button_selectOutputDirectory = new VButton("Select Output Folder", "Select the folder to output the all-in-one archive to.");
 
     /** The button to accept the choices on the screen and close the dialog. */
-    private final VButton button_accept = new VButton("Accept", "Begin archiving and encoding the file(s).");
+    private final VButton button_accept = new VButton("Accept", "Begin archiving and encoding the handler(s).");
     /** The button to cancel the choices on the screen and close the dialog. */
     private final VButton button_cancel = new VButton("Cancel", "Close this window.");
 
-    /** The name of the archive/encoded file to use if the "Yes" radio button is selected. */
+    /** The name of the archive/encoded handler to use if the "Yes" radio button is selected. */
     private String archiveName;
-    /** The path of the archive/encoded file to use if the "Yes" radio button is selected. */
+    /** The path of the archive/encoded handler to use if the "Yes" radio button is selected. */
     private String archivePath;
 
     /** Whether or not the dialog was closed by the Accept button. */
@@ -124,17 +124,17 @@ public class EncodePopupView extends JDialog {
         return radioButton_singleArchive_no;
     }
 
-    /** @return The radio button that says that each file should be archived individually before encoding each of them individually. */
+    /** @return The radio button that says that each handler should be archived individually before encoding each of them individually. */
     public VRadioButton getRadioButton_individualArchives_yes() {
         return radioButton_individualArchives_yes;
     }
 
-    /** @return The radio button that says that each file should not be archived individually before encoding each of them individually. */
+    /** @return The radio button that says that each handler should not be archived individually before encoding each of them individually. */
     public VRadioButton getRadioButton_individualArchives_no() {
         return radioButton_individualArchives_no;
     }
 
-    /** @return The text field for the name of the resulting archive/encoded file to use if the "Yes" radio button is selected. */
+    /** @return The text field for the name of the resulting archive/encoded handler to use if the "Yes" radio button is selected. */
     public VTextField getTextField_archiveName() {
         return textField_archiveName;
     }

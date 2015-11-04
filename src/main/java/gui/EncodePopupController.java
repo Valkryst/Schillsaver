@@ -1,7 +1,7 @@
 package gui;
 
 import component.VComponentGlobals;
-import file.ConfigHandler;
+import handler.ConfigHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

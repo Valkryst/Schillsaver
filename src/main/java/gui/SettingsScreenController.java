@@ -1,7 +1,7 @@
 package gui;
 
 
-import file.ConfigHandler;
+import handler.ConfigHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,7 +26,7 @@ public class SettingsScreenController implements ActionListener, WindowListener 
     /**
      * Construct a new settings screen controller.
      *
-     * Assumes that, if frame is null, the config file does not yet exist
+     * Assumes that, if frame is null, the config handler does not yet exist
      * and that the SettingsScreen is being opened for initial setup.
      * Under this circumstance, the program will be forcibly closed if
      * the user does not click the "Accept" button on the view.

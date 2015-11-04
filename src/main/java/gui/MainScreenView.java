@@ -17,14 +17,14 @@ public class MainScreenView extends VPanel {
     /** The text area for the ouput of FFMPEG from the most recent encode or decode job. */
     private VTextArea textArea_ffmpegOutput = new VTextArea("", true, null);
 
-    /** The list model of all currently selected files by their file names. */
+    /** The list model of all currently selected files by their handler names. */
     private DefaultListModel<String> listModel_selectedFiles = new DefaultListModel<>();
-    /** The list of all currently selected files by their file names. */
+    /** The list of all currently selected files by their handler names. */
     private JList<String> list_selectedFiles = new JList<>();
     /** The scrollpane to show the currently selected files. */
     private JScrollPane scrollpane_selectedFiles = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    /** The button to open the file selection dialog. */
+    /** The button to open the handler selection dialog. */
     private final VButton button_addFiles = new VButton("Add File(s)", "Select and add the files you wish to encode.");
     /** The button to remove all files that are currently selected on the scrollpane_selectedFiles. */
     private final VButton button_removeSelectedFiles = new VButton("Remove File(s)", "Removes all files that are currently selected on the below list.");
@@ -37,10 +37,10 @@ public class MainScreenView extends VPanel {
     /** The button to open the settings dialog. */
     private final VButton button_editSettings = new VButton("Edit Settings", "Open the settings menu.");
 
-    /** The button to encode the currently selected file(s). */
-    private final VButton button_encode = new VButton("Encode", "Encodes the selected file(s).");
-    /** The button to decode the currently selected file(s). */
-    private final VButton button_decode = new VButton("Decode", "Decodes the selected file(s).</br></br>No checking is done to see if the files have ever been encoded,</br>so it's up to you to ensure you're decoding the correct files.");
+    /** The button to encode the currently selected handler(s). */
+    private final VButton button_encode = new VButton("Encode", "Encodes the selected handler(s).");
+    /** The button to decode the currently selected handler(s). */
+    private final VButton button_decode = new VButton("Decode", "Decodes the selected handler(s).</br></br>No checking is done to see if the files have ever been encoded,</br>so it's up to you to ensure you're decoding the correct files.");
 
     /**
      * Constructs a new main screen view.
@@ -124,7 +124,7 @@ public class MainScreenView extends VPanel {
     }
 
     /**
-     * Creates a new scrollpane filled with the names of every file to be encoded.
+     * Creates a new scrollpane filled with the names of every handler to be encoded.
      * @param model The main screen's model.
      */
     public void addFilesToCurrentlySelectedFiles(final MainScreenModel model) {
@@ -234,17 +234,17 @@ public class MainScreenView extends VPanel {
         return textArea_ffmpegOutput;
     }
 
-    /** @return The button to open the file selection dialog. */
+    /** @return The button to open the handler selection dialog. */
     public VButton getButton_addFiles() {
         return button_addFiles;
     }
 
-    /** @return The button to encode the currently selected file(s). */
+    /** @return The button to encode the currently selected handler(s). */
     public VButton getButton_encode() {
         return button_encode;
     }
 
-    /** @return The button to decode the currently selected file(s). */
+    /** @return The button to decode the currently selected handler(s). */
     public VButton getButton_decode() {
         return button_decode;
     }

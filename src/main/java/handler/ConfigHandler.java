@@ -1,4 +1,4 @@
-package file;
+package handler;
 
 import files.FileInput;
 import misc.Logger;
@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class ConfigHandler {
-    /** The name of the configuration file. */
+    /** The name of the configuration handler. */
     private static final String FILENAME_CONFIG = "config.ini";
 
     /** The logging levels supported by FFMPEG as of 2015/Nov/1. */
@@ -55,13 +55,13 @@ public class ConfigHandler {
     /** The user-entered command line arguments to use when encoding with ffmpeg. */
     private String fullyCustomFfmpegDecodingOptions = "";
 
-    /** Whether or not to delete the original file after encoding. */
+    /** Whether or not to delete the original handler after encoding. */
     private boolean deleteOriginalFileWhenEncoding = false;
-    /** whether or not to delete the original file after decoding. */
+    /** whether or not to delete the original handler after decoding. */
     private boolean deleteOriginalFileWhenDecoding = false;
     /** Whether or not to pack all of the currently selected files into a single archive before encoding. */
     private boolean combineAllFilesIntoSingleArchive = false;
-    /** Whether or not to pack every file into it's own individual archive before encoding each file individually. */
+    /** Whether or not to pack every handler into it's own individual archive before encoding each handler individually. */
     private boolean combineIntoIndividualArchives = false;
 
     /** Whether or not to show the splash screen on startup. */
@@ -71,16 +71,16 @@ public class ConfigHandler {
     /** The amount of time, in milliseconds, to display the splash screen. */
     private int splashScreenDisplayTime = 3000;
 
-    /** The base commands to use when compressing a file before encoding. */
+    /** The base commands to use when compressing a handler before encoding. */
     private String compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
 
-    /** @return Whether or not the config file exists. */
+    /** @return Whether or not the config handler exists. */
     public boolean doesConfigFileExist() {
         return Files.exists(Paths.get(FILENAME_CONFIG));
     }
 
     /**
-     * Reads in each line from the configuration file and attempts to parse
+     * Reads in each line from the configuration handler and attempts to parse
      * the specified parameters of the program.
      *
      * If a line cannot be parsed, then a warning is logged.
@@ -169,7 +169,7 @@ public class ConfigHandler {
                     compressionCommands = currentLine.replace("compressionCommands ", "");
                 }
             }
-        } catch(final IOException e) { // Should only happen if the config file doesn't exist.
+        } catch(final IOException e) { // Should only happen if the config handler doesn't exist.
             createConfigFile();
             loadConfigSettings();
         } catch(final NumberFormatException e) { // If encodedVideoWidth/Height fail conversion to ints.
@@ -181,52 +181,52 @@ public class ConfigHandler {
         boolean exitProgram = false;
 
         if(ffmpegPath == null) {
-            Logger.writeLog("Could not load the ffmpegPath option from the config file. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load the ffmpegPath option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(compressionProgramPath == null) {
-            Logger.writeLog("Could not load the compressionProgramPath option from the config file. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load the compressionProgramPath option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(encodeFormat == null) {
-            Logger.writeLog("Could not load the encodeFormat option from the config file. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load the encodeFormat option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(decodeFormat == null) {
-            Logger.writeLog("Could not load the decodeFormat option from the config file. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load the decodeFormat option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(encodedVideoWidth < 1) {
-            Logger.writeLog("Either could not load the encodedVideoWidth option from the config file or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Either could not load the encodedVideoWidth option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(encodedVideoHeight < 1) {
-            Logger.writeLog("Either could not load the encodedVideoHeight option from the config file or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Either could not load the encodedVideoHeight option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(encodedFramerate < 1) {
-            Logger.writeLog("Could not load the encodedFramerate option from the config file or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load the encodedFramerate option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(macroBlockDimensions < 1) {
-            Logger.writeLog("Could not load the macroBlockDimensions option from the config file or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load the macroBlockDimensions option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(splashScreenDisplayTime < 1) {
-            Logger.writeLog("Could not load splashScreenDisplayTime option from the config file or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load splashScreenDisplayTime option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
         if(compressionCommands == null) {
-            Logger.writeLog("Could not load the compressionCommands option from the config file. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not load the compressionCommands option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
             exitProgram = true;
         }
 
@@ -239,8 +239,8 @@ public class ConfigHandler {
     }
 
     /**
-     * Creates a new config file, or overwrites the existing one.
-     * The config file is populated with the values as specified by
+     * Creates a new config handler, or overwrites the existing one.
+     * The config handler is populated with the values as specified by
      * the class.
      *
      * todo Explain the purpose/function of this class more clearly.
@@ -413,12 +413,12 @@ public class ConfigHandler {
         return fullyCustomFfmpegDecodingOptions;
     }
 
-    /** @return Whether or not to delete the original file after encoding. */
+    /** @return Whether or not to delete the original handler after encoding. */
     public boolean getDeleteOriginalFileWhenEncoding() {
         return deleteOriginalFileWhenEncoding;
     }
 
-    /** @return Whether or not to delete the original file after decoding. */
+    /** @return Whether or not to delete the original handler after decoding. */
     public boolean getDeleteOriginalFileWhenDecoding() {
         return deleteOriginalFileWhenDecoding;
     }
@@ -428,7 +428,7 @@ public class ConfigHandler {
         return combineAllFilesIntoSingleArchive;
     }
 
-    /** @return Whether or not to pack every file into it's own individual archive before encoding each file individually. */
+    /** @return Whether or not to pack every handler into it's own individual archive before encoding each handler individually. */
     public boolean getCombineIntoIndividualArchives() {
         return combineIntoIndividualArchives;
     }
@@ -448,7 +448,7 @@ public class ConfigHandler {
         return splashScreenDisplayTime;
     }
 
-    /** @return The base commands to use when compressing a file before encoding. */
+    /** @return The base commands to use when compressing a handler before encoding. */
     public String getCompressionCommands() {
         return compressionCommands;
     }

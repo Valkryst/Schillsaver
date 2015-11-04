@@ -1,7 +1,7 @@
 package gui;
 
 import component.*;
-import file.ConfigHandler;
+import handler.ConfigHandler;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -15,18 +15,18 @@ public class SettingsScreenView extends JDialog {
 
     /** The text field for the absolute path to ffmpeg/ffmpeg.exe. */
     private final VTextField field_ffmpegPath = new VTextField(256, "ffmpegPath", "The absolute path to ffmpeg/ffmpeg.exe.");
-    /** The button to open the file selection dialog for the ffmpeg executable. */
-    private final VButton button_selectFile_ffmpegPath = new VButton("Select File", "Opens the file selection dialog to locate the ffmpeg executable.");
+    /** The button to open the handler selection dialog for the ffmpeg executable. */
+    private final VButton button_selectFile_ffmpegPath = new VButton("Select File", "Opens the handler selection dialog to locate the ffmpeg executable.");
 
     /** The text field for the absolute path to the 7zip, or whichever compresssion program the user wants to use, executable. */
     private final VTextField field_compressionProgramPath = new VTextField(256, "compressionProgramPath", "The absolute path to 7zip/7zip.exe or whichever compression program is specified.");
-    /** The button to open the file selection dialog for the 7zip, or whichever compression program the user wants to use, executable. */
-    private final VButton button_selectFile_compressionProgramPath = new VButton("Select File", "Opens the file selection dialog to locate a compression program executable.");
+    /** The button to open the handler selection dialog for the 7zip, or whichever compression program the user wants to use, executable. */
+    private final VButton button_selectFile_compressionProgramPath = new VButton("Select File", "Opens the handler selection dialog to locate a compression program executable.");
 
     /** The text field for the format to encode to. */
     private final VTextField field_encodeFormat = new VTextField(4, "encodeFormat", "The format to encode to.");
     /** The text field for the format to decode to. */
-    private final VTextField field_decodeFormat = new VTextField(4, "decodeFormat", "The format to decode to.</br></br>This should be the file that your archival program archives to.</br>With 7zip, this should be set to 7z.");
+    private final VTextField field_decodeFormat = new VTextField(4, "decodeFormat", "The format to decode to.</br></br>This should be the handler that your archival program archives to.</br>With 7zip, this should be set to 7z.");
     /** The text field for the width, in pixels, of the encoded video. */
     private final VTextField field_encodedVideoWidth = new VTextField(4, "encodedVideoWidth", "The width, in pixels, of the encoded video.");
     /** The text field for the height, in pixels, of the encoded video. */
@@ -39,8 +39,8 @@ public class SettingsScreenView extends JDialog {
     private final VTextField field_encodingLibrary = new VTextField(10, "encodingLibrary", "The library to encode the video with.");
     /** The combobox to select the logging level that ffmpeg should use. */
     private final JComboBox<String> comboBox_ffmpegLogLevel = new JComboBox<>(ConfigHandler.FFMPEG_LOG_LEVELS);
-    /** The text field for the base commands to use when compressing a file before encoding. */
-    private final VTextField field_compressionCommands = new VTextField(256, "compressionCommands", "The base commands to use when compressing a file before encoding.");
+    /** The text field for the base commands to use when compressing a handler before encoding. */
+    private final VTextField field_compressionCommands = new VTextField(256, "compressionCommands", "The base commands to use when compressing a handler before encoding.");
 
     /** The button group of the yes/no radio buttons of the useFullyCustomEncodingOptions option. */
     private final ButtonGroup buttonGroup_useFullyCustomEncodingOptions = new ButtonGroup();
@@ -49,22 +49,22 @@ public class SettingsScreenView extends JDialog {
     /** The radio button that says to not use the fully-custom ffmpeg en/decoding options. */
     private final VRadioButton vRadioButton_useFullyCustomEncodingOptions_no = new VRadioButton("No");
     /** The text field for the fully-custom ffmpeg encoding options. */
-    private final VTextField field_fullyCustomFfmpegEncodingOptions = new VTextField(256, "fullyCustomFfmpegEncodingOptions", "The commands to use when encoding a file with ffmpeg.</br></br>If the fully-custom options are enabled, then all other ffmpeg options are ignored</br>and this string will be used as the only argument to ffmpeg when encoding.");
+    private final VTextField field_fullyCustomFfmpegEncodingOptions = new VTextField(256, "fullyCustomFfmpegEncodingOptions", "The commands to use when encoding a handler with ffmpeg.</br></br>If the fully-custom options are enabled, then all other ffmpeg options are ignored</br>and this string will be used as the only argument to ffmpeg when encoding.");
     /** The text field for the fully-custom ffmpeg decoding options. */
-    private final VTextField field_fullyCustomFfmpegDecodingptions = new VTextField(256, "fullyCustomFfmpegDecodingOptions", "The commands to use when encoding a file with ffmpeg.</br></br>If the fully-custom options are enabled, then all other ffmpeg options are ignored</br>and this string will be used as the only argument to ffmpeg when encoding.");
+    private final VTextField field_fullyCustomFfmpegDecodingptions = new VTextField(256, "fullyCustomFfmpegDecodingOptions", "The commands to use when encoding a handler with ffmpeg.</br></br>If the fully-custom options are enabled, then all other ffmpeg options are ignored</br>and this string will be used as the only argument to ffmpeg when encoding.");
 
     /** The button group of the yes/no radio buttons of the deleteOriginalFileWhenEncoding option. */
     private final ButtonGroup buttonGroup_deleteOriginalFileWhenEncoding = new ButtonGroup();
-    /** The radio button that says to delete the original file when encoding finishes. */
+    /** The radio button that says to delete the original handler when encoding finishes. */
     private final VRadioButton vRadioButton_deleteOriginalFileWhenEncoding_yes = new VRadioButton("Yes");
-    /** The radio button that says to not delete the originak file when encoding finishes. */
+    /** The radio button that says to not delete the originak handler when encoding finishes. */
     private final VRadioButton vRadioButton_deleteOriginalFileWhenEncoding_no = new VRadioButton("No");
 
     /** The button group of the yes/no radio buttons of the deleteOriginalFileWhenDecoding option. */
     private final ButtonGroup buttonGroup_deleteOriginalFileWhenDecoding = new ButtonGroup();
-    /** The radio button that says to delete the original file when decoding finishes. */
+    /** The radio button that says to delete the original handler when decoding finishes. */
     private final VRadioButton vRadioButton_deleteOriginalFileWhenDecoding_yes = new VRadioButton("Yes");
-    /** The radio button that says not to delete the original file when decoding finishes. */
+    /** The radio button that says not to delete the original handler when decoding finishes. */
     private final VRadioButton vRadioButton_deleteOriginalFileWhenDecoding_no = new VRadioButton("No");
 
     /** The button group of the yes/no radio buttons of the showSplashScreen option. */
@@ -76,8 +76,8 @@ public class SettingsScreenView extends JDialog {
 
     /** The text field for the absolute path of the splash screen. */
     private final VTextField field_splashScreenFilePath = new VTextField(256, "splashScreenFilePath", "The absolute path to the splash screen to display.");
-    /** The button to open the file selection dialog to locate an image to use as the splash screen.. */
-    private final VButton button_selectFile_splashScreenFilePath = new VButton("Select File", "Opens the file selection dialog to locate an image to use as the splash screen.");
+    /** The button to open the handler selection dialog to locate an image to use as the splash screen.. */
+    private final VButton button_selectFile_splashScreenFilePath = new VButton("Select File", "Opens the handler selection dialog to locate an image to use as the splash screen.");
 
     /** The text field for the amount of time, in milliseconds, to display the splach screen for. */
     private final VTextField field_splashScreenDisplayTime = new VTextField(5, "splashScreenDisplayTime", "The amount of time, in milliseconds, to display the splash screen.</br></br>1000 = 1 second");
@@ -385,13 +385,13 @@ public class SettingsScreenView extends JDialog {
         // should be able to realize this themselves.
         if(Files.exists(Paths.get(field_ffmpegPath.getText())) == false) {
             field_ffmpegPath.setErrorState(true);
-            field_ffmpegPath.appendToTooltip("Error - This does not point to an existing file.");
+            field_ffmpegPath.appendToTooltip("Error - This does not point to an existing handler.");
             errorFound = true;
         }
 
         if(Files.exists(Paths.get(field_compressionProgramPath.getText())) == false) {
             field_compressionProgramPath.setErrorState(true);
-            field_compressionProgramPath.appendToTooltip("Error - This does not point to an existing file.");
+            field_compressionProgramPath.appendToTooltip("Error - This does not point to an existing handler.");
             errorFound = true;
         }
 
@@ -478,7 +478,7 @@ public class SettingsScreenView extends JDialog {
 
     /**
      * Applies the current settings to the specified config handler,
-     * then generates a new config file.
+     * then generates a new config handler.
      *
      * Does nothing if errors are found in the settings.
      *
@@ -506,7 +506,7 @@ public class SettingsScreenView extends JDialog {
             configHandler.setDeleteOriginalFileWhenEncoding(vRadioButton_deleteOriginalFileWhenEncoding_yes.isSelected());
             configHandler.setDeleteOriginalFileWhenDecoding(vRadioButton_deleteOriginalFileWhenEncoding_yes.isSelected());
 
-            // Don't allow the splash screen to be shown if the file it points to
+            // Don't allow the splash screen to be shown if the handler it points to
             // doesn't exist.
             if(Files.exists(Paths.get(field_splashScreenFilePath.getText()))) {
                 configHandler.setShowSplashScreen(vRadioButton_showSplashScreen_yes.isSelected());
@@ -532,7 +532,7 @@ public class SettingsScreenView extends JDialog {
         return field_ffmpegPath;
     }
 
-    /** @return The button to open the file selection dialog for the ffmpeg executable. */
+    /** @return The button to open the handler selection dialog for the ffmpeg executable. */
     public VButton getButton_selectFile_ffmpegPath() {
         return button_selectFile_ffmpegPath;
     }
@@ -542,7 +542,7 @@ public class SettingsScreenView extends JDialog {
         return field_compressionProgramPath;
     }
 
-    /** @return The button to open the file selection dialog for the 7zip, or whichever compression program the user wants to use, executable. */
+    /** @return The button to open the handler selection dialog for the 7zip, or whichever compression program the user wants to use, executable. */
     public VButton getButton_selectFile_compressionProgramPath() {
         return button_selectFile_compressionProgramPath;
     }
@@ -552,7 +552,7 @@ public class SettingsScreenView extends JDialog {
         return field_splashScreenFilePath;
     }
 
-    /** @return The button to open the file selection dialog to locate an image to use as the splash screen.. */
+    /** @return The button to open the handler selection dialog to locate an image to use as the splash screen.. */
     public VButton getButton_selectFile_splashScreenFilePath() {
         return button_selectFile_splashScreenFilePath;
     }

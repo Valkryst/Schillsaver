@@ -1,7 +1,7 @@
 package gui;
 
-import file.ConfigHandler;
-import file.FFMPEGHandler;
+import handler.ConfigHandler;
+import handler.FFMPEGHandler;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -39,7 +39,7 @@ public class MainScreenController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         final Object source = e.getSource();
 
-        // The button to open the file selection dialog.
+        // The button to open the handler selection dialog.
         if(source.equals(view.getButton_addFiles())) {
             final JFileChooser fileChooser = new JFileChooser();
             fileChooser.setDragEnabled(true);
@@ -60,7 +60,7 @@ public class MainScreenController implements ActionListener {
             }
         }
 
-        // The button to encode the currently selected file(s).
+        // The button to encode the currently selected handler(s).
         if(source.equals(view.getButton_encode())) {
             // Only allow files to be encoded if there are actually
             // files in the list of files.
@@ -84,7 +84,7 @@ public class MainScreenController implements ActionListener {
             }
         }
 
-        // The button to decode the currently selected file(s).
+        // The button to decode the currently selected handler(s).
         if(source.equals(view.getButton_decode())) {
             // Only allow files to be decoded if there are actually
             // files in the list of files.

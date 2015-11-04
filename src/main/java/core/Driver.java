@@ -1,7 +1,7 @@
 package core;
 
 import component.VComponentGlobals;
-import file.ConfigHandler;
+import handler.ConfigHandler;
 import gui.MainScreenController;
 import gui.SettingsScreenController;
 import misc.Logger;
@@ -19,14 +19,14 @@ import java.util.Scanner;
 
 // todo Refactor this entire class. It's a trainwreck.
 public class Driver {
-    /** The current version of the program. Whenever a significant change is made, this should be changed along with the online file. */
+    /** The current version of the program. Whenever a significant change is made, this should be changed along with the online handler. */
     private static final String PROGRAM_VERSION = "4";
 
     public static void main(final String[] args) {
         // Check for new version:
         checkForUpdate();
 
-        // Load config options or create new config file if none exists.
+        // Load config options or create new config handler if none exists.
         final ConfigHandler configHandler = new ConfigHandler();
 
         if(configHandler.doesConfigFileExist()) {

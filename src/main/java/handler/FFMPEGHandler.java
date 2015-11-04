@@ -1,4 +1,4 @@
-package file;
+package handler;
 
 import gui.MainScreenController;
 import org.apache.commons.io.FilenameUtils;
@@ -9,11 +9,11 @@ import java.util.Locale;
 
 public class FFMPEGHandler {
     /**
-     * Encodes the specified file(s) using the settings in the specified
+     * Encodes the specified handler(s) using the settings in the specified
      * configuration handler.
-     * @param selectedFiles The file(s) to encode.
+     * @param selectedFiles The handler(s) to encode.
      * @param controller The controller for the main screen.
-     * @param configHandler The settings to use when encoding the file(s).
+     * @param configHandler The settings to use when encoding the handler(s).
      */
     public void encodeVideoToDisk(File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
@@ -75,10 +75,10 @@ public class FFMPEGHandler {
 
             // Delete leftovers:
             if(configHandler.getCombineAllFilesIntoSingleArchive()) {
-                f.delete(); // This is just the archive, not the original file.
+                f.delete(); // This is just the archive, not the original handler.
             } else {
                 if(configHandler.getDeleteOriginalFileWhenEncoding()) {
-                    f.delete(); // This is the original file.
+                    f.delete(); // This is the original handler.
                 }
             }
 
@@ -93,11 +93,11 @@ public class FFMPEGHandler {
     }
 
     /**
-     * Decodes the specified file(s) using the settings in the specified
+     * Decodes the specified handler(s) using the settings in the specified
      * configuration handler.
-     * @param selectedFiles The file(s) to decode.
+     * @param selectedFiles The handler(s) to decode.
      * @param controller The controller for the main screen.
-     * @param configHandler The settings to use when decoding the file(s).
+     * @param configHandler The settings to use when decoding the handler(s).
      */
     public void decodeVideo(File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
         // Sort the array of files to ensure the smallest files
@@ -140,7 +140,7 @@ public class FFMPEGHandler {
 
             // Delete leftovers:
             if(configHandler.getDeleteOriginalFileWhenDecoding()) {
-               f.delete(); // This is just the archive, not the original file.
+               f.delete(); // This is just the archive, not the original handler.
             }
         }
 
@@ -152,8 +152,8 @@ public class FFMPEGHandler {
      * To ensure that the smallest files are encoded first, the greedy
      * algorithm sorts the array by smallest filesize using mergesort.
      *
-     * @param arr The file(s) to sort.
-     * @return A sorted array of file(s) from smallest to largest filesize.
+     * @param arr The handler(s) to sort.
+     * @return A sorted array of handler(s) from smallest to largest filesize.
      */
     private File[] greedySort(final File[] arr) {
         // If the array has zero, or one, element, then it is already sorted.

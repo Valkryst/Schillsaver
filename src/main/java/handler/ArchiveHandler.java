@@ -1,4 +1,4 @@
-package file;
+package handler;
 
 import gui.MainScreenController;
 import misc.Logger;
@@ -9,13 +9,13 @@ import java.util.Locale;
 
 public class ArchiveHandler {
     /**
-     * Compresses the specified file while outputting the command-line
+     * Compresses the specified handler while outputting the command-line
      * results to the screen.
      *
-     * The resulting archive will bear the name of the input file.
-     * If the input file is test.jpg, then the output archive will be test.jpg.7z
+     * The resulting archive will bear the name of the input handler.
+     * If the input handler is test.jpg, then the output archive will be test.jpg.7z
      * as an example.
-     * @param selectedFile The file to compress.
+     * @param selectedFile The handler to compress.
      * @param controller The controller for the view in which the output text area resides.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @return The compressed archive.
@@ -48,7 +48,7 @@ public class ArchiveHandler {
     }
 
     /**
-     * Compresses the specified file(s), while outputting the command-line
+     * Compresses the specified handler(s), while outputting the command-line
      * results to the screen, into a single archive.
      *
      * The resulting archive will bear the specified name.
