@@ -1,18 +1,16 @@
 package gui;
 
-import java.io.File;
+import misc.Job;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainScreenModel {
-    /** The array of all files to be encoded. */
-    private File[] selectedFiles = new File[0];
+    /** The list of all Jobs to be run. */
+    private List<Job> list_jobs = new ArrayList<>();
 
-    /** @return An array of all files to be encoded. */
-    public File[] getSelectedFiles() {
-        return selectedFiles;
-    }
-
-    // todo JavaDoc
-    public void setSelectedFiles(final File[] selectedFiles) {
-        this.selectedFiles = selectedFiles;
+    /** @return The list of all Jobs to be run. */
+    public List<Job> getList_jobs() {
+        return list_jobs;
     }
 }
