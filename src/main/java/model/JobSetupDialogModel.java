@@ -1,18 +1,34 @@
 package model;
 
+import misc.Job;
+
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JobSetupDialogModel {
-    /** The array of all files to be added to the Job. */
-    private File[] files = new File[0];
+    // todo JavaDoc
+    private Job job = new Job();
+    /** The list of all list_files to be added to the Job. */
+    private List<File> list_files = new ArrayList<>();
 
-    /** @return An array of all files to be added to the Job. */
-    public File[] getFiles() {
-        return files;
+    // todo JavaDoc
+    public Job getJob() {
+        return job;
+    }
+
+    /** @return A list of all list_files to be added to the Job. */
+    public List<File> getList_files() {
+        return list_files;
     }
 
     // todo JavaDoc
-    public void setFiles(final File[] files) {
-        this.files = files;
+    public void setJob(final Job job) {
+        this.job = job;
+    }
+
+    // todo JavaDoc
+    public void setList_files(final List<File> list_files) {
+        this.list_files = list_files;
     }
 }
