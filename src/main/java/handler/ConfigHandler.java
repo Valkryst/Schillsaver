@@ -55,10 +55,10 @@ public class ConfigHandler {
     /** The user-entered command line arguments to use when encoding with ffmpeg. */
     private String fullyCustomFfmpegDecodingOptions = "";
 
-    /** Whether or not to delete the original handler after encoding. */
-    private boolean deleteOriginalFileWhenEncoding = false;
-    /** whether or not to delete the original handler after decoding. */
-    private boolean deleteOriginalFileWhenDecoding = false;
+    /** Whether or not to delete the source file after encoding. */
+    private boolean deleteSourceFileWhenEncoding = false;
+    /** whether or not to delete the osource file after decoding. */
+    private boolean deleteSourceFileWhenDecoding = false;
     /** Whether or not to pack all of the currently selected files into a single archive before encoding. */
     private boolean combineAllFilesIntoSingleArchive = false;
     /** Whether or not to pack every handler into it's own individual archive before encoding each handler individually. */
@@ -145,12 +145,12 @@ public class ConfigHandler {
                     fullyCustomFfmpegDecodingOptions = currentLine.replace("fullyCustomFfmpegDecodingOptions ", "");
                 }
 
-                if(currentLine.contains("deleteOriginalFileWhenEncoding ")) {
-                    deleteOriginalFileWhenEncoding = Boolean.valueOf(currentLine.replace("deleteOriginalFileWhenEncoding ", ""));
+                if(currentLine.contains("deleteSourceFileWhenEncoding ")) {
+                    deleteSourceFileWhenEncoding = Boolean.valueOf(currentLine.replace("deleteSourceFileWhenEncoding ", ""));
                 }
 
-                if(currentLine.contains("deleteOriginalFileWhenDecoding ")) {
-                    deleteOriginalFileWhenDecoding = Boolean.valueOf(currentLine.replace("deleteOriginalFileWhenDecoding ", ""));
+                if(currentLine.contains("deleteSourceFileWhenDecoding ")) {
+                    deleteSourceFileWhenDecoding = Boolean.valueOf(currentLine.replace("deleteSourceFileWhenDecoding ", ""));
                 }
 
                 if(currentLine.contains("showSplashScreen ")) {
@@ -265,8 +265,8 @@ public class ConfigHandler {
             outputStream.write("useFullyCustomFfmpegOptions " + useFullyCustomFfmpegOptions + System.lineSeparator());
             outputStream.write("fullyCustomFfmpegEncodingOptions " + fullyCustomFfmpegEncodingOptions + System.lineSeparator());
             outputStream.write("fullyCustomFfmpegDecodingOptions " + fullyCustomFfmpegDecodingOptions + System.lineSeparator());
-            outputStream.write("deleteOriginalFileWhenEncoding " + deleteOriginalFileWhenEncoding + System.lineSeparator());
-            outputStream.write("deleteOriginalFileWhenDecoding " + deleteOriginalFileWhenDecoding + System.lineSeparator());
+            outputStream.write("deleteSourceFileWhenEncoding " + deleteSourceFileWhenEncoding + System.lineSeparator());
+            outputStream.write("deleteSourceFileWhenDecoding " + deleteSourceFileWhenDecoding + System.lineSeparator());
             outputStream.write("showSplashScreen " + showSplashScreen + System.lineSeparator());
             outputStream.write("splashScreenFilePath " + splashScreenFilePath + System.lineSeparator());
             outputStream.write("splashScreenDisplayTime " + splashScreenDisplayTime + System.lineSeparator());
@@ -413,14 +413,14 @@ public class ConfigHandler {
         return fullyCustomFfmpegDecodingOptions;
     }
 
-    /** @return Whether or not to delete the original handler after encoding. */
-    public boolean getDeleteOriginalFileWhenEncoding() {
-        return deleteOriginalFileWhenEncoding;
+    /** @return Whether or not to delete the source file after encoding. */
+    public boolean getdeleteSourceFileWhenEncoding() {
+        return deleteSourceFileWhenEncoding;
     }
 
-    /** @return Whether or not to delete the original handler after decoding. */
-    public boolean getDeleteOriginalFileWhenDecoding() {
-        return deleteOriginalFileWhenDecoding;
+    /** @return Whether or not to delete the source file after decoding. */
+    public boolean getdeleteSourceFileWhenDecoding() {
+        return deleteSourceFileWhenDecoding;
     }
 
     /** @return Whether or not to combine all of the input files into a single archive when encoding. */
@@ -542,13 +542,13 @@ public class ConfigHandler {
     }
 
     // todo JavaDoc
-    public void setDeleteOriginalFileWhenEncoding(final boolean deleteOriginalFileWhenEncoding) {
-        this.deleteOriginalFileWhenEncoding = deleteOriginalFileWhenEncoding;
+    public void setdeleteSourceFileWhenEncoding(final boolean deleteSourceFileWhenEncoding) {
+        this.deleteSourceFileWhenEncoding = deleteSourceFileWhenEncoding;
     }
 
     // todo JavaDoc
-    public void setDeleteOriginalFileWhenDecoding(final boolean deleteOriginalFileWhenDecoding) {
-        this.deleteOriginalFileWhenDecoding = deleteOriginalFileWhenDecoding;
+    public void setdeleteSourceFileWhenDecoding(final boolean deleteSourceFileWhenDecoding) {
+        this.deleteSourceFileWhenDecoding = deleteSourceFileWhenDecoding;
     }
 
     // todo JavaDoc
