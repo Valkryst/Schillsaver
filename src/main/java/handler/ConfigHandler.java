@@ -414,12 +414,12 @@ public class ConfigHandler {
     }
 
     /** @return Whether or not to delete the source file after encoding. */
-    public boolean getdeleteSourceFileWhenEncoding() {
+    public boolean getDeleteSourceFileWhenEncoding() {
         return deleteSourceFileWhenEncoding;
     }
 
     /** @return Whether or not to delete the source file after decoding. */
-    public boolean getdeleteSourceFileWhenDecoding() {
+    public boolean getDeleteSourceFileWhenDecoding() {
         return deleteSourceFileWhenDecoding;
     }
 
