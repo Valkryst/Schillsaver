@@ -542,12 +542,12 @@ public class ConfigHandler {
     }
 
     // todo JavaDoc
-    public void setdeleteSourceFileWhenEncoding(final boolean deleteSourceFileWhenEncoding) {
+    public void setDeleteSourceFileWhenEncoding(final boolean deleteSourceFileWhenEncoding) {
         this.deleteSourceFileWhenEncoding = deleteSourceFileWhenEncoding;
     }
 
     // todo JavaDoc
-    public void setdeleteSourceFileWhenDecoding(final boolean deleteSourceFileWhenDecoding) {
+    public void setDeleteSourceFileWhenDecoding(final boolean deleteSourceFileWhenDecoding) {
         this.deleteSourceFileWhenDecoding = deleteSourceFileWhenDecoding;
     }
 
