@@ -1,6 +1,7 @@
 package handler;
 
-import gui.MainScreenController;
+
+import controller.MainScreenController;
 import misc.Logger;
 
 import java.io.File;
@@ -20,7 +21,7 @@ public class ArchiveHandler {
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @return The compressed archive.
      */
-    public File packFile(final File selectedFile, final MainScreenController controller,  final ConfigHandler configHandler) {
+    public File packFile(final File selectedFile, final MainScreenController controller, final ConfigHandler configHandler) {
         // Basic command settings ripped from http://superuser.com/a/742034
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
@@ -32,7 +33,7 @@ public class ArchiveHandler {
                         configHandler.getDecodeFormat(),
                         selectedFile.getAbsolutePath());
 
-        controller.getView().getTextArea_ffmpegOutput().append(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
@@ -75,7 +76,7 @@ public class ArchiveHandler {
             stringBuilder.append("\"" + f.getAbsolutePath() + "\"");
         }
 
-        controller.getView().getTextArea_ffmpegOutput().append(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
