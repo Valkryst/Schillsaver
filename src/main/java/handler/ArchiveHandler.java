@@ -2,6 +2,7 @@ package handler;
 
 
 import controller.MainScreenController;
+import javafx.application.Platform;
 import misc.Job;
 import misc.Logger;
 
@@ -36,7 +37,12 @@ public class ArchiveHandler {
                         configHandler.getDecodeFormat(),
                         job.getOutputDirectory());
 
-        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            }
+        });
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
@@ -79,7 +85,12 @@ public class ArchiveHandler {
             stringBuilder.append("\"" + f.getAbsolutePath() + "\"");
         }
 
-        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            }
+        });
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 

@@ -1,6 +1,7 @@
 package handler;
 
 import controller.MainScreenController;
+import javafx.application.Platform;
 import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 
@@ -71,11 +72,22 @@ public class FFMPEGHandler {
                         configHandler.getEncodeFormat());
             }
 
-            controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                }
+            });
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
-            controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
-            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
+                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                }
+            });
 
             // Delete leftovers:
             if(configHandler.getCombineAllFilesIntoSingleArchive()) {
@@ -140,8 +152,14 @@ public class FFMPEGHandler {
             controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
-            controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
-            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
+                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                }
+            });
 
             // Delete leftovers:
             if(configHandler.getDeleteSourceFileWhenDecoding()) {
