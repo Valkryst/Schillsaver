@@ -16,12 +16,13 @@ public class ArchiveHandler {
      * The resulting archive will bear the name of the input handler.
      * If the input handler is test.jpg, then the output archive will be test.jpg.7z
      * as an example.
+     * @param outputDirectory The directory in which to place the output file(s).
      * @param selectedFile The handler to compress.
      * @param controller The controller for the view in which the output text area resides.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @return The compressed archive.
      */
-    public File packFile(final File selectedFile, final MainScreenController controller, final ConfigHandler configHandler) {
+    public File packFile(final String outputDirectory, final File selectedFile, final MainScreenController controller, final ConfigHandler configHandler) {
         // Basic command settings ripped from http://superuser.com/a/742034
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
@@ -31,7 +32,7 @@ public class ArchiveHandler {
                         configHandler.getCompressionCommands(),
                         selectedFile.getAbsolutePath(),
                         configHandler.getDecodeFormat(),
-                        selectedFile.getAbsolutePath());
+                        outputDirectory);
 
         controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
@@ -53,13 +54,14 @@ public class ArchiveHandler {
      * results to the screen, into a single archive.
      *
      * The resulting archive will bear the specified name.
+     * @param outputDirectory The directory in which to place the output file(s).
      * @param selectedFiles The files to compress.
      * @param controller The controller for the view in which the output text area resides.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @param archiveName The name to give the compressed archive.
      * @return The compressed archive.
      */
-    public File packFiles(final File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler, final String archiveName) {
+    public File packFiles(final String outputDirectory, final File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler, final String archiveName) {
         // Basic command settings ripped from http://superuser.com/a/742034
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
@@ -68,7 +70,7 @@ public class ArchiveHandler {
                         configHandler.getCompressionProgramPath(),
                         configHandler.getCompressionCommands(),
                         archiveName,
-                        configHandler.getDecodeFormat());
+                        outputDirectory);
 
         for(final File f : selectedFiles) {
             // todo If it's possible to do the below to lines with the formatter, then do so.
