@@ -25,9 +25,6 @@ public class ConfigHandler {
     /** The absolute path to 7zip/7zip.exe or whichever compression program is specified. */
     private String compressionProgramPath = "";
 
-    /** The path of  both the archived and encoded files. */
-    private String encodedFilePath = "";
-
     /** The format to encode to. */
     private String encodeFormat = "mkv";
     /** The format to decode to. */
@@ -351,11 +348,6 @@ public class ConfigHandler {
         return compressionProgramPath;
     }
 
-    /** @return The Path of both the archived and encoded files. */
-    public String getEncodedFilePath() {
-        return encodedFilePath;
-    }
-
     /** @return The format to encode to. */
     public String getEncodeFormat() {
         return encodeFormat;
@@ -471,11 +463,6 @@ public class ConfigHandler {
     // todo JavaDoc
     public void setCompressionProgramPath(final String compressionProgramPath) {
         this.compressionProgramPath = compressionProgramPath;
-    }
-
-    // todo JavaDoc
-    public void setEncodedFilePath(final String encodedFilePath) {
-        this.encodedFilePath = encodedFilePath;
     }
 
     // todo JavaDoc
