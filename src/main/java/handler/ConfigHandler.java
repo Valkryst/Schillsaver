@@ -74,6 +74,9 @@ public class ConfigHandler {
     /** The base commands to use when compressing a handler before encoding. */
     private String compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
 
+    /** Whether or not to check for program updates on program start. */
+    private boolean checkForUpdatesOnStart = true;
+
     /** @return Whether or not the config handler exists. */
     public boolean doesConfigFileExist() {
         return Files.exists(Paths.get(FILENAME_CONFIG));
@@ -167,6 +170,10 @@ public class ConfigHandler {
 
                 if(currentLine.contains("compressionCommands ")) {
                     compressionCommands = currentLine.replace("compressionCommands ", "");
+                }
+
+                if(currentLine.contains("checkForUpdatesOnStart ")) {
+                    checkForUpdatesOnStart = Boolean.valueOf(currentLine.replace("checkForUpdatesOnStart ", ""));
                 }
             }
         } catch(final IOException e) { // Should only happen if the config handler doesn't exist.
@@ -271,6 +278,7 @@ public class ConfigHandler {
             outputStream.write("splashScreenFilePath " + splashScreenFilePath + System.lineSeparator());
             outputStream.write("splashScreenDisplayTime " + splashScreenDisplayTime + System.lineSeparator());
             outputStream.write("compressionCommands " + compressionCommands + System.lineSeparator());
+            outputStream.write("checkForUpdatesOnStart " + checkForUpdatesOnStart + System.lineSeparator());
             outputStream.close();
         } catch(final IOException e) {
             Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
@@ -453,6 +461,11 @@ public class ConfigHandler {
         return compressionCommands;
     }
 
+    /** @return Whether or not to check for program updates on program start. */
+    public boolean getCheckForUpdatesOnStart() {
+        return checkForUpdatesOnStart;
+    }
+
     ////////////////////////////////////////////////////////// Setters
 
     // todo JavaDoc
@@ -583,5 +596,10 @@ public class ConfigHandler {
     // todo JavaDoc
     public void setCompressionCommands(final String compressionCommands) {
         this.compressionCommands = compressionCommands;
+    }
+
+    // todo JavaDoc
+    public void setCheckForUpdatesOnStart(final boolean checkForUpdatesOnStart) {
+        this.checkForUpdatesOnStart = checkForUpdatesOnStart;
     }
 }
