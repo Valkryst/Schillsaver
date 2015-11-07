@@ -1,0 +1,31 @@
+.root {
+    /** Define Colors */
+    background-color: #464646;
+    midground-color: #555555;
+    foreground-color: #7D7D7D;
+    text-color: #ADADAD;
+
+    border-normal-color: #909090;
+    border-selected-color: #21547C;
+    border-error-color: #852E34;
+
+    -fx-background-color: background-color;
+    -fx-text-fill: text-color;
+}
+
+.text-field, .password-field {
+    -fx-background-color: background-color;
+    -fx-text-fill: text-color;
+    -fx-border-color: border-error-color;
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+}
+
+.text-field, .password-field {
+    -fx-border-radius: 3;
+    -fx-background-color: midground-color;
+}
+
+.text-field:pressed, .password-field:pressed, .text-field:hover, .password-field:hover, .text-field:focused, .password-field:focused {
+    -fx-border-color: border-selected-color;
+}
