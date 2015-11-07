@@ -77,11 +77,6 @@ public class ConfigHandler {
     /** Whether or not to check for program updates on program start. */
     private boolean checkForUpdatesOnStart = false;
 
-    /** @return Whether or not the config handler exists. */
-    public boolean doesConfigFileExist() {
-        return Files.exists(Paths.get(FILENAME_CONFIG));
-    }
-
     /**
      * Reads in each line from the configuration handler and attempts to parse
      * the specified parameters of the program.
