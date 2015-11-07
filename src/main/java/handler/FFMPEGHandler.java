@@ -11,16 +11,48 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
-public class FFMPEGHandler {
+public class FFMPEGHandler implements Runnable {
+    /** The Job being run. */
+    private final Job job;
+    /** The file(s) to en/decode. */
+    private final List<File> selectedFiles;
+    /** The controller for the main screen. */
+    private final MainScreenController controller;
+    /** The settings to use when encoding the file(s). */
+    private final ConfigHandler configHandler;
+
     /**
-     * Encodes the specified file(s) using the settings in the specified
-     * configuration handler.
+     * Creates a new FFMPEGHandler with the specified parameters.
      * @param job The Job being run.
      * @param selectedFiles The file(s) to encode.
      * @param controller The controller for the main screen.
-     * @param configHandler The settings to use when encoding the handler(s).
+     * @param configHandler The settings to use when encoding the file(s).
      */
-    public void encodeVideoToDisk(final Job job, List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+    public FFMPEGHandler(final Job job, List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+        this.job = job;
+
+        // Sort the array of files to ensure the smallest files
+        // are en/decoded first.
+        this.selectedFiles = greedySort(selectedFiles);
+
+        this.controller = controller;
+        this.configHandler = configHandler;
+    }
+
+    @Override
+    public void run() {
+        if(job.getIsEncodeJob()) {
+            encodeVideoToDisk();
+        } else {
+            decodeVideo();
+        }
+    }
+
+    /**
+     * Encodes the specified file(s) using the settings in the
+     * configuration handler.
+     */
+    private void encodeVideoToDisk() {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(configHandler.getCombineAllFilesIntoSingleArchive()) {
@@ -31,10 +63,6 @@ public class FFMPEGHandler {
             for(int i = 0 ; i < selectedFiles.size() ; i++) {
                 selectedFiles.set(i, archiveHandler.packFile(job, selectedFiles.get(i), controller, configHandler));
             }
-
-            // Sort the array of files to ensure the smallest files
-            // are encoded first.
-            selectedFiles = greedySort(selectedFiles);
         }
 
         for(File f : selectedFiles) {
@@ -109,18 +137,10 @@ public class FFMPEGHandler {
     }
 
     /**
-     * Decodes the specified file(s) using the settings in the specified
+     * Decodes the specified file(s) using the settings in the
      * configuration handler.
-     * @param job The Job being run.
-     * @param selectedFiles The file(s) to decode.
-     * @param controller The controller for the main screen.
-     * @param configHandler The settings to use when decoding the handler(s).
      */
-    public void decodeVideo(final Job job, List<File> selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
-        // Sort the array of files to ensure the smallest files
-        // are decoded first.
-        selectedFiles = greedySort(selectedFiles);
-
+    private void decodeVideo() {
         for(final File f : selectedFiles) {
             // Construct FFMPEG string:
             final StringBuilder stringBuilder = new StringBuilder();
