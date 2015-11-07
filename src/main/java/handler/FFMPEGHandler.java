@@ -1,6 +1,7 @@
 package handler;
 
 import controller.MainScreenController;
+import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -11,21 +12,21 @@ public class FFMPEGHandler {
     /**
      * Encodes the specified handler(s) using the settings in the specified
      * configuration handler.
-     * @param outputDirectory The directory in which to place the output file(s).
+     * @param job The Job being run.
      * @param selectedFiles The handler(s) to encode.
      * @param controller The controller for the main screen.
      * @param configHandler The settings to use when encoding the handler(s).
      */
-    public void encodeVideoToDisk(final String outputDirectory, File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+    public void encodeVideoToDisk(final Job job, File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(configHandler.getCombineAllFilesIntoSingleArchive()) {
-            final File temp = archiveHandler.packFiles(selectedFiles, controller, configHandler, outputDirectory);
+            final File temp = archiveHandler.packFiles(job.getOutputDirectory(), selectedFiles, controller, configHandler, job.getName());
             selectedFiles = new File[1];
             selectedFiles[0] = temp;
         } else if(configHandler.getCombineIntoIndividualArchives()){
             for(int i = 0 ; i < selectedFiles.length ; i++) {
-                selectedFiles[i] = archiveHandler.packFile(selectedFiles[i], controller, configHandler);
+                selectedFiles[i] = archiveHandler.packFile(job.getOutputDirectory(), selectedFiles[i], controller, configHandler);
             }
 
             // Sort the array of files to ensure the smallest files
@@ -63,7 +64,7 @@ public class FFMPEGHandler {
                         configHandler.getMacroBlockDimensions(),
                         configHandler.getEncodingLibrary(),
                         configHandler.getFfmpegLogLevel(),
-                        outputDirectory,
+                        job.getOutputDirectory(),
                         FilenameUtils.getBaseName(f.getName()),
                         configHandler.getEncodeFormat());
             }
@@ -96,12 +97,12 @@ public class FFMPEGHandler {
     /**
      * Decodes the specified handler(s) using the settings in the specified
      * configuration handler.
-     * @param outputDirectory The directory in which to place the output file(s).
+     * @param job The Job being run.
      * @param selectedFiles The handler(s) to decode.
      * @param controller The controller for the main screen.
      * @param configHandler The settings to use when decoding the handler(s).
      */
-    public void decodeVideo(final String outputDirectory, File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
+    public void decodeVideo(final Job job, File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
         // Sort the array of files to ensure the smallest files
         // are decoded first.
         selectedFiles = greedySort(selectedFiles);
@@ -130,7 +131,7 @@ public class FFMPEGHandler {
                         f.getAbsolutePath(),
                         (1.0 / configHandler.getMacroBlockDimensions()),
                         configHandler.getFfmpegLogLevel(),
-                        outputDirectory,
+                        job.getOutputDirectory(),
                         configHandler.getDecodeFormat());
             }
 
