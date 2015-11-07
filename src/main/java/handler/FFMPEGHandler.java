@@ -1,6 +1,6 @@
 package handler;
 
-import gui.MainScreenController;
+import controller.MainScreenController;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -67,29 +67,29 @@ public class FFMPEGHandler {
                         configHandler.getEncodeFormat());
             }
 
-            controller.getView().getTextArea_ffmpegOutput().append(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
-            controller.getView().getTextArea_ffmpegOutput().append("ENCODING COMPLETED");
-            controller.getView().getTextArea_ffmpegOutput().append(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
+            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             // Delete leftovers:
             if(configHandler.getCombineAllFilesIntoSingleArchive()) {
                 f.delete(); // This is just the archive, not the original handler.
             } else {
-                if(configHandler.getDeleteOriginalFileWhenEncoding()) {
+                if(configHandler.getDeleteSourceFileWhenEncoding()) {
                     f.delete(); // This is the original handler.
                 }
             }
 
-            if(configHandler.getDeleteOriginalFileWhenEncoding()) {
+            if(configHandler.getDeleteSourceFileWhenDecoding()) {
                f = new File(f.getAbsolutePath().replace(configHandler.getDecodeFormat(), ""));
                f.delete();
             }
         }
 
         // Enable buttons after encoding:
-        controller.getView().enableButtons();
+        //controller.getView().enableButtons();
     }
 
     /**
@@ -132,20 +132,20 @@ public class FFMPEGHandler {
                         configHandler.getDecodeFormat());
             }
 
-            controller.getView().getTextArea_ffmpegOutput().append(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
-            controller.getView().getTextArea_ffmpegOutput().append("DECODING COMPLETED");
-            controller.getView().getTextArea_ffmpegOutput().append(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
+            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             // Delete leftovers:
-            if(configHandler.getDeleteOriginalFileWhenDecoding()) {
+            if(configHandler.getDeleteSourceFileWhenDecoding()) {
                f.delete(); // This is just the archive, not the original handler.
             }
         }
 
         // Enable buttons after decoding:
-        controller.getView().enableButtons();
+        //controller.getView().enableButtons();
     }
 
     /**
