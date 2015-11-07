@@ -5,28 +5,30 @@ import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Locale;
 
 public class FFMPEGHandler {
     /**
-     * Encodes the specified handler(s) using the settings in the specified
+     * Encodes the specified file(s) using the settings in the specified
      * configuration handler.
      * @param job The Job being run.
-     * @param selectedFiles The handler(s) to encode.
+     * @param selectedFiles The file(s) to encode.
      * @param controller The controller for the main screen.
      * @param configHandler The settings to use when encoding the handler(s).
      */
-    public void encodeVideoToDisk(final Job job, File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+    public void encodeVideoToDisk(final Job job, List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(configHandler.getCombineAllFilesIntoSingleArchive()) {
             final File temp = archiveHandler.packFiles(job, selectedFiles, controller, configHandler);
-            selectedFiles = new File[1];
-            selectedFiles[0] = temp;
+            selectedFiles.clear();
+            selectedFiles.add(temp);
         } else if(configHandler.getCombineIntoIndividualArchives()){
-            for(int i = 0 ; i < selectedFiles.length ; i++) {
-                selectedFiles[i] = archiveHandler.packFile(job, selectedFiles[i], controller, configHandler);
+            for(int i = 0 ; i < selectedFiles.size() ; i++) {
+                selectedFiles.set(i, archiveHandler.packFile(job, selectedFiles.get(i), controller, configHandler));
             }
 
             // Sort the array of files to ensure the smallest files
@@ -95,14 +97,14 @@ public class FFMPEGHandler {
     }
 
     /**
-     * Decodes the specified handler(s) using the settings in the specified
+     * Decodes the specified file(s) using the settings in the specified
      * configuration handler.
      * @param job The Job being run.
-     * @param selectedFiles The handler(s) to decode.
+     * @param selectedFiles The file(s) to decode.
      * @param controller The controller for the main screen.
      * @param configHandler The settings to use when decoding the handler(s).
      */
-    public void decodeVideo(final Job job, File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
+    public void decodeVideo(final Job job, List<File> selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
         // Sort the array of files to ensure the smallest files
         // are decoded first.
         selectedFiles = greedySort(selectedFiles);
@@ -155,27 +157,27 @@ public class FFMPEGHandler {
      * To ensure that the smallest files are encoded first, the greedy
      * algorithm sorts the array by smallest filesize using mergesort.
      *
-     * @param arr The handler(s) to sort.
-     * @return A sorted array of handler(s) from smallest to largest filesize.
+     * @param arr The file(s) to sort.
+     * @return A sorted list of file(s) from smallest to largest filesize.
      */
-    private File[] greedySort(final File[] arr) {
+    private List<File> greedySort(final List<File> arr) {
         // If the array has zero, or one, element, then it is already sorted.
-        if(arr.length == 0 || arr.length == 1) {
+        if(arr.size() == 0 || arr.size() == 1) {
             return arr;
         }
 
         // Split the array into two halves.
-        int half = arr.length/2;
-        File[] arrA = new File[half];
-        File[] arrB = new File[arr.length - half];
+        int half = arr.size()/2;
+        List<File> arrA = new ArrayList<>();
+        List<File> arrB = new ArrayList<>();
 
         // Fill both halves with the values from arr.
         for(int i=0;i<half;i++) {
-            arrA[i] = arr[i];
+            arrA.add(arr.get(i));
         }
 
-        for(int i=half;i<arr.length;i++) {
-            arrB[i - half] = arr[i];
+        for(int i=half;i<arr.size();i++) {
+            arrB.add(i - half, arr.get(i));
         }
 
         // Recursively call the sort() method on both halves.
@@ -183,16 +185,16 @@ public class FFMPEGHandler {
         arrB = greedySort(arrB);
 
         // Combine the two sorted arrays while sorting.
-        File[] arrC = new File[arr.length];
+        List<File> arrC = new ArrayList<>();
 
         int arrAIndex = 0, arrBIndex = 0, arrCIndex = 0;
 
-        while(arrAIndex < arrA.length && arrBIndex < arrB.length) {
-            if(arrA[arrAIndex].length() < arrB[arrBIndex].length()) {
-                arrC[arrCIndex] = arrA[arrAIndex];
+        while(arrAIndex < arrA.size() && arrBIndex < arrB.size()) {
+            if(arrA.size() < arrB.size()) {
+                arrC.add(arrCIndex, arrA.get(arrAIndex));
                 arrAIndex++;
             } else {
-                arrC[arrCIndex] = arrB[arrBIndex];
+                arrC.add(arrCIndex, arrB.get(arrBIndex));
                 arrBIndex++;
             }
             arrCIndex++;
@@ -200,14 +202,14 @@ public class FFMPEGHandler {
 
         // Because the above loop doesn't work for all elements we must
         // copy whatever elements remain into arrC.
-        while(arrAIndex < arrA.length) {
-            arrC[arrCIndex] = arrA[arrAIndex];
+        while(arrAIndex < arrA.size()) {
+            arrC.add(arrCIndex, arrA.get(arrAIndex));
             arrCIndex++;
             arrAIndex++;
         }
 
-        while(arrBIndex < arrB.length) {
-            arrC[arrCIndex] = arrB[arrBIndex];
+        while(arrBIndex < arrB.size()) {
+            arrC.add(arrCIndex, arrB.get(arrBIndex));
             arrCIndex++;
             arrBIndex++;
         }
