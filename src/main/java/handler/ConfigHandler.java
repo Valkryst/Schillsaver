@@ -75,7 +75,7 @@ public class ConfigHandler {
     private String compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
 
     /** Whether or not to check for program updates on program start. */
-    private boolean checkForUpdatesOnStart = true;
+    private boolean checkForUpdatesOnStart = false;
 
     /** @return Whether or not the config handler exists. */
     public boolean doesConfigFileExist() {
