@@ -8,7 +8,7 @@ import java.util.List;
 
 public class JobSetupDialogModel {
     // todo JavaDoc
-    private Job job = new Job();
+    private Job job = null;
     /** The list of all list_files to be added to the Job. */
     private List<File> list_files = new ArrayList<>();
 
