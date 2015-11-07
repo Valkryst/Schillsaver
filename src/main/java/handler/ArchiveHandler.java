@@ -7,6 +7,7 @@ import misc.Logger;
 
 import java.io.File;
 import java.util.Formatter;
+import java.util.List;
 import java.util.Locale;
 
 public class ArchiveHandler {
@@ -18,7 +19,7 @@ public class ArchiveHandler {
      * If the input handler is test.jpg, then the output archive will be test.jpg.7z
      * as an example.
      * @param job The Job being run.
-     * @param selectedFile The handler to compress.
+     * @param selectedFile The file to compress.
      * @param controller The controller for the view in which the output text area resides.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @return The compressed archive.
@@ -56,12 +57,12 @@ public class ArchiveHandler {
      *
      * The resulting archive will bear the specified name.
      * @param job The Job being run.
-     * @param selectedFiles The files to compress.
+     * @param selectedFiles The file(s) to compress.
      * @param controller The controller for the view in which the output text area resides.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @return The compressed archive.
      */
-    public File packFiles(final Job job, final File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+    public File packFiles(final Job job, final List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
         // Basic command settings ripped from http://superuser.com/a/742034
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
