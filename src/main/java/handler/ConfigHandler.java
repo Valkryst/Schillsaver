@@ -21,12 +21,12 @@ public class ConfigHandler {
     public static final String[] FFMPEG_LOG_LEVELS = {"quiet", "panic", "fatal", "error", "warning", "info", "verbose", "debug", "trace"};
 
     /** The absolute path to ffmpeg/ffmpeg.exe. */
-    private String ffmpegPath;
+    private String ffmpegPath = "";
     /** The absolute path to 7zip/7zip.exe or whichever compression program is specified. */
-    private String compressionProgramPath;
+    private String compressionProgramPath = "";
 
     /** The path of  both the archived and encoded files. */
-    private String encodedFilePath;
+    private String encodedFilePath = "";
 
     /** The format to encode to. */
     private String encodeFormat = "mkv";
