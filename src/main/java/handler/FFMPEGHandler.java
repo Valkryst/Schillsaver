@@ -11,7 +11,7 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
-public class FFMPEGHandler implements Runnable {
+public class FFMPEGHandler extends Thread {
     /** The Job being run. */
     private final Job job;
     /** The file(s) to en/decode. */
