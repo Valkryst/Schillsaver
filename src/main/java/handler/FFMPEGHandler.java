@@ -11,15 +11,16 @@ public class FFMPEGHandler {
     /**
      * Encodes the specified handler(s) using the settings in the specified
      * configuration handler.
+     * @param outputDirectory The directory in which to place the output file(s).
      * @param selectedFiles The handler(s) to encode.
      * @param controller The controller for the main screen.
      * @param configHandler The settings to use when encoding the handler(s).
      */
-    public void encodeVideoToDisk(File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+    public void encodeVideoToDisk(final String outputDirectory, File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(configHandler.getCombineAllFilesIntoSingleArchive()) {
-            final File temp = archiveHandler.packFiles(selectedFiles, controller, configHandler, configHandler.getEncodedFilePath());
+            final File temp = archiveHandler.packFiles(selectedFiles, controller, configHandler, outputDirectory);
             selectedFiles = new File[1];
             selectedFiles[0] = temp;
         } else if(configHandler.getCombineIntoIndividualArchives()){
@@ -62,7 +63,7 @@ public class FFMPEGHandler {
                         configHandler.getMacroBlockDimensions(),
                         configHandler.getEncodingLibrary(),
                         configHandler.getFfmpegLogLevel(),
-                        FilenameUtils.getFullPath(f.getAbsolutePath()),
+                        outputDirectory,
                         FilenameUtils.getBaseName(f.getName()),
                         configHandler.getEncodeFormat());
             }
@@ -95,11 +96,12 @@ public class FFMPEGHandler {
     /**
      * Decodes the specified handler(s) using the settings in the specified
      * configuration handler.
+     * @param outputDirectory The directory in which to place the output file(s).
      * @param selectedFiles The handler(s) to decode.
      * @param controller The controller for the main screen.
      * @param configHandler The settings to use when decoding the handler(s).
      */
-    public void decodeVideo(File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
+    public void decodeVideo(final String outputDirectory, File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler) {
         // Sort the array of files to ensure the smallest files
         // are decoded first.
         selectedFiles = greedySort(selectedFiles);
@@ -128,7 +130,7 @@ public class FFMPEGHandler {
                         f.getAbsolutePath(),
                         (1.0 / configHandler.getMacroBlockDimensions()),
                         configHandler.getFfmpegLogLevel(),
-                        f.getAbsolutePath(),
+                        outputDirectory,
                         configHandler.getDecodeFormat());
             }
 
