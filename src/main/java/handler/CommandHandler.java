@@ -1,6 +1,6 @@
 package handler;
 
-import gui.MainScreenController;
+import controller.MainScreenController;
 import misc.Logger;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -33,7 +33,7 @@ public class CommandHandler {
 
             String line;
             while((line = reader.readLine()) != null) {
-                controller.getView().getTextArea_ffmpegOutput().append(line + System.lineSeparator());
+                controller.getView().getTextArea_output().appendText(line + System.lineSeparator());
             }
 
             is.close();
