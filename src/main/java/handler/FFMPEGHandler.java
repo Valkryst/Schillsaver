@@ -1,7 +1,7 @@
 package handler;
 
 import controller.MainScreenController;
-import javafx.application.Platform;
+import javafx.concurrent.Task;
 import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 
@@ -11,7 +11,7 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
-public class FFMPEGHandler extends Thread {
+public class FFMPEGHandler extends Task {
     /** The Job being run. */
     private final Job job;
     /** The file(s) to en/decode. */
@@ -40,12 +40,14 @@ public class FFMPEGHandler extends Thread {
     }
 
     @Override
-    public void run() {
+    public Object call() {
         if(job.getIsEncodeJob()) {
             encodeVideoToDisk();
         } else {
             decodeVideo();
         }
+
+        return null;
     }
 
     /**
@@ -100,22 +102,12 @@ public class FFMPEGHandler extends Thread {
                         configHandler.getEncodeFormat());
             }
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-                }
-            });
+            controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
-                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-                }
-            });
+            controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
+            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             // Delete leftovers:
             if(configHandler.getCombineAllFilesIntoSingleArchive()) {
@@ -173,13 +165,8 @@ public class FFMPEGHandler extends Thread {
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
-                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-                }
-            });
+            controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
+            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
             // Delete leftovers:
             if(configHandler.getDeleteSourceFileWhenDecoding()) {
