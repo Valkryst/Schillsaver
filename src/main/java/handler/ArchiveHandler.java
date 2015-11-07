@@ -2,7 +2,6 @@ package handler;
 
 
 import controller.MainScreenController;
-import javafx.application.Platform;
 import misc.Job;
 import misc.Logger;
 
@@ -30,19 +29,16 @@ public class ArchiveHandler {
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
-        formatter.format("\"%s\" %s \"%s.%s\" \"%s\"",
+        formatter.format("\"%s\" %s \"%s.%s\" \"%s%s.%s\"",
                         configHandler.getCompressionProgramPath(),
                         configHandler.getCompressionCommands(),
                         selectedFile.getAbsolutePath(),
                         configHandler.getDecodeFormat(),
-                        job.getOutputDirectory());
+                        job.getOutputDirectory(),
+                        job.getName(),
+                        configHandler.getDecodeFormat());
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-            }
-        });
+        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
@@ -85,12 +81,7 @@ public class ArchiveHandler {
             stringBuilder.append("\"" + f.getAbsolutePath() + "\"");
         }
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-            }
-        });
+        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 

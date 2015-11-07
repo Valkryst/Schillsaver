@@ -1,7 +1,6 @@
 package handler;
 
 import controller.MainScreenController;
-import javafx.application.Platform;
 import misc.Logger;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -25,26 +24,13 @@ public class CommandHandler {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
             // Ensure the process shuts down if the program exits:
-            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    process.destroy();
-                }
-            }));
+            process.destroy();
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String line;
-                        while((line = reader.readLine()) != null) {
-                            controller.getView().getTextArea_output().appendText(line + System.lineSeparator());
-                        }
-                    } catch(final IOException e) {
-                        Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_WARNING);
-                    }
-                }
-            });
+
+            String line;
+            while((line = reader.readLine()) != null) {
+                controller.getView().getTextArea_output().appendText(line + System.lineSeparator());
+            }
 
             is.close();
         } catch(final IOException e) {
