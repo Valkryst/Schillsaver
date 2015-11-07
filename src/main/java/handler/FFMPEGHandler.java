@@ -21,12 +21,12 @@ public class FFMPEGHandler {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(configHandler.getCombineAllFilesIntoSingleArchive()) {
-            final File temp = archiveHandler.packFiles(job.getOutputDirectory(), selectedFiles, controller, configHandler, job.getName());
+            final File temp = archiveHandler.packFiles(job, selectedFiles, controller, configHandler);
             selectedFiles = new File[1];
             selectedFiles[0] = temp;
         } else if(configHandler.getCombineIntoIndividualArchives()){
             for(int i = 0 ; i < selectedFiles.length ; i++) {
-                selectedFiles[i] = archiveHandler.packFile(job.getOutputDirectory(), selectedFiles[i], controller, configHandler);
+                selectedFiles[i] = archiveHandler.packFile(job, selectedFiles[i], controller, configHandler);
             }
 
             // Sort the array of files to ensure the smallest files
