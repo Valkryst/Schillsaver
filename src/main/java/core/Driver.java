@@ -1,47 +1,67 @@
 package core;
 
-import component.VComponentGlobals;
+import controller.MainScreenController;
 import handler.ConfigHandler;
-import gui.MainScreenController;
-import gui.SettingsScreenController;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import misc.Logger;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
 
-// todo Refactor this entire class. It's a trainwreck.
-public class Driver {
+public class Driver extends Application{
     /** The current version of the program. Whenever a significant change is made, this should be changed along with the online handler. */
-    private static final String PROGRAM_VERSION = "4";
+    private static final String PROGRAM_VERSION = "5";
+
 
     public static void main(final String[] args) {
-        // Check for new version:
-        checkForUpdate();
+        launch();
+    }
 
-        // Load config options or create new config handler if none exists.
+    @Override
+    public void init() {
+        // Do something before the application starts.
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         final ConfigHandler configHandler = new ConfigHandler();
 
-        if(configHandler.doesConfigFileExist()) {
-            configHandler.loadConfigSettings();
-        } else {
-            // Run a search to find some of the required program paths
-            // so the user doesn't have to do it themselves.
-            // Then open the Settings Manager.
-            configHandler.searchForDefaultProgramPaths();
-            new SettingsScreenController(null, configHandler);
+        // Load Config File:
+        configHandler.loadConfigSettings();
+
+        // Check for Updates:
+        if(configHandler.getCheckForUpdatesOnStart()) {
+            checkForUpdate();
         }
 
-        showSplashscreen(configHandler);
+        // Show Splash Screen:
+        if(configHandler.getShowSplashScreen()) {
+            showSplashscreen(configHandler);
+        }
 
-        startProgram(configHandler);
+        // Setup the primary stage:
+        primaryStage.getIcons().add(new Image("icon.png"));
+
+        // Add the frst scene to the primary stage:
+        final Scene scene = new Scene(new MainScreenController(primaryStage, configHandler).getView());
+
+        scene.getStylesheets().add("global.css");
+        scene.getRoot().getStyleClass().add("main-root");
+
+        primaryStage.setTitle("Schillsaver - Powered by /g/entoomen\u00a9\u00ae");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    @Override
+    public void stop() {
+        // Do something before the application stops.
     }
 
     /**
@@ -50,6 +70,7 @@ public class Driver {
      * the situation and how to update.
      */
     public static void checkForUpdate() {
+        // todo Refactor to use JavaFX instead of Swing.
         try {
             final URL url = new URL("http://valkryst.com/schillsaver/version.txt");
             Scanner scanner = new Scanner(url.openStream());
@@ -58,11 +79,11 @@ public class Driver {
 
             if(!newVersion.equals(PROGRAM_VERSION)) {
                 JOptionPane.showMessageDialog(null, "This program is out of date.\n" +
-                                                    "Get the latest version at http://valkryst.com/schillsaver/Schillsaver.7z.\n\n" +
-                                                    "Current Version - " + PROGRAM_VERSION + "\n" +
-                                                    "New Version - " + newVersion,
-                                                    "New Version Available",
-                                                    JOptionPane.WARNING_MESSAGE);
+                                "Get the latest version at http://valkryst.com/schillsaver/Schillsaver.7z.\n\n" +
+                                "Current Version - " + PROGRAM_VERSION + "\n" +
+                                "New Version - " + newVersion,
+                        "New Version Available",
+                        JOptionPane.WARNING_MESSAGE);
             }
         }
         catch(IOException e) {
@@ -93,71 +114,5 @@ public class Driver {
                 Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_WARNING);
             }
         }
-    }
-
-    /**
-     * Creates a new frame with the MainScreenView showing.
-     * @param configHandler todo JavaDoc
-     */
-    public static void startProgram(final ConfigHandler configHandler) {
-        final JFrame frame = new JFrame();
-        frame.setTitle("Schillsaver - Powered by /g/entoomen\u00a9\u00ae");
-        frame.setBackground(VComponentGlobals.BACKGROUND_COLOR);
-        frame.setIconImage(Toolkit.getDefaultToolkit().createImage(ClassLoader.getSystemResource("icon.png")));
-
-        frame.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {
-            }
-
-            @Override
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
-                System.exit(0);
-            }
-
-            @Override
-            public void windowIconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-            }
-        });
-
-        frame.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e) {
-                final Dimension currentDimensions = frame.getSize();
-                final Dimension minimumDimensions = frame.getMinimumSize();
-
-                if(currentDimensions.width < minimumDimensions.width) {
-                    currentDimensions.width = minimumDimensions.width;
-                }
-
-                if(currentDimensions.height < minimumDimensions.height) {
-                    currentDimensions.height = minimumDimensions.height;
-                }
-
-                frame.setSize(currentDimensions);
-            }
-        });
-
-        frame.add(new MainScreenController(frame, configHandler).getView());
-        frame.setResizable(true);
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
     }
 }
