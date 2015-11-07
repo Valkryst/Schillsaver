@@ -2,6 +2,7 @@ package handler;
 
 
 import controller.MainScreenController;
+import misc.Job;
 import misc.Logger;
 
 import java.io.File;
@@ -16,13 +17,13 @@ public class ArchiveHandler {
      * The resulting archive will bear the name of the input handler.
      * If the input handler is test.jpg, then the output archive will be test.jpg.7z
      * as an example.
-     * @param outputDirectory The directory in which to place the output file(s).
+     * @param job The Job being run.
      * @param selectedFile The handler to compress.
      * @param controller The controller for the view in which the output text area resides.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @return The compressed archive.
      */
-    public File packFile(final String outputDirectory, final File selectedFile, final MainScreenController controller, final ConfigHandler configHandler) {
+    public File packFile(final Job job, final File selectedFile, final MainScreenController controller, final ConfigHandler configHandler) {
         // Basic command settings ripped from http://superuser.com/a/742034
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
@@ -32,7 +33,7 @@ public class ArchiveHandler {
                         configHandler.getCompressionCommands(),
                         selectedFile.getAbsolutePath(),
                         configHandler.getDecodeFormat(),
-                        outputDirectory);
+                        job.getOutputDirectory());
 
         controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
 
@@ -54,14 +55,13 @@ public class ArchiveHandler {
      * results to the screen, into a single archive.
      *
      * The resulting archive will bear the specified name.
-     * @param outputDirectory The directory in which to place the output file(s).
+     * @param job The Job being run.
      * @param selectedFiles The files to compress.
      * @param controller The controller for the view in which the output text area resides.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
-     * @param archiveName The name to give the compressed archive.
      * @return The compressed archive.
      */
-    public File packFiles(final String outputDirectory, final File[] selectedFiles, final MainScreenController controller,  final ConfigHandler configHandler, final String archiveName) {
+    public File packFiles(final Job job, final File[] selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
         // Basic command settings ripped from http://superuser.com/a/742034
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
@@ -69,8 +69,8 @@ public class ArchiveHandler {
         formatter.format("\"%s\" %s \"%s.%s\"",
                         configHandler.getCompressionProgramPath(),
                         configHandler.getCompressionCommands(),
-                        archiveName,
-                        outputDirectory);
+                        job.getName(),
+                        job.getOutputDirectory());
 
         for(final File f : selectedFiles) {
             // todo If it's possible to do the below to lines with the formatter, then do so.
@@ -83,10 +83,10 @@ public class ArchiveHandler {
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
         // Return a File int to the newly created archive:
-        final File file = new File(archiveName + "." + configHandler.getDecodeFormat());
+        final File file = new File(job.getName() + "." + configHandler.getDecodeFormat());
 
         if(!file.exists()) {
-            Logger.writeLog("Could not create " + archiveName + " shutting down.", Logger.LOG_TYPE_ERROR);
+            Logger.writeLog("Could not create " + job.getName() + " shutting down.", Logger.LOG_TYPE_ERROR);
             System.exit(1);
         }
 
