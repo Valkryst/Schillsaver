@@ -104,9 +104,7 @@ public class JobSetupDialogView extends HBox {
         comboBox_jobType.setOnAction(controller);
         button_selectOutputDirectory.setOnAction(controller);
         radioButton_singleArchive_yes.setOnAction(controller);
-        radioButton_singleArchive_no.setOnAction(controller);
         radioButton_individualArchives_yes.setOnAction(controller);
-        radioButton_individualArchives_no.setOnAction(controller);
 
         // Setup the Layout:
         final HBox panel_left_top = new HBox(10);
