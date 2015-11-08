@@ -152,7 +152,7 @@ public class JobSetupDialogView extends HBox {
 
         final TitledPane pane_individualArchives = new TitledPane();
         HBox.setHgrow(pane_individualArchives, Priority.ALWAYS);
-        pane_individualArchives.setText("Pack File(s) into Single Archive");
+        pane_individualArchives.setText("Pack File(s) into Individual Archives");
         pane_individualArchives.setCollapsible(false);
         pane_individualArchives.heightProperty().addListener(new ChangeListener<Number>() { // Ensures that the scene will rezize when the pane is collapsed.
             @Override
