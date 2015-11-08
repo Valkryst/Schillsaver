@@ -172,12 +172,13 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
                 stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
             } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
-                formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s.%s\"",
+                formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s%s.%s\"",
                         configHandler.getFfmpegPath(),
                         f.getAbsolutePath(),
                         (1.0 / configHandler.getMacroBlockDimensions()),
                         configHandler.getFfmpegLogLevel(),
                         job.getOutputDirectory(),
+                        FilenameUtils.getBaseName(f.getName()),
                         configHandler.getDecodeFormat());
             }
 
