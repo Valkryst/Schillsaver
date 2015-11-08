@@ -37,12 +37,12 @@ public class MiscSettingsPane extends TitledPane {
     private final RadioButton radioButton_showSplashScreen_no = new RadioButton("No");
 
     /** The text field for the absolute path of the splash screen. */
-    private final TextField field_splashScreenFilePath = new TextField("splashScreenFilePath");
+    private final TextField field_splashScreenFilePath = new TextField();
     /** The button to open the handler selection dialog to locate an image to use as the splash screen. */
     private final Button button_selectFile_splashScreenFilePath = new Button("Select File");
 
     /** The text field for the amount of time, in milliseconds, to display the splach screen for. */
-    private final TextField field_splashScreenDisplayTime = new TextField("splashScreenDisplayTime");
+    private final TextField field_splashScreenDisplayTime = new TextField();
 
     /** The toggle group of the yes/no radio buttons of the enableUpdateCheck option. */
     private final ToggleGroup toggleGroup_enableUpdateCheck = new ToggleGroup();
@@ -52,6 +52,10 @@ public class MiscSettingsPane extends TitledPane {
     private final RadioButton radioButton_enableUpdateCheck_no = new RadioButton("No");
 
     public MiscSettingsPane(final Stage settingsStage, final MiscSettingsController controller, final ConfigHandler configHandler) {
+        // Set Field Prompt Text:
+        field_splashScreenFilePath.setPromptText("splashScreenFilePath");
+                field_splashScreenDisplayTime.setPromptText("splashScreenDisplayTime");
+
         // Setup Toggle Groups:
         radioButton_deleteSourceFileWhenEncoding_yes.setToggleGroup(toggleGroup_deleteSourceFileWhenEncoding);
         radioButton_deleteSourceFileWhenEncoding_no.setToggleGroup(toggleGroup_deleteSourceFileWhenEncoding);
