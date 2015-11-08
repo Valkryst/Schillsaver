@@ -18,24 +18,24 @@ public class FfmpegSettingsPane extends TitledPane {
     private static final String TAB_NAME = "FFMPEG";
 
     /** The text field for the absolute path to ffmpeg/ffmpeg.exe. */
-    private final TextField field_ffmpegPath = new TextField("ffmpegPath");
+    private final TextField field_ffmpegPath = new TextField();
     /** The button to open the handler selection dialog for the ffmpeg executable. */
     private final Button button_selectFile_ffmpegPath = new Button("Select File");
 
     /** The text field for the format to encode to. */
-    private final TextField field_encodeFormat = new TextField("encodeFormat");
+    private final TextField field_encodeFormat = new TextField();
     /** The text field for the format to decode to. */
-    private final TextField field_decodeFormat = new TextField("decodeFormat");
+    private final TextField field_decodeFormat = new TextField();
     /** The text field for the width, in pixels, of the encoded video. */
-    private final TextField field_encodedVideoWidth = new TextField("encodedVideoWidth");
+    private final TextField field_encodedVideoWidth = new TextField();
     /** The text field for the height, in pixels, of the encoded video. */
-    private final TextField field_encodedVideoHeight = new TextField("encodedVideoHeight");
+    private final TextField field_encodedVideoHeight = new TextField();
     /** The text field for the framerate of the encoded video. */
-    private final TextField field_encodedFramerate = new TextField("encodedFramerate");
+    private final TextField field_encodedFramerate = new TextField();
     /** The text field for the width/height of each macroblock. */
-    private final TextField field_macroBlockDimensions = new TextField("macroBlockDimensions");
+    private final TextField field_macroBlockDimensions = new TextField();
     /** The text field for the codec library to use when encoding/decoding the library. */
-    private final TextField field_encodingLibrary = new TextField("encodingLibrary");
+    private final TextField field_encodingLibrary = new TextField();
     /** The combobox to select the logging level that ffmpeg should use. */
     private final ComboBox<String> comboBox_ffmpegLogLevel = new ComboBox<>(FXCollections.observableArrayList(ConfigHandler.FFMPEG_LOG_LEVELS));
 
@@ -46,13 +46,25 @@ public class FfmpegSettingsPane extends TitledPane {
     /** The radio button that says to not use the fully-custom ffmpeg en/decoding options. */
     private final RadioButton radioButton_useFullyCustomEncodingOptions_no = new RadioButton("No");
     /** The text field for the fully-custom ffmpeg encoding options. */
-    private final TextField field_fullyCustomFfmpegEncodingOptions = new TextField("fullyCustomFfmpegEncodingOptions");
+    private final TextField field_fullyCustomFfmpegEncodingOptions = new TextField();
     /** The text field for the fully-custom ffmpeg decoding options. */
-    private final TextField field_fullyCustomFfmpegDecodingptions = new TextField("fullyCustomFfmpegDecodingOptions");
+    private final TextField field_fullyCustomFfmpegDecodingptions = new TextField();
 
 
 
     public FfmpegSettingsPane(final Stage settingsStage, final FfmpegSettingsController controller, final ConfigHandler configHandler) {
+        // Set Field Prompt Text:
+        field_ffmpegPath.setPromptText("ffmpegPath");
+        field_encodeFormat.setPromptText("encodeFormat");
+        field_decodeFormat.setPromptText("decodeFormat");
+        field_encodedVideoWidth.setPromptText("encodedVideoWidth");
+        field_encodedVideoHeight.setPromptText("encodedVideoHeight");
+        field_encodedFramerate.setPromptText("encodedFramerate");
+        field_macroBlockDimensions.setPromptText("macroBlockDimensions");
+        field_encodingLibrary.setPromptText("encodingLibrary");
+        field_fullyCustomFfmpegEncodingOptions.setPromptText("fullyCustomFfmpegEncodingOptions");
+        field_fullyCustomFfmpegDecodingptions.setPromptText("fullyCustomFfmpegDecodingOptions");
+
         // Setup Toggle Groups:
         toggleGroup_useFullyCustomEncodingOptions.getToggles().addAll(radioButton_useFullyCustomEncodingOptions_yes, radioButton_useFullyCustomEncodingOptions_no);
 
