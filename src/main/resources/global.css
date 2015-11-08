@@ -9,6 +9,9 @@
     border-selected-color: #21547C;
     border-error-color: #852E34;
 
+    button-gradient-top-color: #8A8A8A;
+    button-gradient-bottom-color: #464646;
+
     -fx-background-color: background-color;
     -fx-text-fill: text-color;
 }
@@ -17,7 +20,7 @@
 .button {
     -fx-border-radius: 5;
     -fx-max-width: 2147483647; /* Setting the max width to an unreasonable number forces all buttons to be the size of the largest button on the screen. */
-    -fx-background-color: linear-gradient(to bottom, foreground-color, background-color);
+    -fx-background-color: linear-gradient(to bottom, button-gradient-top-color, button-gradient-bottom-color);
     -fx-text-fill: text-color;
     -fx-border-color: border-normal-color;
     -fx-border-style: solid;
@@ -110,7 +113,7 @@
 .titled-pane .button {
     -fx-border-radius: 5;
     -fx-max-width: 2147483647; /* Setting the max width to an unreasonable number forces all buttons to be the size of the largest button on the screen. */
-    -fx-background-color: linear-gradient(to bottom, foreground-color, background-color);
+    -fx-background-color: linear-gradient(to bottom, button-gradient-top-color, button-gradient-bottom-color);
     -fx-text-fill: text-color;
     -fx-border-color: border-normal-color;
     -fx-border-style: solid;
