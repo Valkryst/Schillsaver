@@ -92,29 +92,14 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         if(source.equals(view.getRadioButton_singleArchive_yes())) {
             // Ensure that both the single and individual archive options aren't
             // selected at the same time.
-            configHandler.setCombineAllFilesIntoSingleArchive(true);
-            configHandler.setCombineIntoIndividualArchives(false);
             view.getRadioButton_individualArchives_no().setSelected(true);
-        }
-
-        // The radio button that says that each of the currently selected files should be archived individually before encoding them individually.
-        if(source.equals(view.getRadioButton_singleArchive_no())) {
-            configHandler.setCombineAllFilesIntoSingleArchive(false);
         }
 
         // The radio button that says that each handler should be archived individually before encoding each of them individually.
         if(source.equals(view.getRadioButton_individualArchives_yes())) {
             // Ensure that both the single and individual archive options aren't
             // selected at the same time.
-            configHandler.setCombineIntoIndividualArchives(true);
-            configHandler.setCombineAllFilesIntoSingleArchive(false);
-
             view.getRadioButton_singleArchive_no().setSelected(true);
-        }
-
-        // The radio button that says that each handler should not be archived individually before encoding each of them individually.
-        if(source.equals(view.getRadioButton_individualArchives_no())) {
-            configHandler.setCombineIntoIndividualArchives(false);
         }
 
         // The button to select the folder to output the archive to if the "Yes" radio button is selected.
@@ -145,8 +130,10 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                 final String outputDirectory = view.getTextField_outputDirectory().getText();
                 final List<File> files = model.getList_files();
                 final boolean isEncodeJob = view.getIsEncodeJob();
+                final boolean combineAllFilesIntoSingleArchive = view.getRadioButton_singleArchive_yes().isSelected();
+                final boolean combineIntoIndividualArchives = view.getRadioButton_individualArchives_yes().isSelected();
 
-                final Job job = new Job(name, description, outputDirectory, files, isEncodeJob);
+                final Job job = new Job(name, description, outputDirectory, files, isEncodeJob, combineAllFilesIntoSingleArchive, combineIntoIndividualArchives);
                 model.setJob(job);
                 this.close();
             }
