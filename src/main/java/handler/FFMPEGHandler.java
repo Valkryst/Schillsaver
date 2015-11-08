@@ -59,7 +59,6 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             controller.getModel().getList_jobs().remove(job);
             controller.getView().getListView_jobs().getItems().remove(job.getFullDesignation());
             controller.getView().getListView_jobs().getSelectionModel().clearSelection();
-            controller.setButtonsEnabled(true);
         }
     }
 
