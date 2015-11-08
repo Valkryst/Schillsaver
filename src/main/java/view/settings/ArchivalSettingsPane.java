@@ -18,14 +18,18 @@ public class ArchivalSettingsPane extends TitledPane {
     private static final String TAB_NAME = "Archival";
 
     /** The text field for the absolute path to the 7zip, or whichever compresssion program the user wants to use, executable. */
-    private final TextField field_compressionProgramPath = new TextField("compressionProgramPath");
+    private final TextField field_compressionProgramPath = new TextField();
     /** The button to open the file selection dialog for the 7zip, or whichever compression program the user wants to use, executable. */
     private final Button button_selectFile_compressionProgramPath = new Button("Select File");
 
     /** The text field for the base commands to use when compressing a file before encoding. */
-    private final TextField field_compressionCommands = new TextField("compressionCommands");
+    private final TextField field_compressionCommands = new TextField();
 
     public ArchivalSettingsPane(final Stage settingsStage, final ArchivalSettingsController controller, final ConfigHandler configHandler) {
+        // Set Field Prompt Text:
+        field_compressionProgramPath.setPromptText("compressionProgramPath");
+        field_compressionCommands.setPromptText("compressionCommands");
+
         // Set Default Values:
         field_compressionProgramPath.setText(configHandler.getCompressionProgramPath());
         field_compressionCommands.setText(configHandler.getCompressionCommands());
