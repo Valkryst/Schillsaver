@@ -1,6 +1,7 @@
 package handler;
 
 import controller.MainScreenController;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import misc.Job;
 import org.apache.commons.io.FilenameUtils;
@@ -57,17 +58,18 @@ public class FFMPEGHandler extends Task {
     private void encodeVideoToDisk() {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
-        if(configHandler.getCombineAllFilesIntoSingleArchive()) {
+        if(job.getCombineAllFilesIntoSingleArchive()) {
             final File temp = archiveHandler.packFiles(job, selectedFiles, controller, configHandler);
             selectedFiles.clear();
             selectedFiles.add(temp);
-        } else if(configHandler.getCombineIntoIndividualArchives()){
+        } else if(job.getCombineIntoIndividualArchives()) {
             for(int i = 0 ; i < selectedFiles.size() ; i++) {
                 selectedFiles.set(i, archiveHandler.packFile(job, selectedFiles.get(i), controller, configHandler));
             }
         }
 
         for(File f : selectedFiles) {
+
             FileHandler.padFile(f, configHandler);
 
             // Construct FFMPEG string:
@@ -102,15 +104,26 @@ public class FFMPEGHandler extends Task {
                         configHandler.getEncodeFormat());
             }
 
-            controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                }
+            });
 
+            System.out.println("tit");
             CommandHandler.runProgram(stringBuilder.toString(), controller);
 
-            controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
-            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
+                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                }
+            });
 
             // Delete leftovers:
-            if(configHandler.getCombineAllFilesIntoSingleArchive()) {
+            if(job.getCombineAllFilesIntoSingleArchive()) {
                 f.delete(); // This is just the archive, not the original handler.
             } else {
                 if(configHandler.getDeleteSourceFileWhenEncoding()) {
@@ -161,12 +174,22 @@ public class FFMPEGHandler extends Task {
                         configHandler.getDecodeFormat());
             }
 
-            controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                }
+            });
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
 
-            controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
-            controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
+                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                }
+            });
 
             // Delete leftovers:
             if(configHandler.getDeleteSourceFileWhenDecoding()) {
