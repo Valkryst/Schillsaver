@@ -56,10 +56,6 @@ public class ConfigHandler {
     private boolean deleteSourceFileWhenEncoding = false;
     /** whether or not to delete the osource file after decoding. */
     private boolean deleteSourceFileWhenDecoding = false;
-    /** Whether or not to pack all of the currently selected files into a single archive before encoding. */
-    private boolean combineAllFilesIntoSingleArchive = false;
-    /** Whether or not to pack every handler into it's own individual archive before encoding each handler individually. */
-    private boolean combineIntoIndividualArchives = false;
 
     /** Whether or not to show the splash screen on startup. */
     private boolean showSplashScreen = true;
@@ -418,16 +414,6 @@ public class ConfigHandler {
         return deleteSourceFileWhenDecoding;
     }
 
-    /** @return Whether or not to combine all of the input files into a single archive when encoding. */
-    public boolean getCombineAllFilesIntoSingleArchive() {
-        return combineAllFilesIntoSingleArchive;
-    }
-
-    /** @return Whether or not to pack every handler into it's own individual archive before encoding each handler individually. */
-    public boolean getCombineIntoIndividualArchives() {
-        return combineIntoIndividualArchives;
-    }
-
     /** @return Whether or not to show the splash screen on startup. */
     public boolean getShowSplashScreen() {
         return showSplashScreen;
@@ -544,16 +530,6 @@ public class ConfigHandler {
     // todo JavaDoc
     public void setDeleteSourceFileWhenDecoding(final boolean deleteSourceFileWhenDecoding) {
         this.deleteSourceFileWhenDecoding = deleteSourceFileWhenDecoding;
-    }
-
-    // todo JavaDoc
-    public void setCombineAllFilesIntoSingleArchive(final boolean combineAllFilesIntoSingleArchive) {
-        this.combineAllFilesIntoSingleArchive = combineAllFilesIntoSingleArchive;
-    }
-
-    // todo JavaDoc
-    public void setCombineIntoIndividualArchives(final boolean combineIntoIndividualArchives) {
-        this.combineIntoIndividualArchives = combineIntoIndividualArchives;
     }
 
     // todo JavaDoc
