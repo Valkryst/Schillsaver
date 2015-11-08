@@ -37,7 +37,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
     public JobSetupDialogController(final Stage primaryStage, final ConfigHandler configHandler) {
         this.configHandler = configHandler;
 
-        view = new JobSetupDialogView(primaryStage, this);
+        view = new JobSetupDialogView(primaryStage, this, configHandler);
         model = new JobSetupDialogModel();
 
         // Setup Stage:
