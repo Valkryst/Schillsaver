@@ -71,6 +71,10 @@ public class JobSetupDialogView extends HBox {
         radioButton_individualArchives_yes.setToggleGroup(toggleGroup_individualArchives);
         radioButton_individualArchives_no.setToggleGroup(toggleGroup_individualArchives);
 
+        // Set Default Values:
+        radioButton_singleArchive_yes.setSelected(true);
+        radioButton_individualArchives_no.setSelected(true);
+
         // Set Text Field/Area Background Text:
         field_jobName.setPromptText("Enter a name for the Job.");
         textArea_jobDescription.setPromptText("Enter a description for the Job.\nThis is not required.");
@@ -99,6 +103,10 @@ public class JobSetupDialogView extends HBox {
         button_cancel.setOnAction(controller);
         comboBox_jobType.setOnAction(controller);
         button_selectOutputDirectory.setOnAction(controller);
+        radioButton_singleArchive_yes.setOnAction(controller);
+        radioButton_singleArchive_no.setOnAction(controller);
+        radioButton_individualArchives_yes.setOnAction(controller);
+        radioButton_individualArchives_no.setOnAction(controller);
 
         // Setup the Layout:
         final HBox panel_left_top = new HBox(10);
