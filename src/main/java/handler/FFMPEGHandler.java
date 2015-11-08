@@ -147,9 +147,6 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                f.delete();
             }
         }
-
-        // Enable buttons after encoding:
-        //controller.getView().enableButtons();
     }
 
     /**
@@ -207,9 +204,6 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                f.delete(); // This is just the archive, not the original handler.
             }
         }
-
-        // Enable buttons after decoding:
-        //controller.getView().enableButtons();
     }
 
     /**
