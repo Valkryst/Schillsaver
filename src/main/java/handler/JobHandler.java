@@ -1,6 +1,7 @@
 package handler;
 
 import controller.MainScreenController;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.util.List;
@@ -20,7 +21,18 @@ public class JobHandler extends Task {
 
     @Override
     protected Object call() throws Exception {
-        controller.setButtonsEnabled(false);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.getView().getButton_createJob().setDisable(true);
+                controller.getView().getButton_deleteSelectedJobs().setDisable(true);
+                controller.getView().getButton_deleteAllJobs().setDisable(true);
+                controller.getView().getButton_clearOutput().setDisable(true);
+                controller.getView().getButton_editSettings().setDisable(true);
+                controller.getView().getButton_encode().setDisable(true);
+                controller.getView().getButton_decode().setDisable(true);
+            }
+        });
 
         for(final FFMPEGHandler task : preparedTasks) {
             final Thread thread = new Thread(task);
@@ -29,7 +41,18 @@ public class JobHandler extends Task {
             thread.join();
         }
 
-        controller.setButtonsEnabled(true);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                controller.getView().getButton_createJob().setDisable(false);
+                controller.getView().getButton_deleteSelectedJobs().setDisable(false);
+                controller.getView().getButton_deleteAllJobs().setDisable(false);
+                controller.getView().getButton_clearOutput().setDisable(false);
+                controller.getView().getButton_editSettings().setDisable(false);
+                controller.getView().getButton_encode().setDisable(false);
+                controller.getView().getButton_decode().setDisable(false);
+            }
+        });
 
         return null;
     }
