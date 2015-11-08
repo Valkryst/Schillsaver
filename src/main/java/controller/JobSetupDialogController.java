@@ -19,6 +19,7 @@ import javax.swing.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 
 public class JobSetupDialogController extends Stage implements EventHandler {
@@ -79,11 +80,24 @@ public class JobSetupDialogController extends Stage implements EventHandler {
             final ObservableList<String> copy = FXCollections.observableArrayList(view.getListView_selectedFiles().getSelectionModel().getSelectedItems());
             view.getListView_selectedFiles().getItems().removeAll(copy);
 
+            // Remove Jobs from the Model while updating
+            // the IDs of all Jobs.
+            final Iterator<File> it = model.getList_files().iterator();
+
+            while(it.hasNext()) {
+                final File f = it.next();
+
+                if(view.getListView_selectedFiles().getItems().contains(f.getAbsolutePath()) == false) {
+                    it.remove();
+                }
+            }
+
             view.getListView_selectedFiles().getSelectionModel().clearSelection();
         }
 
         // The button to remove all files from the list.
         if(source.equals(view.getButton_clearAllFiles())) {
+            model.getList_files().clear();
             view.getListView_selectedFiles().getItems().clear();
             view.getListView_selectedFiles().getSelectionModel().clearSelection();
         }
