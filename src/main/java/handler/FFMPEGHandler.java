@@ -3,6 +3,8 @@ package handler;
 import controller.MainScreenController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 
@@ -12,7 +14,7 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
 
-public class FFMPEGHandler extends Task {
+public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent> {
     /** The Job being run. */
     private final Job job;
     /** The file(s) to en/decode. */
@@ -49,6 +51,16 @@ public class FFMPEGHandler extends Task {
         }
 
         return null;
+    }
+
+    @Override
+    public void handle(WorkerStateEvent event) {
+        if(event.getEventType().equals(WorkerStateEvent.WORKER_STATE_SUCCEEDED)) {
+            controller.getModel().getList_jobs().remove(job);
+            controller.getView().getListView_jobs().getItems().remove(job.getFullDesignation());
+            controller.getView().getListView_jobs().getSelectionModel().clearSelection();
+            controller.setButtonsEnabled(true);
+        }
     }
 
     /**
@@ -111,7 +123,6 @@ public class FFMPEGHandler extends Task {
                 }
             });
 
-            System.out.println("tit");
             CommandHandler.runProgram(stringBuilder.toString(), controller);
 
             Platform.runLater(new Runnable() {
