@@ -1,6 +1,7 @@
 package view;
 
 import controller.JobSetupDialogController;
+import handler.ConfigHandler;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -60,7 +61,7 @@ public class JobSetupDialogView extends HBox {
     private final Button button_selectOutputDirectory = new Button("Select Output Folder");
 
     // todo JavaDoc
-    public JobSetupDialogView(final Stage settingsStage, final JobSetupDialogController controller) {
+    public JobSetupDialogView(final Stage settingsStage, final JobSetupDialogController controller, final ConfigHandler configHandler) {
         // Setup Job  List:
         listView_selectedFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -72,8 +73,22 @@ public class JobSetupDialogView extends HBox {
         radioButton_individualArchives_no.setToggleGroup(toggleGroup_individualArchives);
 
         // Set Default Values:
-        radioButton_singleArchive_yes.setSelected(true);
-        radioButton_individualArchives_no.setSelected(true);
+        if(configHandler.getCompressionProgramPath().isEmpty()) {
+            radioButton_singleArchive_no.setSelected(true);
+            radioButton_individualArchives_no.setSelected(true);
+        } else {
+            radioButton_singleArchive_yes.setSelected(true);
+            radioButton_individualArchives_no.setSelected(true);
+        }
+
+        // Disable Archive Options if Archival Program Not Set:
+        if(configHandler.getCompressionProgramPath().isEmpty()) {
+            radioButton_singleArchive_yes.setDisable(true);
+            radioButton_singleArchive_no.setDisable(true);
+
+            radioButton_individualArchives_yes.setDisable(true);
+            radioButton_individualArchives_no.setDisable(true);
+        }
 
         // Set Text Field/Area Background Text:
         field_jobName.setPromptText("Enter a name for the Job.");
