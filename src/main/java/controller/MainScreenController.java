@@ -84,14 +84,14 @@ public class MainScreenController implements EventHandler {
                 // Only prepare Encode Jobs:
                 for(final Job job : model.getList_jobs()) {
                     if(job.getIsEncodeJob()) {
-                        final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler);
+                        final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
                         ffmpegHandler.setOnSucceeded(ffmpegHandler);
                         preparedJobs.add(ffmpegHandler);
                     }
                 }
 
                 // Run Jobs:
-                final JobHandler handler = new JobHandler(this, preparedJobs, statisticsHandler);
+                final JobHandler handler = new JobHandler(this, preparedJobs);
                 final Thread thread = new Thread(handler);
                 thread.setDaemon(true);
                 thread.start();
@@ -108,14 +108,14 @@ public class MainScreenController implements EventHandler {
                 // Only prepare Encode Jobs:
                 for(final Job job : model.getList_jobs()) {
                     if(job.getIsEncodeJob() == false) {
-                        final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler);
+                        final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
                         ffmpegHandler.setOnSucceeded(ffmpegHandler);
                         preparedJobs.add(ffmpegHandler);
                     }
                 }
 
                 // Run Jobs:
-                final JobHandler handler = new JobHandler(this, preparedJobs, statisticsHandler);
+                final JobHandler handler = new JobHandler(this, preparedJobs);
                 final Thread thread = new Thread(handler);
                 thread.setDaemon(true);
                 thread.start();
