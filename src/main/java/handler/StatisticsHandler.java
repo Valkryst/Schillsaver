@@ -121,9 +121,9 @@ public class StatisticsHandler {
 
         // Append data to the output file.
         try {
-            final FileWriter fileWriter = new FileWriter(outputFile);
-            fileWriter.append(bytesPerSecond + "\n");
-            fileWriter.close();
+            final PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)));
+            printWriter.append(bytesPerSecond + System.lineSeparator());
+            printWriter.close();
         } catch(final IOException e) {
             Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
         }
