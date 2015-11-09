@@ -3,6 +3,7 @@ package controller;
 import handler.ConfigHandler;
 import handler.FFMPEGHandler;
 import handler.JobHandler;
+import handler.StatisticsHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -30,14 +31,19 @@ public class MainScreenController implements EventHandler {
     /** The object that handles settings for encoding, decoding, compression, and a number of other features. */
     private final ConfigHandler configHandler;
 
+    // todo JavaDoc
+    private final StatisticsHandler statisticsHandler;
+
     /**
      * Construct a new main screen controller.
-     * @param primaryStage
+     * @param primaryStage todo JavaDoc
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
+     * @param statisticsHandler todo JavaDoc
      */
-    public MainScreenController(final Stage primaryStage, final ConfigHandler configHandler) {
+    public MainScreenController(final Stage primaryStage, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
         this.primaryStage = primaryStage;
         this.configHandler = configHandler;
+        this.statisticsHandler = statisticsHandler;
 
         view = new MainScreenView(this);
         model = new MainScreenModel();
@@ -49,7 +55,7 @@ public class MainScreenController implements EventHandler {
 
         // The button to open the handler selection dialog.
         if(source.equals(view.getButton_createJob())) {
-            final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, configHandler);
+            final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, configHandler, statisticsHandler);
             jobSetupDialogController.show();
 
 
@@ -85,7 +91,7 @@ public class MainScreenController implements EventHandler {
                 }
 
                 // Run Jobs:
-                final JobHandler handler = new JobHandler(this, preparedJobs);
+                final JobHandler handler = new JobHandler(this, preparedJobs, statisticsHandler);
                 final Thread thread = new Thread(handler);
                 thread.setDaemon(true);
                 thread.start();
@@ -109,7 +115,7 @@ public class MainScreenController implements EventHandler {
                 }
 
                 // Run Jobs:
-                final JobHandler handler = new JobHandler(this, preparedJobs);
+                final JobHandler handler = new JobHandler(this, preparedJobs, statisticsHandler);
                 final Thread thread = new Thread(handler);
                 thread.setDaemon(true);
                 thread.start();
