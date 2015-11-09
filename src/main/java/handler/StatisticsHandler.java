@@ -142,4 +142,16 @@ public class StatisticsHandler {
         estimation /= (isEncodeJob ? bytesEncodedPerMinute : bytesDecodedPerMinute);
         return estimation;
     }
+
+    ////////////////////////////////////////////////////////// Getters
+
+    /** @return The number of bytes encoded, per minute, across all recorded encode Jobs. */
+    public long getBytesEncodedPerMinute() {
+        return bytesEncodedPerMinute;
+    }
+
+    /** @return The number of bytes decoded, per minute, across all recorded decode Jobs. */
+    public long getBytesDecodedPerMinute() {
+        return bytesDecodedPerMinute;
+    }
 }
