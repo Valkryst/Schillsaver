@@ -50,6 +50,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         scene.getRoot().getStyleClass().add("main-root");
 
         this.initModality(Modality.APPLICATION_MODAL);
+        this.setTitle("Job Creator");
         this.getIcons().add(new Image("icon.png"));
         this.setScene(scene);
     }
