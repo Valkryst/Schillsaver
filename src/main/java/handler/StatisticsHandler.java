@@ -78,18 +78,18 @@ public class StatisticsHandler {
     }
 
     /**
-     * Calculates the amount of time, in seconds, that it took for the specified
-     * file to be processed (encoded or decoded).
+     * Calculates the amount of bytes, per second, that the specified file was processed
+     * at.
      * @param file The file that was processed.
      * @param startTime The time, in milliseconds, that processing began.
      * @param endTime The time, in milliseconds, that processing completed.
-     * @return The amount of time, in seconds, that it took for the specified file to be processed.
+     * @return The amount of bytes, per second, that the specified file was processed at.
      */
     public long calculateProcessingSpeed(final File file, final long startTime, final long endTime) {
-        final long duration = endTime - startTime; // The total time that the Job ran for.
+        long duration = endTime - startTime; // The total time that the Job ran for, in milliseconds.
+        duration /= 1000; // The total time that the Job ran for, in seconds.
 
         long speed = file.length() / duration; // The bytes per millisecond that were en/decoded.
-        speed /= 1000; // The bytes per second that were en/decoded.
 
         return speed;
     }
