@@ -4,6 +4,7 @@ import misc.Logger;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class StatisticsHandler {
@@ -122,5 +123,23 @@ public class StatisticsHandler {
         } catch(final IOException e) {
             Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
         }
+    }
+
+    /**
+     * Estimates the time it will take for a Job, with the specified files, to
+     * either encode, or decode, based on previous data.
+     * @param isEncodeJob Whether of not the Job to be run is an encode, or decode, Job.
+     * @param files The files to be processed.
+     * @return The amount of time, in minutes, that the Job may take.
+     */
+    public long estimateProcessingDuration(final boolean isEncodeJob, final List<File> files) {
+        long estimation = 0;
+
+        for(final File f : files) {
+            estimation += f.length();
+        }
+
+        estimation /= (isEncodeJob ? bytesEncodedPerMinute : bytesDecodedPerMinute);
+        return estimation;
     }
 }
