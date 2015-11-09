@@ -12,10 +12,13 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import misc.Job;
+import misc.Logger;
 import model.JobSetupDialogModel;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import view.JobSetupDialogView;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -129,10 +132,14 @@ public class JobSetupDialogController extends Stage implements EventHandler {
             fileChooser.setApproveButtonText("Accept");
             fileChooser.setApproveButtonToolTipText("Accept the selected directory.");
 
-            int returnVal = fileChooser.showOpenDialog(null);
+            try {
+                int returnVal = fileChooser.showOpenDialog(null);
 
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
-                view.getTextField_outputDirectory().setText(fileChooser.getSelectedFile().getPath() + "/");
+                if(returnVal == JFileChooser.APPROVE_OPTION) {
+                    view.getTextField_outputDirectory().setText(fileChooser.getSelectedFile().getPath() + "/");
+                }
+            } catch(final HeadlessException e) {
+                Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_WARNING);
             }
         }
 
