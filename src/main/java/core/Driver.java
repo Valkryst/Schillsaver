@@ -17,7 +17,7 @@ import java.util.Scanner;
 
 public class Driver extends Application{
     /** The current version of the program. Whenever a significant change is made, this should be changed along with the online handler. */
-    private static final String PROGRAM_VERSION = "5";
+    private static final String PROGRAM_VERSION = "6";
 
 
     public static void main(final String[] args) {
