@@ -74,6 +74,8 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                     view.getListView_selectedFiles().getItems().add(f.getAbsolutePath());
                 }
             }
+
+            updateEstimatedDurationLabel();
         }
 
         // The button to remove all files that are currently selected on the scrollpane_selectedFiles.
@@ -97,6 +99,8 @@ public class JobSetupDialogController extends Stage implements EventHandler {
             }
 
             view.getListView_selectedFiles().getSelectionModel().clearSelection();
+
+            updateEstimatedDurationLabel();
         }
 
         // The button to remove all files from the list.
@@ -104,6 +108,8 @@ public class JobSetupDialogController extends Stage implements EventHandler {
             model.getList_files().clear();
             view.getListView_selectedFiles().getItems().clear();
             view.getListView_selectedFiles().getSelectionModel().clearSelection();
+
+            updateEstimatedDurationLabel();
         }
 
         // The radio button that says that each of the currently selected files should be archived as a single archive before encoding.
@@ -166,8 +172,6 @@ public class JobSetupDialogController extends Stage implements EventHandler {
             model.setJob(null);
             this.close();
         }
-
-        updateEstimatedDurationLabel();
     }
 
     // todo Javadoc
@@ -224,8 +228,12 @@ public class JobSetupDialogController extends Stage implements EventHandler {
 
     // todo JavaDoc
     public void updateEstimatedDurationLabel() {
-        if(model.getJob() != null) {
-            view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + model.getJob().getEstimatedDurationInMinutes() + " Minutes");
+        if(model.getList_files().size() > 0) {
+            if(view.getIsEncodeJob()) {
+                view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + Job.estimateEncodingDuration(model.getList_files()) + " Minutes");
+            } else {
+                view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + Job.estimateDecodingDuration(model.getList_files()) + " Minutes");
+            }
         } else {
             view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - Unknown");
         }
