@@ -241,11 +241,11 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         // Determine if the time can be estimated.
         boolean canTimeBeEstimated = true;
         canTimeBeEstimated &= model.getList_files().size() > 0;
-        canTimeBeEstimated &= (view.getIsEncodeJob() ? statisticsHandler.getBytesEncodedPerMinute() > 0 : statisticsHandler.getBytesDecodedPerMinute() > 0);
+        canTimeBeEstimated &= (view.getIsEncodeJob() ? statisticsHandler.getBytesEncodedPerSecond() > 0 : statisticsHandler.getBytesDecodedPerSecond() > 0);
 
         // If the time can be estimated, then do so, else show unknown.
         if(canTimeBeEstimated) {
-            view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + statisticsHandler.estimateProcessingDuration(view.getIsEncodeJob(), model.getList_files()) + " Minutes");
+            view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + statisticsHandler.estimateProcessingDuration(view.getIsEncodeJob(), model.getList_files())/60 + " Minutes");
         } else {
             view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - Unknown");
         }
