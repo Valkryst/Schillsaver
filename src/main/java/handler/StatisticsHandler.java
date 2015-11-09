@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class StatisticsHandler {
-    /** The number of bytes encoded, per minute, across all recorded encode Jobs. */
-    private long bytesEncodedPerMinute;
-    /** The number of bytes decoded, per minute, across all recorded decode Jobs. */
-    private long bytesDecodedPerMinute;
+    /** The number of bytes encoded, per second, across all recorded encode Jobs. */
+    private long bytesEncodedPerSecond;
+    /** The number of bytes decoded, per second, across all recorded decode Jobs. */
+    private long bytesDecodedPerSecond;
 
     /**
      * Constructs a new StatisticsHandler and processes all of the
@@ -24,26 +24,26 @@ public class StatisticsHandler {
     /**
      * Reads in all existing en/decode data from the respective
      * statistics files, averages the data, then sets the bytes
-     * en/decoded per minute variables.
+     * en/decoded per second variables.
      */
     private void processStatistcsFiles() {
         final File file_encode = new File("statistics_encode.txt");
         final File file_dedode = new File("statistics_decode.txt");
 
-        long bytesEncodedPerMinuteTotal = 0;
-        long bytesDecodedPerMinuteTotal = 0;
+        long bytesEncodedPerSecondTotal = 0;
+        long bytesDecodedPerSecondTotal = 0;
 
         long totalEncodeRecords = 0;
         long totalDecodeRecords = 0;
 
-        // Load the total amount of bytes encoded per minute from all
+        // Load the total amount of bytes encoded per second from all
         // records of the statistics_encode.txt file.
         if(file_encode.exists()) {
             try {
                 final Scanner sc = new Scanner(new FileInputStream(file_encode));
 
                 while(sc.hasNextLong()) {
-                    bytesEncodedPerMinuteTotal += sc.nextLong();
+                    bytesEncodedPerSecondTotal += sc.nextLong();
                     totalEncodeRecords++;
                 }
             } catch(final FileNotFoundException e) {
@@ -51,14 +51,14 @@ public class StatisticsHandler {
             }
         }
 
-        // Load the total amount of bytes decoded per minute from all
+        // Load the total amount of bytes decoded per second from all
         // records of the statistics_decode.txt file.
         if(file_dedode.exists()) {
             try {
                 final Scanner sc = new Scanner(new FileInputStream(file_dedode));
 
                 while(sc.hasNextLong()) {
-                    bytesDecodedPerMinuteTotal += sc.nextLong();
+                    bytesDecodedPerSecondTotal += sc.nextLong();
                     totalDecodeRecords++;
                 }
             } catch(final FileNotFoundException e) {
@@ -66,26 +66,30 @@ public class StatisticsHandler {
             }
         }
 
-        // Calculate the average bytes en/decoded per minute
+        // Calculate the average bytes en/decoded per second
         // from all acquired data.
-        bytesEncodedPerMinute = (bytesEncodedPerMinuteTotal / totalEncodeRecords);
-        bytesDecodedPerMinute = (bytesDecodedPerMinuteTotal / totalDecodeRecords);
+        if(totalEncodeRecords > 0) {
+            bytesEncodedPerSecond = (bytesEncodedPerSecondTotal / totalEncodeRecords);
+        }
+
+        if(totalDecodeRecords > 0 ) {
+            bytesDecodedPerSecond = (bytesDecodedPerSecondTotal / totalDecodeRecords);
+        }
     }
 
     /**
-     * Calculates the amount of time, in minutes, that it took for the specified
+     * Calculates the amount of time, in seconds, that it took for the specified
      * file to be processed (encoded or decoded).
      * @param file The file that was processed.
      * @param startTime The time, in milliseconds, that processing began.
      * @param endTime The time, in milliseconds, that processing completed.
-     * @return The amount of time, in minutes, that it took for the specified file to be processed.
+     * @return The amount of time, in seconds, that it took for the specified file to be processed.
      */
     public long calculateProcessingSpeed(final File file, final long startTime, final long endTime) {
         final long duration = endTime - startTime; // The total time that the Job ran for.
 
         long speed = file.length() / duration; // The bytes per millisecond that were en/decoded.
         speed /= 1000; // The bytes per second that were en/decoded.
-        speed /= 60; // The bytes per minute that were en/decoded;
 
         return speed;
     }
@@ -94,9 +98,9 @@ public class StatisticsHandler {
      * Writes the specified data to either the encode, or decode, statistics
      * file.
      * @param isEncodeJob Whether or not the data is from an encode or decode Job.
-     * @param bytesPerMinute The bytes per minute to write to the file.
+     * @param bytesPerSecond The bytes per second to write to the file.
      */
-    public void recordData(final boolean isEncodeJob, final long bytesPerMinute) {
+    public void recordData(final boolean isEncodeJob, final long bytesPerSecond) {
         // Prepare the output file:
         final File outputFile;
 
@@ -118,7 +122,7 @@ public class StatisticsHandler {
         // Append data to the output file.
         try {
             final FileWriter fileWriter = new FileWriter(outputFile);
-            fileWriter.append(bytesPerMinute + "\n");
+            fileWriter.append(bytesPerSecond + "\n");
             fileWriter.close();
         } catch(final IOException e) {
             Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
@@ -130,7 +134,7 @@ public class StatisticsHandler {
      * either encode, or decode, based on previous data.
      * @param isEncodeJob Whether of not the Job to be run is an encode, or decode, Job.
      * @param files The files to be processed.
-     * @return The amount of time, in minutes, that the Job may take.
+     * @return The amount of time, in seconds, that the Job may take.
      */
     public long estimateProcessingDuration(final boolean isEncodeJob, final List<File> files) {
         long estimation = 0;
@@ -139,19 +143,19 @@ public class StatisticsHandler {
             estimation += f.length();
         }
 
-        estimation /= (isEncodeJob ? bytesEncodedPerMinute : bytesDecodedPerMinute);
+        estimation /= (isEncodeJob ? bytesEncodedPerSecond : bytesDecodedPerSecond);
         return estimation;
     }
 
     ////////////////////////////////////////////////////////// Getters
 
-    /** @return The number of bytes encoded, per minute, across all recorded encode Jobs. */
-    public long getBytesEncodedPerMinute() {
-        return bytesEncodedPerMinute;
+    /** @return The number of bytes encoded, per second, across all recorded encode Jobs. */
+    public long getBytesEncodedPerSecond() {
+        return bytesEncodedPerSecond;
     }
 
-    /** @return The number of bytes decoded, per minute, across all recorded decode Jobs. */
-    public long getBytesDecodedPerMinute() {
-        return bytesDecodedPerMinute;
+    /** @return The number of bytes decoded, per second, across all recorded decode Jobs. */
+    public long getBytesDecodedPerSecond() {
+        return bytesDecodedPerSecond;
     }
 }
