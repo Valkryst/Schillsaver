@@ -1,6 +1,7 @@
 package controller;
 
 import handler.ConfigHandler;
+import handler.StatisticsHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -34,12 +35,18 @@ public class JobSetupDialogController extends Stage implements EventHandler {
     /** The object that handles settings for encoding, decoding, compression, and a number of other features. */
     private final ConfigHandler configHandler;
 
+    // todo JavaDoc
+    private final StatisticsHandler statisticsHandler;
+
     /**
      * Construct a new job setup dialog controller.
+     * @param primaryStage todo JavaDoc
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
+     * @param statisticsHandler todo JavaDoc
      */
-    public JobSetupDialogController(final Stage primaryStage, final ConfigHandler configHandler) {
+    public JobSetupDialogController(final Stage primaryStage, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
         this.configHandler = configHandler;
+        this.statisticsHandler = statisticsHandler;
 
         view = new JobSetupDialogView(primaryStage, this, configHandler);
         model = new JobSetupDialogModel();
@@ -226,14 +233,19 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         return wasErrorFound;
     }
 
-    // todo JavaDoc
+    /**
+     * Either updates the estimated duration label with the estimated duration, in minutes,
+     * that the Job will take, or "unknown" if there is insufficent data to estimate.
+     */
     public void updateEstimatedDurationLabel() {
-        if(model.getList_files().size() > 0) {
-            if(view.getIsEncodeJob()) {
-                view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + Job.estimateEncodingDuration(model.getList_files()) + " Minutes");
-            } else {
-                view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + Job.estimateDecodingDuration(model.getList_files()) + " Minutes");
-            }
+        // Determine if the time can be estimated.
+        boolean canTimeBeEstimated = true;
+        canTimeBeEstimated &= model.getList_files().size() > 0;
+        canTimeBeEstimated &= (view.getIsEncodeJob() ? statisticsHandler.getBytesEncodedPerMinute() > 0 : statisticsHandler.getBytesDecodedPerMinute() > 0);
+
+        // If the time can be estimated, then do so, else show unknown.
+        if(canTimeBeEstimated) {
+            view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - " + statisticsHandler.estimateProcessingDuration(view.getIsEncodeJob(), model.getList_files()) + " Minutes");
         } else {
             view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - Unknown");
         }
