@@ -139,7 +139,7 @@ public class JobSetupDialogView extends HBox {
 
         final HBox panel_right_top_top = new HBox(10);
         HBox.setHgrow(field_jobName, Priority.ALWAYS);
-        panel_right_top_top.getChildren().addAll(field_jobName, comboBox_jobType);
+        panel_right_top_top.getChildren().addAll(comboBox_jobType, field_jobName);
 
         final VBox panel_right_top_bottom= new VBox(4);
         VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
