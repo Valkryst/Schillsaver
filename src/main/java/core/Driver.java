@@ -2,6 +2,7 @@ package core;
 
 import controller.MainScreenController;
 import handler.ConfigHandler;
+import handler.StatisticsHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -31,6 +32,7 @@ public class Driver extends Application{
     @Override
     public void start(Stage primaryStage) throws Exception {
         final ConfigHandler configHandler = new ConfigHandler();
+        final StatisticsHandler statisticsHandler = new StatisticsHandler();
 
         // Load Config File:
         configHandler.loadConfigSettings();
@@ -49,7 +51,7 @@ public class Driver extends Application{
         primaryStage.getIcons().add(new Image("icon.png"));
 
         // Add the frst scene to the primary stage:
-        final Scene scene = new Scene(new MainScreenController(primaryStage, configHandler).getView());
+        final Scene scene = new Scene(new MainScreenController(primaryStage, configHandler, statisticsHandler).getView());
 
         scene.getStylesheets().add("global.css");
         scene.getRoot().getStyleClass().add("main-root");
