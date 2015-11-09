@@ -90,9 +90,15 @@ public class Job {
 
     ////////////////////////////////////////////////////////// Getters
 
-    /** @return The full designation of the Job. This includes both the unique ID and name. */
+    /** @return The full designation of the Job. This includes the unique ID, type, and name. */
     public String getFullDesignation() {
-        return id + "-" + name;
+        String s = "";
+        s += id;
+        s += " - ";
+        s += (isEncodeJob ? "Encode" : "Decode");
+        s += " - ";
+        s += name;
+        return s;
     }
 
     /** @return The unique id of the Job. */
