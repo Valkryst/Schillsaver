@@ -24,6 +24,9 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
     /** The settings to use when encoding the file(s). */
     private final ConfigHandler configHandler;
 
+    // todo JavaDoc
+    final StatisticsHandler statisticsHandler;
+
     /**
      * Creates a new FFMPEGHandler with the specified parameters.
      * @param job The Job being run.
@@ -31,7 +34,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
      * @param controller The controller for the main screen.
      * @param configHandler The settings to use when encoding the file(s).
      */
-    public FFMPEGHandler(final Job job, List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+    public FFMPEGHandler(final Job job, List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
         this.job = job;
 
         // Sort the array of files to ensure the smallest files
@@ -40,6 +43,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
 
         this.controller = controller;
         this.configHandler = configHandler;
+        this.statisticsHandler = statisticsHandler;
     }
 
     @Override
@@ -80,7 +84,11 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
         }
 
         for(File f : selectedFiles) {
+            // Prepare statistics estimation:
+            long time_start = System.currentTimeMillis();
+            long time_end;
 
+            // Pad the file:
             FileHandler.padFile(f, configHandler);
 
             // Construct FFMPEG string:
@@ -145,6 +153,10 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                f = new File(f.getAbsolutePath().replace(configHandler.getDecodeFormat(), ""));
                f.delete();
             }
+
+            // Finish statistics estimation:
+            time_end = System.currentTimeMillis();
+            statisticsHandler.recordData(true, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
         }
     }
 
@@ -154,6 +166,10 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
      */
     private void decodeVideo() {
         for(final File f : selectedFiles) {
+            // Prepare statistics estimation:
+            long time_start = System.currentTimeMillis();
+            long time_end;
+
             // Construct FFMPEG string:
             final StringBuilder stringBuilder = new StringBuilder();
             final Formatter formatter = new Formatter(stringBuilder, Locale.US);
@@ -203,6 +219,10 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             if(configHandler.getDeleteSourceFileWhenDecoding()) {
                f.delete(); // This is just the archive, not the original handler.
             }
+
+            // Finish statistics estimation:
+            time_end = System.currentTimeMillis();
+            statisticsHandler.recordData(false, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
         }
     }
 
