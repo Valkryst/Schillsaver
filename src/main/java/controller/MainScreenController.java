@@ -8,12 +8,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import misc.Job;
 import model.MainScreenModel;
 import view.MainScreenView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -76,6 +78,11 @@ public class MainScreenController implements EventHandler {
 
         // The button to encode the currently selected handler(s).
         if(source.equals(view.getButton_encode())) {
+            if (!new File(configHandler.getFfmpegPath()).exists()) {
+                showFfmpegPathErrorAndWait();
+                return;
+            }
+
             // Only allow files to be encoded if there are actually
             // files in the list of files.
             if(view.getListView_jobs().getItems().size() > 0) {
@@ -100,6 +107,11 @@ public class MainScreenController implements EventHandler {
 
         // The button to decode the currently selected handler(s).
         if(source.equals(view.getButton_decode())) {
+            if (!new File(configHandler.getFfmpegPath()).exists()) {
+                showFfmpegPathErrorAndWait();
+                return;
+            }
+
             // Only allow files to be decoded if there are actually
             // files in the list of files.
             if(view.getListView_jobs().getItems().size() > 0) {
@@ -169,6 +181,13 @@ public class MainScreenController implements EventHandler {
         if(source.equals(view.getButton_editSettings())) {
             new SettingsDialogController(configHandler).show();
         }
+    }
+
+    private void showFfmpegPathErrorAndWait() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("FFmpeg was not found.");
+        alert.setContentText("Please change the FFmpeg path in the settings menu.\nIf you have set the path, confirm that the file can be accessed.");
+        alert.showAndWait();
     }
 
     ////////////////////////////////////////////////////////// Getters

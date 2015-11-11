@@ -12,6 +12,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class JobSetupDialogView extends HBox {
 
     // todo JavaDoc
@@ -92,6 +96,10 @@ public class JobSetupDialogView extends HBox {
 
         // Set Text Field/Area Background Text:
         field_jobName.setPromptText("Enter a name for the Job.");
+
+        // Set a default job title based on the current time
+        field_jobName.setText("Job " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
         textArea_jobDescription.setPromptText("Enter a description for the Job.\nThis is not required.");
         textField_outputDirectory.setPromptText("Output Directory");
 
@@ -107,6 +115,13 @@ public class JobSetupDialogView extends HBox {
 
         comboBox_jobType.setTooltip(new Tooltip("Defines which type of Job to create."));
 
+        // if possible, get default 'home' directory and set it as output default.
+        try {
+            File home = javax.swing.filechooser.FileSystemView.getFileSystemView().getHomeDirectory();
+            textField_outputDirectory.setText(home.getCanonicalPath() + "/");
+        } catch (Exception e) {
+            // discard
+        }
         textField_outputDirectory.setTooltip(new Tooltip("The directory in which to place the en/decoded file(s)."));
         button_selectOutputDirectory.setTooltip(new Tooltip("Open the directory selection dialog to select an output directory."));
 

@@ -9,6 +9,9 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -55,6 +58,34 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         final Scene scene = new Scene(view);
         scene.getStylesheets().add("global.css");
         scene.getRoot().getStyleClass().add("main-root");
+
+        scene.setOnDragOver(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                if (db.hasFiles()) {
+                    event.acceptTransferModes(TransferMode.COPY);
+                } else {
+                    event.consume();
+                }
+            }
+        });
+        scene.setOnDragDropped(new EventHandler<DragEvent>() {
+            @Override
+            public void handle(DragEvent event) {
+                Dragboard db = event.getDragboard();
+                if (db.hasFiles()) {
+                    for (final File file : db.getFiles()) {
+                        model.getList_files().add(file);
+                        view.getListView_selectedFiles().getItems().add(file.getAbsolutePath());
+                    }
+                    event.setDropCompleted(true);
+                } else {
+                    event.setDropCompleted(false);
+                }
+                event.consume();
+            }
+        });
 
         this.initModality(Modality.APPLICATION_MODAL);
         this.setTitle("Job Creator");
