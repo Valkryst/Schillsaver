@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="Schillsaver:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/Schillsaver_jar</output-path>
+    <output-path>$PROJECT_DIR$/out/artifacts/Schillsaver</output-path>
     <root id="archive" name="Schillsaver.jar">
       <element id="module-output" name="Schillsaver" />
       <element id="module-output" name="Utilities" />
