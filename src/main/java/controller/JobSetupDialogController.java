@@ -59,6 +59,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         scene.getStylesheets().add("global.css");
         scene.getRoot().getStyleClass().add("main-root");
 
+        // Setup stage to allow drag'n'drop file adding:
         scene.setOnDragOver(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent event) {
@@ -70,6 +71,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                 }
             }
         });
+
         scene.setOnDragDropped(new EventHandler<DragEvent>() {
             @Override
             public void handle(DragEvent event) {
@@ -87,6 +89,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
             }
         });
 
+        // Finish setting up the stage:
         this.initModality(Modality.APPLICATION_MODAL);
         this.setTitle("Job Creator");
         this.getIcons().add(new Image("icon.png"));
