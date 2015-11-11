@@ -26,9 +26,4 @@ public class JobSetupDialogModel {
     public void setJob(final Job job) {
         this.job = job;
     }
-
-    // todo JavaDoc
-    public void setList_files(final List<File> list_files) {
-        this.list_files = list_files;
-    }
 }
