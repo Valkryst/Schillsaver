@@ -36,13 +36,13 @@ public class JobSetupDialogView extends HBox {
     /** The button to close the JobCreationDialog without creating a Job. */
     private final Button button_cancel = new Button("Cancel");
 
-    // todo JavaDoc
+    /** The text field for the name of the Job. */
     private final TextField field_jobName = new TextField();
 
     /** The comboBox to specify the type of Job to create. */
     private final ComboBox<String> comboBox_jobType = new ComboBox<>(FXCollections.observableArrayList("Encode", "Decode"));
 
-    // todo JavaDoc
+    /** The text area for a rough description of the Job. */
     private final TextArea textArea_jobDescription = new TextArea();
 
     /** The toggle group of the "archive all files into a single archive before encoding" yes/no radio buttons. */
@@ -261,12 +261,12 @@ public class JobSetupDialogView extends HBox {
         return button_cancel;
     }
 
-    // todo JavaDoc
+    /** @return The field for the name of the Job. */
     public TextField getField_jobName() {
         return field_jobName;
     }
 
-    // todo JavaDoc
+    /** @return The text area for a rough description of the Job. */
     public TextArea getTextArea_jobDescription() {
         return textArea_jobDescription;
     }
