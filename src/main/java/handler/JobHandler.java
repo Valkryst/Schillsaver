@@ -10,10 +10,14 @@ public class JobHandler extends Task {
     // todo JavaDoc
     final MainScreenController controller;
 
-    // todo JavaDoc
+    /** The tasks that are ready to run. */
     private final List<FFMPEGHandler> preparedTasks;
 
-    // todo JavaDoc
+    /**
+     * Constructs a new JobHandler.
+     * @param controller todo JavaDoc
+     * @param preparedTasks The tasks that are ready to run.
+     */
     public JobHandler(final MainScreenController controller, final List<FFMPEGHandler> preparedTasks) {
         this.controller = controller;
         this.preparedTasks = preparedTasks;
@@ -21,6 +25,7 @@ public class JobHandler extends Task {
 
     @Override
     protected Object call() throws Exception {
+        // Disable interface components:
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -34,6 +39,7 @@ public class JobHandler extends Task {
             }
         });
 
+        // Run Jobs one-by-one:
         for(final FFMPEGHandler task : preparedTasks) {
             final Thread thread = new Thread(task);
             thread.setDaemon(true);
@@ -41,6 +47,7 @@ public class JobHandler extends Task {
             thread.join();
         }
 
+        // Enable interface components:
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
