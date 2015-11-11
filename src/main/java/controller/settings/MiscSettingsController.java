@@ -45,7 +45,16 @@ public class MiscSettingsController implements EventHandler {
         }
     }
 
-    // todo Javadoc
+    /**
+     * Resets the error state of all components that are checked.
+     *
+     * Checks over a number of the values entered in the view to see if they fit
+     * within a set of accepted parameters.
+     *
+     * If any component contains a value that is unacceptable, then it's error
+     * state it set.
+     * @return Whether or not the settings are correct.
+     */
     public boolean areSettingsCorrect() {
         boolean wasErrorFound = false;
 
