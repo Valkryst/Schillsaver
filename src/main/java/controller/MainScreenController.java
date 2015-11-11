@@ -66,6 +66,7 @@ public class MainScreenController implements EventHandler {
                 public void handle(WindowEvent event) {
                     final Job job = jobSetupDialogController.getModel().getJob();
                     if(job != null) {
+                        // todo Add the Job's description as a tooltip to the row of the list.
                         job.setId(view.getListView_jobs().getItems().size());
                         view.getListView_jobs().getItems().add(job.getFullDesignation());
 
