@@ -10,7 +10,7 @@ public class Job {
     private String name;
     /** A rough description of the Job. */
     private String description;
-    /** The directory in which to place the output files. */
+    /** The directory in which to place the output file(s). */
     private String outputDirectory;
     /** The file(s) belonging to the Job.*/
     private List<File> files;
@@ -22,7 +22,16 @@ public class Job {
     /** Whether or not to pack every handler into it's own individual archive before encoding each handler individually. */
     private boolean combineIntoIndividualArchives = false;
 
-    // todo JavaDoc
+    /**
+     * Constructs a new Job with the specified parameters.
+     * @param name The name of the Job.
+     * @param description A rough description of the Job.
+     * @param outputDirectory The directory in which to place the output file(s).
+     * @param files The file(s) belonging to the Job.
+     * @param isEncodeJob Whether or not the Job is an Encode Job. If not, then it's a Decode Job.
+     * @param combineAllFilesIntoSingleArchive Whether or not to pack all of the currently selected files into a single archive before encoding.
+     * @param combineIntoIndividualArchives Whether or not to pack every handler into it's own individual archive before encoding each handler individually.
+     */
     public Job(final String name, final String description, final String outputDirectory, final List<File> files, final boolean isEncodeJob, final boolean combineAllFilesIntoSingleArchive, final boolean combineIntoIndividualArchives) {
         this.name = name;
         this.description = description;
