@@ -5,6 +5,7 @@ import handler.ConfigHandler;
 import handler.StatisticsHandler;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import misc.Logger;
@@ -72,7 +73,6 @@ public class Driver extends Application{
      * the situation and how to update.
      */
     public static void checkForUpdate() {
-        // todo Refactor to use JavaFX instead of Swing.
         try {
             final URL url = new URL("http://valkryst.com/schillsaver/version.txt");
             Scanner scanner = new Scanner(url.openStream());
@@ -80,12 +80,13 @@ public class Driver extends Application{
             scanner.close();
 
             if(!newVersion.equals(PROGRAM_VERSION)) {
-                JOptionPane.showMessageDialog(null, "This program is out of date.\n" +
-                                "Get the latest version at http://valkryst.com/schillsaver/Schillsaver.7z.\n\n" +
-                                "Current Version - " + PROGRAM_VERSION + "\n" +
-                                "New Version - " + newVersion,
-                        "New Version Available",
-                        JOptionPane.WARNING_MESSAGE);
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("New Version Available");
+                alert.setHeaderText("This program is out of date.");
+                alert.setContentText("Get the latest version at http://valkryst.com/schillsaver/Schillsaver.7z.\n\n" +
+                        "Current Version - " + PROGRAM_VERSION + "\n" +
+                        "New Version - " + newVersion);
+                alert.showAndWait();
             }
         }
         catch(IOException e) {
