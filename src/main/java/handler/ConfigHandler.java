@@ -441,27 +441,30 @@ public class ConfigHandler {
 
     ////////////////////////////////////////////////////////// Setters
 
-    // todo JavaDoc
+    /** @param ffmpegPath The new absolute path to ffmpeg/ffmpeg.exe */
     public void setFfmpegPath(final String ffmpegPath) {
         this.ffmpegPath = ffmpegPath;
     }
 
-    // todo JavaDoc
+    /** @param compressionProgramPath The new absolute path to 7zip/7zip.exe. */
     public void setCompressionProgramPath(final String compressionProgramPath) {
         this.compressionProgramPath = compressionProgramPath;
     }
 
-    // todo JavaDoc
+    /** @param encodeFormat The new format to encode to. */
     public void setEncodeFormat(final String encodeFormat) {
         this.encodeFormat = encodeFormat;
     }
 
-    // todo JavaDoc
+    /** @param decodeFormat The new format to decode to. */
     public void setDecodeFormat(final String decodeFormat) {
         this.decodeFormat = decodeFormat;
     }
 
-    // todo JavaDoc
+    /**
+     * @param encodedVideoWidth The new width, in pixels, of the encoded video.
+     * @throws IllegalArgumentException Thrown if the input width is less than 1.
+     */
     public void setEncodedVideoWidth(final int encodedVideoWidth) throws IllegalArgumentException {
         if(encodedVideoWidth > 1) {
             this.encodedVideoWidth = encodedVideoWidth;
@@ -470,7 +473,10 @@ public class ConfigHandler {
         }
     }
 
-    // todo JavaDoc
+    /**
+     * @param encodedVideoHeight The new height, in pixels, of the encoded video.
+     * @throws IllegalArgumentException Thrown if the input height is less than 1.
+     */
     public void setEncodedVideoHeight(final int encodedVideoHeight) throws IllegalArgumentException {
         if(encodedVideoHeight > 1) {
             this.encodedVideoHeight = encodedVideoHeight;
@@ -479,7 +485,10 @@ public class ConfigHandler {
         }
     }
 
-    // todo JavaDoc
+    /**
+     * @param encodedFramerate The new framerate of the video. Ex ~ 30fps, 60fps, etc...
+     * @throws IllegalArgumentException Thrown if the input framerate is less than 1.
+     */
     public void setEncodedFramerate(final int encodedFramerate) throws IllegalArgumentException {
         if(encodedFramerate > 1) {
             this.encodedFramerate = encodedFramerate;
@@ -488,7 +497,10 @@ public class ConfigHandler {
         }
     }
 
-    // todo JavaDoc
+    /**
+     * @param macroBlockDimensions The new width/height of each encoded macroblock.
+     * @throws IllegalArgumentException Thrown if the input dimensions are less than 1.
+     */
     public void setMacroBlockDimensions(final int macroBlockDimensions) throws IllegalArgumentException {
         if(macroBlockDimensions > 1) {
             this.macroBlockDimensions = macroBlockDimensions;
@@ -497,52 +509,52 @@ public class ConfigHandler {
         }
     }
 
-    // todo JavaDoc
+    /** @param encodingLibrary The new codec to encode/decode the video with. */
     public void setEncodingLibrary(final String encodingLibrary) {
         this.encodingLibrary = encodingLibrary;
     }
 
-    // todo JavaDoc
+    /** @param ffmpegLogLevel The new level of information that should be given by ffmpeg while ffmpeg is running. */
     public void setFfmpegLogLevel(final String ffmpegLogLevel) {
         this.ffmpegLogLevel = ffmpegLogLevel;
     }
 
-    // todo JavaDoc
+    /** @param useFullyCustomFfmpegOptions Whether or not to ignore all other ffmpeg options and to use the fullyCustomFfmpegEncodingOptions and fullyCustomFfmpegDecodingOptions instead. */
     public void setUseFullyCustomFfmpegOptions(final boolean useFullyCustomFfmpegOptions) {
         this.useFullyCustomFfmpegOptions = useFullyCustomFfmpegOptions;
     }
 
-    // todo JavaDoc
+    /** @param fullyCustomFfmpegEncodingOptions The new user-entered command line arguments to use when encoding with ffmpeg. */
     public void setFullyCustomFfmpegEncodingOptions(final String fullyCustomFfmpegEncodingOptions) {
         this.fullyCustomFfmpegEncodingOptions = fullyCustomFfmpegEncodingOptions;
     }
 
-    // todo JavaDoc
+    /** @param fullyCustomFfmpegDecodingOptions The new user-entered command line arguments to use when encoding with ffmpeg. */
     public void setFullyCustomFfmpegDecodingOptions(final String fullyCustomFfmpegDecodingOptions) {
         this.fullyCustomFfmpegDecodingOptions = fullyCustomFfmpegDecodingOptions;
     }
 
-    // todo JavaDoc
+    /** @param deleteSourceFileWhenEncoding Whether or not to delete the source file after encoding. */
     public void setDeleteSourceFileWhenEncoding(final boolean deleteSourceFileWhenEncoding) {
         this.deleteSourceFileWhenEncoding = deleteSourceFileWhenEncoding;
     }
 
-    // todo JavaDoc
+    /** @param deleteSourceFileWhenDecoding Whether or not to delete the source file after decoding. */
     public void setDeleteSourceFileWhenDecoding(final boolean deleteSourceFileWhenDecoding) {
         this.deleteSourceFileWhenDecoding = deleteSourceFileWhenDecoding;
     }
 
-    // todo JavaDoc
+    /** @param showSplashScreen Whether or not to show the splash screen on startup. */
     public void setShowSplashScreen(final boolean showSplashScreen) {
         this.showSplashScreen = showSplashScreen;
     }
 
-    // todo JavaDoc
+    /** @param splashScreenFilePath The new path to the splash screen to display. */
     public void setSplashScreenFilePath(final String splashScreenFilePath) {
         this.splashScreenFilePath = splashScreenFilePath;
     }
 
-    // todo JavaDoc
+    /** @param splashScreenDisplayTime The new amount of time, in milliseconds, to display the splash screen. */
     public void setSplashScreenDisplayTime(final int splashScreenDisplayTime) throws IllegalArgumentException {
         if(splashScreenDisplayTime > 1) {
             this.splashScreenDisplayTime = splashScreenDisplayTime;
@@ -551,12 +563,12 @@ public class ConfigHandler {
         }
     }
 
-    // todo JavaDoc
+    /** @param compressionCommands The new base commands to use when compressing a handler before encoding. */
     public void setCompressionCommands(final String compressionCommands) {
         this.compressionCommands = compressionCommands;
     }
 
-    // todo JavaDoc
+    /** @param checkForUpdatesOnStart Whether or not to check for program updates on program start. */
     public void setCheckForUpdatesOnStart(final boolean checkForUpdatesOnStart) {
         this.checkForUpdatesOnStart = checkForUpdatesOnStart;
     }
