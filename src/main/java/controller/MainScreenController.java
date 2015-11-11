@@ -183,6 +183,11 @@ public class MainScreenController implements EventHandler {
         }
     }
 
+    /**
+     * Displays an error alert-popup to the user notifying them that
+     * the path to FFMPEG has not yet been set and must be set before the
+     * user can run an en/decode Job.
+     */
     private void showFfmpegPathErrorAndWait() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setHeaderText("FFmpeg was not found.");
