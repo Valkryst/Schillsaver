@@ -32,9 +32,9 @@
         <module name="Utilities" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.7">
-      <module name="Schillsaver" target="1.7" />
-      <module name="Utilities" target="1.7" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="Schillsaver" target="1.8" />
+      <module name="Utilities" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
