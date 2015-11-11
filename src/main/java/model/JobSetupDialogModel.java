@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JobSetupDialogModel {
-    // todo JavaDoc
+    /** The Job being created by the JobSetupDialog. */
     private Job job = null;
     /** The list of all list_files to be added to the Job. */
     private List<File> list_files = new ArrayList<>();
 
-    // todo JavaDoc
+    /** @return The Job being created by the JobSetupDialog. */
     public Job getJob() {
         return job;
     }
@@ -22,7 +22,7 @@ public class JobSetupDialogModel {
         return list_files;
     }
 
-    // todo JavaDoc
+    /** @param job The new Job being created by the JobSetupDialog. */
     public void setJob(final Job job) {
         this.job = job;
     }
