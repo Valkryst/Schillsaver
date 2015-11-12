@@ -263,7 +263,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
         int arrAIndex = 0, arrBIndex = 0, arrCIndex = 0;
 
         while(arrAIndex < arrA.size() && arrBIndex < arrB.size()) {
-            if(arrA.size() < arrB.size()) {
+            if(arrA.get(arrAIndex).length() < arrB.get(arrBIndex).length()) {
                 arrC.add(arrCIndex, arrA.get(arrAIndex));
                 arrAIndex++;
             } else {
