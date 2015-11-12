@@ -289,4 +289,17 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
 
         return arrC;
     }
+
+    ////////////////////////////////////////////////////////// Getters
+
+    /** @return The total combined filesize of all file(s) to be en/decoded. */
+    public long getTotalFilesize() {
+        long temp = 0;
+
+        for(final File f : selectedFiles) {
+            temp += f.length();
+        }
+
+        return temp;
+    }
 }
