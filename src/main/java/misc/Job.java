@@ -95,17 +95,6 @@ public class Job {
         return combineIntoIndividualArchives;
     }
 
-    /** @return The combined total filesize of all file(s) in the Job. */
-    public long getTotalJobSize() {
-        long temp = 0;
-
-        for(final File f : files) {
-            temp += f.length();
-        }
-
-        return temp;
-    }
-
     ////////////////////////////////////////////////////////// Setters
 
     // todo JavaDoc
