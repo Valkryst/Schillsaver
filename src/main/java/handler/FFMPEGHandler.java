@@ -49,9 +49,9 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
     @Override
     public Object call() {
         if(job.getIsEncodeJob()) {
-            encodeVideoToDisk();
+            encode();
         } else {
-            decodeVideo();
+            decode();
         }
 
         return null;
@@ -70,7 +70,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
      * Encodes the specified file(s) using the settings in the
      * configuration handler.
      */
-    private void encodeVideoToDisk() {
+    private void encode() {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(job.getCombineAllFilesIntoSingleArchive()) {
@@ -164,7 +164,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
      * Decodes the specified file(s) using the settings in the
      * configuration handler.
      */
-    private void decodeVideo() {
+    private void decode() {
         for(final File f : selectedFiles) {
             // Prepare statistics estimation:
             long time_start = System.currentTimeMillis();
