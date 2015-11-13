@@ -80,18 +80,22 @@ public class StatisticsHandler {
     /**
      * Calculates the amount of bytes, per second, that the specified file was processed
      * at.
+     * If the processing speed was too fast, then 0 is returned.
      * @param file The file that was processed.
      * @param startTime The time, in milliseconds, that processing began.
      * @param endTime The time, in milliseconds, that processing completed.
      * @return The amount of bytes, per second, that the specified file was processed at.
      */
     public long calculateProcessingSpeed(final File file, final long startTime, final long endTime) {
-        long duration = endTime - startTime; // The total time that the Job ran for, in milliseconds.
-        duration /= 1000; // The total time that the Job ran for, in seconds.
+        try {
+            long duration = endTime - startTime; // The total time that the Job ran for, in milliseconds.
+            duration /= 1000; // The total time that the Job ran for, in seconds.
 
-        long speed = file.length() / duration; // The bytes per millisecond that were en/decoded.
-
-        return speed;
+            long speed = file.length() / duration; // The bytes per millisecond that were en/decoded.
+            return speed;
+        } catch(final ArithmeticException e) {
+            return 0;
+        }
     }
 
     /**
@@ -111,7 +115,7 @@ public class StatisticsHandler {
         }
 
         // Create the file if it does not exist.
-        if(!outputFile.exists()) {
+        if(! outputFile.exists()) {
             try {
                 if(! outputFile.createNewFile()) {
                     Logger.writeLog("Unable to create " + outputFile.getAbsolutePath() + " for some reason.", Logger.LOG_TYPE_ERROR);
