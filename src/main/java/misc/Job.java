@@ -35,7 +35,13 @@ public class Job {
     public Job(final String name, final String description, final String outputDirectory, final List<File> files, final boolean isEncodeJob, final boolean combineAllFilesIntoSingleArchive, final boolean combineIntoIndividualArchives) {
         this.name = name;
         this.description = description;
-        this.outputDirectory = outputDirectory;
+
+        if(outputDirectory.endsWith("\\") || outputDirectory.endsWith("/")) {
+            this.outputDirectory = outputDirectory;
+        } else {
+            this.outputDirectory = outputDirectory + "/";
+        }
+
         this.files = files;
         this.isEncodeJob = isEncodeJob;
         this.combineAllFilesIntoSingleArchive = combineAllFilesIntoSingleArchive;
