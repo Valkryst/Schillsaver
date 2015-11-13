@@ -113,7 +113,10 @@ public class StatisticsHandler {
         // Create the file if it does not exist.
         if(!outputFile.exists()) {
             try {
-                outputFile.createNewFile();
+                if(! outputFile.createNewFile()) {
+                    Logger.writeLog("Unable to create " + outputFile.getAbsolutePath() + " for some reason.", Logger.LOG_TYPE_ERROR);
+                    System.exit(1);
+                }
             } catch(final IOException e) {
                 Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
             }
@@ -122,7 +125,8 @@ public class StatisticsHandler {
         // Append data to the output file.
         try {
             final PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter(outputFile, true)));
-            printWriter.append(bytesPerSecond + System.lineSeparator());
+            printWriter.append(String.valueOf(bytesPerSecond));
+            printWriter.append(System.lineSeparator());
             printWriter.close();
         } catch(final IOException e) {
             Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
