@@ -140,6 +140,10 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 }
             });
 
+            // Finish statistics estimation:
+            time_end = System.currentTimeMillis();
+            statisticsHandler.recordData(true, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
+
             // Delete leftovers:
             if(job.getCombineAllFilesIntoSingleArchive()) {
                 f.delete(); // This is just the archive, not the original handler.
@@ -153,10 +157,6 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                f = new File(f.getAbsolutePath().replace(configHandler.getDecodeFormat(), ""));
                f.delete();
             }
-
-            // Finish statistics estimation:
-            time_end = System.currentTimeMillis();
-            statisticsHandler.recordData(true, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
         }
     }
 
@@ -165,64 +165,68 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
      * configuration handler.
      */
     private void decode() {
-        for(final File f : selectedFiles) {
-            // Prepare statistics estimation:
-            long time_start = System.currentTimeMillis();
-            long time_end;
+        try {
+            for(final File f : selectedFiles) {
+                // Prepare statistics estimation:
+                long time_start = System.currentTimeMillis();
+                long time_end;
 
-            // Construct FFMPEG string:
-            final StringBuilder stringBuilder = new StringBuilder();
-            final Formatter formatter = new Formatter(stringBuilder, Locale.US);
+                // Construct FFMPEG string:
+                final StringBuilder stringBuilder = new StringBuilder();
+                final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
-            // Use the fully custom settings if they're enabled:
-            if(configHandler.getUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegDecodingOptions().isEmpty()) {
-                formatter.format("\"%s\" %s",
-                        configHandler.getFfmpegPath(),
-                        configHandler.getFullyCustomFfmpegEncodingOptions());
+                // Use the fully custom settings if they're enabled:
+                if(configHandler.getUseFullyCustomFfmpegOptions() && ! configHandler.getFullyCustomFfmpegDecodingOptions().isEmpty()) {
+                    formatter.format("\"%s\" %s",
+                            configHandler.getFfmpegPath(),
+                            configHandler.getFullyCustomFfmpegEncodingOptions());
 
-                // Insert the input filename:
-                final String inputFilename = "\"" + f.getAbsolutePath() + "\"";
-                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", inputFilename));
+                    // Insert the input filename:
+                    final String inputFilename = "\"" + f.getAbsolutePath() + "\"";
+                    stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", inputFilename));
 
-                // Insert the output filename:
-                final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
-                stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
-            } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
-                formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s%s.%s\"",
-                        configHandler.getFfmpegPath(),
-                        f.getAbsolutePath(),
-                        (1.0 / configHandler.getMacroBlockDimensions()),
-                        configHandler.getFfmpegLogLevel(),
-                        job.getOutputDirectory(),
-                        FilenameUtils.getBaseName(f.getName()),
-                        configHandler.getDecodeFormat());
-            }
-
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                    // Insert the output filename:
+                    final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
+                    stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
+                } else if(! configHandler.getUseFullyCustomFfmpegOptions()) {
+                    formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s%s.%s\"",
+                            configHandler.getFfmpegPath(),
+                            f.getAbsolutePath(),
+                            (1.0 / configHandler.getMacroBlockDimensions()),
+                            configHandler.getFfmpegLogLevel(),
+                            job.getOutputDirectory(),
+                            FilenameUtils.getBaseName(f.getName()),
+                            configHandler.getDecodeFormat());
                 }
-            });
 
-            CommandHandler.runProgram(stringBuilder.toString(), controller);
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                    }
+                });
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
-                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                CommandHandler.runProgram(stringBuilder.toString(), controller);
+
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
+                        controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
+                    }
+                });
+
+                // Finish statistics estimation:
+                time_end = System.currentTimeMillis();
+                statisticsHandler.recordData(false, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
+
+                // Delete leftovers:
+                if(configHandler.getDeleteSourceFileWhenDecoding()) {
+                    f.delete(); // This is just the archive, not the original handler.
                 }
-            });
-
-            // Delete leftovers:
-            if(configHandler.getDeleteSourceFileWhenDecoding()) {
-               f.delete(); // This is just the archive, not the original handler.
             }
-
-            // Finish statistics estimation:
-            time_end = System.currentTimeMillis();
-            statisticsHandler.recordData(false, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 
