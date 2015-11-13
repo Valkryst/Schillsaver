@@ -80,6 +80,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                     for (final File file : db.getFiles()) {
                         model.getList_files().add(file);
                         view.getListView_selectedFiles().getItems().add(file.getAbsolutePath());
+                        updateEstimatedDurationLabel();
                     }
                     event.setDropCompleted(true);
                 } else {
