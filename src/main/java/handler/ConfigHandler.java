@@ -70,6 +70,9 @@ public class ConfigHandler {
     /** Whether or not to check for program updates on program start. */
     private boolean checkForUpdatesOnStart = false;
 
+    /** Whether or not to warn the user if their settings may not work with YouTube. */
+    private boolean warnUserIfSettingsMayNotWorkForYouTube = true;
+
     /**
      * Reads in each line from the configuration handler and attempts to parse
      * the specified parameters of the program.
@@ -162,6 +165,10 @@ public class ConfigHandler {
 
                 if(currentLine.contains("checkForUpdatesOnStart ")) {
                     checkForUpdatesOnStart = Boolean.valueOf(currentLine.replace("checkForUpdatesOnStart ", ""));
+                }
+
+                if(currentLine.contains("warnUserIfSettingsMayNotWorkForYouTube ")) {
+                    warnUserIfSettingsMayNotWorkForYouTube = Boolean.valueOf(currentLine.replace("warnUserIfSettingsMayNotWorkForYouTube ", ""));
                 }
             }
         } catch(final IOException e) { // Should only happen if the config handler doesn't exist.
@@ -267,6 +274,7 @@ public class ConfigHandler {
             outputStream.write("splashScreenDisplayTime " + splashScreenDisplayTime + System.lineSeparator());
             outputStream.write("compressionCommands " + compressionCommands + System.lineSeparator());
             outputStream.write("checkForUpdatesOnStart " + checkForUpdatesOnStart + System.lineSeparator());
+            outputStream.write("warnUserIfSettingsMayNotWorkForYouTube " + warnUserIfSettingsMayNotWorkForYouTube + System.lineSeparator());
             outputStream.close();
         } catch(final IOException e) {
             Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
@@ -439,6 +447,11 @@ public class ConfigHandler {
         return checkForUpdatesOnStart;
     }
 
+    /** @return Whether or not to warn the user if their settings may not work with YouTube. */
+    public boolean getWarnUserIfSettingsMayNotWorkForYouTube() {
+        return warnUserIfSettingsMayNotWorkForYouTube;
+    }
+
     ////////////////////////////////////////////////////////// Setters
 
     /** @param ffmpegPath The new absolute path to ffmpeg/ffmpeg.exe */
@@ -571,5 +584,10 @@ public class ConfigHandler {
     /** @param checkForUpdatesOnStart Whether or not to check for program updates on program start. */
     public void setCheckForUpdatesOnStart(final boolean checkForUpdatesOnStart) {
         this.checkForUpdatesOnStart = checkForUpdatesOnStart;
+    }
+
+    /** @param warnUserIfSettingsMayNotWorkForYouTube Whether or not to warn the user if their settings may not work with YouTube. */
+    public void getWarnUserIfSettingsMayNotWorkForYouTube(final boolean warnUserIfSettingsMayNotWorkForYouTube) {
+        this.warnUserIfSettingsMayNotWorkForYouTube = warnUserIfSettingsMayNotWorkForYouTube;
     }
 }
