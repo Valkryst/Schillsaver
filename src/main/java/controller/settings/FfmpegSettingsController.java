@@ -3,6 +3,7 @@ package controller.settings;
 import handler.ConfigHandler;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -246,6 +247,83 @@ public class FfmpegSettingsController implements EventHandler {
         return wasErrorFound;
     }
 
+    /**
+     * Analyzes a portion of the settings to determine if the resulting video
+     * might not work correctly with YouTube.
+     */
+    public void displayWarningsAboutYouTubeCompatability() {
+        // Ensure that settings are acceptable first:
+        if(!areSettingsCorrect()) {
+            final StringBuilder stringBuilder = new StringBuilder();
+
+            // Check for supported resolutions:
+            int videoHeight = Integer.valueOf(pane.getField_encodedVideoHeight().getText());
+            switch(Integer.valueOf(pane.getField_encodedVideoWidth().getText())) {
+                case 426: { // 240p
+                    if(videoHeight != 240) {
+                        stringBuilder.append("The video width of 426 must be used with a video height of 240 to respect YouTube's 16:9 ratio.\n");
+                    }
+                    break;
+                }
+                case 640: { // 360p
+                    if(videoHeight != 360) {
+                        stringBuilder.append("The video width of 640 must be used with a video height of 360 to respect YouTube's 16:9 ratio.\n");
+                    }
+                    break;
+                }
+                case 854: { // 480p
+                    if(videoHeight != 480) {
+                        stringBuilder.append("The video width of 854 must be used with a video height of 480 to respect YouTube's 16:9 ratio.\n");
+                    }
+                    break;
+                }
+                case 1280: { // 720p
+                    if(videoHeight != 720) {
+                        stringBuilder.append("The video width of 1280 must be used with a video height of 720 to respect YouTube's 16:9 ratio.\n");
+                    }
+                    break;
+                }
+                case 1920: { // 1080p
+                    if(videoHeight != 1080) {
+                        stringBuilder.append("The video width of 1920 must be used with a video height of 1080 to respect YouTube's 16:9 ratio.\n");
+                    }
+                    break;
+                }
+                case 2560: { // 1440p
+                    if(videoHeight != 1440) {
+                        stringBuilder.append("The video width of 2560 must be used with a video height of 1440 to respect YouTube's 16:9 ratio.\n");
+                    }
+                    break;
+                }
+                case 3840: { // 2160p
+                    if(videoHeight != 2160) {
+                        stringBuilder.append("The video width of 3840 must be used with a video height of 2160 to respect YouTube's 16:9 ratio.\n");
+                    }
+                    break;
+                }
+                default: {
+                    stringBuilder.append("The width and height you have set do not conform to YouTube's 16:9 ratio.\n");
+                }
+            }
+
+            // Check if the framerate is supported:
+            int framerate = Integer.valueOf(pane.getField_encodedFramerate().getText());
+
+            if(framerate != 24 && framerate != 25 && framerate != 30 && framerate != 48 && framerate != 50 && framerate != 60) {
+                stringBuilder.append("The framerate you have set is not in the accepted framerates of 24, 25, 30, 48, 50, or 60 that YouTube supports.\n");
+            }
+
+            // Show popup:
+            if(stringBuilder.toString().isEmpty() == false) {
+                final Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setHeaderText("YouTube Compatability Warning(s)");
+                alert.setContentText(stringBuilder.toString());
+                alert.showAndWait();
+            }
+        }
+    }
+
+    // todo JavaDoc
     public FfmpegSettingsPane getPane() {
         return pane;
     }
