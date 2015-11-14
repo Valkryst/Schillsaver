@@ -587,7 +587,7 @@ public class ConfigHandler {
     }
 
     /** @param warnUserIfSettingsMayNotWorkForYouTube Whether or not to warn the user if their settings may not work with YouTube. */
-    public void getWarnUserIfSettingsMayNotWorkForYouTube(final boolean warnUserIfSettingsMayNotWorkForYouTube) {
+    public void setWarnUserIfSettingsMayNotWorkForYouTube(final boolean warnUserIfSettingsMayNotWorkForYouTube) {
         this.warnUserIfSettingsMayNotWorkForYouTube = warnUserIfSettingsMayNotWorkForYouTube;
     }
 }
