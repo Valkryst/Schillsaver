@@ -51,6 +51,11 @@ public class SettingsDialogController extends Stage implements EventHandler {
             // Check to see if all data is correct.
             // If it is, then save the settings.
             if(!view.getController_ffmpegSettings().areSettingsCorrect() && !view.getController_miscSettings().areSettingsCorrect()) {
+                // Show any warnings about YouTube compatability:
+                if(configHandler.getWarnUserIfSettingsMayNotWorkForYouTube()) {
+                    view.getController_ffmpegSettings().displayWarningsAboutYouTubeCompatability();
+                }
+
                 final ArchivalSettingsPane pane_archival = view.getController_archivalSettings().getPane();
                 final FfmpegSettingsPane pane_ffmpeg = view.getController_ffmpegSettings().getPane();
                 final MiscSettingsPane pane_misc = view.getController_miscSettings().getPane();
