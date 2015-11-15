@@ -256,11 +256,6 @@ public class FfmpegSettingsPane extends TitledPane {
         return radioButton_useFullyCustomEncodingOptions_yes;
     }
 
-    /** @return The radio button that says to not use the fully-custom ffmpeg en/decoding options. */
-    public RadioButton getRadioButton_useFullyCustomEncodingOptions_no() {
-        return radioButton_useFullyCustomEncodingOptions_no;
-    }
-
     /** @return The text field for the fully-custom ffmpeg encoding options. */
     public TextField getField_fullyCustomFfmpegEncodingOptions() {
         return field_fullyCustomFfmpegEncodingOptions;
