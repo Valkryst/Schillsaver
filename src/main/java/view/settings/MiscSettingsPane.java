@@ -284,9 +284,4 @@ public class MiscSettingsPane extends TitledPane {
     public boolean getCheckForUpdatesOnStart() {
         return radioButton_enableUpdateCheck_yes.isSelected();
     }
-
-    /** @return Whether or not to warn the user if their settings may not work with YouTube. */
-    public boolean getWarnIfSettingsMayNotWorkWithYouTube() {
-        return radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_yes.isSelected();
-    }
 }
