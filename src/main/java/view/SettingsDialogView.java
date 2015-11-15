@@ -12,11 +12,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class SettingsDialogView extends VBox {
-    // todo JavaDoc
+    /** The controller for the archival settings section. */
     private final ArchivalSettingsController controller_archivalSettings;
-    // todo JavaDoc
+    /** The controller for the FFMPEG settings section. */
     private final FfmpegSettingsController controller_ffmpegSettings;
-    // todo JavaDoc
+    /** The cntroller for the misc. settings section. */
     private final MiscSettingsController controller_miscSettings;
 
     /** The button to close the window and save settings. */
@@ -53,17 +53,17 @@ public class SettingsDialogView extends VBox {
 
     ////////////////////////////////////////////////////////// Getters
 
-    // todo JavaDoc
+    /** @return The controller for the archival settings section. */
     public ArchivalSettingsController getController_archivalSettings() {
         return controller_archivalSettings;
     }
 
-    // todo JavaDoc
+    /** @return The controller for the FFMPEG settings section. */
     public FfmpegSettingsController getController_ffmpegSettings() {
         return controller_ffmpegSettings;
     }
 
-    // todo JavaDoc
+    /** @returnThe cntroller for the misc. settings section. */
     public MiscSettingsController getController_miscSettings() {
         return controller_miscSettings;
     }
