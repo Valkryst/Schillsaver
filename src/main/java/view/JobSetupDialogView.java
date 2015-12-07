@@ -112,7 +112,6 @@ public class JobSetupDialogView extends HBox {
             }
 
             for(final File f : jobToEdit.getFiles()) {
-                System.out.println(f.getAbsolutePath());
                 listView_selectedFiles.getItems().addAll(f.getAbsolutePath());
             }
         } else {
