@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import misc.Job;
 import model.MainScreenModel;
+import org.w3c.dom.events.EventException;
 import view.MainScreenView;
 
 import java.io.File;
@@ -57,23 +58,51 @@ public class MainScreenController implements EventHandler {
 
         // The button to open the handler selection dialog.
         if(source.equals(view.getButton_createJob())) {
-            final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, configHandler, statisticsHandler);
+            final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, configHandler, statisticsHandler, null);
             jobSetupDialogController.show();
 
 
-            jobSetupDialogController.setOnHiding(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent event) {
-                    final Job job = jobSetupDialogController.getModel().getJob();
-                    if(job != null) {
-                        // todo Add the Job's description as a tooltip to the row of the list.
-                        job.setId(view.getListView_jobs().getItems().size());
-                        view.getListView_jobs().getItems().add(job.getFullDesignation());
+            jobSetupDialogController.setOnHiding(e -> {
+                final Job job = jobSetupDialogController.getModel().getJob();
+                if(job != null) {
+                    // todo Add the Job's description as a tooltip to the row of the list.
+                    job.setId(view.getListView_jobs().getItems().size());
+                    view.getListView_jobs().getItems().add(job.getFullDesignation());
 
-                        model.getList_jobs().add(job);
-                    }
+                    model.getList_jobs().add(job);
                 }
+
+                jobSetupDialogController.close();
             });
+        }
+
+        // The button to open the first of the currently selected jobs.
+        if(source.equals(view.getButton_editJob())) {
+            try {
+                // Attempt to get the index of the first item of all items that are currently
+                // selected in the list of Jobs.
+                final int firstSelectedIndex = view.getListView_jobs().getSelectionModel().getSelectedIndices().get(0);
+
+                // Get the Job to edit, pop it open in the Job Setup Dialog, then
+                // update the Job List and model when the dialog is closed.
+                final Job job = model.getList_jobs().get(firstSelectedIndex);
+
+                final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, configHandler, statisticsHandler, job);
+                jobSetupDialogController.getModel().getList_files().addAll(job.getFiles());
+                jobSetupDialogController.show();
+
+                jobSetupDialogController.setOnHiding(e -> {
+                    final Job editedJob = jobSetupDialogController.getModel().getJob();
+
+                    if(editedJob != null) {
+                        editedJob.setId(firstSelectedIndex);
+                        view.getListView_jobs().getItems().set(firstSelectedIndex, editedJob.getFullDesignation());
+                        model.getList_jobs().set(firstSelectedIndex, editedJob);
+                    }
+                });
+            } catch(final ArrayIndexOutOfBoundsException e) {
+                // If no item in the list is selected, then this exception is thrown.
+            }
         }
 
 
