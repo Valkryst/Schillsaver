@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import misc.Job;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -65,7 +66,7 @@ public class JobSetupDialogView extends HBox {
     private final Button button_selectOutputDirectory = new Button("Select Output Folder");
 
     // todo JavaDoc
-    public JobSetupDialogView(final Stage settingsStage, final JobSetupDialogController controller, final ConfigHandler configHandler) {
+    public JobSetupDialogView(final Stage settingsStage, final JobSetupDialogController controller, final ConfigHandler configHandler, final Job jobToEdit) {
         // Setup Job  List:
         listView_selectedFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -94,11 +95,33 @@ public class JobSetupDialogView extends HBox {
             radioButton_individualArchives_no.setDisable(true);
         }
 
+        // Load Existing Data:
+        if(jobToEdit != null) {
+            field_jobName.setText(jobToEdit.getName());
+
+            textArea_jobDescription.setText(jobToEdit.getDescription());
+
+            if(jobToEdit.getCombineAllFilesIntoSingleArchive()) {
+                radioButton_singleArchive_yes.setSelected(true);
+                radioButton_individualArchives_no.setSelected(true);
+            }
+
+            if(jobToEdit.getCombineIntoIndividualArchives()) {
+                radioButton_individualArchives_yes.setSelected(true);
+                radioButton_singleArchive_no.setSelected(true);
+            }
+
+            for(final File f : jobToEdit.getFiles()) {
+                System.out.println(f.getAbsolutePath());
+                listView_selectedFiles.getItems().addAll(f.getAbsolutePath());
+            }
+        } else {
+            // Set a default job title based on the current time
+            field_jobName.setText("Job " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        }
+
         // Set Text Field/Area Background Text:
         field_jobName.setPromptText("Enter a name for the Job.");
-
-        // Set a default job title based on the current time
-        field_jobName.setText("Job " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
 
         textArea_jobDescription.setPromptText("Enter a description for the Job.\nThis is not required.");
         textField_outputDirectory.setPromptText("Output Directory");
@@ -174,11 +197,8 @@ public class JobSetupDialogView extends HBox {
         HBox.setHgrow(pane_singleArchive, Priority.ALWAYS);
         pane_singleArchive.setText("Pack File(s) into Single Archive");
         pane_singleArchive.setCollapsible(false);
-        pane_singleArchive.heightProperty().addListener(new ChangeListener<Number>() { // Ensures that the scene will rezize when the pane is collapsed.
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                settingsStage.sizeToScene();
-            }
+        pane_singleArchive.heightProperty().addListener((observable, oldValue, newValue) -> {
+            settingsStage.sizeToScene();
         });
         pane_singleArchive.setContent(pane_panel_singleArchive);
 
@@ -190,11 +210,8 @@ public class JobSetupDialogView extends HBox {
         HBox.setHgrow(pane_individualArchives, Priority.ALWAYS);
         pane_individualArchives.setText("Pack File(s) into Individual Archives");
         pane_individualArchives.setCollapsible(false);
-        pane_individualArchives.heightProperty().addListener(new ChangeListener<Number>() { // Ensures that the scene will rezize when the pane is collapsed.
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                settingsStage.sizeToScene();
-            }
+        pane_individualArchives.heightProperty().addListener((observable, oldValue, newValue) -> { // Ensures that the scene will rezize when the pane is collapsed.
+            settingsStage.sizeToScene();
         });
         pane_individualArchives.setContent(pane_panel_individualArchives);
 
