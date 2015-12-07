@@ -15,6 +15,8 @@ public class MainScreenView extends HBox {
 
     /** The button to open the Job creation dialog. */
     private final Button button_createJob = new Button("Create Job");
+    /** The button to open the first of the currently selected jobs. */
+    private final Button button_editJob = new Button("Edit Job");
     /** The button to remove all Jobs that are currently selected on the listView_jobs list.. */
     private final Button button_deleteSelectedJobs = new Button("Remove Selected Job(s)");
     /** The button to delete all Jobs from the list. */
@@ -44,6 +46,7 @@ public class MainScreenView extends HBox {
 
         // Set Component Tooltips:
         button_createJob.setTooltip(new Tooltip("Open the Job creation dialog to create a new Job."));
+        button_editJob.setTooltip(new Tooltip("Edit the first of the currently selected Jobs."));
         button_deleteSelectedJobs.setTooltip(new Tooltip("Removes all Jobs that are currently selected on the list."));
         button_deleteAllJobs.setTooltip(new Tooltip("Clears the list of all Jobs."));
         button_clearOutput.setTooltip(new Tooltip("Clears the output screen."));
@@ -55,6 +58,7 @@ public class MainScreenView extends HBox {
 
         // Set Component EventHandlers:
         button_createJob.setOnAction(controller);
+        button_editJob.setOnAction(controller);
         button_encode.setOnAction(controller);
         button_decode.setOnAction(controller);
         button_deleteSelectedJobs.setOnAction(controller);
@@ -65,7 +69,7 @@ public class MainScreenView extends HBox {
         // Setup the Layout:
         final HBox panel_left_top = new HBox(10);
         panel_left_top.setAlignment(Pos.CENTER);
-        panel_left_top.getChildren().addAll(button_createJob, button_deleteSelectedJobs, button_deleteAllJobs);
+        panel_left_top.getChildren().addAll(button_createJob, button_editJob, button_deleteSelectedJobs, button_deleteAllJobs);
 
         final HBox panel_left_bottom = new HBox(10);
         panel_left_bottom.setAlignment(Pos.CENTER);
@@ -108,6 +112,11 @@ public class MainScreenView extends HBox {
     /** @return The button to open the handler selection dialog. */
     public Button getButton_createJob() {
         return button_createJob;
+    }
+
+    /** @return The button to open the first of the currently selected jobs. */
+    public Button getButton_editJob() {
+        return button_editJob;
     }
 
     /** @return The button to encode the currently selected handler(s). */
