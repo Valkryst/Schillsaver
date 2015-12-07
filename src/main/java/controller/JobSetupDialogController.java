@@ -61,34 +61,28 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         scene.getRoot().getStyleClass().add("main-root");
 
         // Setup stage to allow drag'n'drop file adding:
-        scene.setOnDragOver(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
-                if (db.hasFiles()) {
-                    event.acceptTransferModes(TransferMode.COPY);
-                } else {
-                    event.consume();
-                }
+        scene.setOnDragOver(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                event.acceptTransferModes(TransferMode.COPY);
+            } else {
+                event.consume();
             }
         });
 
-        scene.setOnDragDropped(new EventHandler<DragEvent>() {
-            @Override
-            public void handle(DragEvent event) {
-                Dragboard db = event.getDragboard();
-                if (db.hasFiles()) {
-                    for (final File file : db.getFiles()) {
-                        model.getList_files().add(file);
-                        view.getListView_selectedFiles().getItems().add(file.getAbsolutePath());
-                        updateEstimatedDurationLabel();
-                    }
-                    event.setDropCompleted(true);
-                } else {
-                    event.setDropCompleted(false);
+        scene.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasFiles()) {
+                for (final File file : db.getFiles()) {
+                    model.getList_files().add(file);
+                    view.getListView_selectedFiles().getItems().add(file.getAbsolutePath());
+                    updateEstimatedDurationLabel();
                 }
-                event.consume();
+                event.setDropCompleted(true);
+            } else {
+                event.setDropCompleted(false);
             }
+            event.consume();
         });
 
         // Finish setting up the stage:
