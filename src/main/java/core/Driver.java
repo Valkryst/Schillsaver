@@ -83,7 +83,7 @@ public class Driver extends Application{
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("New Version Available");
                 alert.setHeaderText("This program is out of date.");
-                alert.setContentText("Get the latest version at http://valkryst.com/schillsaver/Schillsaver.7z.\n\n" +
+                alert.setContentText("Get the latest version at http://valkryst.com/schillsaver/\n\n" +
                         "Current Version - " + PROGRAM_VERSION + "\n" +
                         "New Version - " + newVersion);
                 alert.showAndWait();
