@@ -46,12 +46,13 @@ public class JobSetupDialogController extends Stage implements EventHandler {
      * @param primaryStage todo JavaDoc
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @param statisticsHandler todo JavaDoc
+     * @param jobToEdit The job to load into the setup dialog. This is null if the user is creating a new job, not editing an existing one.
      */
-    public JobSetupDialogController(final Stage primaryStage, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
+    public JobSetupDialogController(final Stage primaryStage, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler, final Job jobToEdit) {
         this.configHandler = configHandler;
         this.statisticsHandler = statisticsHandler;
 
-        view = new JobSetupDialogView(primaryStage, this, configHandler);
+        view = new JobSetupDialogView(primaryStage, this, configHandler, jobToEdit);
         model = new JobSetupDialogModel();
 
         // Setup Stage:
