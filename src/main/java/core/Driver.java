@@ -8,8 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import misc.Logger;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -19,6 +17,9 @@ import java.util.Scanner;
 public class Driver extends Application{
     /** The current version of the program. Whenever a significant change is made, this should be changed along with the online handler. */
     private static final String PROGRAM_VERSION = "9";
+
+    /** The logger used throughout the entire program whenever a log is to be written. */
+    public static final Logger LOGGER = new Logger();;
 
 
     public static void main(final String[] args) {
@@ -65,6 +66,7 @@ public class Driver extends Application{
     @Override
     public void stop() {
         // Do something before the application stops.
+        LOGGER.run();
     }
 
     /**
@@ -74,10 +76,12 @@ public class Driver extends Application{
      */
     public static void checkForUpdate() {
         try {
-            final URL url = new URL("http://valkryst.com/schillsaver/version.txt");
+            final URL url = new URL("https://valkryst.com/schillsaver/version.txt");
             Scanner scanner = new Scanner(url.openStream());
             final String newVersion = scanner.nextLine();
             scanner.close();
+
+            System.out.println(newVersion);
 
             if(!newVersion.equals(PROGRAM_VERSION)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -90,7 +94,7 @@ public class Driver extends Application{
             }
         }
         catch(IOException e) {
-            Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_WARNING);
+            LOGGER.addLog(Log.LOGTYPE_WARNING, e);
         }
     }
 
@@ -114,7 +118,7 @@ public class Driver extends Application{
                 window.setVisible(false);
                 window.dispose();
             } catch(final InterruptedException | NullPointerException e) {
-                Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_WARNING);
+                LOGGER.addLog(Log.LOGTYPE_WARNING, e);
             }
         }
     }

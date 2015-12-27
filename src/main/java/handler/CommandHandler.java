@@ -1,9 +1,9 @@
 package handler;
 
 import controller.MainScreenController;
+import core.Driver;
+import core.Log;
 import javafx.application.Platform;
-import misc.Logger;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class CommandHandler {
 
             is.close();
         } catch(final IOException e) {
-            Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
             System.exit(1);
         }
     }

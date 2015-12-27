@@ -1,9 +1,9 @@
 package handler;
 
+import core.Driver;
+import core.Log;
 import files.FileInput;
-import misc.Logger;
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -175,7 +175,7 @@ public class ConfigHandler {
             createConfigFile();
             loadConfigSettings();
         } catch(final NumberFormatException e) { // If encodedVideoWidth/Height fail conversion to ints.
-            Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
             System.exit(1);
         }
 
@@ -183,52 +183,62 @@ public class ConfigHandler {
         boolean exitProgram = false;
 
         if(ffmpegPath == null) {
-            Logger.writeLog("Could not load the ffmpegPath option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load the ffmpegPath option from the config handler. Check if it's spelled correctly.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(compressionProgramPath == null) {
-            Logger.writeLog("Could not load the compressionProgramPath option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load the compressionProgramPath option from the config handler. Check if it's spelled correctly.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(encodeFormat == null) {
-            Logger.writeLog("Could not load the encodeFormat option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load the encodeFormat option from the config handler. Check if it's spelled correctly.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(decodeFormat == null) {
-            Logger.writeLog("Could not load the decodeFormat option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load the decodeFormat option from the config handler. Check if it's spelled correctly.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(encodedVideoWidth < 1) {
-            Logger.writeLog("Either could not load the encodedVideoWidth option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Either could not load the encodedVideoWidth option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(encodedVideoHeight < 1) {
-            Logger.writeLog("Either could not load the encodedVideoHeight option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Either could not load the encodedVideoHeight option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(encodedFramerate < 1) {
-            Logger.writeLog("Could not load the encodedFramerate option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load the encodedFramerate option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(macroBlockDimensions < 1) {
-            Logger.writeLog("Could not load the macroBlockDimensions option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load the macroBlockDimensions option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(splashScreenDisplayTime < 1) {
-            Logger.writeLog("Could not load splashScreenDisplayTime option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load splashScreenDisplayTime option from the config handler or the value is less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
         if(compressionCommands == null) {
-            Logger.writeLog("Could not load the compressionCommands option from the config handler. Check if it's spelled correctly.", Logger.LOG_TYPE_ERROR);
+            final IllegalArgumentException exception = new IllegalArgumentException("Could not load the compressionCommands option from the config handler. Check if it's spelled correctly.");
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, exception);
             exitProgram = true;
         }
 
@@ -277,7 +287,7 @@ public class ConfigHandler {
             outputStream.write("warnUserIfSettingsMayNotWorkForYouTube " + warnUserIfSettingsMayNotWorkForYouTube + System.lineSeparator());
             outputStream.close();
         } catch(final IOException e) {
-            Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
             System.exit(1);
         }
 

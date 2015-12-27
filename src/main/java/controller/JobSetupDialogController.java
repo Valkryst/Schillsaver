@@ -1,5 +1,7 @@
 package controller;
 
+import core.Driver;
+import core.Log;
 import handler.ConfigHandler;
 import handler.StatisticsHandler;
 import javafx.collections.FXCollections;
@@ -9,16 +11,13 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import misc.Job;
-import misc.Logger;
 import model.JobSetupDialogModel;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import view.JobSetupDialogView;
 
 import javax.swing.*;
@@ -179,7 +178,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                     view.getTextField_outputDirectory().setText(fileChooser.getSelectedFile().getPath() + "/");
                 }
             } catch(final HeadlessException e) {
-                Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_WARNING);
+                Driver.LOGGER.addLog(Log.LOGTYPE_WARNING, e);
             }
         }
 

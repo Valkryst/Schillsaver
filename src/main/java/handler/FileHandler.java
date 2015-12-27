@@ -1,7 +1,7 @@
 package handler;
 
-import misc.Logger;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import core.Driver;
+import core.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,7 +23,7 @@ public class FileHandler {
             outputStream.write(new byte[numberOfBytesToPad]);
             outputStream.close();
         } catch(final IOException e) {
-            Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
             System.exit(1);
         }
     }

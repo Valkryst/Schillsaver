@@ -2,9 +2,10 @@ package handler;
 
 
 import controller.MainScreenController;
+import core.Driver;
+import core.Log;
 import javafx.application.Platform;
 import misc.Job;
-import misc.Logger;
 
 import java.io.File;
 import java.util.Formatter;
@@ -53,7 +54,7 @@ public class ArchiveHandler {
 
 
         if(!file.exists()) {
-            Logger.writeLog("Could not create " + file.getAbsolutePath() + " shutting down.", Logger.LOG_TYPE_ERROR);
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, "Could not create " + file.getAbsolutePath() + " shutting down.");
             System.exit(1);
         }
         return file;
@@ -100,7 +101,7 @@ public class ArchiveHandler {
         final File file = new File(job.getName() + "." + configHandler.getDecodeFormat());
 
         if(!file.exists()) {
-            Logger.writeLog("Could not create " + job.getName() + " shutting down.", Logger.LOG_TYPE_ERROR);
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, "Could not create " + job.getName() + " shutting down.");
             System.exit(1);
         }
 

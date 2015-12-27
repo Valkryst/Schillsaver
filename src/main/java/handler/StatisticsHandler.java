@@ -1,7 +1,7 @@
 package handler;
 
-import misc.Logger;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import core.Driver;
+import core.Log;
 
 import java.io.*;
 import java.util.List;
@@ -47,7 +47,7 @@ public class StatisticsHandler {
                     totalEncodeRecords++;
                 }
             } catch(final FileNotFoundException e) {
-                Logger.writeLog("Could not locate the statistics_encode.txt file", Logger.LOG_TYPE_VERBOSE);
+                Driver.LOGGER.addLog(Log.LOGTYPE_VERBOSE, "Could not locate the statistics_encode.txt file", e);
             }
         }
 
@@ -62,7 +62,7 @@ public class StatisticsHandler {
                     totalDecodeRecords++;
                 }
             } catch(final FileNotFoundException e) {
-                Logger.writeLog("Could not locate the statistics_decode.txt file", Logger.LOG_TYPE_VERBOSE);
+                Driver.LOGGER.addLog(Log.LOGTYPE_VERBOSE, "Could not locate the statistics_decode.txt file", e);
             }
         }
 
@@ -118,11 +118,11 @@ public class StatisticsHandler {
         if(! outputFile.exists()) {
             try {
                 if(! outputFile.createNewFile()) {
-                    Logger.writeLog("Unable to create " + outputFile.getAbsolutePath() + " for some reason.", Logger.LOG_TYPE_ERROR);
+                    Driver.LOGGER.addLog(Log.LOGTYPE_VERBOSE, "Unable to create " + outputFile.getAbsolutePath() + " for some reason.");
                     System.exit(1);
                 }
             } catch(final IOException e) {
-                Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
+                Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
             }
         }
 
@@ -133,7 +133,7 @@ public class StatisticsHandler {
             printWriter.append(System.lineSeparator());
             printWriter.close();
         } catch(final IOException e) {
-            Logger.writeLog(e.getMessage() + "\n\n" + ExceptionUtils.getStackTrace(e), Logger.LOG_TYPE_ERROR);
+            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
         }
     }
 
