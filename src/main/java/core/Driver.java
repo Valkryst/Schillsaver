@@ -76,7 +76,7 @@ public class Driver extends Application{
      */
     public static void checkForUpdate() {
         try {
-            final URL url = new URL("https://valkryst.com/schillsaver/version.txt");
+            final URL url = new URL("http://pastebin.com/raw/JUksmXTf");
             Scanner scanner = new Scanner(url.openStream());
             final String newVersion = scanner.nextLine();
             scanner.close();
