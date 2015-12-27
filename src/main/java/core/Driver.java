@@ -16,7 +16,7 @@ import java.util.Scanner;
 
 public class Driver extends Application{
     /** The current version of the program. Whenever a significant change is made, this should be changed along with the online handler. */
-    private static final String PROGRAM_VERSION = "9";
+    private static final String PROGRAM_VERSION = "10";
 
     /** The logger used throughout the entire program whenever a log is to be written. */
     public static final Logger LOGGER = new Logger();;
