@@ -1,12 +1,9 @@
 package handler;
 
-import core.Driver;
-import core.Log;
 import eu.hansolo.enzo.notification.Notification;
-import files.FileInput;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.lang3.SystemUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -14,11 +11,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.sym.error;
 
 public class ConfigHandler {
     /** The name of the configuration handler. */
@@ -90,8 +83,7 @@ public class ConfigHandler {
         calculateFrameSize();
 
         try {
-            List<String> lines = FileInput.readEntireFile(Paths.get(FILENAME_CONFIG), true);
-
+            List<String> lines = FileUtils.readLines(new File(FILENAME_CONFIG), "utf-8");
 
             for(String currentLine : lines) {
                 if(currentLine.contains("ffmpegPath ")) {
@@ -327,37 +319,6 @@ public class ConfigHandler {
         frameSize /= (macroBlockDimensions * macroBlockDimensions); // (8 *8)
         frameSize /= Byte.SIZE;// / 8
         return frameSize;
-    }
-
-    /**
-     * Attempts to locate 7-Zip at it's default install location.
-     * If the program is found, then the path to it is set.
-     */
-    public void searchForDefaultProgramPaths() {
-        final File[] driveRoots = File.listRoots();
-
-        if(SystemUtils.IS_OS_WINDOWS) {
-            // Search for 7-Zip:
-            for(final File f : driveRoots) {
-                if(Files.exists(Paths.get(f.toPath() + "Program Files/7-Zip/7z.exe"))) {
-                    compressionProgramPath = f.toPath() + "Program Files/7-Zip/7z.exe";
-                    break;
-                } else if(Files.exists(Paths.get(f.toPath() + "Program Files (x86)/7-Zip/7z.exe"))) {
-                    compressionProgramPath = f.toURI() + "Program Files (x86)/7-Zip/7z.exe";
-                    break;
-                }
-            }
-        } else if(SystemUtils.IS_OS_LINUX) {
-            // todo Figure out how to get this to actually work.
-            /*
-            // Search for 7-Zip:
-            final String path = CommandHandler.runCommandWithResults("sh -c command -v 7za").get(0);
-
-            if(Files.exists(Paths.get(path))) {
-                compressionProgramPath = path;
-            }
-            */
-        }
     }
 
     /**
