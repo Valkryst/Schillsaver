@@ -2,10 +2,11 @@ package handler;
 
 
 import controller.MainScreenController;
-import core.Driver;
-import core.Log;
+import eu.hansolo.enzo.notification.Notification;
 import javafx.application.Platform;
 import misc.Job;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Formatter;
@@ -49,13 +50,17 @@ public class ArchiveHandler {
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
-        // Return a File poingint to the newly created archive:
+        // Return a File pointing to the newly created archive:
         final File file = new File(selectedFile.getAbsoluteFile() + "." + configHandler.getDecodeFormat());
 
 
-        if(!file.exists()) {
-            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, "Could not create " + file.getAbsolutePath() + " shutting down.");
-            System.exit(1);
+        if(! file.exists()) {
+            final String error = "Could not create " + file.getAbsolutePath() + ".";
+
+            final Logger logger = LogManager.getLogger();
+            logger.error(error);
+
+            Notification.Notifier.INSTANCE.notifyError("Error", error);
         }
         return file;
     }
@@ -100,9 +105,13 @@ public class ArchiveHandler {
         // Return a File int to the newly created archive:
         final File file = new File(job.getName() + "." + configHandler.getDecodeFormat());
 
-        if(!file.exists()) {
-            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, "Could not create " + job.getName() + " shutting down.");
-            System.exit(1);
+        if(! file.exists()) {
+            final String error = "Could not create " + job.getName() + ".";
+
+            final Logger logger = LogManager.getLogger();
+            logger.error(error);
+
+            Notification.Notifier.INSTANCE.notifyError("Error", error);
         }
 
         return file;

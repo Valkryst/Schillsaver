@@ -48,7 +48,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
 
     @Override
     public Object call() {
-        if(job.getIsEncodeJob()) {
+        if(job.isEncodeJob()) {
             encode();
         } else {
             decode();
@@ -73,11 +73,11 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
     private void encode() {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
-        if(job.getCombineAllFilesIntoSingleArchive()) {
+        if(job.isCombineAllFilesIntoSingleArchive()) {
             final File temp = archiveHandler.packFiles(job, selectedFiles, controller, configHandler);
             selectedFiles.clear();
             selectedFiles.add(temp);
-        } else if(job.getCombineIntoIndividualArchives()) {
+        } else if(job.isCombineIntoIndividualArchives()) {
             for(int i = 0 ; i < selectedFiles.size() ; i++) {
                 selectedFiles.set(i, archiveHandler.packFile(job, selectedFiles.get(i), controller, configHandler));
             }
@@ -96,7 +96,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
             // Use the fully custom settings if they're enabled:
-            if(configHandler.getUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegEncodingOptions().isEmpty()) {
+            if(configHandler.isUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegEncodingOptions().isEmpty()) {
                 formatter.format("\"%s\" %s",
                         configHandler.getFfmpegPath(),
                         configHandler.getFullyCustomFfmpegEncodingOptions());
@@ -108,7 +108,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 // Insert the output filename:
                 final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
                 stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
-            } else if (!configHandler.getUseFullyCustomFfmpegOptions()) {
+            } else if (!configHandler.isUseFullyCustomFfmpegOptions()) {
                 formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s%s.%s\"",
                         configHandler.getFfmpegPath(),
                         (configHandler.getEncodedVideoWidth() / configHandler.getMacroBlockDimensions()),
@@ -145,15 +145,15 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             statisticsHandler.recordData(true, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
 
             // Delete leftovers:
-            if(job.getCombineAllFilesIntoSingleArchive()) {
+            if(job.isCombineAllFilesIntoSingleArchive()) {
                 f.delete(); // This is just the archive, not the original handler.
             } else {
-                if(configHandler.getDeleteSourceFileWhenEncoding()) {
+                if(configHandler.isDeleteSourceFileWhenEncoding()) {
                     f.delete(); // This is the original handler.
                 }
             }
 
-            if(configHandler.getDeleteSourceFileWhenDecoding()) {
+            if(configHandler.isDeleteSourceFileWhenDecoding()) {
                f = new File(f.getAbsolutePath().replace(configHandler.getDecodeFormat(), ""));
                f.delete();
             }
@@ -176,7 +176,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
                 // Use the fully custom settings if they're enabled:
-                if(configHandler.getUseFullyCustomFfmpegOptions() && ! configHandler.getFullyCustomFfmpegDecodingOptions().isEmpty()) {
+                if(configHandler.isUseFullyCustomFfmpegOptions() && ! configHandler.getFullyCustomFfmpegDecodingOptions().isEmpty()) {
                     formatter.format("\"%s\" %s",
                             configHandler.getFfmpegPath(),
                             configHandler.getFullyCustomFfmpegEncodingOptions());
@@ -188,7 +188,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                     // Insert the output filename:
                     final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
                     stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
-                } else if(! configHandler.getUseFullyCustomFfmpegOptions()) {
+                } else if(! configHandler.isUseFullyCustomFfmpegOptions()) {
                     formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s%s.%s\"",
                             configHandler.getFfmpegPath(),
                             f.getAbsolutePath(),
@@ -221,7 +221,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 statisticsHandler.recordData(false, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
 
                 // Delete leftovers:
-                if(configHandler.getDeleteSourceFileWhenDecoding()) {
+                if(configHandler.isDeleteSourceFileWhenDecoding()) {
                     f.delete(); // This is just the archive, not the original handler.
                 }
             }

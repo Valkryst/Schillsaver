@@ -1,9 +1,10 @@
 package handler;
 
 import controller.MainScreenController;
-import core.Driver;
-import core.Log;
+import eu.hansolo.enzo.notification.Notification;
 import javafx.application.Platform;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,8 +48,10 @@ public class CommandHandler {
 
             is.close();
         } catch(final IOException e) {
-            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
-            System.exit(1);
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
         }
     }
 }

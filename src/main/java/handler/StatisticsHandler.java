@@ -1,8 +1,9 @@
 package handler;
 
-import core.Driver;
-import core.Log;
+import eu.hansolo.enzo.notification.Notification;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.List;
@@ -48,7 +49,12 @@ public class StatisticsHandler {
                     totalEncodeRecords++;
                 }
             } catch(final FileNotFoundException e) {
-                Driver.LOGGER.addLog(Log.LOGTYPE_VERBOSE, "Could not locate the statistics_encode.txt file", e);
+                final String error = "Could not locate the statistics_encode.txt file.";
+
+                final Logger logger = LogManager.getLogger();
+                logger.error(error);
+
+                Notification.Notifier.INSTANCE.notifyError("Error", error);
             }
         }
 
@@ -63,7 +69,12 @@ public class StatisticsHandler {
                     totalDecodeRecords++;
                 }
             } catch(final FileNotFoundException e) {
-                Driver.LOGGER.addLog(Log.LOGTYPE_VERBOSE, "Could not locate the statistics_decode.txt file", e);
+                final String error = "Could not locate the statistics_decode.txt file.";
+
+                final Logger logger = LogManager.getLogger();
+                logger.error(error);
+
+                Notification.Notifier.INSTANCE.notifyError("Error", error);
             }
         }
 
@@ -119,11 +130,18 @@ public class StatisticsHandler {
         if(! outputFile.exists()) {
             try {
                 if(! outputFile.createNewFile()) {
-                    Driver.LOGGER.addLog(Log.LOGTYPE_VERBOSE, "Unable to create " + outputFile.getAbsolutePath() + " for some reason.");
-                    System.exit(1);
+                    final String error = "Unable to create " + outputFile.getAbsolutePath() + ".";
+
+                    final Logger logger = LogManager.getLogger();
+                    logger.error(error);
+
+                    Notification.Notifier.INSTANCE.notifyError("Error", error);
                 }
             } catch(final IOException e) {
-                Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
+                final Logger logger = LogManager.getLogger();
+                logger.error(e);
+
+                Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
             }
         }
 
@@ -134,7 +152,10 @@ public class StatisticsHandler {
             printWriter.append(System.lineSeparator());
             printWriter.close();
         } catch(final IOException e) {
-            Driver.LOGGER.addLog(Log.LOGTYPE_ERROR, e);
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
         }
     }
 
