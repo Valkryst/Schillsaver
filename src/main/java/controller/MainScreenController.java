@@ -10,11 +10,9 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import lombok.Getter;
 import misc.Job;
 import model.MainScreenModel;
-import org.w3c.dom.events.EventException;
 import view.MainScreenView;
 
 import java.io.File;
@@ -121,7 +119,7 @@ public class MainScreenController implements EventHandler {
 
                 // Only prepare Encode Jobs:
                 for(final Job job : model.getList_jobs()) {
-                    if(job.getIsEncodeJob()) {
+                    if(job.isEncodeJob()) {
                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
                         ffmpegHandler.setOnSucceeded(ffmpegHandler);
                         preparedJobs.add(ffmpegHandler);
@@ -150,7 +148,7 @@ public class MainScreenController implements EventHandler {
 
                 // Only prepare Encode Jobs:
                 for(final Job job : model.getList_jobs()) {
-                    if(job.getIsEncodeJob() == false) {
+                    if(job.isEncodeJob() == false) {
                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
                         ffmpegHandler.setOnSucceeded(ffmpegHandler);
                         preparedJobs.add(ffmpegHandler);

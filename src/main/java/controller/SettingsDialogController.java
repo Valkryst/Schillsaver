@@ -53,7 +53,7 @@ public class SettingsDialogController extends Stage implements EventHandler {
             // If it is, then save the settings.
             if(!view.getController_ffmpegSettings().areSettingsCorrect() && !view.getController_miscSettings().areSettingsCorrect()) {
                 // Show any warnings about YouTube compatability:
-                if(configHandler.getWarnUserIfSettingsMayNotWorkForYouTube()) {
+                if(configHandler.isWarnUserIfSettingsMayNotWorkForYouTube()) {
                     view.getController_ffmpegSettings().displayWarningsAboutYouTubeCompatability();
                 }
 
