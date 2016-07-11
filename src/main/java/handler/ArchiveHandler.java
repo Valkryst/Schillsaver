@@ -41,12 +41,10 @@ public class ArchiveHandler {
                         job.getName(),
                         configHandler.getDecodeFormat());
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-            }
-        });
+        Platform.runLater(() -> controller.getView()
+                                          .getTextArea_output()
+                                          .appendText(stringBuilder.toString() + System.lineSeparator() +
+                                                      System.lineSeparator() + System.lineSeparator()));
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
@@ -87,18 +85,17 @@ public class ArchiveHandler {
                         job.getName(),
                         job.getOutputDirectory());
 
-        for(final File f : selectedFiles) {
-            // todo If it's possible to do the below to lines with the formatter, then do so.
-            stringBuilder.append(" ");
-            stringBuilder.append("\"" + f.getAbsolutePath() + "\"");
-        }
+        selectedFiles.parallelStream()
+                     .forEach(file -> {
+                         // todo If it's possible to do the below to lines with the formatter, then do so.
+                         stringBuilder.append(" ");
+                         stringBuilder.append("\"" + file.getAbsolutePath() + "\"");
+                     });
 
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-            }
-        });
+        Platform.runLater(() -> controller.getView()
+                                          .getTextArea_output()
+                                          .appendText(stringBuilder.toString() + System.lineSeparator() +
+                                                      System.lineSeparator() + System.lineSeparator()));
 
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
