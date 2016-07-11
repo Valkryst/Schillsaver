@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent> {
     /** The Job being run. */
@@ -123,21 +124,21 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                         configHandler.getEncodeFormat());
             }
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-                }
-            });
+            Platform.runLater(() -> controller.getView()
+                                              .getTextArea_output()
+                                              .appendText(stringBuilder.toString() + System.lineSeparator() +
+                                                          System.lineSeparator() + System.lineSeparator()));
 
             CommandHandler.runProgram(stringBuilder.toString(), controller);
 
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    controller.getView().getTextArea_output().appendText("ENCODING COMPLETED");
-                    controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-                }
+            Platform.runLater(() -> {
+                controller.getView()
+                          .getTextArea_output()
+                          .appendText("ENCODING COMPLETED");
+
+                controller.getView()
+                          .getTextArea_output()
+                          .appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
             });
 
             // Finish statistics estimation:
@@ -199,21 +200,21 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                             configHandler.getDecodeFormat());
                 }
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        controller.getView().getTextArea_output().appendText(stringBuilder.toString() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-                    }
-                });
+                Platform.runLater(() -> controller.getView()
+                                                  .getTextArea_output()
+                                                  .appendText(stringBuilder.toString() + System.lineSeparator() +
+                                                              System.lineSeparator() + System.lineSeparator()));
 
                 CommandHandler.runProgram(stringBuilder.toString(), controller);
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        controller.getView().getTextArea_output().appendText("DECODING COMPLETED");
-                        controller.getView().getTextArea_output().appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
-                    }
+                Platform.runLater(() -> {
+                    controller.getView()
+                              .getTextArea_output()
+                              .appendText("DECODING COMPLETED");
+
+                    controller.getView()
+                              .getTextArea_output()
+                              .appendText(System.lineSeparator() + System.lineSeparator() + System.lineSeparator());
                 });
 
                 // Finish statistics estimation:
@@ -296,14 +297,13 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
 
     ////////////////////////////////////////////////////////// Getters
 
-    /** @return The total combined filesize of all file(s) to be en/decoded. */
+    /** @return The total combined file-size of all file(s) to be en/decoded. */
     public long getTotalFilesize() {
-        long temp = 0;
+        final AtomicLong temp = new AtomicLong(0);
 
-        for(final File f : selectedFiles) {
-            temp += f.length();
-        }
+        selectedFiles.parallelStream()
+                     .forEach(file -> temp.addAndGet(file.length()));
 
-        return temp;
+        return temp.get();
     }
 }
