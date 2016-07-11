@@ -1,6 +1,5 @@
 package controller;
 
-import core.Driver;
 import eu.hansolo.enzo.notification.Notification;
 import handler.ConfigHandler;
 import handler.StatisticsHandler;
@@ -195,7 +194,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                 final String description = view.getTextArea_jobDescription().getText();
                 final String outputDirectory = view.getTextField_outputDirectory().getText();
                 final List<File> files = model.getList_files();
-                final boolean isEncodeJob = view.isEncodeJob();
+                final boolean isEncodeJob = view.getIsEncodeJob();
                 final boolean combineAllFilesIntoSingleArchive = view.getRadioButton_singleArchive_yes().isSelected();
                 final boolean combineIntoIndividualArchives = view.getRadioButton_individualArchives_yes().isSelected();
 
