@@ -26,24 +26,16 @@ public class CommandHandler {
             final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
             // Ensure the process shuts down if the program exits:
-            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    process.destroy();
-                }
-            }));
+            Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
 
 
             String line;
             while((line = reader.readLine()) != null) {
                 final String temp = line;
 
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        controller.getView().getTextArea_output().appendText(temp + System.lineSeparator());
-                    }
-                });
+                Platform.runLater(() -> controller.getView()
+                                                  .getTextArea_output()
+                                                  .appendText(temp + System.lineSeparator()));
             }
 
             is.close();
