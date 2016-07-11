@@ -1,7 +1,7 @@
 package controller;
 
 import core.Driver;
-import core.Log;
+import eu.hansolo.enzo.notification.Notification;
 import handler.ConfigHandler;
 import handler.StatisticsHandler;
 import javafx.collections.FXCollections;
@@ -19,6 +19,8 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import misc.Job;
 import model.JobSetupDialogModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import view.JobSetupDialogView;
 
 import javax.swing.*;
@@ -179,7 +181,10 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                     view.getTextField_outputDirectory().setText(fileChooser.getSelectedFile().getPath() + "/");
                 }
             } catch(final HeadlessException e) {
-                Driver.LOGGER.addLog(Log.LOGTYPE_WARNING, e);
+                final Logger logger = LogManager.getLogger();
+                logger.warn(e);
+
+                Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
             }
         }
 
@@ -190,7 +195,7 @@ public class JobSetupDialogController extends Stage implements EventHandler {
                 final String description = view.getTextArea_jobDescription().getText();
                 final String outputDirectory = view.getTextField_outputDirectory().getText();
                 final List<File> files = model.getList_files();
-                final boolean isEncodeJob = view.getIsEncodeJob();
+                final boolean isEncodeJob = view.isEncodeJob();
                 final boolean combineAllFilesIntoSingleArchive = view.getRadioButton_singleArchive_yes().isSelected();
                 final boolean combineIntoIndividualArchives = view.getRadioButton_individualArchives_yes().isSelected();
 
