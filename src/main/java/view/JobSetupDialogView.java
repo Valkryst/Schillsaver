@@ -279,4 +279,9 @@ public class JobSetupDialogView extends HBox {
 
         return panel;
     }
+
+    /** @return Whether or not the Job is an Encode Job. If not, then it's a Decode Job. */
+    public boolean getIsEncodeJob() {
+        return comboBox_jobType.getSelectionModel().getSelectedItem().equals("Encode");
+    }
 }
