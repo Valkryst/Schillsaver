@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.Getter;
 import view.settings.FfmpegSettingsPane;
 
 import java.io.File;
@@ -15,7 +16,7 @@ import java.nio.file.Paths;
 
 public class FfmpegSettingsController implements EventHandler {
     // todo JavaDoc
-    private final FfmpegSettingsPane pane;
+    @Getter private final FfmpegSettingsPane pane;
 
     // todo JavaDoc
     private final Stage settingsStage;
@@ -321,10 +322,5 @@ public class FfmpegSettingsController implements EventHandler {
                 alert.showAndWait();
             }
         }
-    }
-
-    // todo JavaDoc
-    public FfmpegSettingsPane getPane() {
-        return pane;
     }
 }

@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.Getter;
 import view.settings.MiscSettingsPane;
 
 import java.io.File;
@@ -14,7 +15,7 @@ import java.nio.file.Paths;
 
 public class MiscSettingsController implements EventHandler {
     // todo JavaDoc
-    private final MiscSettingsPane pane;
+    @Getter private final MiscSettingsPane pane;
 
     // todo JavaDoc
     private final Stage settingsStage;
@@ -106,10 +107,5 @@ public class MiscSettingsController implements EventHandler {
         }
 
         return wasErrorFound;
-    }
-
-    // todo JavaDoc
-    public MiscSettingsPane getPane() {
-        return pane;
     }
 }

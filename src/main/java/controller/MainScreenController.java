@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import lombok.Getter;
 import misc.Job;
 import model.MainScreenModel;
 import org.w3c.dom.events.EventException;
@@ -27,9 +28,9 @@ public class MainScreenController implements EventHandler {
     private final Stage primaryStage;
 
     // todo JavaDoc
-    private final MainScreenView view;
+    @Getter private final MainScreenView view;
     // todo JavaDoc
-    private final MainScreenModel model;
+    @Getter private final MainScreenModel model;
 
     /** The object that handles settings for encoding, decoding, compression, and a number of other features. */
     private final ConfigHandler configHandler;
@@ -223,17 +224,5 @@ public class MainScreenController implements EventHandler {
         alert.setHeaderText("FFmpeg was not found.");
         alert.setContentText("Please change the FFmpeg path in the settings menu.\nIf you have set the path, confirm that the file can be accessed.");
         alert.showAndWait();
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    // todo JavaDoc
-    public MainScreenView getView() {
-        return view;
-    }
-
-    // todo JavaDoc
-    public MainScreenModel getModel() {
-        return model;
     }
 }

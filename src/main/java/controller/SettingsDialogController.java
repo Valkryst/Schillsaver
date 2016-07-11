@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
 import view.SettingsDialogView;
 import view.settings.ArchivalSettingsPane;
 import view.settings.FfmpegSettingsPane;
@@ -14,7 +15,7 @@ import view.settings.MiscSettingsPane;
 
 public class SettingsDialogController extends Stage implements EventHandler {
     // todo JavaDoc
-    private final SettingsDialogView view;
+    @Getter private final SettingsDialogView view;
 
     /**
      * The object that handles settings for encoding, decoding, compression, and a number of other features.
@@ -90,12 +91,5 @@ public class SettingsDialogController extends Stage implements EventHandler {
         if(source.equals(view.getButton_cancel())) {
             this.close();
         }
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    // todo JavaDoc
-    public SettingsDialogView getView() {
-        return view;
     }
 }

@@ -16,6 +16,7 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
 import misc.Job;
 import model.JobSetupDialogModel;
 import view.JobSetupDialogView;
@@ -30,9 +31,9 @@ import java.util.List;
 
 public class JobSetupDialogController extends Stage implements EventHandler {
     // todo JavaDoc
-    private final JobSetupDialogView view;
+    @Getter private final JobSetupDialogView view;
     // todo JavaDoc
-    private final JobSetupDialogModel model;
+    @Getter private final JobSetupDialogModel model;
 
     // todo JavaDoc
     private final StatisticsHandler statisticsHandler;
@@ -274,17 +275,5 @@ public class JobSetupDialogController extends Stage implements EventHandler {
         } else {
             view.getLabel_job_estimatedDurationInMinutes().setText("Estimated Time - Unknown");
         }
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    // todo JavaDoc
-    public JobSetupDialogView getView() {
-        return view;
-    }
-
-    // todo JavaDoc
-    public JobSetupDialogModel getModel() {
-        return model;
     }
 }
