@@ -69,30 +69,14 @@ public class JobSetupDialogView extends HBox {
         // Setup Job  List:
         listView_selectedFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        // Setup Toggle Groups:
-        radioButton_singleArchive_yes.setToggleGroup(toggleGroup_singleArchive);
-        radioButton_singleArchive_no.setToggleGroup(toggleGroup_singleArchive);
+        // Setup Components:
+        setTooltips();
+        setFieldPrompts();
 
-        radioButton_individualArchives_yes.setToggleGroup(toggleGroup_individualArchives);
-        radioButton_individualArchives_no.setToggleGroup(toggleGroup_individualArchives);
+        setEventHandlers(controller);
 
-        // Set Default Values:
-        if(configHandler.getCompressionProgramPath().isEmpty()) {
-            radioButton_singleArchive_no.setSelected(true);
-            radioButton_individualArchives_no.setSelected(true);
-        } else {
-            radioButton_singleArchive_yes.setSelected(true);
-            radioButton_individualArchives_no.setSelected(true);
-        }
-
-        // Disable Archive Options if Archival Program Not Set:
-        if(configHandler.getCompressionProgramPath().isEmpty()) {
-            radioButton_singleArchive_yes.setDisable(true);
-            radioButton_singleArchive_no.setDisable(true);
-
-            radioButton_individualArchives_yes.setDisable(true);
-            radioButton_individualArchives_no.setDisable(true);
-        }
+        setRadioButtonToggleGroups();
+        setRadioButtonDefaults(configHandler);
 
         // Load Existing Data:
         if(jobToEdit != null) {
@@ -100,12 +84,12 @@ public class JobSetupDialogView extends HBox {
 
             textArea_jobDescription.setText(jobToEdit.getDescription());
 
-            if(jobToEdit.getCombineAllFilesIntoSingleArchive()) {
+            if(jobToEdit.isCombineAllFilesIntoSingleArchive()) {
                 radioButton_singleArchive_yes.setSelected(true);
                 radioButton_individualArchives_no.setSelected(true);
             }
 
-            if(jobToEdit.getCombineIntoIndividualArchives()) {
+            if(jobToEdit.isCombineIntoIndividualArchives()) {
                 radioButton_individualArchives_yes.setSelected(true);
                 radioButton_singleArchive_no.setSelected(true);
             }
@@ -118,23 +102,8 @@ public class JobSetupDialogView extends HBox {
             field_jobName.setText("Job " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         }
 
-        // Set Text Field/Area Background Text:
-        field_jobName.setPromptText("Enter a name for the Job.");
-
-        textArea_jobDescription.setPromptText("Enter a description for the Job.\nThis is not required.");
-        textField_outputDirectory.setPromptText("Output Directory");
-
         // Setup Combo Box:
         comboBox_jobType.getSelectionModel().select(0);
-
-        // Set Component Tooltips:
-        button_addFiles.setTooltip(new Tooltip("Open the file selection dialog to select a new file."));
-        button_removeSelectedFiles.setTooltip(new Tooltip("Removes all files that are currently selected on the list."));
-        button_clearAllFiles.setTooltip(new Tooltip("Clears the list of all files."));
-        button_accept.setTooltip(new Tooltip("Accepts the Job settings and closes the dialog and creates a Job."));
-        button_cancel.setTooltip(new Tooltip("Rejects the Job settings and closes the dialog without creating a Job."));
-
-        comboBox_jobType.setTooltip(new Tooltip("Defines which type of Job to create."));
 
         // if possible, get default 'home' directory and set it as output default.
         try {
@@ -143,10 +112,33 @@ public class JobSetupDialogView extends HBox {
         } catch (Exception e) {
             // discard
         }
+
+        // Setup the Layout:
+        this.setSpacing(4);
+        this.getChildren().addAll(setupLeftPanel(), setupRightPanel(settingsStage));
+    }
+
+    /** Sets the default tooltips for all relevant components. */
+    private void setTooltips() {
+        button_addFiles.setTooltip(new Tooltip("Open the file selection dialog to select a new file."));
+        button_removeSelectedFiles.setTooltip(new Tooltip("Removes all files that are currently selected on the list."));
+        button_clearAllFiles.setTooltip(new Tooltip("Clears the list of all files."));
+        button_accept.setTooltip(new Tooltip("Accepts the Job settings and closes the dialog and creates a Job."));
+        button_cancel.setTooltip(new Tooltip("Rejects the Job settings and closes the dialog without creating a Job."));
+
+        comboBox_jobType.setTooltip(new Tooltip("Defines which type of Job to create."));
+
         textField_outputDirectory.setTooltip(new Tooltip("The directory in which to place the en/decoded file(s)."));
         button_selectOutputDirectory.setTooltip(new Tooltip("Open the directory selection dialog to select an output directory."));
+    }
 
-        // Set Component EventHandlers:
+    /**
+     * Sets the EventHandler for all relevant components.
+     *
+     * @param controller
+     *         The EventHandler to use.
+     */
+    private void setEventHandlers(final JobSetupDialogController controller) {
         button_addFiles.setOnAction(controller);
         button_removeSelectedFiles.setOnAction(controller);
         button_clearAllFiles.setOnAction(controller);
@@ -156,37 +148,97 @@ public class JobSetupDialogView extends HBox {
         button_selectOutputDirectory.setOnAction(controller);
         radioButton_singleArchive_yes.setOnAction(controller);
         radioButton_individualArchives_yes.setOnAction(controller);
+    }
 
-        // Setup the Layout:
-        final HBox panel_left_top = new HBox(10);
-        panel_left_top.setAlignment(Pos.CENTER);
-        panel_left_top.getChildren().addAll(button_addFiles, button_removeSelectedFiles, button_clearAllFiles);
+    /** Groups radio buttons into their toggle groups. */
+    private void setRadioButtonToggleGroups() {
+        radioButton_singleArchive_yes.setToggleGroup(toggleGroup_singleArchive);
+        radioButton_singleArchive_no.setToggleGroup(toggleGroup_singleArchive);
 
-        final HBox panel_left_bottom = new HBox(10);
-        panel_left_bottom.setAlignment(Pos.CENTER);
-        panel_left_bottom.getChildren().addAll(button_accept, button_cancel);
+        radioButton_individualArchives_yes.setToggleGroup(toggleGroup_individualArchives);
+        radioButton_individualArchives_no.setToggleGroup(toggleGroup_individualArchives);
+    }
 
-        final VBox panel_left = new VBox(4);
-        HBox.setHgrow(panel_left, Priority.ALWAYS);
+    /** Sets the default prompt text for all relevant fields. */
+    private void setFieldPrompts() {
+        field_jobName.setPromptText("Enter a name for the Job.");
+        textArea_jobDescription.setPromptText("Enter a description for the Job.\nThis is not required.");
+        textField_outputDirectory.setPromptText("Output Directory");
+    }
+
+    /**
+     * Sets the default selections for the radio button toggle groups.
+     *
+     * @param configHandler
+     *         todo JavaDoc
+     */
+    private void setRadioButtonDefaults(final ConfigHandler configHandler) {
+        if(configHandler.getCompressionProgramPath().isEmpty()) {
+            radioButton_singleArchive_no.setSelected(true);
+            radioButton_individualArchives_no.setSelected(true);
+        } else {
+            radioButton_singleArchive_yes.setSelected(true);
+            radioButton_individualArchives_no.setSelected(true);
+        }
+
+        // Disable archive options if no archival program is set:
+        if(configHandler.getCompressionProgramPath().isEmpty()) {
+            radioButton_singleArchive_yes.setDisable(true);
+            radioButton_singleArchive_no.setDisable(true);
+
+            radioButton_individualArchives_yes.setDisable(true);
+            radioButton_individualArchives_no.setDisable(true);
+        }
+    }
+
+    private VBox setupLeftPanel() {
+        final HBox top = new HBox(10);
+        top.setAlignment(Pos.CENTER);
+        top.getChildren().addAll(button_addFiles, button_removeSelectedFiles, button_clearAllFiles);
+
+        final HBox bottom = new HBox(10);
+        bottom.setAlignment(Pos.CENTER);
+        bottom.getChildren().addAll(button_accept, button_cancel);
+
+        final VBox panel = new VBox(4);
+        HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(listView_selectedFiles, Priority.ALWAYS);
-        panel_left.getChildren().addAll(panel_left_top, listView_selectedFiles, panel_left_bottom);
+        panel.getChildren().addAll(top, listView_selectedFiles, bottom);
 
+        return panel;
+    }
 
+    private VBox setupRightPanel(final Stage settingsStage) {
+        final VBox top = setupTopRightPanel();
+        final VBox bottom = setupBottomRightPanel(settingsStage);
 
-        final HBox panel_right_top_top = new HBox(10);
-        HBox.setHgrow(field_jobName, Priority.ALWAYS);
-        panel_right_top_top.getChildren().addAll(comboBox_jobType, field_jobName);
-
-        final VBox panel_right_top_bottom= new VBox(4);
+        final VBox panel = new VBox(4);
+        HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
-        VBox.setVgrow(panel_right_top_bottom, Priority.ALWAYS);
-        panel_right_top_bottom.setAlignment(Pos.CENTER);
-        panel_right_top_bottom.getChildren().addAll(textArea_jobDescription, label_job_estimatedDurationInMinutes);
+        panel.getChildren().addAll(top, bottom);
 
-        final VBox panel_right_top = new VBox(4);
-        VBox.setVgrow(panel_right_top,Priority.ALWAYS);
-        panel_right_top.getChildren().addAll(panel_right_top_top, panel_right_top_bottom);
+        return panel;
+    }
 
+    private VBox setupTopRightPanel() {
+        final HBox top = new HBox(10);
+        HBox.setHgrow(field_jobName, Priority.ALWAYS);
+        top.getChildren().addAll(comboBox_jobType, field_jobName);
+
+        final VBox bottom= new VBox(4);
+        VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
+        VBox.setVgrow(bottom, Priority.ALWAYS);
+        bottom.setAlignment(Pos.CENTER);
+        bottom.getChildren().addAll(textArea_jobDescription, label_job_estimatedDurationInMinutes);
+
+        final VBox panel = new VBox(4);
+        VBox.setVgrow(panel,Priority.ALWAYS);
+        panel.getChildren().addAll(top, bottom);
+
+        return panel;
+    }
+
+    private VBox setupBottomRightPanel(final Stage settingsStage) {
         final HBox pane_panel_singleArchive = new HBox(10);
         pane_panel_singleArchive.setAlignment(Pos.CENTER);
         pane_panel_singleArchive.getChildren().addAll(radioButton_singleArchive_yes, radioButton_singleArchive_no);
@@ -208,29 +260,23 @@ public class JobSetupDialogView extends HBox {
         HBox.setHgrow(pane_individualArchives, Priority.ALWAYS);
         pane_individualArchives.setText("Pack File(s) into Individual Archives");
         pane_individualArchives.setCollapsible(false);
-        pane_individualArchives.heightProperty().addListener((observable, oldValue, newValue) -> { // Ensures that the scene will rezize when the pane is collapsed.
+        pane_individualArchives.heightProperty().addListener((observable, oldValue, newValue) -> { // Ensures that the scene will resize when the pane is collapsed.
             settingsStage.sizeToScene();
         });
         pane_individualArchives.setContent(pane_panel_individualArchives);
 
-        final HBox panel_right_bottom_top = new HBox(10);
-        panel_right_bottom_top.getChildren().addAll(pane_singleArchive, pane_individualArchives);
 
-        final HBox panel_right_bottom_bottom = new HBox(10);
+
+        final HBox top = new HBox(10);
+        top.getChildren().addAll(pane_singleArchive, pane_individualArchives);
+
+        final HBox bottom = new HBox(10);
         HBox.setHgrow(textField_outputDirectory, Priority.ALWAYS);
-        panel_right_bottom_bottom.getChildren().addAll(textField_outputDirectory, button_selectOutputDirectory);
+        bottom.getChildren().addAll(textField_outputDirectory, button_selectOutputDirectory);
 
-        final VBox panel_right_bottom = new VBox(4);
-        panel_right_bottom.getChildren().addAll(panel_right_bottom_top, panel_right_bottom_bottom);
+        final VBox panel = new VBox(4);
+        panel.getChildren().addAll(top, bottom);
 
-        final VBox panel_right = new VBox(4);
-        HBox.setHgrow(panel_right, Priority.ALWAYS);
-        VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
-        panel_right.getChildren().addAll(panel_right_top, panel_right_bottom);
-
-
-
-        this.setSpacing(4);
-        this.getChildren().addAll(panel_left, panel_right);
+        return panel;
     }
 }
