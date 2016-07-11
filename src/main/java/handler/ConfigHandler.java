@@ -3,6 +3,8 @@ package handler;
 import core.Driver;
 import core.Log;
 import files.FileInput;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.SystemUtils;
 
 import java.io.BufferedWriter;
@@ -21,57 +23,57 @@ public class ConfigHandler {
     public static final String[] FFMPEG_LOG_LEVELS = {"quiet", "panic", "fatal", "error", "warning", "info", "verbose", "debug", "trace"};
 
     /** The absolute path to ffmpeg/ffmpeg.exe. */
-    private String ffmpegPath = "";
+    @Getter @Setter private String ffmpegPath = "";
     /** The absolute path to 7zip/7zip.exe or whichever compression program is specified. */
-    private String compressionProgramPath = "";
+    @Getter @Setter private String compressionProgramPath = "";
 
     /** The format to encode to. */
-    private String encodeFormat = "mkv";
+    @Getter @Setter  private String encodeFormat = "mkv";
     /** The format to decode to. */
-    private String decodeFormat = "7z";
+    @Getter @Setter private String decodeFormat = "7z";
 
     /** The width, in pixels, of the encoded video. */
-    private int encodedVideoWidth = 1280;
+    @Getter private int encodedVideoWidth = 1280;
     /** The height, in pixels, of the encoded video. */
-    private int encodedVideoHeight = 720;
+    @Getter private int encodedVideoHeight = 720;
     /** The framerate of the video. Ex ~ 30fps, 60fps, etc... */
-    private int encodedFramerate = 30;
+    @Getter private int encodedFramerate = 30;
     /** The size of each frame of video in bytes. */
-    private int frameSize;
+    @Getter private int frameSize;
     /** The width/height of each encoded macroblock. */
-    private int macroBlockDimensions = 8;
+    @Getter private int macroBlockDimensions = 8;
     /** The codec to encode/decode the video with. */
-    private String encodingLibrary = "libvpx";
+    @Getter @Setter private String encodingLibrary = "libvpx";
     /** The level of information that should be given by ffmpeg while ffmpeg is running. */
-    private String ffmpegLogLevel = "info";
+    @Getter @Setter private String ffmpegLogLevel = "info";
 
     /** Whether or not to ignore all other ffmpeg options and to use the fullyCustomFfmpegEncodingOptions and fullyCustomFfmpegDecodingOptions instead. */
-    private boolean useFullyCustomFfmpegOptions = false;
+    @Getter @Setter private boolean useFullyCustomFfmpegOptions = false;
     /** The user-entered command line arguments to use when encoding with ffmpeg. */
-    private String fullyCustomFfmpegEncodingOptions = "";
+    @Getter @Setter private String fullyCustomFfmpegEncodingOptions = "";
     /** The user-entered command line arguments to use when encoding with ffmpeg. */
-    private String fullyCustomFfmpegDecodingOptions = "";
+    @Getter @Setter private String fullyCustomFfmpegDecodingOptions = "";
 
     /** Whether or not to delete the source file after encoding. */
-    private boolean deleteSourceFileWhenEncoding = false;
+    @Getter @Setter private boolean deleteSourceFileWhenEncoding = false;
     /** whether or not to delete the osource file after decoding. */
-    private boolean deleteSourceFileWhenDecoding = false;
+    @Getter @Setter private boolean deleteSourceFileWhenDecoding = false;
 
     /** Whether or not to show the splash screen on startup. */
-    private boolean showSplashScreen = true;
+    @Getter @Setter private boolean showSplashScreen = true;
     /** The absolute path to the splash screen to display. */
-    private String splashScreenFilePath = "Splash.png";
+    @Getter @Setter private String splashScreenFilePath = "Splash.png";
     /** The amount of time, in milliseconds, to display the splash screen. */
-    private int splashScreenDisplayTime = 3000;
+    @Getter private int splashScreenDisplayTime = 3000;
 
     /** The base commands to use when compressing a handler before encoding. */
-    private String compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
+    @Getter @Setter private String compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
 
     /** Whether or not to check for program updates on program start. */
-    private boolean checkForUpdatesOnStart = false;
+    @Getter @Setter private boolean checkForUpdatesOnStart = false;
 
     /** Whether or not to warn the user if their settings may not work with YouTube. */
-    private boolean warnUserIfSettingsMayNotWorkForYouTube = true;
+    @Getter @Setter private boolean warnUserIfSettingsMayNotWorkForYouTube = true;
 
     /**
      * Reads in each line from the configuration handler and attempts to parse
@@ -350,140 +352,6 @@ public class ConfigHandler {
         }
     }
 
-    ////////////////////////////////////////////////////////// Getters
-
-    /** @return The absolute path to ffmpeg/ffmpeg.exe. */
-    public String getFfmpegPath() {
-        return ffmpegPath;
-    }
-
-    /** @return The absolute path to 7zip/7zip.exe. */
-    public String getCompressionProgramPath() {
-        return compressionProgramPath;
-    }
-
-    /** @return The format to encode to. */
-    public String getEncodeFormat() {
-        return encodeFormat;
-    }
-
-    /** @return The format to decode to. */
-    public String getDecodeFormat() {
-        return decodeFormat;
-    }
-
-    /** @return The width, in pixels, of the encoded video. */
-    public int getEncodedVideoWidth() {
-        return encodedVideoWidth;
-    }
-
-    /** @return The height, in pixels, of the encoded video. */
-    public int getEncodedVideoHeight() {
-        return encodedVideoHeight;
-    }
-
-    /** @return The framerate of the video. Ex ~ 30fps, 60fps, etc... */
-    public int getEncodedFramerate() {
-        return encodedFramerate;
-    }
-
-    /** @return The size of each frame of video in bytes. */
-    public int getFrameSize() {
-        return frameSize;
-    }
-
-    /** @return The width/height of each encoded macroblock. */
-    public int getMacroBlockDimensions() {
-        return macroBlockDimensions;
-    }
-
-    /** @return The codec to encode/decode the video with. */
-    public String getEncodingLibrary() {
-        return encodingLibrary;
-    }
-
-    /** @return The level of information that should be given by ffmpeg while ffmpeg is running. */
-    public String getFfmpegLogLevel() {
-        return ffmpegLogLevel;
-    }
-
-    /** @return Whether or not to ignore all other ffmpeg options and to use the fullyCustomFfmpegEncodingOptions and fullyCustomFfmpegDecodingOptions instead. */
-    public boolean getUseFullyCustomFfmpegOptions() {
-        return useFullyCustomFfmpegOptions;
-    }
-
-    /** @return The user-entered command line arguments to use when encoding with ffmpeg. */
-    public String getFullyCustomFfmpegEncodingOptions() {
-        return fullyCustomFfmpegEncodingOptions;
-    }
-
-    /** @return The user-entered command line arguments to use when encoding with ffmpeg. */
-    public String getFullyCustomFfmpegDecodingOptions() {
-        return fullyCustomFfmpegDecodingOptions;
-    }
-
-    /** @return Whether or not to delete the source file after encoding. */
-    public boolean getDeleteSourceFileWhenEncoding() {
-        return deleteSourceFileWhenEncoding;
-    }
-
-    /** @return Whether or not to delete the source file after decoding. */
-    public boolean getDeleteSourceFileWhenDecoding() {
-        return deleteSourceFileWhenDecoding;
-    }
-
-    /** @return Whether or not to show the splash screen on startup. */
-    public boolean getShowSplashScreen() {
-        return showSplashScreen;
-    }
-
-    /** @return The path to the splash screen to display. */
-    public String getSplashScreenFilePath() {
-        return splashScreenFilePath;
-    }
-
-    /** @return The amount of time, in milliseconds, to display the splash screen. */
-    public int getSplashScreenDisplayTime() {
-        return splashScreenDisplayTime;
-    }
-
-    /** @return The base commands to use when compressing a handler before encoding. */
-    public String getCompressionCommands() {
-        return compressionCommands;
-    }
-
-    /** @return Whether or not to check for program updates on program start. */
-    public boolean getCheckForUpdatesOnStart() {
-        return checkForUpdatesOnStart;
-    }
-
-    /** @return Whether or not to warn the user if their settings may not work with YouTube. */
-    public boolean getWarnUserIfSettingsMayNotWorkForYouTube() {
-        return warnUserIfSettingsMayNotWorkForYouTube;
-    }
-
-    ////////////////////////////////////////////////////////// Setters
-
-    /** @param ffmpegPath The new absolute path to ffmpeg/ffmpeg.exe */
-    public void setFfmpegPath(final String ffmpegPath) {
-        this.ffmpegPath = ffmpegPath;
-    }
-
-    /** @param compressionProgramPath The new absolute path to 7zip/7zip.exe. */
-    public void setCompressionProgramPath(final String compressionProgramPath) {
-        this.compressionProgramPath = compressionProgramPath;
-    }
-
-    /** @param encodeFormat The new format to encode to. */
-    public void setEncodeFormat(final String encodeFormat) {
-        this.encodeFormat = encodeFormat;
-    }
-
-    /** @param decodeFormat The new format to decode to. */
-    public void setDecodeFormat(final String decodeFormat) {
-        this.decodeFormat = decodeFormat;
-    }
-
     /**
      * @param encodedVideoWidth The new width, in pixels, of the encoded video.
      * @throws IllegalArgumentException Thrown if the input width is less than 1.
@@ -532,51 +400,6 @@ public class ConfigHandler {
         }
     }
 
-    /** @param encodingLibrary The new codec to encode/decode the video with. */
-    public void setEncodingLibrary(final String encodingLibrary) {
-        this.encodingLibrary = encodingLibrary;
-    }
-
-    /** @param ffmpegLogLevel The new level of information that should be given by ffmpeg while ffmpeg is running. */
-    public void setFfmpegLogLevel(final String ffmpegLogLevel) {
-        this.ffmpegLogLevel = ffmpegLogLevel;
-    }
-
-    /** @param useFullyCustomFfmpegOptions Whether or not to ignore all other ffmpeg options and to use the fullyCustomFfmpegEncodingOptions and fullyCustomFfmpegDecodingOptions instead. */
-    public void setUseFullyCustomFfmpegOptions(final boolean useFullyCustomFfmpegOptions) {
-        this.useFullyCustomFfmpegOptions = useFullyCustomFfmpegOptions;
-    }
-
-    /** @param fullyCustomFfmpegEncodingOptions The new user-entered command line arguments to use when encoding with ffmpeg. */
-    public void setFullyCustomFfmpegEncodingOptions(final String fullyCustomFfmpegEncodingOptions) {
-        this.fullyCustomFfmpegEncodingOptions = fullyCustomFfmpegEncodingOptions;
-    }
-
-    /** @param fullyCustomFfmpegDecodingOptions The new user-entered command line arguments to use when encoding with ffmpeg. */
-    public void setFullyCustomFfmpegDecodingOptions(final String fullyCustomFfmpegDecodingOptions) {
-        this.fullyCustomFfmpegDecodingOptions = fullyCustomFfmpegDecodingOptions;
-    }
-
-    /** @param deleteSourceFileWhenEncoding Whether or not to delete the source file after encoding. */
-    public void setDeleteSourceFileWhenEncoding(final boolean deleteSourceFileWhenEncoding) {
-        this.deleteSourceFileWhenEncoding = deleteSourceFileWhenEncoding;
-    }
-
-    /** @param deleteSourceFileWhenDecoding Whether or not to delete the source file after decoding. */
-    public void setDeleteSourceFileWhenDecoding(final boolean deleteSourceFileWhenDecoding) {
-        this.deleteSourceFileWhenDecoding = deleteSourceFileWhenDecoding;
-    }
-
-    /** @param showSplashScreen Whether or not to show the splash screen on startup. */
-    public void setShowSplashScreen(final boolean showSplashScreen) {
-        this.showSplashScreen = showSplashScreen;
-    }
-
-    /** @param splashScreenFilePath The new path to the splash screen to display. */
-    public void setSplashScreenFilePath(final String splashScreenFilePath) {
-        this.splashScreenFilePath = splashScreenFilePath;
-    }
-
     /** @param splashScreenDisplayTime The new amount of time, in milliseconds, to display the splash screen. */
     public void setSplashScreenDisplayTime(final int splashScreenDisplayTime) throws IllegalArgumentException {
         if(splashScreenDisplayTime > 1) {
@@ -584,20 +407,5 @@ public class ConfigHandler {
         } else {
             throw new IllegalArgumentException("The splashScreenDisplayTime must be larger than 0.");
         }
-    }
-
-    /** @param compressionCommands The new base commands to use when compressing a handler before encoding. */
-    public void setCompressionCommands(final String compressionCommands) {
-        this.compressionCommands = compressionCommands;
-    }
-
-    /** @param checkForUpdatesOnStart Whether or not to check for program updates on program start. */
-    public void setCheckForUpdatesOnStart(final boolean checkForUpdatesOnStart) {
-        this.checkForUpdatesOnStart = checkForUpdatesOnStart;
-    }
-
-    /** @param warnUserIfSettingsMayNotWorkForYouTube Whether or not to warn the user if their settings may not work with YouTube. */
-    public void setWarnUserIfSettingsMayNotWorkForYouTube(final boolean warnUserIfSettingsMayNotWorkForYouTube) {
-        this.warnUserIfSettingsMayNotWorkForYouTube = warnUserIfSettingsMayNotWorkForYouTube;
     }
 }

@@ -2,6 +2,7 @@ package handler;
 
 import core.Driver;
 import core.Log;
+import lombok.Getter;
 
 import java.io.*;
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.Scanner;
 
 public class StatisticsHandler {
     /** The number of bytes encoded, per second, across all recorded encode Jobs. */
-    private long bytesEncodedPerSecond;
+    @Getter private long bytesEncodedPerSecond;
     /** The number of bytes decoded, per second, across all recorded decode Jobs. */
-    private long bytesDecodedPerSecond;
+    @Getter private long bytesDecodedPerSecond;
 
     /**
      * Constructs a new StatisticsHandler and processes all of the
@@ -153,17 +154,5 @@ public class StatisticsHandler {
 
         estimation /= (isEncodeJob ? bytesEncodedPerSecond : bytesDecodedPerSecond);
         return estimation;
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    /** @return The number of bytes encoded, per second, across all recorded encode Jobs. */
-    public long getBytesEncodedPerSecond() {
-        return bytesEncodedPerSecond;
-    }
-
-    /** @return The number of bytes decoded, per second, across all recorded decode Jobs. */
-    public long getBytesDecodedPerSecond() {
-        return bytesDecodedPerSecond;
     }
 }
