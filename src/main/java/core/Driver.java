@@ -1,6 +1,7 @@
 package core;
 
 import controller.MainScreenController;
+import eu.hansolo.enzo.notification.Notification;
 import handler.ConfigHandler;
 import handler.StatisticsHandler;
 import javafx.application.Application;
@@ -8,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -15,11 +18,11 @@ import java.net.URL;
 import java.util.Scanner;
 
 public class Driver extends Application{
-    /** The current version of the program. Whenever a significant change is made, this should be changed along with the online handler. */
-    private static final String PROGRAM_VERSION = "10";
-
-    /** The logger used throughout the entire program whenever a log is to be written. */
-    public static final Logger LOGGER = new Logger();;
+    /**
+     * The current version of the program.
+     * Whenever a significant change is made, this should be changed along with the online handler.
+     */
+    private static final String PROGRAM_VERSION = "11";
 
 
     public static void main(final String[] args) {
@@ -40,12 +43,12 @@ public class Driver extends Application{
         configHandler.loadConfigSettings();
 
         // Check for Updates:
-        if(configHandler.getCheckForUpdatesOnStart()) {
+        if(configHandler.isCheckForUpdatesOnStart()) {
             checkForUpdate();
         }
 
         // Show Splash Screen:
-        if(configHandler.getShowSplashScreen()) {
+        if(configHandler.isShowSplashScreen()) {
             showSplashscreen(configHandler);
         }
 
@@ -63,20 +66,15 @@ public class Driver extends Application{
         primaryStage.show();
     }
 
-    @Override
-    public void stop() {
-        // Do something before the application stops.
-        LOGGER.run();
-    }
-
     /**
      * Checks the website to see if there is a new version of the program.
+     *
      * If there is a new version, then a dialog is shown to the user to explain
      * the situation and how to update.
      */
     public static void checkForUpdate() {
         try {
-            final URL url = new URL("http://pastebin.com/raw/JUksmXTf");
+            final URL url = new URL("https://valkryst.com/schillsaver/version.txt");
             Scanner scanner = new Scanner(url.openStream());
             final String newVersion = scanner.nextLine();
             scanner.close();
@@ -88,23 +86,28 @@ public class Driver extends Application{
                 alert.setTitle("New Version Available");
                 alert.setHeaderText("This program is out of date.");
                 alert.setContentText("Get the latest version at http://valkryst.com/schillsaver/\n\n" +
-                        "Current Version - " + PROGRAM_VERSION + "\n" +
-                        "New Version - " + newVersion);
+                                     "Current Version - " + PROGRAM_VERSION + "\n" +
+                                     "New Version - " + newVersion);
                 alert.showAndWait();
             }
         }
         catch(IOException e) {
-            LOGGER.addLog(Log.LOGTYPE_WARNING, e);
+            final Logger logger = LogManager.getLogger();
+            logger.warn(e);
+
+            Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
         }
     }
 
     /**
-     * Show the splashscreen if it's enabled in the configuration settings
-     * and if the splashscreen image can be found.
-     * @param configHandler todo Javadoc
+     * Show the splash-screen if it's enabled in the configuration settings
+     * and if the splash-screen image can be found.
+     *
+     * @param configHandler
+     *         todo Javadoc
      */
     public static void showSplashscreen(final ConfigHandler configHandler) {
-        if(configHandler.getShowSplashScreen()) {
+        if(configHandler.isShowSplashScreen()) {
             try {
                 final ImageIcon image = new ImageIcon(configHandler.getSplashScreenFilePath());
                 final JWindow window = new JWindow();
@@ -118,7 +121,10 @@ public class Driver extends Application{
                 window.setVisible(false);
                 window.dispose();
             } catch(final InterruptedException | NullPointerException e) {
-                LOGGER.addLog(Log.LOGTYPE_WARNING, e);
+                final Logger logger = LogManager.getLogger();
+                logger.warn(e);
+
+                Notification.Notifier.INSTANCE.notifyError("Exception", "Please view the log file.");
             }
         }
     }
