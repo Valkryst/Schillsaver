@@ -11,6 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 
 public class FfmpegSettingsPane extends TitledPane {
@@ -18,37 +19,37 @@ public class FfmpegSettingsPane extends TitledPane {
     private static final String TAB_NAME = "FFMPEG";
 
     /** The text field for the absolute path to ffmpeg/ffmpeg.exe. */
-    private final TextField field_ffmpegPath = new TextField();
+    @Getter private final TextField field_ffmpegPath = new TextField();
     /** The button to open the handler selection dialog for the ffmpeg executable. */
-    private final Button button_selectFile_ffmpegPath = new Button("Select File");
+    @Getter private final Button button_selectFile_ffmpegPath = new Button("Select File");
 
     /** The text field for the format to encode to. */
-    private final TextField field_encodeFormat = new TextField();
+    @Getter private final TextField field_encodeFormat = new TextField();
     /** The text field for the format to decode to. */
-    private final TextField field_decodeFormat = new TextField();
+    @Getter private final TextField field_decodeFormat = new TextField();
     /** The text field for the width, in pixels, of the encoded video. */
-    private final TextField field_encodedVideoWidth = new TextField();
+    @Getter private final TextField field_encodedVideoWidth = new TextField();
     /** The text field for the height, in pixels, of the encoded video. */
-    private final TextField field_encodedVideoHeight = new TextField();
+    @Getter private final TextField field_encodedVideoHeight = new TextField();
     /** The text field for the framerate of the encoded video. */
-    private final TextField field_encodedFramerate = new TextField();
+    @Getter private final TextField field_encodedFramerate = new TextField();
     /** The text field for the width/height of each macroblock. */
-    private final TextField field_macroBlockDimensions = new TextField();
+    @Getter private final TextField field_macroBlockDimensions = new TextField();
     /** The text field for the codec library to use when encoding/decoding the library. */
-    private final TextField field_encodingLibrary = new TextField();
+    @Getter private final TextField field_encodingLibrary = new TextField();
     /** The combobox to select the logging level that ffmpeg should use. */
-    private final ComboBox<String> comboBox_ffmpegLogLevel = new ComboBox<>(FXCollections.observableArrayList(ConfigHandler.FFMPEG_LOG_LEVELS));
+    @Getter private final ComboBox<String> comboBox_ffmpegLogLevel = new ComboBox<>(FXCollections.observableArrayList(ConfigHandler.FFMPEG_LOG_LEVELS));
 
     /** The toggle group of the yes/no radio buttons of the useFullyCustomEncodingOptions option. */
-    private final ToggleGroup toggleGroup_useFullyCustomEncodingOptions = new ToggleGroup();
+    @Getter private final ToggleGroup toggleGroup_useFullyCustomEncodingOptions = new ToggleGroup();
     /** The radio button that says to use the fully-custom ffmpeg en/decoding options. */
-    private final RadioButton radioButton_useFullyCustomEncodingOptions_yes = new RadioButton("Yes");
+    @Getter private final RadioButton radioButton_useFullyCustomEncodingOptions_yes = new RadioButton("Yes");
     /** The radio button that says to not use the fully-custom ffmpeg en/decoding options. */
-    private final RadioButton radioButton_useFullyCustomEncodingOptions_no = new RadioButton("No");
+    @Getter private final RadioButton radioButton_useFullyCustomEncodingOptions_no = new RadioButton("No");
     /** The text field for the fully-custom ffmpeg encoding options. */
-    private final TextField field_fullyCustomFfmpegEncodingOptions = new TextField();
+    @Getter private final TextField field_fullyCustomFfmpegEncodingOptions = new TextField();
     /** The text field for the fully-custom ffmpeg decoding options. */
-    private final TextField field_fullyCustomFfmpegDecodingptions = new TextField();
+    @Getter private final TextField field_fullyCustomFfmpegDecodingptions = new TextField();
 
 
 
@@ -197,72 +198,5 @@ public class FfmpegSettingsPane extends TitledPane {
             }
         });
         this.setContent(panel);
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    /** @return The text field for the absolute path to ffmpeg/ffmpeg.exe. */
-    public TextField getField_ffmpegPath() {
-        return field_ffmpegPath;
-    }
-
-    /** @return The button to open the handler selection dialog for the ffmpeg executable. */
-    public Button getButton_selectFile_ffmpegPath() {
-        return button_selectFile_ffmpegPath;
-    }
-
-    /** @return The text field for the format to encode to. */
-    public TextField getField_encodeFormat() {
-        return field_encodeFormat;
-    }
-
-    /** @return The text field for the format to decode to. */
-    public TextField getField_decodeFormat() {
-        return field_decodeFormat;
-    }
-
-    /** @return The text field for the width, in pixels, of the encoded video. */
-    public TextField getField_encodedVideoWidth() {
-        return field_encodedVideoWidth;
-    }
-
-    /** @return The text field for the height, in pixels, of the encoded video. */
-    public TextField getField_encodedVideoHeight() {
-        return field_encodedVideoHeight;
-    }
-
-    /** @return The text field for the framerate of the encoded video. */
-    public TextField getField_encodedFramerate() {
-        return field_encodedFramerate;
-    }
-
-    /** @return The text field for the codec library to use when encoding/decoding the library. */
-    public TextField getField_macroBlockDimensions() {
-        return field_macroBlockDimensions;
-    }
-
-    /** @return The combobox to select the logging level that ffmpeg should use. */
-    public TextField getField_encodingLibrary() {
-        return field_encodingLibrary;
-    }
-
-    /** @return The combobox to select the logging level that ffmpeg should use. */
-    public ComboBox<String> getComboBox_ffmpegLogLevel() {
-        return comboBox_ffmpegLogLevel;
-    }
-
-    /** @return The radio button that says to use the fully-custom ffmpeg en/decoding options. */
-    public RadioButton getRadioButton_useFullyCustomEncodingOptions_yes() {
-        return radioButton_useFullyCustomEncodingOptions_yes;
-    }
-
-    /** @return The text field for the fully-custom ffmpeg encoding options. */
-    public TextField getField_fullyCustomFfmpegEncodingOptions() {
-        return field_fullyCustomFfmpegEncodingOptions;
-    }
-
-    /** @return The text field for the fully-custom ffmpeg decoding options. */
-    public TextField getField_fullyCustomFfmpegDecodingptions() {
-        return field_fullyCustomFfmpegDecodingptions;
     }
 }

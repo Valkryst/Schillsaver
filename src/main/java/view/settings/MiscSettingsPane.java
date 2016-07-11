@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 public class MiscSettingsPane extends TitledPane {
     /** The name of the Tab. */
@@ -37,12 +38,12 @@ public class MiscSettingsPane extends TitledPane {
     private final RadioButton radioButton_showSplashScreen_no = new RadioButton("No");
 
     /** The text field for the absolute path of the splash screen. */
-    private final TextField field_splashScreenFilePath = new TextField();
+    @Getter private final TextField field_splashScreenFilePath = new TextField();
     /** The button to open the handler selection dialog to locate an image to use as the splash screen. */
-    private final Button button_selectFile_splashScreenFilePath = new Button("Select File");
+    @Getter private final Button button_selectFile_splashScreenFilePath = new Button("Select File");
 
     /** The text field for the amount of time, in milliseconds, to display the splach screen for. */
-    private final TextField field_splashScreenDisplayTime = new TextField();
+    @Getter private final TextField field_splashScreenDisplayTime = new TextField();
 
     /** The toggle group of the yes/no radio buttons of the enableUpdateCheck option. */
     private final ToggleGroup toggleGroup_enableUpdateCheck = new ToggleGroup();
@@ -263,21 +264,6 @@ public class MiscSettingsPane extends TitledPane {
     /** @return Whether or not to show the splash screen on program startup. */
     public boolean getShowSplashScreen() {
         return radioButton_showSplashScreen_yes.isSelected();
-    }
-
-    /** @return The text field for the absolute path of the splash screen. */
-    public TextField getField_splashScreenFilePath() {
-        return field_splashScreenFilePath;
-    }
-
-    /** @return The button to open the handler selection dialog to locate an image to use as the splash screen. */
-    public Button getButton_selectFile_splashScreenFilePath() {
-        return button_selectFile_splashScreenFilePath;
-    }
-
-    /** @return The text field for the amount of time, in milliseconds, to display the splach screen for. */
-    public TextField getField_splashScreenDisplayTime() {
-        return field_splashScreenDisplayTime;
     }
 
     /** @return Whether or not to check for program updates on program start. */

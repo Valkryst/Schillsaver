@@ -12,18 +12,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 public class ArchivalSettingsPane extends TitledPane {
     /** The name of the Tab. */
     private static final String TAB_NAME = "Archival";
 
     /** The text field for the absolute path to the 7zip, or whichever compresssion program the user wants to use, executable. */
-    private final TextField field_compressionProgramPath = new TextField();
+    @Getter private final TextField field_compressionProgramPath = new TextField();
     /** The button to open the file selection dialog for the 7zip, or whichever compression program the user wants to use, executable. */
-    private final Button button_selectFile_compressionProgramPath = new Button("Select File");
+    @Getter private final Button button_selectFile_compressionProgramPath = new Button("Select File");
 
     /** The text field for the base commands to use when compressing a file before encoding. */
-    private final TextField field_compressionCommands = new TextField();
+    @Getter private final TextField field_compressionCommands = new TextField();
 
     public ArchivalSettingsPane(final Stage settingsStage, final ArchivalSettingsController controller, final ConfigHandler configHandler) {
         // Set Field Prompt Text:
@@ -63,22 +64,5 @@ public class ArchivalSettingsPane extends TitledPane {
             }
         });
         this.setContent(panel);
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    /** @return The text field for the absolute path to the 7zip, or whichever compresssion program the user wants to use, executable. */
-    public TextField getField_compressionProgramPath() {
-        return field_compressionProgramPath;
-    }
-
-    /** @return The button to open the file selection dialog for the 7zip, or whichever compression program the user wants to use, executable. */
-    public Button getButton_selectFile_compressionProgramPath() {
-        return button_selectFile_compressionProgramPath;
-    }
-
-    /** @return The text field for the base commands to use when compressing a file before encoding. */
-    public TextField getField_compressionCommands() {
-        return getField_compressionProgramPath();
     }
 }

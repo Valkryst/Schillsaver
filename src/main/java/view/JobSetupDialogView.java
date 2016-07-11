@@ -2,8 +2,6 @@ package view;
 
 import controller.JobSetupDialogController;
 import handler.ConfigHandler;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -11,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.Getter;
 import misc.Job;
 
 import java.io.File;
@@ -20,50 +19,50 @@ import java.util.Date;
 public class JobSetupDialogView extends HBox {
 
     // todo JavaDoc
-    private ListView<String> listView_selectedFiles = new ListView<>();
+    @Getter private ListView<String> listView_selectedFiles = new ListView<>();
 
     /** The button to open the handler selection dialog. */
-    private final Button button_addFiles = new Button("Add File(s)");
+    @Getter private final Button button_addFiles = new Button("Add File(s)");
     /** The button to remove all files that are currently selected on the scrollpane_selectedFiles. */
-    private final Button button_removeSelectedFiles = new Button("Remove File(s)");
+    @Getter private final Button button_removeSelectedFiles = new Button("Remove File(s)");
     /** The button to remove all files from the list. */
-    private final Button button_clearAllFiles = new Button("Clear List");
+    @Getter private final Button button_clearAllFiles = new Button("Clear List");
 
     /** The label to display an estimate of how long the Job will take to run. */
-    private final Label label_job_estimatedDurationInMinutes = new Label("Estimated Time - Unknown");
+    @Getter private final Label label_job_estimatedDurationInMinutes = new Label("Estimated Time - Unknown");
 
     /** The button to close the JobCreationDialog while creating a Job. */
-    private final Button button_accept = new Button("Accept");
+    @Getter private final Button button_accept = new Button("Accept");
     /** The button to close the JobCreationDialog without creating a Job. */
-    private final Button button_cancel = new Button("Cancel");
+    @Getter private final Button button_cancel = new Button("Cancel");
 
     /** The text field for the name of the Job. */
-    private final TextField field_jobName = new TextField();
+    @Getter private final TextField field_jobName = new TextField();
 
     /** The comboBox to specify the type of Job to create. */
-    private final ComboBox<String> comboBox_jobType = new ComboBox<>(FXCollections.observableArrayList("Encode", "Decode"));
+    @Getter private final ComboBox<String> comboBox_jobType = new ComboBox<>(FXCollections.observableArrayList("Encode", "Decode"));
 
     /** The text area for a rough description of the Job. */
-    private final TextArea textArea_jobDescription = new TextArea();
+    @Getter private final TextArea textArea_jobDescription = new TextArea();
 
     /** The toggle group of the "archive all files into a single archive before encoding" yes/no radio buttons. */
-    private final ToggleGroup toggleGroup_singleArchive = new ToggleGroup();
+    @Getter private final ToggleGroup toggleGroup_singleArchive = new ToggleGroup();
     /** The radio button that says that each of the currently selected files should be archived as a single archive before encoding. */
-    private final RadioButton radioButton_singleArchive_yes = new RadioButton("Yes");
+    @Getter private final RadioButton radioButton_singleArchive_yes = new RadioButton("Yes");
     /** The radio button that says that each of the currently selected files should be archived individually before encoding them individually. */
-    private final RadioButton radioButton_singleArchive_no = new RadioButton("No");
+    @Getter private final RadioButton radioButton_singleArchive_no = new RadioButton("No");
 
     /** The toggle group of the "archive just this handler before encoding" yes/no radio buttons. */
-    private final ToggleGroup toggleGroup_individualArchives = new ToggleGroup();
+    @Getter private final ToggleGroup toggleGroup_individualArchives = new ToggleGroup();
     /** The radio button that says that each handler should be archived individually before encoding each of them individually. */
-    private final RadioButton radioButton_individualArchives_yes = new RadioButton("Yes");
+    @Getter private final RadioButton radioButton_individualArchives_yes = new RadioButton("Yes");
     /** The radio button that says that each handler should not be archived individually before encoding each of them individually. */
-    private final RadioButton radioButton_individualArchives_no = new RadioButton("No");
+    @Getter private final RadioButton radioButton_individualArchives_no = new RadioButton("No");
 
     /** The text field for the path to the directory in which to place the en/decoded file(s). */
-    private final TextField textField_outputDirectory = new TextField();
+    @Getter private final TextField textField_outputDirectory = new TextField();
     /** The button to select the folder to output the archive to if the "Yes" radio button is selected. */
-    private final Button button_selectOutputDirectory = new Button("Select Output Folder");
+    @Getter private final Button button_selectOutputDirectory = new Button("Select Output Folder");
 
     // todo JavaDoc
     public JobSetupDialogView(final Stage settingsStage, final JobSetupDialogController controller, final ConfigHandler configHandler, final Job jobToEdit) {
@@ -233,87 +232,5 @@ public class JobSetupDialogView extends HBox {
 
         this.setSpacing(4);
         this.getChildren().addAll(panel_left, panel_right);
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    // todo JavaDoc
-    public ListView<String> getListView_selectedFiles() {
-        return listView_selectedFiles;
-    }
-
-    /** @return The button to open the handler selection dialog. */
-    public Button getButton_addFiles() {
-        return button_addFiles;
-    }
-
-    /** @return The button to remove all files that are currently selected on the scrollpane_selectedFiles. */
-    public Button getButton_removeSelectedFiles() {
-        return button_removeSelectedFiles;
-    }
-
-    /** @return The button to remove all files from the list. */
-    public Button getButton_clearAllFiles() {
-        return button_clearAllFiles;
-    }
-
-    /** @return The label to display an estimate of how long the Job will take to run. */
-    public Label getLabel_job_estimatedDurationInMinutes() {
-        return label_job_estimatedDurationInMinutes;
-    }
-
-    /** @return Whether or not the Job is an Encode Job. If not, then it's a Decode Job. */
-    public boolean getIsEncodeJob() {
-        return comboBox_jobType.getSelectionModel().getSelectedItem().equals("Encode");
-    }
-
-    /** @return The button to close the JobCreationDialog while creating a Job. */
-    public Button getButton_accept() {
-        return button_accept;
-    }
-
-    /** @return The button to close the JobCreationDialog without creating a Job. */
-    public Button getButton_cancel() {
-        return button_cancel;
-    }
-
-    /** @return The field for the name of the Job. */
-    public TextField getField_jobName() {
-        return field_jobName;
-    }
-
-    /** @return The text area for a rough description of the Job. */
-    public TextArea getTextArea_jobDescription() {
-        return textArea_jobDescription;
-    }
-
-    /** @return The radio button that says that each of the currently selected files should be archived as a single archive before encoding. */
-    public RadioButton getRadioButton_singleArchive_yes() {
-        return radioButton_singleArchive_yes;
-    }
-
-    /** @return The radio button that says that each of the currently selected files should be archived individually before encoding them individually. */
-    public RadioButton getRadioButton_singleArchive_no() {
-        return radioButton_singleArchive_no;
-    }
-
-    /** @return The radio button that says that each handler should be archived individually before encoding each of them individually. */
-    public RadioButton getRadioButton_individualArchives_yes() {
-        return radioButton_individualArchives_yes;
-    }
-
-    /** @return The radio button that says that each handler should not be archived individually before encoding each of them individually. */
-    public RadioButton getRadioButton_individualArchives_no() {
-        return radioButton_individualArchives_no;
-    }
-
-    /** @return The text field for the path to the directory in which to place the en/decoded file(s). */
-    public TextField getTextField_outputDirectory() {
-        return textField_outputDirectory;
-    }
-
-    /** @return The button to select the folder to output the archive to if the "Yes" radio button is selected. */
-    public Button getButton_selectOutputDirectory() {
-        return button_selectOutputDirectory;
     }
 }

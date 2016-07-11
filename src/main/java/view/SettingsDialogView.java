@@ -10,19 +10,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
 public class SettingsDialogView extends VBox {
     /** The controller for the archival settings section. */
-    private final ArchivalSettingsController controller_archivalSettings;
+    @Getter private final ArchivalSettingsController controller_archivalSettings;
     /** The controller for the FFMPEG settings section. */
-    private final FfmpegSettingsController controller_ffmpegSettings;
+    @Getter private final FfmpegSettingsController controller_ffmpegSettings;
     /** The cntroller for the misc. settings section. */
-    private final MiscSettingsController controller_miscSettings;
+    @Getter private final MiscSettingsController controller_miscSettings;
 
     /** The button to close the window and save settings. */
-    private final Button button_accept = new Button("Accept");
+    @Getter private final Button button_accept = new Button("Accept");
     /** The button to close the window without saving settings. */
-    private final Button button_cancel = new Button("Cancel");
+    @Getter private final Button button_cancel = new Button("Cancel");
 
     // todo JavaDoc
     public SettingsDialogView(final SettingsDialogController controller, final ConfigHandler configHandler) {
@@ -49,32 +50,5 @@ public class SettingsDialogView extends VBox {
 
         this.setSpacing(4);
         this.getChildren().addAll(panel_top, panel_bottom);
-    }
-
-    ////////////////////////////////////////////////////////// Getters
-
-    /** @return The controller for the archival settings section. */
-    public ArchivalSettingsController getController_archivalSettings() {
-        return controller_archivalSettings;
-    }
-
-    /** @return The controller for the FFMPEG settings section. */
-    public FfmpegSettingsController getController_ffmpegSettings() {
-        return controller_ffmpegSettings;
-    }
-
-    /** @returnThe cntroller for the misc. settings section. */
-    public MiscSettingsController getController_miscSettings() {
-        return controller_miscSettings;
-    }
-
-    /** @return The button to close the window and save settings. */
-    public Button getButton_accept() {
-        return button_accept;
-    }
-
-    /** @return The button to close the window without saving settings. */
-    public Button getButton_cancel() {
-        return button_cancel;
     }
 }
