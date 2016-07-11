@@ -81,19 +81,19 @@ public class MiscSettingsPane extends TitledPane {
         radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_no.setToggleGroup(toggleGroup_enableWarnUserIfSettingsMayNotWorkForYouTube);
 
         // Set Default Values:
-        if(configHandler.getDeleteSourceFileWhenEncoding()) {
+        if(configHandler.isDeleteSourceFileWhenEncoding()) {
             radioButton_deleteSourceFileWhenEncoding_yes.setSelected(true);
         } else {
             radioButton_deleteSourceFileWhenEncoding_no.setSelected(true);
         }
 
-        if(configHandler.getDeleteSourceFileWhenDecoding()) {
+        if(configHandler.isDeleteSourceFileWhenDecoding()) {
             radioButton_deleteSourceFileWhenDecoding_yes.setSelected(true);
         } else {
             radioButton_deleteSourceFileWhenDecoding_no.setSelected(true);
         }
 
-        if(configHandler.getShowSplashScreen()) {
+        if(configHandler.isShowSplashScreen()) {
             radioButton_showSplashScreen_yes.setSelected(true);
         } else {
             radioButton_showSplashScreen_no.setSelected(true);
@@ -102,13 +102,13 @@ public class MiscSettingsPane extends TitledPane {
         field_splashScreenFilePath.setText(configHandler.getSplashScreenFilePath());
         field_splashScreenDisplayTime.setText(String.valueOf(configHandler.getSplashScreenDisplayTime()));
 
-        if(configHandler.getCheckForUpdatesOnStart()) {
+        if(configHandler.isCheckForUpdatesOnStart()) {
             radioButton_enableUpdateCheck_yes.setSelected(true);
         } else {
             radioButton_enableUpdateCheck_no.setSelected(true);
         }
 
-        if(configHandler.getWarnUserIfSettingsMayNotWorkForYouTube()) {
+        if(configHandler.isWarnUserIfSettingsMayNotWorkForYouTube()) {
             radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_yes.setSelected(true);
         } else {
             radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_no.setSelected(true);

@@ -87,7 +87,7 @@ public class FfmpegSettingsPane extends TitledPane {
             }
         }
 
-        if(configHandler.getUseFullyCustomFfmpegOptions()) {
+        if(configHandler.isUseFullyCustomFfmpegOptions()) {
             radioButton_useFullyCustomEncodingOptions_yes.setSelected(true);
         } else {
             radioButton_useFullyCustomEncodingOptions_no.setSelected(true);
