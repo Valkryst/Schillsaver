@@ -118,13 +118,14 @@ public class MainScreenController implements EventHandler {
                 final List<FFMPEGHandler> preparedJobs = new ArrayList<>();
 
                 // Only prepare Encode Jobs:
-                for(final Job job : model.getList_jobs()) {
-                    if(job.isEncodeJob()) {
-                        final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
-                        ffmpegHandler.setOnSucceeded(ffmpegHandler);
-                        preparedJobs.add(ffmpegHandler);
-                    }
-                }
+                model.getList_jobs()
+                     .parallelStream()
+                     .filter(Job::isEncodeJob)
+                     .forEach(job -> {
+                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
+                         ffmpegHandler.setOnSucceeded(ffmpegHandler);
+                         preparedJobs.add(ffmpegHandler);
+                     });
 
                 // Run Jobs:
                 final JobHandler handler = new JobHandler(this, preparedJobs);
@@ -146,14 +147,15 @@ public class MainScreenController implements EventHandler {
             if(view.getListView_jobs().getItems().size() > 0) {
                 final List<FFMPEGHandler> preparedJobs = new ArrayList<>();
 
-                // Only prepare Encode Jobs:
-                for(final Job job : model.getList_jobs()) {
-                    if(job.isEncodeJob() == false) {
-                        final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
-                        ffmpegHandler.setOnSucceeded(ffmpegHandler);
-                        preparedJobs.add(ffmpegHandler);
-                    }
-                }
+                // Only prepare Decode Jobs:
+                model.getList_jobs()
+                     .parallelStream()
+                     .filter(job -> ! job.isEncodeJob())
+                     .forEach(job -> {
+                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
+                         ffmpegHandler.setOnSucceeded(ffmpegHandler);
+                         preparedJobs.add(ffmpegHandler);
+                     });
 
                 // Run Jobs:
                 final JobHandler handler = new JobHandler(this, preparedJobs);
@@ -175,17 +177,17 @@ public class MainScreenController implements EventHandler {
             // the IDs of all Jobs.
             final Iterator<Job> it = model.getList_jobs().iterator();
 
-            while(it.hasNext()) {
-                final Job j = it.next();
-
-                if(view.getListView_jobs().getItems().contains(j.getFullDesignation())) {
-                    int index = view.getListView_jobs().getItems().indexOf(j.getFullDesignation());
-                    j.setId(index);
-                    view.getListView_jobs().getItems().set(index, j.getFullDesignation());
-                } else {
-                    it.remove();
-                }
-            }
+            model.getList_jobs()
+                 .parallelStream()
+                 .forEachOrdered(job -> {
+                     if(view.getListView_jobs().getItems().contains(job.getFullDesignation())) {
+                         int index = view.getListView_jobs().getItems().indexOf(job.getFullDesignation());
+                         job.setId(index);
+                         view.getListView_jobs().getItems().set(index, job.getFullDesignation());
+                     } else {
+                         it.remove();
+                     }
+                 });
 
             view.getListView_jobs().getSelectionModel().clearSelection();
         }
