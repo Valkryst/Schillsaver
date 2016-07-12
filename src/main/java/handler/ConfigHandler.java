@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -145,60 +146,43 @@ public class ConfigHandler {
      * using the default values for each option.
      */
     public void createConfigFile() {
-        final File file = new File(FILENAME_CONFIG);
+        final JSONObject configFile = new JSONObject();
+        configFile.put("FFMPEG Path", "");
+        configFile.put("Compression Program Path", "");
 
-        try {
-            boolean isFileWritable = true;
+        configFile.put("Enc Format", "mkv");
+        configFile.put("Dec Format", "jpg");
 
-            if (! file.createNewFile()) {
-                if (file.delete()) {
-                    isFileWritable = false;
-                } else {
-                    isFileWritable = file.canWrite();
-                }
-            }
+        configFile.put("Enc Vid Width", 1280);
+        configFile.put("Enc Vid Height", 720);
+        configFile.put("Enc Vid Framerate", 30);
+        configFile.put("Enc Vid Macro Block Dimensions", 8);
 
-            if (isFileWritable) {
-                final BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
-                outputStream.write("{" + System.lineSeparator());
-                outputStream.write("    \"FFMPEG Path\": \"\"," + System.lineSeparator());
-                outputStream.write("    \"Compression Program Path\": \"\"," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Enc Format\": \"mkv\"," + System.lineSeparator());
-                outputStream.write("    \"Dec Format\": \"jpg\"," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Enc Vid Width\": 1280," + System.lineSeparator());
-                outputStream.write("    \"Enc Vid Height\": 720," + System.lineSeparator());
-                outputStream.write("    \"Enc Vid Framerate\": 30," + System.lineSeparator());
-                outputStream.write("    \"Enc Vid Macro Block Dimensions\": 8," + System.lineSeparator());
-                outputStream.write("    \"Enc Library\": \"libvpx\"," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"FFMPEG Log Level\": \"info\"," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Use Custom FFMPEG Options\": false," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Custom FFMPEG Enc Options\": \"\"," + System.lineSeparator());
-                outputStream.write("    \"Custom FFMPEG Dec Options\": \"\"," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Delete Source File When Enc\": false," + System.lineSeparator());
-                outputStream.write("    \"Delete Source File When Dec\": false," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Compression Commands\": \"a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on\"," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Check For Updates\": true," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Warn If Settings Possibly Incompatible With YouTube\": true" + System.lineSeparator());
-                outputStream.write("}");
-                outputStream.close();
-            } else {
-                final Logger logger = LogManager.getLogger();
-                logger.error("Unable to create new configuration file.");
+        configFile.put("FFMPEG Log Level", "info");
 
-                setDefaultSettings();
-            }
+        configFile.put("Custom FFMPEG Enc Options", "");
+        configFile.put("Custom FFMPEG Dec Options", "");
+
+        configFile.put("Delete Source File When Enc", false);
+        configFile.put("Delete Source File When Dec", false);
+
+        configFile.put("Compression Commands", "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on");
+
+        configFile.put("Check For Updates", true);
+
+        configFile.put("Warn If Settings Possibly Incompatible With YouTube", true);
+
+
+        try (
+            final FileWriter fileWriter = new FileWriter(FILENAME_CONFIG);
+        ) {
+            fileWriter.write(configFile.toJSONString());
+            fileWriter.flush();
         } catch(final IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
+
+            setDefaultSettings();
         }
     }
 
