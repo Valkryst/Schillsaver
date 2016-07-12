@@ -1,6 +1,5 @@
 package handler;
 
-import eu.hansolo.enzo.notification.Notification;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
@@ -118,38 +117,7 @@ public class ConfigHandler {
             createConfigFile();
             loadConfigSettings();
         } catch(final ClassCastException | NullPointerException e) {
-            ffmpegPath = "";
-            compressionProgramPath = "";
-
-            encodeFormat = "mkv";
-            decodeFormat = "jpg";
-
-            encodedVideoWidth = 1280;
-            encodedVideoHeight = 720;
-            encodedFramerate = 30;
-            macroBlockDimensions = 8;
-            encodingLibrary = "libvpx";
-
-            ffmpegLogLevel = "info";
-
-            useFullyCustomFfmpegOptions = false;
-
-            fullyCustomFfmpegEncodingOptions = "";
-            fullyCustomFfmpegDecodingOptions = "";
-
-            deleteSourceFileWhenEncoding = false;
-            deleteSourceFileWhenDecoding = false;
-
-            showSplashScreen = true;
-            splashScreenFilePath = "Splash.png";
-            splashScreenDisplayTime = 3000;
-
-            compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
-
-            checkForUpdates = true;
-
-            warnUserIfSettingsMayNotWorkForYouTube = true;
-
+            setDefaultSettings();
         }
 
         // Check if all options have been loaded correctly:
@@ -197,49 +165,102 @@ public class ConfigHandler {
         final File file = new File(FILENAME_CONFIG);
 
         try {
-            file.createNewFile();
+            boolean isFileWritable = true;
 
-            final BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
-            outputStream.write("{" + System.lineSeparator());
-            outputStream.write("    \"FFMPEG Path\": \"\"," + System.lineSeparator());
-            outputStream.write("    \"Compression Program Path\": \"\"," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Enc Format\": \"mkv\"," + System.lineSeparator());
-            outputStream.write("    \"Dec Format\": \"jpg\"," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Enc Vid Width\": 1280," + System.lineSeparator());
-            outputStream.write("    \"Enc Vid Height\": 720," + System.lineSeparator());
-            outputStream.write("    \"Enc Vid Framerate\": 30," + System.lineSeparator());
-            outputStream.write("    \"Enc Vid Macro Block Dimensions\": 8," + System.lineSeparator());
-            outputStream.write("    \"Enc Library\": \"libvpx\"," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"FFMPEG Log Level\": \"info\"," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Use Custom FFMPEG Options\": false," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Custom FFMPEG Enc Options\": \"\"," + System.lineSeparator());
-            outputStream.write("    \"Custom FFMPEG Dec Options\": \"\"," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Delete Source File When Enc\": false," + System.lineSeparator());
-            outputStream.write("    \"Delete Source File When Dec\": false," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Show Splash Screen\": true," + System.lineSeparator());
-            outputStream.write("    \"Splash Screen File Path\": \"Splash.png\"," + System.lineSeparator());
-            outputStream.write("    \"Splash Screen Display Time\": 3000," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Compression Commands\": \"a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on\"," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Check For Updates\": true," + System.lineSeparator());
-            outputStream.write(System.lineSeparator());
-            outputStream.write("    \"Warn If Settings Possibly Incompatible With YouTube\": true" + System.lineSeparator());
-            outputStream.write("}");
-            outputStream.close();
+            if (! file.createNewFile()) {
+                if (file.delete()) {
+                    isFileWritable = false;
+                } else {
+                    isFileWritable = file.canWrite();
+                }
+            }
+
+            if (isFileWritable) {
+                final BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
+                outputStream.write("{" + System.lineSeparator());
+                outputStream.write("    \"FFMPEG Path\": \"\"," + System.lineSeparator());
+                outputStream.write("    \"Compression Program Path\": \"\"," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Enc Format\": \"mkv\"," + System.lineSeparator());
+                outputStream.write("    \"Dec Format\": \"jpg\"," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Enc Vid Width\": 1280," + System.lineSeparator());
+                outputStream.write("    \"Enc Vid Height\": 720," + System.lineSeparator());
+                outputStream.write("    \"Enc Vid Framerate\": 30," + System.lineSeparator());
+                outputStream.write("    \"Enc Vid Macro Block Dimensions\": 8," + System.lineSeparator());
+                outputStream.write("    \"Enc Library\": \"libvpx\"," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"FFMPEG Log Level\": \"info\"," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Use Custom FFMPEG Options\": false," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Custom FFMPEG Enc Options\": \"\"," + System.lineSeparator());
+                outputStream.write("    \"Custom FFMPEG Dec Options\": \"\"," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Delete Source File When Enc\": false," + System.lineSeparator());
+                outputStream.write("    \"Delete Source File When Dec\": false," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Show Splash Screen\": true," + System.lineSeparator());
+                outputStream.write("    \"Splash Screen File Path\": \"Splash.png\"," + System.lineSeparator());
+                outputStream.write("    \"Splash Screen Display Time\": 3000," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Compression Commands\": \"a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on\"," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Check For Updates\": true," + System.lineSeparator());
+                outputStream.write(System.lineSeparator());
+                outputStream.write("    \"Warn If Settings Possibly Incompatible With YouTube\": true" + System.lineSeparator());
+                outputStream.write("}");
+                outputStream.close();
+            } else {
+                final Logger logger = LogManager.getLogger();
+                logger.error("Unable to create new configuration file.");
+
+                setDefaultSettings();
+            }
         } catch(final IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
-
-            Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
         }
+    }
+
+    /**
+     * Sets all program settings to their default state.
+     *
+     * This should only be called if the configuration file cannot
+     * be created or properly parsed.
+     */
+    private void setDefaultSettings() {
+        ffmpegPath = "";
+        compressionProgramPath = "";
+
+        encodeFormat = "mkv";
+        decodeFormat = "jpg";
+
+        encodedVideoWidth = 1280;
+        encodedVideoHeight = 720;
+        encodedFramerate = 30;
+        macroBlockDimensions = 8;
+        encodingLibrary = "libvpx";
+
+        ffmpegLogLevel = "info";
+
+        useFullyCustomFfmpegOptions = false;
+
+        fullyCustomFfmpegEncodingOptions = "";
+        fullyCustomFfmpegDecodingOptions = "";
+
+        deleteSourceFileWhenEncoding = false;
+        deleteSourceFileWhenDecoding = false;
+
+        showSplashScreen = true;
+        splashScreenFilePath = "Splash.png";
+        splashScreenDisplayTime = 3000;
+
+        compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
+
+        checkForUpdates = true;
+
+        warnUserIfSettingsMayNotWorkForYouTube = true;
     }
 
     /**
