@@ -50,16 +50,9 @@ public class ConfigHandler {
     @Getter @Setter private String fullyCustomFfmpegDecodingOptions;
 
     /** Whether or not to delete the source file after encoding. */
-    @Getter @Setter private boolean deleteSourceFileWhenEncoding ;
+    @Getter @Setter private boolean deleteSourceFileWhenEncoding;
     /** whether or not to delete the osource file after decoding. */
-    @Getter @Setter private boolean deleteSourceFileWhenDecoding ;
-
-    /** Whether or not to show the splash screen on startup. */
-    @Getter @Setter private boolean showSplashScreen;
-    /** The absolute path to the splash screen to display. */
-    @Getter @Setter private String splashScreenFilePath;
-    /** The amount of time, in milliseconds, to display the splash screen. */
-    @Getter private int splashScreenDisplayTime;
+    @Getter @Setter private boolean deleteSourceFileWhenDecoding;
 
     /** The base commands to use when compressing a handler before encoding. */
     @Getter @Setter private String compressionCommands;
@@ -104,10 +97,6 @@ public class ConfigHandler {
             deleteSourceFileWhenEncoding = configFile.getBoolean("Delete Source File When Enc");
             deleteSourceFileWhenDecoding = configFile.getBoolean("Delete Source File When Dec");
 
-            showSplashScreen = configFile.getBoolean("Show Splash Screen");
-            splashScreenFilePath = configFile.getString("Splash Screen File Path");
-            splashScreenDisplayTime = configFile.getInt("Splash Screen Display Time");
-
             compressionCommands = configFile.getString("Compression Commands");
 
             checkForUpdates = configFile.getBoolean("Check For Updates");
@@ -145,12 +134,6 @@ public class ConfigHandler {
             logger.warn("Encoded Video Macro Block Dimensions is less than 1. Ensure the value is 1 or greater. " +
                         "Defaulting to 8.");
             macroBlockDimensions = 8;
-        }
-
-        if(splashScreenDisplayTime < 1) {
-            logger.warn("Splash Screen Display Time is less than 1. Ensure the value is 1 or greater. " +
-                        "Defaulting to 3000.");
-            splashScreenDisplayTime = 3000;
         }
 
         // Calculate Frame Size:
@@ -200,10 +183,6 @@ public class ConfigHandler {
                 outputStream.write("    \"Delete Source File When Enc\": false," + System.lineSeparator());
                 outputStream.write("    \"Delete Source File When Dec\": false," + System.lineSeparator());
                 outputStream.write(System.lineSeparator());
-                outputStream.write("    \"Show Splash Screen\": true," + System.lineSeparator());
-                outputStream.write("    \"Splash Screen File Path\": \"Splash.png\"," + System.lineSeparator());
-                outputStream.write("    \"Splash Screen Display Time\": 3000," + System.lineSeparator());
-                outputStream.write(System.lineSeparator());
                 outputStream.write("    \"Compression Commands\": \"a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on\"," + System.lineSeparator());
                 outputStream.write(System.lineSeparator());
                 outputStream.write("    \"Check For Updates\": true," + System.lineSeparator());
@@ -251,10 +230,6 @@ public class ConfigHandler {
 
         deleteSourceFileWhenEncoding = false;
         deleteSourceFileWhenDecoding = false;
-
-        showSplashScreen = true;
-        splashScreenFilePath = "Splash.png";
-        splashScreenDisplayTime = 3000;
 
         compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
 
@@ -364,24 +339,6 @@ public class ConfigHandler {
                         "Defaulting to 8.");
 
             this.macroBlockDimensions = 8;
-        }
-    }
-
-    /**
-     * Sets the new Splash Screen Display Time.
-     *
-     * @param splashScreenDisplayTime
-     *         The amount of time, in milliseconds, to display the splash screen for.
-     */
-    public void setSplashScreenDisplayTime(final int splashScreenDisplayTime) {
-        if(splashScreenDisplayTime >= 1) {
-            this.splashScreenDisplayTime = splashScreenDisplayTime;
-        } else {
-            final Logger logger = LogManager.getLogger();
-            logger.warn("Splash Screen Display Time cannot be set to less than 1. Ensure the value is 1 or greater. " +
-                        "Defaulting to 3000.");
-
-            this.splashScreenDisplayTime = 3000;
         }
     }
 }

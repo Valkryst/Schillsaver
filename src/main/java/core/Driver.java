@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Scanner;
@@ -43,13 +42,8 @@ public class Driver extends Application{
         configHandler.loadConfigSettings();
 
         // Check for Updates:
-        if(configHandler.isCheckForUpdatesOnStart()) {
+        if(configHandler.isCheckForUpdates()) {
             checkForUpdate();
-        }
-
-        // Show Splash Screen:
-        if(configHandler.isShowSplashScreen()) {
-            showSplashscreen(configHandler);
         }
 
         // Setup the primary stage:
@@ -79,9 +73,7 @@ public class Driver extends Application{
             final String newVersion = scanner.nextLine();
             scanner.close();
 
-            System.out.println(newVersion);
-
-            if(!newVersion.equals(PROGRAM_VERSION)) {
+            if(! newVersion.equals(PROGRAM_VERSION)) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("New Version Available");
                 alert.setHeaderText("This program is out of date.");
@@ -96,36 +88,6 @@ public class Driver extends Application{
             logger.warn(e);
 
             Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
-        }
-    }
-
-    /**
-     * Show the splash-screen if it's enabled in the configuration settings
-     * and if the splash-screen image can be found.
-     *
-     * @param configHandler
-     *         todo Javadoc
-     */
-    public static void showSplashscreen(final ConfigHandler configHandler) {
-        if(configHandler.isShowSplashScreen()) {
-            try {
-                final ImageIcon image = new ImageIcon(configHandler.getSplashScreenFilePath());
-                final JWindow window = new JWindow();
-                window.getContentPane().add(new JLabel("", image, SwingConstants.CENTER));
-                window.pack();
-                window.setLocationRelativeTo(null);
-                window.setVisible(true);
-
-                Thread.sleep(configHandler.getSplashScreenDisplayTime());
-
-                window.setVisible(false);
-                window.dispose();
-            } catch(final InterruptedException | NullPointerException e) {
-                final Logger logger = LogManager.getLogger();
-                logger.warn(e);
-
-                Notification.Notifier.INSTANCE.notifyError("Exception", "Please view the log file.");
-            }
         }
     }
 }

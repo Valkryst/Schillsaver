@@ -51,7 +51,7 @@ public class SettingsDialogController extends Stage implements EventHandler {
         if(source.equals(view.getButton_accept())) {
             // Check to see if all data is correct.
             // If it is, then save the settings.
-            if(!view.getController_ffmpegSettings().areSettingsCorrect() && !view.getController_miscSettings().areSettingsCorrect()) {
+            if(! view.getController_ffmpegSettings().areSettingsCorrect() && !view.getController_miscSettings().areSettingsCorrect()) {
                 // Show any warnings about YouTube compatability:
                 if(configHandler.isWarnUserIfSettingsMayNotWorkForYouTube()) {
                     view.getController_ffmpegSettings().displayWarningsAboutYouTubeCompatability();
@@ -80,7 +80,7 @@ public class SettingsDialogController extends Stage implements EventHandler {
                 configHandler.setSplashScreenFilePath(pane_misc.getField_splashScreenFilePath().getText());
                 configHandler.setSplashScreenDisplayTime(Integer.valueOf(pane_misc.getField_splashScreenDisplayTime().getText()));
                 configHandler.setCompressionCommands(pane_archival.getField_compressionCommands().getText());
-                configHandler.setCheckForUpdatesOnStart(pane_misc.getCheckForUpdatesOnStart());
+                configHandler.setCheckForUpdates(pane_misc.getCheckForUpdatesOnStart());
                 configHandler.createConfigFile();
 
                 this.close();
