@@ -1,0 +1,33 @@
+{
+  "FFMPEG Path": "",
+  "Compression Program Path": "",
+
+  "Enc Format": "mkv",
+  "Dec Format": "jpg",
+
+  "Enc Vid Width": 1280,
+  "Enc Vid Height": 720,
+  "Enc Vid Framerate": 30,
+  "Enc Vid Macro Block Dimensions": 8,
+  "Enc Library": "libvpx",
+
+  "FFMPEG Log Level": "info",
+
+  "Use Custom FFMPEG Options": false,
+
+  "Custom FFMPEG Enc Options": "",
+  "Custom FFMPEG Dec Options": "",
+
+  "Delete Source File When Enc": false,
+  "Delete Source File When Dec": false,
+
+  "Show Splash Screen": true,
+  "Splash Screen File Path": "Splash.png",
+  "Splash Screen Display Time": 3000,
+
+  "Compression Commands": "",
+
+  "Check For Updates": true,
+
+  "Warn If Settings Possibly Incompatible With YouTube": true
+}
