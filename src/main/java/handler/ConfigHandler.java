@@ -117,7 +117,7 @@ public class ConfigHandler {
         } catch(final IOException e) {
             createConfigFile();
             loadConfigSettings();
-        } catch(final NullPointerException e) {
+        } catch(final ClassCastException | NullPointerException e) {
             ffmpegPath = "";
             compressionProgramPath = "";
 
