@@ -76,9 +76,6 @@ public class SettingsDialogController extends Stage implements EventHandler {
                 configHandler.setFfmpegLogLevel(pane_ffmpeg.getComboBox_ffmpegLogLevel().getSelectionModel().getSelectedItem());
                 configHandler.setDeleteSourceFileWhenEncoding(pane_misc.getDeleteSourceFileWhenEncoding());
                 configHandler.setDeleteSourceFileWhenDecoding(pane_misc.getDeleteSourceFileWhenDecoding());
-                configHandler.setShowSplashScreen(pane_misc.getShowSplashScreen());
-                configHandler.setSplashScreenFilePath(pane_misc.getField_splashScreenFilePath().getText());
-                configHandler.setSplashScreenDisplayTime(Integer.valueOf(pane_misc.getField_splashScreenDisplayTime().getText()));
                 configHandler.setCompressionCommands(pane_archival.getField_compressionCommands().getText());
                 configHandler.setCheckForUpdates(pane_misc.getCheckForUpdatesOnStart());
                 configHandler.createConfigFile();
