@@ -5,13 +5,14 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.Getter;
 import view.settings.ArchivalSettingsPane;
 
 import java.io.File;
 
 public class ArchivalSettingsController implements EventHandler {
     // todo JavaDoc
-    private final ArchivalSettingsPane pane;
+    @Getter private final ArchivalSettingsPane pane;
 
     // todo JavaDoc
     private final Stage settingsStage;
@@ -39,9 +40,5 @@ public class ArchivalSettingsController implements EventHandler {
                 pane.getField_compressionProgramPath().setText(selectedFile.getAbsolutePath());
             }
         }
-    }
-
-    public ArchivalSettingsPane getPane() {
-        return pane;
     }
 }
