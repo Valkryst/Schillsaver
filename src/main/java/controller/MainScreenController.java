@@ -210,7 +210,7 @@ public class MainScreenController implements EventHandler {
 
         // The button to open the settings dialog.
         if(source.equals(view.getButton_editSettings())) {
-            new SettingsDialogController(configHandler).show();
+            new SettingsDialogController(primaryStage, configHandler).show();
         }
     }
 

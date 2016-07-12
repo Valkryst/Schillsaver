@@ -25,10 +25,10 @@ public class SettingsDialogController extends Stage implements EventHandler {
      * Construct a new settings dialog controller.
      * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
      */
-    public SettingsDialogController(final ConfigHandler configHandler) {
+    public SettingsDialogController(final Stage settingsStage, final ConfigHandler configHandler) {
         this.configHandler = configHandler;
 
-        view = new SettingsDialogView(this, configHandler);
+        view = new SettingsDialogView(settingsStage, this, configHandler);
 
         // Setup Stage:
         final Scene scene = new Scene(view);

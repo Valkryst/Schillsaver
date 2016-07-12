@@ -9,23 +9,29 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import lombok.Getter;
+import view.settings.MiscSettingsPane;
 
 public class SettingsDialogView extends VBox {
     /** The controller for the archival settings section. */
     @Getter private final ArchivalSettingsController controller_archivalSettings;
     /** The controller for the FFMPEG settings section. */
     @Getter private final FfmpegSettingsController controller_ffmpegSettings;
+    /** The pane for the misc. settings section. */
+    @Getter private final MiscSettingsPane pane_miscSettings;
+
     /** The button to close the window and save settings. */
     @Getter private final Button button_accept = new Button("Accept");
     /** The button to close the window without saving settings. */
     @Getter private final Button button_cancel = new Button("Cancel");
 
     // todo JavaDoc
-    public SettingsDialogView(final SettingsDialogController controller, final ConfigHandler configHandler) {
+    public SettingsDialogView(final Stage settingsStage, final SettingsDialogController controller, final ConfigHandler configHandler) {
         // Initalize Variables:
         controller_archivalSettings = new ArchivalSettingsController(controller, configHandler);
         controller_ffmpegSettings = new FfmpegSettingsController(controller, configHandler);
+        pane_miscSettings = new MiscSettingsPane(settingsStage, configHandler);
 
         // Set Component Tooltips:
         button_accept.setTooltip(new Tooltip("Accept and save the new settings."));
@@ -37,7 +43,7 @@ public class SettingsDialogView extends VBox {
 
         // Setup the Layout
         final VBox panel_top = new VBox(4);
-        panel_top.getChildren().addAll(controller_archivalSettings.getPane(), controller_ffmpegSettings.getPane());
+        panel_top.getChildren().addAll(controller_archivalSettings.getPane(), controller_ffmpegSettings.getPane(), pane_miscSettings);
 
         final HBox panel_bottom = new HBox(10);
         panel_bottom.setAlignment(Pos.CENTER);
