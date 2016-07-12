@@ -79,8 +79,8 @@ public class ConfigHandler {
      */
     public void loadConfigSettings() {
         try (
-                final InputStream inputStream = new FileInputStream("config.json");
-                final JsonReader reader = Json.createReader(inputStream);
+            final InputStream inputStream = new FileInputStream("config.json");
+            final JsonReader reader = Json.createReader(inputStream);
         ) {
             final JsonObject configFile = reader.readObject();
 
