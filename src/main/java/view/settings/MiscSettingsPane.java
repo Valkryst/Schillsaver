@@ -152,13 +152,13 @@ public class MiscSettingsPane extends TitledPane {
 
 
         final HBox panel_top = new HBox(10);
-        panel_top.getChildren().addAll(pane_deleteSourceFileWhenEncoding, pane_deleteSourceFileWhenDecoding);
+        panel_top.getChildren().addAll(pane_deleteSourceFileWhenEncoding, pane_deleteSourceFileWhenDecoding, pane_enableWarnUserIfSettingsMayNotWorkForYouTube);
 
 
 
         final HBox panel_bottom = new HBox(10);
         panel_bottom.setAlignment(Pos.CENTER);
-        panel_bottom.getChildren().addAll(pane_enableUpdateCheck, pane_enableWarnUserIfSettingsMayNotWorkForYouTube);
+        panel_bottom.getChildren().addAll(pane_enableUpdateCheck);
 
 
 
