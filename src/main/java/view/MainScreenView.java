@@ -45,27 +45,8 @@ public class MainScreenView extends HBox {
         textArea_output.setEditable(false);
         textArea_output.setFocusTraversable(false);
 
-        // Set Component Tooltips:
-        button_createJob.setTooltip(new Tooltip("Open the Job creation dialog to create a new Job."));
-        button_editJob.setTooltip(new Tooltip("Edit the first of the currently selected Jobs."));
-        button_deleteSelectedJobs.setTooltip(new Tooltip("Removes all Jobs that are currently selected on the list."));
-        button_deleteAllJobs.setTooltip(new Tooltip("Clears the list of all Jobs."));
-        button_clearOutput.setTooltip(new Tooltip("Clears the output screen."));
-        button_editSettings.setTooltip(new Tooltip("Open the settings menu."));
-        button_encode.setTooltip(new Tooltip("Encodes the selected handler(s)."));
-        button_decode.setTooltip(new Tooltip("Decodes the selected handler(s).\n\n" +
-                                             "No checking is done to see if the files have ever been encoded,\n" +
-                                             "so it's up to you to ensure you're decoding the correct files."));
-
-        // Set Component EventHandlers:
-        button_createJob.setOnAction(controller);
-        button_editJob.setOnAction(controller);
-        button_encode.setOnAction(controller);
-        button_decode.setOnAction(controller);
-        button_deleteSelectedJobs.setOnAction(controller);
-        button_deleteAllJobs.setOnAction(controller);
-        button_clearOutput.setOnAction(controller);
-        button_editSettings.setOnAction(controller);
+        setTooltips();
+        setEventHandlers(controller);
 
         // Setup the Layout:
         final HBox panel_left_top = new HBox(10);
@@ -96,5 +77,36 @@ public class MainScreenView extends HBox {
 
         this.setSpacing(4);
         this.getChildren().addAll(panel_left, panel_right);
+    }
+
+    /** Sets the default tooltips for all relevant components. */
+    private void setTooltips() {
+        button_createJob.setTooltip(new Tooltip("Open the Job creation dialog to create a new Job."));
+        button_editJob.setTooltip(new Tooltip("Edit the first of the currently selected Jobs."));
+        button_deleteSelectedJobs.setTooltip(new Tooltip("Removes all Jobs that are currently selected on the list."));
+        button_deleteAllJobs.setTooltip(new Tooltip("Clears the list of all Jobs."));
+        button_clearOutput.setTooltip(new Tooltip("Clears the output screen."));
+        button_editSettings.setTooltip(new Tooltip("Open the settings menu."));
+        button_encode.setTooltip(new Tooltip("Encodes the selected handler(s)."));
+        button_decode.setTooltip(new Tooltip("Decodes the selected handler(s).\n\n" +
+                                             "No checking is done to see if the files have ever been encoded,\n" +
+                                             "so it's up to you to ensure you're decoding the correct files."));
+    }
+
+    /**
+     * Sets the EventHandler for all relevant components.
+     *
+     * @param controller
+     *         The EventHandler to use.
+     */
+    private void setEventHandlers(final MainScreenController controller) {
+        button_createJob.setOnAction(controller);
+        button_editJob.setOnAction(controller);
+        button_encode.setOnAction(controller);
+        button_decode.setOnAction(controller);
+        button_deleteSelectedJobs.setOnAction(controller);
+        button_deleteAllJobs.setOnAction(controller);
+        button_clearOutput.setOnAction(controller);
+        button_editSettings.setOnAction(controller);
     }
 }
