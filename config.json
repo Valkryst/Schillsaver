@@ -25,7 +25,7 @@
   "Splash Screen File Path": "Splash.png",
   "Splash Screen Display Time": 3000,
 
-  "Compression Commands": "",
+  "Compression Commands": "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on",
 
   "Check For Updates": true,
 
