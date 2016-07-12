@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.util.List;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class StatisticsHandler {
     /** The number of bytes encoded, per second, across all recorded encode Jobs. */
@@ -92,11 +93,20 @@ public class StatisticsHandler {
     /**
      * Calculates the amount of bytes, per second, that the specified file was processed
      * at.
+     *
      * If the processing speed was too fast, then 0 is returned.
-     * @param file The file that was processed.
-     * @param startTime The time, in milliseconds, that processing began.
-     * @param endTime The time, in milliseconds, that processing completed.
-     * @return The amount of bytes, per second, that the specified file was processed at.
+     *
+     * @param file
+     *         The file that was processed.
+     *
+     * @param startTime
+     *         The time, in milliseconds, that processing began.
+     *
+     * @param endTime
+     *         The time, in milliseconds, that processing completed.
+     *
+     * @return
+     *         The amount of bytes, per second, that the specified file was processed at.
      */
     public long calculateProcessingSpeed(final File file, final long startTime, final long endTime) {
         try {
@@ -113,8 +123,12 @@ public class StatisticsHandler {
     /**
      * Writes the specified data to either the encode, or decode, statistics
      * file.
-     * @param isEncodeJob Whether or not the data is from an encode or decode Job.
-     * @param bytesPerSecond The bytes per second to write to the file.
+     *
+     * @param isEncodeJob
+     *         Whether or not the data is from an encode or decode Job.
+     *
+     * @param bytesPerSecond
+     *         The bytes per second to write to the file.
      */
     public void recordData(final boolean isEncodeJob, final long bytesPerSecond) {
         // Prepare the output file:
@@ -162,17 +176,23 @@ public class StatisticsHandler {
     /**
      * Estimates the time it will take for a Job, with the specified files, to
      * either encode, or decode, based on previous data.
-     * @param isEncodeJob Whether of not the Job to be run is an encode, or decode, Job.
-     * @param files The files to be processed.
-     * @return The amount of time, in seconds, that the Job may take.
+     *
+     * @param isEncodeJob
+     *         Whether of not the Job to be run is an encode, or decode, Job.
+     *
+     * @param files
+     *         The files to be processed.
+     *
+     * @return
+     *         The amount of time, in seconds, that the Job may take.
      */
     public long estimateProcessingDuration(final boolean isEncodeJob, final List<File> files) {
-        long estimation = 0;
+        final AtomicLong estimationAtm = new AtomicLong(0);
 
-        for(final File f : files) {
-            estimation += f.length();
-        }
+        files.parallelStream()
+             .forEach(file -> estimationAtm.addAndGet(file.length()));
 
+        long estimation = estimationAtm.longValue();
         estimation /= (isEncodeJob ? bytesEncodedPerSecond : bytesDecodedPerSecond);
         return estimation;
     }
