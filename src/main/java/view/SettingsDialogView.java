@@ -28,7 +28,7 @@ public class SettingsDialogView extends VBox {
 
     // todo JavaDoc
     public SettingsDialogView(final Stage settingsStage, final SettingsDialogController controller, final ConfigHandler configHandler) {
-        // Initalize Variables:
+        // Initialize Variables:
         controller_archivalSettings = new ArchivalSettingsController(controller, configHandler);
         controller_ffmpegSettings = new FfmpegSettingsController(controller, configHandler);
         pane_miscSettings = new MiscSettingsPane(settingsStage, configHandler);
