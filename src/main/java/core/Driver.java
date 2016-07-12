@@ -5,6 +5,7 @@ import eu.hansolo.enzo.notification.Notification;
 import handler.ConfigHandler;
 import handler.StatisticsHandler;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -49,6 +50,9 @@ public class Driver extends Application{
         // Setup the primary stage:
         primaryStage.getIcons().add(new Image("icon.png"));
 
+        // Setup Enzo:
+        Notification.Notifier.setPopupLocation(primaryStage, Pos.BOTTOM_CENTER);
+
         // Add the frst scene to the primary stage:
         final Scene scene = new Scene(new MainScreenController(primaryStage, configHandler, statisticsHandler).getView());
 
@@ -67,8 +71,9 @@ public class Driver extends Application{
      * the situation and how to update.
      */
     public static void checkForUpdate() {
+        // todo Fix the issue where an HTML tag is returned instead of the version number.
         try {
-            final URL url = new URL("https://valkryst.com/schillsaver/version.txt");
+            final URL url = new URL("http://valkryst.com/schillsaver/version.txt");
             Scanner scanner = new Scanner(url.openStream());
             final String newVersion = scanner.nextLine();
             scanner.close();
@@ -86,8 +91,6 @@ public class Driver extends Application{
         catch(IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.warn(e);
-
-            Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
         }
     }
 }
