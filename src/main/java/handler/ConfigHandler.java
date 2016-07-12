@@ -3,19 +3,17 @@ package handler;
 import eu.hansolo.enzo.notification.Notification;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.*;
 
 public class ConfigHandler {
     /** The name of the configuration handler. */
-    private static final String FILENAME_CONFIG = "config.ini";
+    private static final String FILENAME_CONFIG = "config.json";
 
     /** The logging levels supported by FFMPEG as of 2015/Nov/1. */
     public static final String[] FFMPEG_LOG_LEVELS = {"quiet", "panic", "fatal", "error", "warning", "info", "verbose", "debug", "trace"};
@@ -31,44 +29,44 @@ public class ConfigHandler {
     @Getter @Setter private String decodeFormat = "7z";
 
     /** The width, in pixels, of the encoded video. */
-    @Getter private int encodedVideoWidth = 1280;
+    @Getter private int encodedVideoWidth;
     /** The height, in pixels, of the encoded video. */
-    @Getter private int encodedVideoHeight = 720;
+    @Getter private int encodedVideoHeight;
     /** The framerate of the video. Ex ~ 30fps, 60fps, etc... */
-    @Getter private int encodedFramerate = 30;
+    @Getter private int encodedFramerate;
     /** The size of each frame of video in bytes. */
     @Getter private int frameSize;
     /** The width/height of each encoded macroblock. */
-    @Getter private int macroBlockDimensions = 8;
+    @Getter private int macroBlockDimensions;
     /** The codec to encode/decode the video with. */
     @Getter @Setter private String encodingLibrary = "libvpx";
     /** The level of information that should be given by ffmpeg while ffmpeg is running. */
     @Getter @Setter private String ffmpegLogLevel = "info";
 
     /** Whether or not to ignore all other ffmpeg options and to use the fullyCustomFfmpegEncodingOptions and fullyCustomFfmpegDecodingOptions instead. */
-    @Getter @Setter private boolean useFullyCustomFfmpegOptions = false;
+    @Getter @Setter private boolean useFullyCustomFfmpegOptions;
     /** The user-entered command line arguments to use when encoding with ffmpeg. */
-    @Getter @Setter private String fullyCustomFfmpegEncodingOptions = "";
+    @Getter @Setter private String fullyCustomFfmpegEncodingOptions;
     /** The user-entered command line arguments to use when encoding with ffmpeg. */
-    @Getter @Setter private String fullyCustomFfmpegDecodingOptions = "";
+    @Getter @Setter private String fullyCustomFfmpegDecodingOptions;
 
     /** Whether or not to delete the source file after encoding. */
-    @Getter @Setter private boolean deleteSourceFileWhenEncoding = false;
+    @Getter @Setter private boolean deleteSourceFileWhenEncoding ;
     /** whether or not to delete the osource file after decoding. */
-    @Getter @Setter private boolean deleteSourceFileWhenDecoding = false;
+    @Getter @Setter private boolean deleteSourceFileWhenDecoding ;
 
     /** Whether or not to show the splash screen on startup. */
-    @Getter @Setter private boolean showSplashScreen = true;
+    @Getter @Setter private boolean showSplashScreen;
     /** The absolute path to the splash screen to display. */
-    @Getter @Setter private String splashScreenFilePath = "Splash.png";
+    @Getter @Setter private String splashScreenFilePath;
     /** The amount of time, in milliseconds, to display the splash screen. */
-    @Getter private int splashScreenDisplayTime = 3000;
+    @Getter private int splashScreenDisplayTime;
 
     /** The base commands to use when compressing a handler before encoding. */
-    @Getter @Setter private String compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
+    @Getter @Setter private String compressionCommands;
 
     /** Whether or not to check for program updates on program start. */
-    @Getter @Setter private boolean checkForUpdatesOnStart = false;
+    @Getter @Setter private boolean checkForUpdates = false;
 
     /** Whether or not to warn the user if their settings may not work with YouTube. */
     @Getter @Setter private boolean warnUserIfSettingsMayNotWorkForYouTube = true;
@@ -80,211 +78,161 @@ public class ConfigHandler {
      * If a line cannot be parsed, then a warning is logged.
      */
     public void loadConfigSettings() {
-        calculateFrameSize();
+        try (
+                final InputStream inputStream = new FileInputStream("config.json");
+                final JsonReader reader = Json.createReader(inputStream);
+        ) {
+            final JsonObject configFile = reader.readObject();
 
-        try {
-            List<String> lines = FileUtils.readLines(new File(FILENAME_CONFIG), "utf-8");
+            ffmpegPath = configFile.getString("FFMPEG Path");
+            compressionProgramPath = configFile.getString("Compression Program Path");
 
-            for(String currentLine : lines) {
-                if(currentLine.contains("ffmpegPath ")) {
-                    ffmpegPath = currentLine.replace("ffmpegPath ", "");
-                }
+            encodeFormat = configFile.getString("Enc Format");
+            decodeFormat = configFile.getString("Dec Format");
 
-                if(currentLine.contains("compressionProgramPath ")) {
-                    compressionProgramPath = currentLine.replace("compressionProgramPath ", "");
-                }
+            encodedVideoWidth = configFile.getInt("Enc Vid Width");
+            encodedVideoHeight = configFile.getInt("Enc Vid Height");
+            encodedFramerate = configFile.getInt("Enc Vid Framerate");
+            macroBlockDimensions = configFile.getInt("Enc Vid Macro Block Dimensions");
+            encodingLibrary = configFile.getString("Enc Library");
 
-                if(currentLine.contains("encodeFormat ")) {
-                    encodeFormat = currentLine.replace("encodeFormat ", "");
-                }
+            ffmpegLogLevel = configFile.getString("FFMPEG Log Level");
 
-                if(currentLine.contains("decodeFormat ")) {
-                    decodeFormat = currentLine.replace("decodeFormat ", "");
-                }
+            useFullyCustomFfmpegOptions = configFile.getBoolean("Use Custom FFMPEG Options");
+            fullyCustomFfmpegEncodingOptions = configFile.getString("Custom FFMPEG Enc Options");
+            fullyCustomFfmpegDecodingOptions = configFile.getString("Custom FFMPEG Dec Options");
 
-                if(currentLine.contains("encodedVideoWidth ")) {
-                    encodedVideoWidth = Integer.valueOf(currentLine.replace("encodedVideoWidth ", ""));
-                }
+            deleteSourceFileWhenEncoding = configFile.getBoolean("Delete Source File When Enc");
+            deleteSourceFileWhenDecoding = configFile.getBoolean("Delete Source File When Dec");
 
-                if(currentLine.contains("encodedVideoHeight ")) {
-                    encodedVideoHeight = Integer.valueOf(currentLine.replace("encodedVideoHeight ", ""));
-                }
+            showSplashScreen = configFile.getBoolean("Show Splash Screen");
+            splashScreenFilePath = configFile.getString("Splash Screen File Path");
+            splashScreenDisplayTime = configFile.getInt("Splash Screen Display Time");
 
-                if(currentLine.contains("encodedFramerate ")) {
-                    encodedFramerate = Integer.valueOf(currentLine.replace("encodedFramerate ", ""));
-                }
+            compressionCommands = configFile.getString("Compression Commands");
 
-                if(currentLine.contains("macroBlockDimensions ")) {
-                    macroBlockDimensions = Integer.valueOf(currentLine.replace("macroBlockDimensions ", ""));
-                }
+            checkForUpdates = configFile.getBoolean("Check For Updates");
 
-                if(currentLine.contains("encodingLibrary ")) {
-                    encodingLibrary = currentLine.replace("encodingLibrary ", "");
-                }
-
-                if(currentLine.contains("ffmpegLogLevel ")) {
-                    ffmpegLogLevel = currentLine.replace("ffmpegLogLevel ", "");
-                }
-
-                if(currentLine.contains("useFullyCustomFfmpegOptions ")) {
-                    useFullyCustomFfmpegOptions = Boolean.valueOf(currentLine.replace("useFullyCustomFfmpegOptions ", ""));
-                }
-
-                if(currentLine.contains("fullyCustomFfmpegEncodingOptions ")) {
-                    fullyCustomFfmpegEncodingOptions = currentLine.replace("fullyCustomFfmpegEncodingOptions ", "");
-                }
-
-                if(currentLine.contains("fullyCustomFfmpegDecodingOptions ")) {
-                    fullyCustomFfmpegDecodingOptions = currentLine.replace("fullyCustomFfmpegDecodingOptions ", "");
-                }
-
-                if(currentLine.contains("deleteSourceFileWhenEncoding ")) {
-                    deleteSourceFileWhenEncoding = Boolean.valueOf(currentLine.replace("deleteSourceFileWhenEncoding ", ""));
-                }
-
-                if(currentLine.contains("deleteSourceFileWhenDecoding ")) {
-                    deleteSourceFileWhenDecoding = Boolean.valueOf(currentLine.replace("deleteSourceFileWhenDecoding ", ""));
-                }
-
-                if(currentLine.contains("showSplashScreen ")) {
-                    showSplashScreen = Boolean.valueOf(currentLine.replace("showSplashScreen ", ""));
-                }
-
-                if(currentLine.contains("splashScreenFilePath ")) {
-                    splashScreenFilePath = currentLine.replace("splashScreenFilePath ", "");
-                }
-
-                if(currentLine.contains("splashScreenDisplayTime ")) {
-                    splashScreenDisplayTime = Integer.valueOf(currentLine.replace("splashScreenDisplayTime ", ""));
-                }
-
-                if(currentLine.contains("compressionCommands ")) {
-                    compressionCommands = currentLine.replace("compressionCommands ", "");
-                }
-
-                if(currentLine.contains("checkForUpdatesOnStart ")) {
-                    checkForUpdatesOnStart = Boolean.valueOf(currentLine.replace("checkForUpdatesOnStart ", ""));
-                }
-
-                if(currentLine.contains("warnUserIfSettingsMayNotWorkForYouTube ")) {
-                    warnUserIfSettingsMayNotWorkForYouTube = Boolean.valueOf(currentLine.replace("warnUserIfSettingsMayNotWorkForYouTube ", ""));
-                }
-            }
-        } catch(final IOException e) { // Should only happen if the config handler doesn't exist.
+            warnUserIfSettingsMayNotWorkForYouTube = configFile.getBoolean("Warn If Settings Possibly Incompatible With YouTube");
+        } catch(final IOException e) {
             createConfigFile();
             loadConfigSettings();
-        } catch(final NumberFormatException e) { // If encodedVideoWidth/Height fail conversion to ints.
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+        } catch(final NullPointerException e) {
+            ffmpegPath = "";
+            compressionProgramPath = "";
+
+            encodeFormat = "mkv";
+            decodeFormat = "jpg";
+
+            encodedVideoWidth = 1280;
+            encodedVideoHeight = 720;
+            encodedFramerate = 30;
+            macroBlockDimensions = 8;
+            encodingLibrary = "libvpx";
+
+            ffmpegLogLevel = "info";
+
+            useFullyCustomFfmpegOptions = false;
+
+            fullyCustomFfmpegEncodingOptions = "";
+            fullyCustomFfmpegDecodingOptions = "";
+
+            deleteSourceFileWhenEncoding = false;
+            deleteSourceFileWhenDecoding = false;
+
+            showSplashScreen = true;
+            splashScreenFilePath = "Splash.png";
+            splashScreenDisplayTime = 3000;
+
+            compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
+
+            checkForUpdates = true;
+
+            warnUserIfSettingsMayNotWorkForYouTube = true;
+
         }
 
         // Check if all options have been loaded correctly:
         final Logger logger = LogManager.getLogger();
-        boolean exitProgram = false;
-
-        if(ffmpegPath == null) {
-            logger.error("Could not load the ffmpegPath option from the config handler. Check if it's spelled " +
-                         "correctly.");
-            exitProgram = true;
-        }
-
-        if(compressionProgramPath == null) {
-            logger.error("Could not load the compressionProgramPath option from the config handler. Check if it's " +
-                         "spelled correctly.");
-            exitProgram = true;
-        }
-
-        if(encodeFormat == null) {
-            logger.error("Could not load the encodeFormat option from the config handler. Check if it's spelled " +
-                         "correctly.");
-            exitProgram = true;
-        }
-
-        if(decodeFormat == null) {
-            logger.error("Could not load the decodeFormat option from the config handler. Check if it's spelled " +
-                         "correctly.");
-            exitProgram = true;
-        }
 
         if(encodedVideoWidth < 1) {
-            logger.error("Either could not load the encodedVideoWidth option from the config handler or the value is " +
-                         "less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
-            exitProgram = true;
+            logger.warn("Encoded Video Width option is less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 1280.");
+            encodedVideoWidth = 1280;
         }
 
         if(encodedVideoHeight < 1) {
-            logger.error("Either could not load the encodedVideoHeight option from the config handler or the value is " +
-                         "less than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
-            exitProgram = true;
+            logger.warn("Encoded Video Height option is less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 720.");
+            encodedVideoWidth = 720;
         }
 
         if(encodedFramerate < 1) {
-            logger.error("Could not load the encodedFramerate option from the config handler or the value is less than " +
-                         "1. Check if it's spelled correctly and ensure the value is 1 or greater.");
-            exitProgram = true;
+            logger.warn("Encoded Video Framerate option is less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 30.");
+            encodedFramerate = 30;
         }
 
         if(macroBlockDimensions < 1) {
-            logger.error("Could not load the macroBlockDimensions option from the config handler or the value is less " +
-                         "than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
-            exitProgram = true;
+            logger.warn("Encoded Video Macro Block Dimensions is less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 8.");
+            macroBlockDimensions = 8;
         }
 
         if(splashScreenDisplayTime < 1) {
-            logger.error("Could not load splashScreenDisplayTime option from the config handler or the value is less " +
-                         "than 1. Check if it's spelled correctly and ensure the value is 1 or greater.");
-            exitProgram = true;
+            logger.warn("Splash Screen Display Time is less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 3000.");
+            splashScreenDisplayTime = 3000;
         }
 
-        if(compressionCommands == null) {
-            logger.error("Could not load the compressionCommands option from the config handler. Check if it's spelled " +
-                         "correctly.");
-            exitProgram = true;
-        }
-
-        if(exitProgram) {
-            System.exit(1);
-        }
-
-        // If the program hasn't exited, then finish up some final work:
+        // Calculate Frame Size:
         frameSize = calculateFrameSize();
     }
 
     /**
-     * Creates a new config handler, or overwrites the existing one.
-     * The config handler is populated with the values as specified by
-     * the class.
-     *
-     * todo Explain the purpose/function of this class more clearly.
+     * Creates a new configuration file, or overwrites the existing file,
+     * using the default values for each option.
      */
     public void createConfigFile() {
-        File file = new File(FILENAME_CONFIG);
+        final File file = new File(FILENAME_CONFIG);
 
         try {
             file.createNewFile();
 
             final BufferedWriter outputStream = new BufferedWriter(new FileWriter(file, false));
-            outputStream.write("ffmpegPath " + ffmpegPath + System.lineSeparator());
-            outputStream.write("compressionProgramPath " + compressionProgramPath + System.lineSeparator());
-            outputStream.write("encodeFormat " + encodeFormat + System.lineSeparator());
-            outputStream.write("decodeFormat " + decodeFormat + System.lineSeparator());
-            outputStream.write("encodedVideoWidth " + encodedVideoWidth + System.lineSeparator());
-            outputStream.write("encodedVideoHeight " + encodedVideoHeight + System.lineSeparator());
-            outputStream.write("encodedFramerate " + encodedFramerate + System.lineSeparator());
-            outputStream.write("macroBlockDimensions " + macroBlockDimensions + System.lineSeparator());
-            outputStream.write("encodingLibrary " + encodingLibrary + System.lineSeparator());
-            outputStream.write("ffmpegLogLevel " + ffmpegLogLevel + System.lineSeparator());
-            outputStream.write("useFullyCustomFfmpegOptions " + useFullyCustomFfmpegOptions + System.lineSeparator());
-            outputStream.write("fullyCustomFfmpegEncodingOptions " + fullyCustomFfmpegEncodingOptions + System.lineSeparator());
-            outputStream.write("fullyCustomFfmpegDecodingOptions " + fullyCustomFfmpegDecodingOptions + System.lineSeparator());
-            outputStream.write("deleteSourceFileWhenEncoding " + deleteSourceFileWhenEncoding + System.lineSeparator());
-            outputStream.write("deleteSourceFileWhenDecoding " + deleteSourceFileWhenDecoding + System.lineSeparator());
-            outputStream.write("showSplashScreen " + showSplashScreen + System.lineSeparator());
-            outputStream.write("splashScreenFilePath " + splashScreenFilePath + System.lineSeparator());
-            outputStream.write("splashScreenDisplayTime " + splashScreenDisplayTime + System.lineSeparator());
-            outputStream.write("compressionCommands " + compressionCommands + System.lineSeparator());
-            outputStream.write("checkForUpdatesOnStart " + checkForUpdatesOnStart + System.lineSeparator());
-            outputStream.write("warnUserIfSettingsMayNotWorkForYouTube " + warnUserIfSettingsMayNotWorkForYouTube + System.lineSeparator());
+            outputStream.write("{" + System.lineSeparator());
+            outputStream.write("    \"FFMPEG Path\": \"\"," + System.lineSeparator());
+            outputStream.write("    \"Compression Program Path\": \"\"," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Enc Format\": \"mkv\"," + System.lineSeparator());
+            outputStream.write("    \"Dec Format\": \"jpg\"," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Enc Vid Width\": 1280," + System.lineSeparator());
+            outputStream.write("    \"Enc Vid Height\": 720," + System.lineSeparator());
+            outputStream.write("    \"Enc Vid Framerate\": 30," + System.lineSeparator());
+            outputStream.write("    \"Enc Vid Macro Block Dimensions\": 8," + System.lineSeparator());
+            outputStream.write("    \"Enc Library\": \"libvpx\"," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"FFMPEG Log Level\": \"info\"," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Use Custom FFMPEG Options\": false," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Custom FFMPEG Enc Options\": \"\"," + System.lineSeparator());
+            outputStream.write("    \"Custom FFMPEG Dec Options\": \"\"," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Delete Source File When Enc\": false," + System.lineSeparator());
+            outputStream.write("    \"Delete Source File When Dec\": false," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Show Splash Screen\": true," + System.lineSeparator());
+            outputStream.write("    \"Splash Screen File Path\": \"Splash.png\"," + System.lineSeparator());
+            outputStream.write("    \"Splash Screen Display Time\": 3000," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Compression Commands\": \"a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on\"," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Check For Updates\": true," + System.lineSeparator());
+            outputStream.write(System.lineSeparator());
+            outputStream.write("    \"Warn If Settings Possibly Incompatible With YouTube\": true" + System.lineSeparator());
+            outputStream.write("}");
             outputStream.close();
         } catch(final IOException e) {
             final Logger logger = LogManager.getLogger();
@@ -292,16 +240,17 @@ public class ConfigHandler {
 
             Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
         }
-
-        calculateFrameSize();
     }
 
     /**
-     * Calculates and returns the frameSize for the current
-     * encodedVideoWidth/Height.
-     * @return The frameSize for the current encodedVideoWidth/Height.
+     * Calculates and returns the Frame Size for the current Encoded
+     * Video Width & Height.
+     *
+     * @return
+     *         The Frame Size for the current Encoded Video Width &
+     *         Height.
      */
-    public int calculateFrameSize() {
+    private int calculateFrameSize() {
         /*
          * We want to calculate the frame size in bytes given a resolution (width x height).
          *
@@ -322,59 +271,96 @@ public class ConfigHandler {
     }
 
     /**
-     * @param encodedVideoWidth The new width, in pixels, of the encoded video.
-     * @throws IllegalArgumentException Thrown if the input width is less than 1.
+     * Sets the new Encoded Video Width, then recalculates the Frame Size.
+     *
+     * @param encodedVideoWidth
+*              The width, in pixels, to use when encoding a video.
      */
-    public void setEncodedVideoWidth(final int encodedVideoWidth) throws IllegalArgumentException {
-        if(encodedVideoWidth > 1) {
+    public void setEncodedVideoWidth(final int encodedVideoWidth) {
+        if (encodedVideoWidth > 1) {
             this.encodedVideoWidth = encodedVideoWidth;
         } else {
-            throw new IllegalArgumentException("The encodedVideoWidth must be larger than 0.");
+            final Logger logger = LogManager.getLogger();
+            logger.warn("Encoded Video Width cannot be set to less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 1280.");
+
+            this.encodedVideoWidth = 1280;
         }
+
+        calculateFrameSize();
     }
 
     /**
-     * @param encodedVideoHeight The new height, in pixels, of the encoded video.
-     * @throws IllegalArgumentException Thrown if the input height is less than 1.
+     * Sets the new Encoded Video Height, then recalculates the Frame Size.
+     *
+     * @param encodedVideoHeight
+     *         The height, in pixels, to use when encoding a video.
      */
-    public void setEncodedVideoHeight(final int encodedVideoHeight) throws IllegalArgumentException {
-        if(encodedVideoHeight > 1) {
+    public void setEncodedVideoHeight(final int encodedVideoHeight) {
+        if(encodedVideoHeight >= 1) {
             this.encodedVideoHeight = encodedVideoHeight;
         } else {
-            throw new IllegalArgumentException("The encodedVideoHeight must be larger than 0.");
+            final Logger logger = LogManager.getLogger();
+            logger.warn("Encoded Video Height cannot be set to less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 720.");
+
+            this.encodedVideoHeight = 720;
         }
+
+        calculateFrameSize();
     }
 
     /**
-     * @param encodedFramerate The new framerate of the video. Ex ~ 30fps, 60fps, etc...
-     * @throws IllegalArgumentException Thrown if the input framerate is less than 1.
+     * Sets the new Encoded Video Framerate.
+     *
+     * @param encodedFramerate
+     *         The framerate to use when encoding a video.
      */
-    public void setEncodedFramerate(final int encodedFramerate) throws IllegalArgumentException {
-        if(encodedFramerate > 1) {
+    public void setEncodedFramerate(final int encodedFramerate) {
+        if(encodedFramerate >= 1) {
             this.encodedFramerate = encodedFramerate;
         } else {
-            throw new IllegalArgumentException("The encodedFramerate must be larger than 0.");
+            final Logger logger = LogManager.getLogger();
+            logger.warn("Encoded Video Framerate cannot be set to less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 30.");
+
+            this.encodedFramerate = 30;
         }
     }
 
     /**
-     * @param macroBlockDimensions The new width/height of each encoded macroblock.
-     * @throws IllegalArgumentException Thrown if the input dimensions are less than 1.
+     * Sets the new Encoded Video Macro Block Dimensions.
+     *
+     * @param macroBlockDimensions
+     *        The new Macro Block width/height to use when encoding a video.
      */
-    public void setMacroBlockDimensions(final int macroBlockDimensions) throws IllegalArgumentException {
-        if(macroBlockDimensions > 1) {
+    public void setMacroBlockDimensions(final int macroBlockDimensions) {
+        if(macroBlockDimensions >= 1) {
             this.macroBlockDimensions = macroBlockDimensions;
         } else {
-            throw new IllegalArgumentException("The macroBlockDimensions must be larger than 0.");
+            final Logger logger = LogManager.getLogger();
+            logger.warn("Encoded Video Framerate cannot be set to less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 8.");
+
+            this.macroBlockDimensions = 8;
         }
     }
 
-    /** @param splashScreenDisplayTime The new amount of time, in milliseconds, to display the splash screen. */
-    public void setSplashScreenDisplayTime(final int splashScreenDisplayTime) throws IllegalArgumentException {
-        if(splashScreenDisplayTime > 1) {
+    /**
+     * Sets the new Splash Screen Display Time.
+     *
+     * @param splashScreenDisplayTime
+     *         The amount of time, in milliseconds, to display the splash screen for.
+     */
+    public void setSplashScreenDisplayTime(final int splashScreenDisplayTime) {
+        if(splashScreenDisplayTime >= 1) {
             this.splashScreenDisplayTime = splashScreenDisplayTime;
         } else {
-            throw new IllegalArgumentException("The splashScreenDisplayTime must be larger than 0.");
+            final Logger logger = LogManager.getLogger();
+            logger.warn("Splash Screen Display Time cannot be set to less than 1. Ensure the value is 1 or greater. " +
+                        "Defaulting to 3000.");
+
+            this.splashScreenDisplayTime = 3000;
         }
     }
 }
