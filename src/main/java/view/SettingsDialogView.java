@@ -43,10 +43,11 @@ public class SettingsDialogView extends VBox {
 
         // Setup the Layout
         final VBox panel_top = new VBox(4);
-        panel_top.getChildren().addAll(controller_archivalSettings.getPane(), controller_ffmpegSettings.getPane(), pane_miscSettings);
-
         final HBox panel_bottom = new HBox(10);
+
         panel_bottom.setAlignment(Pos.CENTER);
+
+        panel_top.getChildren().addAll(controller_archivalSettings.getPane(), controller_ffmpegSettings.getPane(), pane_miscSettings);
         panel_bottom.getChildren().addAll(button_accept, button_cancel);
 
         this.setSpacing(4);
