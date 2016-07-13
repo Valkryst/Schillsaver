@@ -122,7 +122,7 @@ public class MainScreenController implements EventHandler {
                      .parallelStream()
                      .filter(Job::isEncodeJob)
                      .forEach(job -> {
-                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
+                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, this, configHandler, statisticsHandler);
                          ffmpegHandler.setOnSucceeded(ffmpegHandler);
                          preparedJobs.add(ffmpegHandler);
                      });
@@ -152,7 +152,7 @@ public class MainScreenController implements EventHandler {
                      .parallelStream()
                      .filter(job -> ! job.isEncodeJob())
                      .forEach(job -> {
-                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, job.getFiles(), this, configHandler, statisticsHandler);
+                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, this, configHandler, statisticsHandler);
                          ffmpegHandler.setOnSucceeded(ffmpegHandler);
                          preparedJobs.add(ffmpegHandler);
                      });
