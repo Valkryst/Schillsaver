@@ -9,17 +9,13 @@ import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Formatter;
-import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent> {
     /** The Job being run. */
     private final Job job;
-    /** The file(s) to en/decode. */
-    private final List<File> selectedFiles;
     /** The controller for the main screen. */
     private final MainScreenController controller;
     /** The settings to use when encoding the file(s). */
@@ -30,18 +26,21 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
 
     /**
      * Creates a new FFMPEGHandler with the specified parameters.
-     * @param job The Job being run.
-     * @param selectedFiles The file(s) to encode.
-     * @param controller The controller for the main screen.
-     * @param configHandler The settings to use when encoding the file(s).
+     *
+     * @param job
+     *         The Job being run.
+     *
+     * @param controller
+     *         The controller for the main screen.
+     *
+     * @param configHandler
+     *         The settings to use when encoding the file(s).
+     *
+     * @param statisticsHandler
+     *         todo JavaDoc
      */
-    public FFMPEGHandler(final Job job, List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
+    public FFMPEGHandler(final Job job, final MainScreenController controller, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
         this.job = job;
-
-        // Sort the array of files to ensure the smallest files
-        // are en/decoded first.
-        this.selectedFiles = greedySort(selectedFiles);
-
         this.controller = controller;
         this.configHandler = configHandler;
         this.statisticsHandler = statisticsHandler;
@@ -75,12 +74,12 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(job.isArchiveFiles()) {
-            final File temp = archiveHandler.packFiles(job, selectedFiles, controller, configHandler);
-            selectedFiles.clear();
-            selectedFiles.add(temp);
+            final File temp = archiveHandler.packFiles(job, job.getFiles(), controller, configHandler);
+            job.getFiles().clear();
+            job.getFiles().add(temp);
         }
 
-        for(File f : selectedFiles) {
+        for(File f : job.getFiles()) {
             // Prepare statistics estimation:
             long time_start = System.currentTimeMillis();
             long time_end;
@@ -163,7 +162,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
      */
     private void decode() {
         try {
-            for(final File f : selectedFiles) {
+            for(final File f : job.getFiles()) {
                 // Prepare statistics estimation:
                 long time_start = System.currentTimeMillis();
                 long time_end;
@@ -227,69 +226,6 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
         }
     }
 
-    /**
-     * To ensure that the smallest files are encoded first, the greedy
-     * algorithm sorts the array by smallest filesize using mergesort.
-     *
-     * @param arr The file(s) to sort.
-     * @return A sorted list of file(s) from smallest to largest filesize.
-     */
-    private List<File> greedySort(final List<File> arr) {
-        // If the array has zero, or one, element, then it is already sorted.
-        if(arr.size() == 0 || arr.size() == 1) {
-            return arr;
-        }
-
-        // Split the array into two halves.
-        int half = arr.size()/2;
-        List<File> arrA = new ArrayList<>();
-        List<File> arrB = new ArrayList<>();
-
-        // Fill both halves with the values from arr.
-        for(int i=0;i<half;i++) {
-            arrA.add(arr.get(i));
-        }
-
-        for(int i=half;i<arr.size();i++) {
-            arrB.add(i - half, arr.get(i));
-        }
-
-        // Recursively call the sort() method on both halves.
-        arrA = greedySort(arrA);
-        arrB = greedySort(arrB);
-
-        // Combine the two sorted arrays while sorting.
-        List<File> arrC = new ArrayList<>();
-
-        int arrAIndex = 0, arrBIndex = 0, arrCIndex = 0;
-
-        while(arrAIndex < arrA.size() && arrBIndex < arrB.size()) {
-            if(arrA.get(arrAIndex).length() < arrB.get(arrBIndex).length()) {
-                arrC.add(arrCIndex, arrA.get(arrAIndex));
-                arrAIndex++;
-            } else {
-                arrC.add(arrCIndex, arrB.get(arrBIndex));
-                arrBIndex++;
-            }
-            arrCIndex++;
-        }
-
-        // Because the above loop doesn't work for all elements we must
-        // copy whatever elements remain into arrC.
-        while(arrAIndex < arrA.size()) {
-            arrC.add(arrCIndex, arrA.get(arrAIndex));
-            arrCIndex++;
-            arrAIndex++;
-        }
-
-        while(arrBIndex < arrB.size()) {
-            arrC.add(arrCIndex, arrB.get(arrBIndex));
-            arrCIndex++;
-            arrBIndex++;
-        }
-
-        return arrC;
-    }
 
     ////////////////////////////////////////////////////////// Getters
 
@@ -297,7 +233,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
     public long getTotalFilesize() {
         final AtomicLong temp = new AtomicLong(0);
 
-        selectedFiles.parallelStream()
+        job.getFiles().parallelStream()
                      .forEach(file -> temp.addAndGet(file.length()));
 
         return temp.get();
