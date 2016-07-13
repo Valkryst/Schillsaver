@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Job {
@@ -57,6 +59,11 @@ public class Job {
         this.files = files;
         this.isEncodeJob = isEncodeJob;
         this.archiveFiles = archiveFiles;
+
+
+        // Sort the files from smallest to largest:
+        final Comparator<File> comparator = Comparator.comparing(File::length);
+        Collections.sort(this.files, comparator);
     }
 
     /** @return The full designation of the Job. This includes the unique ID, type, and name. */
