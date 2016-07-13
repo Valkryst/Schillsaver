@@ -23,7 +23,7 @@ public class MainScreenView extends HBox {
     /** The button to delete all Jobs from the list. */
     @Getter private final Button button_deleteAllJobs = new Button("Delete All Jobs");
 
-    /** The text area for the ouput of FFMPEG from the most recent encode or decode job. */
+    /** The text area for the output of FFMPEG from the most recent encode or decode job. */
     @Getter private TextArea textArea_output = new TextArea();
 
     /** The button to clear the output screen. */
@@ -49,34 +49,8 @@ public class MainScreenView extends HBox {
         setEventHandlers(controller);
 
         // Setup the Layout:
-        final HBox panel_left_top = new HBox(10);
-        panel_left_top.setAlignment(Pos.CENTER);
-        panel_left_top.getChildren().addAll(button_createJob, button_editJob, button_deleteSelectedJobs, button_deleteAllJobs);
-
-        final HBox panel_left_bottom = new HBox(10);
-        panel_left_bottom.setAlignment(Pos.CENTER);
-        panel_left_bottom.getChildren().addAll(button_encode, button_decode);
-
-        final VBox panel_left = new VBox(4);
-        HBox.setHgrow(panel_left, Priority.ALWAYS);
-        VBox.setVgrow(listView_jobs, Priority.ALWAYS);
-        panel_left.getChildren().addAll(panel_left_top, listView_jobs, panel_left_bottom);
-
-
-
-        final BorderPane panel_right_bottom = new BorderPane();
-        panel_right_bottom.setLeft(button_clearOutput);
-        panel_right_bottom.setRight(button_editSettings);
-
-        final VBox panel_right = new VBox(4);
-        HBox.setHgrow(panel_right, Priority.ALWAYS);
-        VBox.setVgrow(textArea_output, Priority.ALWAYS);
-        panel_right.getChildren().addAll(textArea_output, panel_right_bottom);
-
-
-
         this.setSpacing(4);
-        this.getChildren().addAll(panel_left, panel_right);
+        this.getChildren().addAll(setupLeftPanel(), setupRightPanel());
     }
 
     /** Sets the default tooltips for all relevant components. */
@@ -108,5 +82,50 @@ public class MainScreenView extends HBox {
         button_deleteAllJobs.setOnAction(controller);
         button_clearOutput.setOnAction(controller);
         button_editSettings.setOnAction(controller);
+    }
+
+    /**
+     * Constructs the left panel.
+     *
+     * @return
+     *         The left panel.
+     */
+    private VBox setupLeftPanel() {
+        final HBox top = new HBox(10);
+        final HBox bottom = new HBox(10);
+        final VBox panel = new VBox(4);
+
+        top.setAlignment(Pos.CENTER);
+        bottom.setAlignment(Pos.CENTER);
+
+        HBox.setHgrow(panel, Priority.ALWAYS);
+        VBox.setVgrow(listView_jobs, Priority.ALWAYS);
+
+        top.getChildren().addAll(button_createJob, button_editJob, button_deleteSelectedJobs, button_deleteAllJobs);
+        bottom.getChildren().addAll(button_encode, button_decode);
+        panel.getChildren().addAll(top, listView_jobs, bottom);
+
+        return panel;
+    }
+
+    /**
+     * Constructs the right panel.
+     *
+     * @return
+     *         The right panel.
+     */
+    private VBox setupRightPanel() {
+        final BorderPane bottom = new BorderPane();
+        final VBox panel = new VBox(4);
+
+        HBox.setHgrow(panel, Priority.ALWAYS);
+        VBox.setVgrow(textArea_output, Priority.ALWAYS);
+
+        bottom.setLeft(button_clearOutput);
+        bottom.setRight(button_editSettings);
+
+        panel.getChildren().addAll(textArea_output, bottom);
+
+        return panel;
     }
 }
