@@ -6,6 +6,7 @@ import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import misc.Job;
+import module.RuntimeStatisticsModule;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -80,9 +81,8 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
         }
 
         for(File f : job.getFiles()) {
-            // Prepare statistics estimation:
-            long time_start = System.currentTimeMillis();
-            long time_end;
+            final RuntimeStatisticsModule statisticsModule = new RuntimeStatisticsModule();
+            statisticsModule.recordStart();
 
             // Pad the file:
             FileHandler.padFile(f, configHandler);
@@ -137,8 +137,8 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             });
 
             // Finish statistics estimation:
-            time_end = System.currentTimeMillis();
-            statisticsHandler.recordData(true, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
+            statisticsModule.recordEnd();
+            statisticsHandler.recordData(true, statisticsHandler.calculateProcessingSpeed(f, statisticsModule));
 
             // Delete leftovers:
             if(job.isArchiveFiles()) {
@@ -163,9 +163,8 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
     private void decode() {
         try {
             for(final File f : job.getFiles()) {
-                // Prepare statistics estimation:
-                long time_start = System.currentTimeMillis();
-                long time_end;
+                final RuntimeStatisticsModule statisticsModule = new RuntimeStatisticsModule();
+                statisticsModule.recordStart();
 
                 // Construct FFMPEG string:
                 final StringBuilder stringBuilder = new StringBuilder();
@@ -213,8 +212,8 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 });
 
                 // Finish statistics estimation:
-                time_end = System.currentTimeMillis();
-                statisticsHandler.recordData(false, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
+                statisticsModule.recordEnd();
+                statisticsHandler.recordData(false, statisticsHandler.calculateProcessingSpeed(f, statisticsModule));
 
                 // Delete leftovers:
                 if(configHandler.isDeleteSourceFileWhenDecoding()) {

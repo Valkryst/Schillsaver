@@ -2,6 +2,7 @@ package handler;
 
 import eu.hansolo.enzo.notification.Notification;
 import lombok.Getter;
+import module.RuntimeStatisticsModule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -99,18 +100,15 @@ public class StatisticsHandler {
      * @param file
      *         The file that was processed.
      *
-     * @param startTime
-     *         The time, in milliseconds, that processing began.
-     *
-     * @param endTime
-     *         The time, in milliseconds, that processing completed.
+     * @param statisticsModule
+     *         todo JavaDoc
      *
      * @return
      *         The amount of bytes, per second, that the specified file was processed at.
      */
-    public long calculateProcessingSpeed(final File file, final long startTime, final long endTime) {
+    public long calculateProcessingSpeed(final File file, final RuntimeStatisticsModule statisticsModule) {
         try {
-            long duration = endTime - startTime; // The total time that the Job ran for, in milliseconds.
+            long duration = statisticsModule.getElapsedTime(); // The total time that the Job ran for, in milliseconds.
             duration /= 1000; // The total time that the Job ran for, in seconds.
 
             long speed = file.length() / duration; // The bytes per millisecond that were en/decoded.
