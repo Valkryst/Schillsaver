@@ -172,53 +172,80 @@ public class JobSetupDialogView extends HBox {
         }
     }
 
+    /**
+     * Constructs the left panel.
+     *
+     * @return
+     *         The left panel.
+     */
     private VBox setupLeftPanel() {
         final HBox top = new HBox(10);
-        top.setAlignment(Pos.CENTER);
-        top.getChildren().addAll(button_addFiles, button_removeSelectedFiles, button_clearAllFiles);
-
         final HBox bottom = new HBox(10);
-        bottom.setAlignment(Pos.CENTER);
-        bottom.getChildren().addAll(button_accept, button_cancel);
-
         final VBox panel = new VBox(4);
+
+        top.setAlignment(Pos.CENTER);
+        bottom.setAlignment(Pos.CENTER);
+
         HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(listView_selectedFiles, Priority.ALWAYS);
+
+        top.getChildren().addAll(button_addFiles, button_removeSelectedFiles, button_clearAllFiles);
+        bottom.getChildren().addAll(button_accept, button_cancel);
         panel.getChildren().addAll(top, listView_selectedFiles, bottom);
 
         return panel;
     }
 
+    /**
+     * Constructs the right panel.
+     *
+     * @return
+     *         The right panel.
+     */
     private VBox setupRightPanel(final Stage settingsStage) {
         final VBox top = setupTopRightPanel();
         final VBox bottom = setupBottomRightPanel(settingsStage);
-
         final VBox panel = new VBox(4);
+
         HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
+
         panel.getChildren().addAll(top, bottom);
 
         return panel;
     }
 
+    /**
+     * Constructs the top panel of the right panel.
+     *
+     * @return
+     *         The top panel of the right panel.
+     */
     private VBox setupTopRightPanel() {
         final HBox top = new HBox(10);
-        HBox.setHgrow(field_jobName, Priority.ALWAYS);
-        top.getChildren().addAll(comboBox_jobType, field_jobName);
-
         final VBox bottom= new VBox(4);
+        final VBox panel = new VBox(4);
+
+        HBox.setHgrow(field_jobName, Priority.ALWAYS);
         VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
         VBox.setVgrow(bottom, Priority.ALWAYS);
-        bottom.setAlignment(Pos.CENTER);
-        bottom.getChildren().addAll(textArea_jobDescription, label_job_estimatedDurationInMinutes);
+        VBox.setVgrow(panel, Priority.ALWAYS);
 
-        final VBox panel = new VBox(4);
-        VBox.setVgrow(panel,Priority.ALWAYS);
+        bottom.setAlignment(Pos.CENTER);
+
+        top.getChildren().addAll(comboBox_jobType, field_jobName);
+        bottom.getChildren().addAll(textArea_jobDescription, label_job_estimatedDurationInMinutes);
         panel.getChildren().addAll(top, bottom);
 
         return panel;
     }
 
+    /**
+     * Constructs the bottom panel of the right panel.
+     *
+     * @return
+     *         The bottom panel of the right panel.
+     */
     private VBox setupBottomRightPanel(final Stage settingsStage) {
         final HBox pane_panel_singleArchive = new HBox(10);
         pane_panel_singleArchive.setAlignment(Pos.CENTER);
