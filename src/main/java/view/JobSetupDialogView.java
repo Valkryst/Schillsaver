@@ -45,19 +45,12 @@ public class JobSetupDialogView extends HBox {
     /** The text area for a rough description of the Job. */
     @Getter private final TextArea textArea_jobDescription = new TextArea();
 
-    /** The toggle group of the "archive all files into a single archive before encoding" yes/no radio buttons. */
-    @Getter private final ToggleGroup toggleGroup_singleArchive = new ToggleGroup();
-    /** The radio button that says that each of the currently selected files should be archived as a single archive before encoding. */
-    @Getter private final RadioButton radioButton_singleArchive_yes = new RadioButton("Yes");
-    /** The radio button that says that each of the currently selected files should be archived individually before encoding them individually. */
-    @Getter private final RadioButton radioButton_singleArchive_no = new RadioButton("No");
-
-    /** The toggle group of the "archive just this handler before encoding" yes/no radio buttons. */
-    @Getter private final ToggleGroup toggleGroup_individualArchives = new ToggleGroup();
-    /** The radio button that says that each handler should be archived individually before encoding each of them individually. */
-    @Getter private final RadioButton radioButton_individualArchives_yes = new RadioButton("Yes");
-    /** The radio button that says that each handler should not be archived individually before encoding each of them individually. */
-    @Getter private final RadioButton radioButton_individualArchives_no = new RadioButton("No");
+    /** The toggle group of the "archive files before encoding" yes/no radio buttons. */
+    @Getter private final ToggleGroup toggleGroup_archiveFiles = new ToggleGroup();
+    /** The radio button that says that each of the currently selected files should be archived before encoding. */
+    @Getter private final RadioButton toggleGroup_archiveFiles_yes = new RadioButton("Yes");
+    /** The radio button that says that each of the currently selected files should not be archived before encoding. */
+    @Getter private final RadioButton toggleGroup_archiveFiles_no = new RadioButton("No");
 
     /** The text field for the path to the directory in which to place the en/decoded file(s). */
     @Getter private final TextField textField_outputDirectory = new TextField();
@@ -84,14 +77,11 @@ public class JobSetupDialogView extends HBox {
 
             textArea_jobDescription.setText(jobToEdit.getDescription());
 
-            if(jobToEdit.isCombineAllFilesIntoSingleArchive()) {
-                radioButton_singleArchive_yes.setSelected(true);
-                radioButton_individualArchives_no.setSelected(true);
-            }
+            if(jobToEdit.isArchiveFiles()) {
+                toggleGroup_archiveFiles_yes.setSelected(true);
+            } else {
 
-            if(jobToEdit.isCombineIntoIndividualArchives()) {
-                radioButton_individualArchives_yes.setSelected(true);
-                radioButton_singleArchive_no.setSelected(true);
+                toggleGroup_archiveFiles_no.setSelected(true);
             }
 
             for(final File f : jobToEdit.getFiles()) {
@@ -146,17 +136,13 @@ public class JobSetupDialogView extends HBox {
         button_cancel.setOnAction(controller);
         comboBox_jobType.setOnAction(controller);
         button_selectOutputDirectory.setOnAction(controller);
-        radioButton_singleArchive_yes.setOnAction(controller);
-        radioButton_individualArchives_yes.setOnAction(controller);
+        toggleGroup_archiveFiles_yes.setOnAction(controller);
     }
 
     /** Groups radio buttons into their toggle groups. */
     private void setRadioButtonToggleGroups() {
-        radioButton_singleArchive_yes.setToggleGroup(toggleGroup_singleArchive);
-        radioButton_singleArchive_no.setToggleGroup(toggleGroup_singleArchive);
-
-        radioButton_individualArchives_yes.setToggleGroup(toggleGroup_individualArchives);
-        radioButton_individualArchives_no.setToggleGroup(toggleGroup_individualArchives);
+        toggleGroup_archiveFiles_yes.setToggleGroup(toggleGroup_archiveFiles);
+        toggleGroup_archiveFiles_no.setToggleGroup(toggleGroup_archiveFiles);
     }
 
     /** Sets the default prompt text for all relevant fields. */
@@ -174,20 +160,15 @@ public class JobSetupDialogView extends HBox {
      */
     private void setRadioButtonDefaults(final ConfigHandler configHandler) {
         if(configHandler.getCompressionProgramPath().isEmpty()) {
-            radioButton_singleArchive_no.setSelected(true);
-            radioButton_individualArchives_no.setSelected(true);
+            toggleGroup_archiveFiles_no.setSelected(true);
         } else {
-            radioButton_singleArchive_yes.setSelected(true);
-            radioButton_individualArchives_no.setSelected(true);
+            toggleGroup_archiveFiles_yes.setSelected(true);
         }
 
         // Disable archive options if no archival program is set:
         if(configHandler.getCompressionProgramPath().isEmpty()) {
-            radioButton_singleArchive_yes.setDisable(true);
-            radioButton_singleArchive_no.setDisable(true);
-
-            radioButton_individualArchives_yes.setDisable(true);
-            radioButton_individualArchives_no.setDisable(true);
+            toggleGroup_archiveFiles_yes.setDisable(true);
+            toggleGroup_archiveFiles_no.setDisable(true);
         }
     }
 
@@ -241,7 +222,7 @@ public class JobSetupDialogView extends HBox {
     private VBox setupBottomRightPanel(final Stage settingsStage) {
         final HBox pane_panel_singleArchive = new HBox(10);
         pane_panel_singleArchive.setAlignment(Pos.CENTER);
-        pane_panel_singleArchive.getChildren().addAll(radioButton_singleArchive_yes, radioButton_singleArchive_no);
+        pane_panel_singleArchive.getChildren().addAll(toggleGroup_archiveFiles_yes, toggleGroup_archiveFiles_no);
 
         final TitledPane pane_singleArchive = new TitledPane();
         HBox.setHgrow(pane_singleArchive, Priority.ALWAYS);
@@ -252,23 +233,10 @@ public class JobSetupDialogView extends HBox {
         });
         pane_singleArchive.setContent(pane_panel_singleArchive);
 
-        final HBox pane_panel_individualArchives = new HBox(10);
-        pane_panel_individualArchives.setAlignment(Pos.CENTER);
-        pane_panel_individualArchives.getChildren().addAll(radioButton_individualArchives_yes, radioButton_individualArchives_no);
-
-        final TitledPane pane_individualArchives = new TitledPane();
-        HBox.setHgrow(pane_individualArchives, Priority.ALWAYS);
-        pane_individualArchives.setText("Pack File(s) into Individual Archives");
-        pane_individualArchives.setCollapsible(false);
-        pane_individualArchives.heightProperty().addListener((observable, oldValue, newValue) -> { // Ensures that the scene will resize when the pane is collapsed.
-            settingsStage.sizeToScene();
-        });
-        pane_individualArchives.setContent(pane_panel_individualArchives);
-
 
 
         final HBox top = new HBox(10);
-        top.getChildren().addAll(pane_singleArchive, pane_individualArchives);
+        top.getChildren().addAll(pane_singleArchive);
 
         final HBox bottom = new HBox(10);
         HBox.setHgrow(textField_outputDirectory, Priority.ALWAYS);

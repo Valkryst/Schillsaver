@@ -74,14 +74,10 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
     private void encode() {
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
-        if(job.isCombineAllFilesIntoSingleArchive()) {
+        if(job.isArchiveFiles()) {
             final File temp = archiveHandler.packFiles(job, selectedFiles, controller, configHandler);
             selectedFiles.clear();
             selectedFiles.add(temp);
-        } else if(job.isCombineIntoIndividualArchives()) {
-            for(int i = 0 ; i < selectedFiles.size() ; i++) {
-                selectedFiles.set(i, archiveHandler.packFile(job, selectedFiles.get(i), controller, configHandler));
-            }
         }
 
         for(File f : selectedFiles) {
@@ -146,7 +142,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             statisticsHandler.recordData(true, statisticsHandler.calculateProcessingSpeed(f, time_start, time_end));
 
             // Delete leftovers:
-            if(job.isCombineAllFilesIntoSingleArchive()) {
+            if(job.isArchiveFiles()) {
                 f.delete(); // This is just the archive, not the original handler.
             } else {
                 if(configHandler.isDeleteSourceFileWhenEncoding()) {
