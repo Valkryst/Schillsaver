@@ -104,7 +104,7 @@ public class ConfigHandler {
 
             warnUserIfSettingsMayNotWorkForYouTube = configFile.getBoolean("Warn If Settings Possibly Incompatible With YouTube");
         } catch(final IOException e) {
-            createConfigFile();
+            createNewConfigFile();
             loadConfigSettings();
         } catch(final ClassCastException | NullPointerException e) {
             setDefaultSettings();
@@ -143,9 +143,54 @@ public class ConfigHandler {
 
     /**
      * Creates a new configuration file, or overwrites the existing file,
-     * using the default values for each option.
+     * using the existing values for each option.
      */
     public void createConfigFile() {
+        final JSONObject configFile = new JSONObject();
+        configFile.put("FFMPEG Path", ffmpegPath);
+        configFile.put("Compression Program Path", compressionProgramPath);
+
+        configFile.put("Enc Format", encodeFormat);
+        configFile.put("Dec Format", decodeFormat);
+
+        configFile.put("Enc Vid Width", encodedVideoWidth);
+        configFile.put("Enc Vid Height", encodedVideoHeight);
+        configFile.put("Enc Vid Framerate", encodedFramerate);
+        configFile.put("Enc Vid Macro Block Dimensions", macroBlockDimensions);
+
+        configFile.put("FFMPEG Log Level", ffmpegLogLevel);
+
+        configFile.put("Custom FFMPEG Enc Options", fullyCustomFfmpegEncodingOptions);
+        configFile.put("Custom FFMPEG Dec Options", fullyCustomFfmpegDecodingOptions);
+
+        configFile.put("Delete Source File When Enc", deleteSourceFileWhenEncoding);
+        configFile.put("Delete Source File When Dec", deleteSourceFileWhenDecoding);
+
+        configFile.put("Compression Commands", compressionCommands);
+
+        configFile.put("Check For Updates", checkForUpdates);
+
+        configFile.put("Warn If Settings Possibly Incompatible With YouTube", warnUserIfSettingsMayNotWorkForYouTube);
+
+
+        try (
+                final FileWriter fileWriter = new FileWriter(FILENAME_CONFIG);
+        ) {
+            fileWriter.write(configFile.toJSONString());
+            fileWriter.flush();
+        } catch(final IOException e) {
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            setDefaultSettings();
+        }
+    }
+
+    /**
+     * Creates a new configuration file, or overwrites the existing file,
+     * using the default values for each option.
+     */
+    public void createNewConfigFile() {
         final JSONObject configFile = new JSONObject();
         configFile.put("FFMPEG Path", "");
         configFile.put("Compression Program Path", "");
