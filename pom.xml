@@ -69,5 +69,10 @@
             <artifactId>humble-video-all</artifactId>
             <version>0.2.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.devnied</groupId>
+            <artifactId>bit-lib4j</artifactId>
+            <version>1.4.12</version>
+        </dependency>
     </dependencies>
 </project>
