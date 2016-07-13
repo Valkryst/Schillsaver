@@ -20,26 +20,35 @@ public class Job {
     /** Whether or not the Job is an Encode Job. If not, then it's a Decode Job. */
     @Getter private boolean isEncodeJob;
 
-    /** Whether or not to pack all of the currently selected files into a single archive before encoding. */
-    @Getter private boolean combineAllFilesIntoSingleArchive = false;
-    /** Whether or not to pack every handler into it's own individual archive before encoding each handler individually. */
-    @Getter private boolean combineIntoIndividualArchives = false;
+    /** Whether or not to pack all of the files into a single archive before encoding. */
+    @Getter private boolean archiveFiles = false;
 
     /**
-     * Constructs a new Job with the specified parameters.
-     * @param name The name of the Job.
-     * @param description A rough description of the Job.
-     * @param outputDirectory The directory in which to place the output file(s).
-     * @param files The file(s) belonging to the Job.
-     * @param isEncodeJob Whether or not the Job is an Encode Job. If not, then it's a Decode Job.
-     * @param combineAllFilesIntoSingleArchive Whether or not to pack all of the currently selected files into a single archive before encoding.
-     * @param combineIntoIndividualArchives Whether or not to pack every handler into it's own individual archive before encoding each handler individually.
+     * Constructs a new Job.
+     *
+     * @param name
+     *         The name of the Job.
+     *
+     * @param description
+     *         A rough description of the Job.
+     *
+     * @param outputDirectory
+     *         The directory in which to place the output file(s).
+     *
+     * @param files
+     *         The file(s) belonging to the Job.
+     *
+     * @param isEncodeJob
+     *         Whether or not the Job is an Encode Job. If not, then it's a Decode Job.
+     *
+     * @param archiveFiles
+     *         Whether or not to pack all of the files into a single archive before encoding.
      */
-    public Job(final String name, final String description, final String outputDirectory, final List<File> files, final boolean isEncodeJob, final boolean combineAllFilesIntoSingleArchive, final boolean combineIntoIndividualArchives) {
+    public Job(final String name, final String description, final String outputDirectory, final List<File> files, final boolean isEncodeJob, final boolean archiveFiles) {
         this.name = name;
         this.description = description;
 
-        if(outputDirectory.endsWith("\\") || outputDirectory.endsWith("/")) {
+        if (outputDirectory.endsWith("\\") || outputDirectory.endsWith("/")) {
             this.outputDirectory = outputDirectory;
         } else {
             this.outputDirectory = outputDirectory + "/";
@@ -47,8 +56,7 @@ public class Job {
 
         this.files = files;
         this.isEncodeJob = isEncodeJob;
-        this.combineAllFilesIntoSingleArchive = combineAllFilesIntoSingleArchive;
-        this.combineIntoIndividualArchives = combineIntoIndividualArchives;
+        this.archiveFiles = archiveFiles;
     }
 
     /** @return The full designation of the Job. This includes the unique ID, type, and name. */
