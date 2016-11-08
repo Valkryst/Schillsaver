@@ -1,9 +1,7 @@
 package view;
 
 import controller.MainScreenController;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -49,7 +47,6 @@ public class MainScreenView extends HBox {
         setEventHandlers(controller);
 
         // Setup the Layout:
-        this.setSpacing(4);
         this.getChildren().addAll(setupLeftPanel(), setupRightPanel());
     }
 
@@ -91,15 +88,16 @@ public class MainScreenView extends HBox {
      *         The left panel.
      */
     private VBox setupLeftPanel() {
-        final HBox top = new HBox(10);
-        final HBox bottom = new HBox(10);
-        final VBox panel = new VBox(4);
-
-        top.setAlignment(Pos.CENTER);
-        bottom.setAlignment(Pos.CENTER);
+        final HBox top = new HBox();
+        final HBox bottom = new HBox();
+        final VBox panel = new VBox();
 
         HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(listView_jobs, Priority.ALWAYS);
+
+        // Bottom - Set buttons to fill all available space:
+        HBox.setHgrow(button_encode, Priority.ALWAYS);
+        HBox.setHgrow(button_decode, Priority.ALWAYS);
 
         top.getChildren().addAll(button_createJob, button_editJob, button_deleteSelectedJobs, button_deleteAllJobs);
         bottom.getChildren().addAll(button_encode, button_decode);
@@ -115,15 +113,17 @@ public class MainScreenView extends HBox {
      *         The right panel.
      */
     private VBox setupRightPanel() {
-        final BorderPane bottom = new BorderPane();
-        final VBox panel = new VBox(4);
+        final HBox bottom = new HBox();
+        final VBox panel = new VBox();
 
         HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(textArea_output, Priority.ALWAYS);
 
-        bottom.setLeft(button_clearOutput);
-        bottom.setRight(button_editSettings);
+        // Bottom - Set buttons to fill all available space:
+        HBox.setHgrow(button_clearOutput, Priority.ALWAYS);
+        HBox.setHgrow(button_editSettings, Priority.ALWAYS);
 
+        bottom.getChildren().addAll(button_clearOutput, button_editSettings);
         panel.getChildren().addAll(textArea_output, bottom);
 
         return panel;
