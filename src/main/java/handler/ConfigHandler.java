@@ -58,9 +58,6 @@ public class ConfigHandler {
     /** The base commands to use when compressing a handler before encoding. */
     @Getter @Setter private String compressionCommands;
 
-    /** Whether or not to check for program updates on program start. */
-    @Getter @Setter private boolean checkForUpdates = false;
-
     /** Whether or not to warn the user if their settings may not work with YouTube. */
     @Getter @Setter private boolean warnUserIfSettingsMayNotWorkForYouTube = true;
 
@@ -99,8 +96,6 @@ public class ConfigHandler {
             deleteSourceFileWhenDecoding = configFile.getBoolean("Delete Source File When Dec");
 
             compressionCommands = configFile.getString("Compression Commands");
-
-            checkForUpdates = configFile.getBoolean("Check For Updates");
 
             warnUserIfSettingsMayNotWorkForYouTube = configFile.getBoolean("Warn If Settings Possibly Incompatible With YouTube");
         } catch(final IOException e) {
@@ -167,8 +162,6 @@ public class ConfigHandler {
         configFile.put("Delete Source File When Dec", deleteSourceFileWhenDecoding);
 
         configFile.put("Compression Commands", compressionCommands);
-
-        configFile.put("Check For Updates", checkForUpdates);
 
         configFile.put("Warn If Settings Possibly Incompatible With YouTube", warnUserIfSettingsMayNotWorkForYouTube);
 
@@ -261,8 +254,6 @@ public class ConfigHandler {
         deleteSourceFileWhenDecoding = false;
 
         compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
-
-        checkForUpdates = true;
 
         warnUserIfSettingsMayNotWorkForYouTube = true;
     }
