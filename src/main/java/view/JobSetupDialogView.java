@@ -179,12 +179,19 @@ public class JobSetupDialogView extends HBox {
      *         The left panel.
      */
     private VBox setupLeftPanel() {
-        final HBox top = new HBox(10);
-        final HBox bottom = new HBox(10);
-        final VBox panel = new VBox(4);
+        final HBox top = new HBox();
+        final HBox bottom = new HBox();
+        final VBox panel = new VBox();
 
-        top.setAlignment(Pos.CENTER);
-        bottom.setAlignment(Pos.CENTER);
+        // Top - Set buttons to fill all available space:
+        HBox.setHgrow(button_addFiles, Priority.ALWAYS);
+        HBox.setHgrow(button_removeSelectedFiles, Priority.ALWAYS);
+        HBox.setHgrow(button_clearAllFiles, Priority.ALWAYS);
+
+        // Bottom - Set buttons to fill all available space:
+        HBox.setHgrow(button_accept, Priority.ALWAYS);
+        HBox.setHgrow(button_cancel, Priority.ALWAYS);
+
 
         HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(listView_selectedFiles, Priority.ALWAYS);
@@ -205,7 +212,7 @@ public class JobSetupDialogView extends HBox {
     private VBox setupRightPanel(final Stage settingsStage) {
         final VBox top = setupTopRightPanel();
         final VBox bottom = setupBottomRightPanel(settingsStage);
-        final VBox panel = new VBox(4);
+        final VBox panel = new VBox();
 
         HBox.setHgrow(panel, Priority.ALWAYS);
         VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
@@ -222,9 +229,9 @@ public class JobSetupDialogView extends HBox {
      *         The top panel of the right panel.
      */
     private VBox setupTopRightPanel() {
-        final HBox top = new HBox(10);
-        final VBox bottom= new VBox(4);
-        final VBox panel = new VBox(4);
+        final HBox top = new HBox();
+        final VBox bottom= new VBox();
+        final VBox panel = new VBox();
 
         HBox.setHgrow(field_jobName, Priority.ALWAYS);
         VBox.setVgrow(textArea_jobDescription, Priority.ALWAYS);
@@ -247,7 +254,7 @@ public class JobSetupDialogView extends HBox {
      *         The bottom panel of the right panel.
      */
     private VBox setupBottomRightPanel(final Stage settingsStage) {
-        final HBox pane_panel_singleArchive = new HBox(10);
+        final HBox pane_panel_singleArchive = new HBox();
         pane_panel_singleArchive.setAlignment(Pos.CENTER);
         pane_panel_singleArchive.getChildren().addAll(toggleGroup_archiveFiles_yes, toggleGroup_archiveFiles_no);
 
@@ -262,14 +269,14 @@ public class JobSetupDialogView extends HBox {
 
 
 
-        final HBox top = new HBox(10);
+        final HBox top = new HBox();
         top.getChildren().addAll(pane_singleArchive);
 
-        final HBox bottom = new HBox(10);
+        final HBox bottom = new HBox();
         HBox.setHgrow(textField_outputDirectory, Priority.ALWAYS);
         bottom.getChildren().addAll(textField_outputDirectory, button_selectOutputDirectory);
 
-        final VBox panel = new VBox(4);
+        final VBox panel = new VBox();
         panel.getChildren().addAll(top, bottom);
 
         return panel;
