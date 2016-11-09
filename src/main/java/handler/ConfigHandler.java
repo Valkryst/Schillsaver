@@ -102,9 +102,15 @@ public class ConfigHandler {
 
             warnUserIfSettingsMayNotWorkForYouTube = configFile.getBoolean("Warn If Settings Possibly Incompatible With YouTube");
         } catch(final IOException e) {
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
             createNewConfigFile();
             loadConfigSettings();
         } catch(final ClassCastException | NullPointerException e) {
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
             setDefaultSettings();
         }
 
@@ -155,6 +161,7 @@ public class ConfigHandler {
         configFile.put("Enc Vid Height", encodedVideoHeight);
         configFile.put("Enc Vid Framerate", encodedFramerate);
         configFile.put("Enc Vid Macro Block Dimensions", macroBlockDimensions);
+        configFile.put("Enc Library", encodingLibrary);
 
         configFile.put("FFMPEG Log Level", ffmpegLogLevel);
 
@@ -199,6 +206,7 @@ public class ConfigHandler {
         configFile.put("Enc Vid Height", 720);
         configFile.put("Enc Vid Framerate", 30);
         configFile.put("Enc Vid Macro Block Dimensions", 8);
+        configFile.put("Enc Library", "libvpx");
 
         configFile.put("FFMPEG Log Level", "info");
 
