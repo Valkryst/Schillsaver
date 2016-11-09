@@ -2,8 +2,6 @@ package view.settings;
 
 import controller.settings.FfmpegSettingsController;
 import handler.ConfigHandler;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -55,16 +53,16 @@ public class FfmpegSettingsPane extends TitledPane {
 
     public FfmpegSettingsPane(final Stage settingsStage, final FfmpegSettingsController controller, final ConfigHandler configHandler) {
         // Set Field Prompt Text:
-        field_ffmpegPath.setPromptText("ffmpegPath");
-        field_encodeFormat.setPromptText("encodeFormat");
-        field_decodeFormat.setPromptText("decodeFormat");
-        field_encodedVideoWidth.setPromptText("encodedVideoWidth");
-        field_encodedVideoHeight.setPromptText("encodedVideoHeight");
-        field_encodedFramerate.setPromptText("encodedFramerate");
-        field_macroBlockDimensions.setPromptText("macroBlockDimensions");
-        field_encodingLibrary.setPromptText("encodingLibrary");
-        field_fullyCustomFfmpegEncodingOptions.setPromptText("fullyCustomFfmpegEncodingOptions");
-        field_fullyCustomFfmpegDecodingptions.setPromptText("fullyCustomFfmpegDecodingOptions");
+        field_ffmpegPath.setPromptText("FFMPEG Executable Path");
+        field_encodeFormat.setPromptText("Encode File Extension");
+        field_decodeFormat.setPromptText("Decode File Extension");
+        field_encodedVideoWidth.setPromptText("Encoded Video Width");
+        field_encodedVideoHeight.setPromptText("Encoded Video Height");
+        field_encodedFramerate.setPromptText("Encoded Framerate");
+        field_macroBlockDimensions.setPromptText("Macro Block Dimensions");
+        field_encodingLibrary.setPromptText("Encoding Library");
+        field_fullyCustomFfmpegEncodingOptions.setPromptText("Fully Custom FFMPEG Encoding Options");
+        field_fullyCustomFfmpegDecodingptions.setPromptText("Fully Custom FFMPEG Decoding Options");
 
         // Setup Toggle Groups:
         toggleGroup_useFullyCustomEncodingOptions.getToggles().addAll(radioButton_useFullyCustomEncodingOptions_yes, radioButton_useFullyCustomEncodingOptions_no);
@@ -136,12 +134,7 @@ public class FfmpegSettingsPane extends TitledPane {
         final TitledPane pane_basicOptions = new TitledPane();
         pane_basicOptions.setText("Basic Options");
         pane_basicOptions.setCollapsible(false);
-        pane_basicOptions.heightProperty().addListener(new ChangeListener<Number>() { // Ensures that the scene will rezize when the pane is collapsed.
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                settingsStage.sizeToScene();
-            }
-        });
+        pane_basicOptions.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
         pane_basicOptions.setContent(panel_top);
 
 
@@ -153,12 +146,7 @@ public class FfmpegSettingsPane extends TitledPane {
         final TitledPane pane_enableAdvancedOptions = new TitledPane();
         pane_enableAdvancedOptions.setText("Enable Advanced Options");
         pane_enableAdvancedOptions.setCollapsible(false);
-        pane_enableAdvancedOptions.heightProperty().addListener(new ChangeListener<Number>() { // Ensures that the scene will rezize when the pane is collapsed.
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                settingsStage.sizeToScene();
-            }
-        });
+        pane_enableAdvancedOptions.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
         pane_enableAdvancedOptions.setContent(panel_bottom_left);
 
         final VBox panel_bottom_right= new VBox(4);
@@ -174,12 +162,7 @@ public class FfmpegSettingsPane extends TitledPane {
         HBox.setHgrow(pane_advancedOptions, Priority.ALWAYS);
         pane_advancedOptions.setText("Advanced Options");
         pane_advancedOptions.setCollapsible(false);
-        pane_advancedOptions.heightProperty().addListener(new ChangeListener<Number>() { // Ensures that the scene will rezize when the pane is collapsed.
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                settingsStage.sizeToScene();
-            }
-        });
+        pane_advancedOptions.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
         pane_advancedOptions.setContent(panel_bottom);
 
 
@@ -191,12 +174,7 @@ public class FfmpegSettingsPane extends TitledPane {
 
         this.setText(TAB_NAME);
         this.setCollapsible(false);
-        this.heightProperty().addListener(new ChangeListener<Number>() { // Ensures that the scene will rezize when the pane is collapsed.
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                settingsStage.sizeToScene();
-            }
-        });
+        this.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
         this.setContent(panel);
     }
 }
