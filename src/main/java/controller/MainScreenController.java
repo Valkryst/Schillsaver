@@ -177,17 +177,17 @@ public class MainScreenController implements EventHandler {
             // the IDs of all Jobs.
             final Iterator<Job> it = model.getList_jobs().iterator();
 
-            model.getList_jobs()
-                 .parallelStream()
-                 .forEachOrdered(job -> {
-                     if(view.getListView_jobs().getItems().contains(job.getFullDesignation())) {
-                         int index = view.getListView_jobs().getItems().indexOf(job.getFullDesignation());
-                         job.setId(index);
-                         view.getListView_jobs().getItems().set(index, job.getFullDesignation());
-                     } else {
-                         it.remove();
-                     }
-                 });
+            while (it.hasNext()) {
+                final Job job = it.next();
+
+                if(view.getListView_jobs().getItems().contains(job.getFullDesignation())) {
+                    int index = view.getListView_jobs().getItems().indexOf(job.getFullDesignation());
+                    job.setId(index);
+                    view.getListView_jobs().getItems().set(index, job.getFullDesignation());
+                } else {
+                    it.remove();
+                }
+            }
 
             view.getListView_jobs().getSelectionModel().clearSelection();
         }
