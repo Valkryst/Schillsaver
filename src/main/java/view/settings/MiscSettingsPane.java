@@ -122,4 +122,9 @@ public class MiscSettingsPane extends TitledPane {
     public boolean getDeleteSourceFileWhenDecoding() {
         return radioButton_deleteSourceFileWhenDecoding_yes.isSelected();
     }
+
+    /** @return Whether or not to warn the user if settings may not work for YouTube. */
+    public boolean getWarnUserIfSettingsMayNotWorkForYouTube() {
+        return radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_yes.isSelected();
+    }
 }
