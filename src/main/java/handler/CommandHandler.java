@@ -14,10 +14,17 @@ import java.io.InputStreamReader;
 public class CommandHandler {
     /**
      * Executes the specified command on the commandline.
-     * @param command The command to execute.
-     * @param controller The controller for the main screen.
+     *
+     * @param command
+     *         The command to execute.
+     *
+     * @param controller
+     *         The controller for the main screen.
+     *
+     * @return
+     *         True if the job completed, else false.
      */
-    public static void runProgram(final String command, final MainScreenController controller) {
+    public static boolean runProgram(final String command, final MainScreenController controller) {
         try {
             final ProcessBuilder builder = new ProcessBuilder(command);
             builder.redirectErrorStream(true);
@@ -39,11 +46,14 @@ public class CommandHandler {
             }
 
             is.close();
+
+            return true;
         } catch(final IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
 
             Notification.Notifier.INSTANCE.notifyError("IOException", "Please view the log file.");
+            return false;
         }
     }
 }
