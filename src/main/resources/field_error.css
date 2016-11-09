@@ -22,7 +22,6 @@
 }
 
 .text-field, .password-field {
-    -fx-border-radius: 3;
     -fx-background-color: midground-color;
 }
 
