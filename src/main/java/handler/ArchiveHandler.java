@@ -98,14 +98,14 @@ public class ArchiveHandler {
                                           .appendText(stringBuilder.toString() + System.lineSeparator() +
                                                       System.lineSeparator() + System.lineSeparator()));
 
-        System.out.println(stringBuilder.toString());
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
         // Return a File int to the newly created archive:
-        final File file = new File(job.getName() + "." + configHandler.getDecodeFormat());
+        final File file = new File(job.getOutputDirectory() + job.getName() + "." + configHandler.getCompressionOutputExtension());
 
-        if(! file.exists()) {
-            final String error = "Could not create " + job.getName() + ".";
+        if (! file.exists()) {
+            final String error = "The file " + file.toString() + " does not exist. The most-likely causes are incorrect " +
+                                 "commandline arguments or invalid characters in the file name.";
 
             final Logger logger = LogManager.getLogger();
             logger.error(error);
