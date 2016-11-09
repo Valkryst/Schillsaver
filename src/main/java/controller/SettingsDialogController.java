@@ -11,6 +11,7 @@ import lombok.Getter;
 import view.SettingsDialogView;
 import view.settings.ArchivalSettingsPane;
 import view.settings.FfmpegSettingsPane;
+import view.settings.MiscSettingsPane;
 
 public class SettingsDialogController extends Stage implements EventHandler {
     // todo JavaDoc
@@ -58,6 +59,7 @@ public class SettingsDialogController extends Stage implements EventHandler {
 
                 final ArchivalSettingsPane pane_archival = view.getController_archivalSettings().getPane();
                 final FfmpegSettingsPane pane_ffmpeg = view.getController_ffmpegSettings().getPane();
+                final MiscSettingsPane pane_misc = view.getPane_miscSettings();
 
                 configHandler.setFfmpegPath(pane_ffmpeg.getField_ffmpegPath().getText());
                 configHandler.setCompressionProgramPath(pane_archival.getField_compressionProgramPath().getText());
@@ -74,6 +76,9 @@ public class SettingsDialogController extends Stage implements EventHandler {
                 configHandler.setEncodingLibrary(pane_ffmpeg.getField_encodingLibrary().getText());
                 configHandler.setFfmpegLogLevel(pane_ffmpeg.getComboBox_ffmpegLogLevel().getSelectionModel().getSelectedItem());
                 configHandler.setCompressionCommands(pane_archival.getField_compressionCommands().getText());
+                configHandler.setDeleteSourceFileWhenEncoding(pane_misc.getDeleteSourceFileWhenEncoding());
+                configHandler.setDeleteSourceFileWhenDecoding(pane_misc.getDeleteSourceFileWhenDecoding());
+                configHandler.setWarnUserIfSettingsMayNotWorkForYouTube(pane_misc.getWarnUserIfSettingsMayNotWorkForYouTube());
                 configHandler.createConfigFile();
 
                 this.close();
