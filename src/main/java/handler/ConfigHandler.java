@@ -57,6 +57,8 @@ public class ConfigHandler {
 
     /** The base commands to use when compressing a handler before encoding. */
     @Getter @Setter private String compressionCommands;
+    /** The extension to use when outputting an archive. */
+    @Getter @Setter private String compressionOutputExtension;
 
     /** Whether or not to warn the user if their settings may not work with YouTube. */
     @Getter @Setter private boolean warnUserIfSettingsMayNotWorkForYouTube = true;
@@ -96,6 +98,7 @@ public class ConfigHandler {
             deleteSourceFileWhenDecoding = configFile.getBoolean("Delete Source File When Dec");
 
             compressionCommands = configFile.getString("Compression Commands");
+            compressionOutputExtension = configFile.getString("Compression Output Extension");
 
             warnUserIfSettingsMayNotWorkForYouTube = configFile.getBoolean("Warn If Settings Possibly Incompatible With YouTube");
         } catch(final IOException e) {
@@ -162,6 +165,7 @@ public class ConfigHandler {
         configFile.put("Delete Source File When Dec", deleteSourceFileWhenDecoding);
 
         configFile.put("Compression Commands", compressionCommands);
+        configFile.put("Compression Output Extension", compressionOutputExtension);
 
         configFile.put("Warn If Settings Possibly Incompatible With YouTube", warnUserIfSettingsMayNotWorkForYouTube);
 
@@ -205,6 +209,7 @@ public class ConfigHandler {
         configFile.put("Delete Source File When Dec", false);
 
         configFile.put("Compression Commands", "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on");
+        configFile.put("Compression Output Extension", "7z");
 
         configFile.put("Check For Updates", true);
 
@@ -254,6 +259,7 @@ public class ConfigHandler {
         deleteSourceFileWhenDecoding = false;
 
         compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
+        compressionOutputExtension = "7z";
 
         warnUserIfSettingsMayNotWorkForYouTube = true;
     }
