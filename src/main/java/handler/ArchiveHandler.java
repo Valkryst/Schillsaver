@@ -79,11 +79,12 @@ public class ArchiveHandler {
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
-        formatter.format("\"%s\" %s \"%s.%s\"",
+        formatter.format("\"%s\" %s \"%s%s.%s\"",
                         configHandler.getCompressionProgramPath(),
                         configHandler.getCompressionCommands(),
+                        job.getOutputDirectory(),
                         job.getName(),
-                        job.getOutputDirectory());
+                        configHandler.getCompressionOutputExtension());
 
         selectedFiles.parallelStream()
                      .forEach(file -> {
@@ -97,6 +98,7 @@ public class ArchiveHandler {
                                           .appendText(stringBuilder.toString() + System.lineSeparator() +
                                                       System.lineSeparator() + System.lineSeparator()));
 
+        System.out.println(stringBuilder.toString());
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
         // Return a File int to the newly created archive:
