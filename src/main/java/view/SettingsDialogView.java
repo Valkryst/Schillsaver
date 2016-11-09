@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -42,15 +43,24 @@ public class SettingsDialogView extends VBox {
         button_cancel.setOnAction(controller);
 
         // Setup the Layout
-        final VBox panel_top = new VBox(4);
-        final HBox panel_bottom = new HBox(10);
+        final VBox panel_top = new VBox();
+        final HBox panel_bottom = new HBox();
+
+        // Bottom - Settings:
+        VBox.setVgrow(panel_bottom, Priority.ALWAYS);
+
+        // Bottom - Set buttons to fill all available space:
+        HBox.setHgrow(button_accept, Priority.ALWAYS);
+        HBox.setHgrow(button_cancel, Priority.ALWAYS);
+        VBox.setVgrow(button_accept, Priority.ALWAYS);
+        VBox.setVgrow(button_cancel, Priority.ALWAYS);
+
 
         panel_bottom.setAlignment(Pos.CENTER);
 
         panel_top.getChildren().addAll(controller_archivalSettings.getPane(), controller_ffmpegSettings.getPane(), pane_miscSettings);
         panel_bottom.getChildren().addAll(button_accept, button_cancel);
 
-        this.setSpacing(4);
         this.getChildren().addAll(panel_top, panel_bottom);
     }
 }
