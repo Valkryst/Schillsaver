@@ -36,6 +36,7 @@ public class ArchivalSettingsPane extends TitledPane {
         // Set Default Values:
         field_compressionProgramPath.setText(configHandler.getCompressionProgramPath());
         field_compressionCommands.setText(configHandler.getCompressionCommands());
+        field_archiveOutputExtension.setText(configHandler.getCompressionOutputExtension());
 
         // Set Component Tooltips:
         field_compressionProgramPath.setTooltip(new Tooltip("The absolute path to 7zip/7zip.exe or whichever compression program is specified."));
