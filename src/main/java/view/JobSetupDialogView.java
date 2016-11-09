@@ -89,7 +89,7 @@ public class JobSetupDialogView extends HBox {
             }
         } else {
             // Set a default job title based on the current time
-            field_jobName.setText("Job " + new SimpleDateFormat("yyyy-MM-dd HH|mm|ss").format(new Date()));
+            field_jobName.setText("Job " + new SimpleDateFormat("yyyy-MM-dd HH-mm-ss").format(new Date()));
         }
 
         // Setup Combo Box:
