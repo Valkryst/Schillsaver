@@ -45,17 +45,7 @@ Options" section as you'll need to change a few options.
 * To open the program on Linux, you may need to open up the terminal and 
   run the command "java -jar Schillsaver.jar".
 
---------------------------- BELOW INFORMATION MAY BE OUTDATED, DOUBLE CHECK
-* Read the *"Configuration File Options"* section on first launch of the program.
-  Currently, if you exit or cancel the "Settings Configuration" screen without
-  clicking Accept, the program will still run even though it shouldn't.
 
-  So, just set the path to FFMPEG and the compression program. The rest you
-  can leave as-is unless you have some idea of what you want to do.
-
-  Click the Accept button or else the settings won't save.
-
--------------------------- BELOW INFORMATION MAY BE OUTDATED, DOUBLE CHECK
 * If the program is closed before en/decoding has been completed, there is a very high 
   chance that the archive used during the encoding process and the partly-encoded file
   will be left where they are.
@@ -103,10 +93,12 @@ Options" section as you'll need to change a few options.
           to be roughly 2GB.
 
 	* Settings - Encoding:
-		* Check the config file generated on the first start of the program.
+		* Check the config file generated on the first start of the program or 
+		  the settings menu.
 
 	* Settings - Decoding:
-		* Check the config file generated on the first start of the program.
+		* Check the config file generated on the first start of the program or
+		  the settings menu.
 
 
 * **Version B**:
@@ -207,11 +199,14 @@ Options" section as you'll need to change a few options.
 		* *"Enc Format": "mkv"*
 
 
--------------------------- BELOW INFORMATION MAY BE OUTDATED, DOUBLE CHECK
 * **Dec Format**:
-	* Leave this as-is. The program doesn't currently support changing
-	  the decode format as it 7z's the files when encoding. So, when
-	  decoding, you should end up with a packed 7z archive.
+	* Change this if you wish, the decoding format is the output format that
+	  FFMPEG is told to use when decoding a video file. From my few tests, it
+	  doesn't really matter.
+	  
+	  If you're decoding, for example, a *.7z archive and the Dec Format is jpg,
+	  then the resulting file will be named *.jpg. You can simply change this
+	  resulting extension manually and your original file should work correctly.
 
 	* Ex:
 		* *"Dec Format": "7z"*
@@ -384,63 +379,7 @@ Options" section as you'll need to change a few options.
 
 		* Assume that the above is all on a single line. It has been
 		split up to fit the format of this document.
-
-
-* **Delete Source File When Enc**:
-	* Whether or not to delete the original file after encoding. 
-
-	* So, for example, if I was encoding schill.txt into an mkv video, it 
-	  would delete schill.txt after schill.mkv is created.
-
-	* Ex:
-		* *"Delete Source File When Enc": false*
-
-
-* **Delete Source File When Dec**:
-	* Whether or not to delete the original file after decoding. 
-
-	* So, for example, if I was decoding schill.mkv into an mkv video, it 
-	  would delete schill.mkv after schill.txt is created.
-
-	* Ex:
-		* *"Delete Source File When Dec": false*
-
-
-* **Show Splash Screen**:
-	* Whether or not to show the splash screen on startup.
-
-	* This serves absolutley no purpose, so you can just disable it.
-
-	* Ex:
-		* *"Show Splash Screen": true*
-
-
-* **Splash Screen File Path**:
-	* This is the path to splash screen image.
-
-	* The supported formats are jpeg, png, bmp, and wbmp.
-
-	* Ex - Windows:
-		* *"Splash Screen File Path": "Splash.png"*
-
-		* In this example, Splash.png is in the same folder as the JAR file.
-
-	* Ex - Windows:
-		* *"Splash Screen File Path": "C:\Schill\saver\Splash.png"*
-
-
-* **Splash Screen Display Time**:
-	* The amount of time, in milliseconds, to display the splash screen.
-
-	* Ex - 1 Second:
-		* *"Splash Screen Display Time": 1000*
-
-	* Ex - 1.5 Seconds:
-		* *"Splash Screen Display Time": 1500*
-
-	* Ex - 60 Seconds:
-		* "Splash Screen Display Time": 60000*
-
+		
 
 * **Compression Commands**:
 	* The base commands to use when compressing a file before encoding. If
@@ -463,13 +402,6 @@ Options" section as you'll need to change a few options.
 		  "-r" means to recursively encrypt the files.
 
 		* *"*Compression Commands": "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on -p[PASSWORD] -r"*
-
-
-* **Check For Updates**:
-	* Whether or not to check for program updates on program start.
-
-	* Ex:
-		* *"Check For Updates": false*
 
 
 * **Warn If Settings Possibly Incompatible With YouTube**:
