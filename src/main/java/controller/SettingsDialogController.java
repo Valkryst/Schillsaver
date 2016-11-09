@@ -61,6 +61,7 @@ public class SettingsDialogController extends Stage implements EventHandler {
 
                 configHandler.setFfmpegPath(pane_ffmpeg.getField_ffmpegPath().getText());
                 configHandler.setCompressionProgramPath(pane_archival.getField_compressionProgramPath().getText());
+                configHandler.setCompressionOutputExtension(pane_archival.getField_archiveOutputExtension().getText());
                 configHandler.setEncodeFormat(pane_ffmpeg.getField_encodeFormat().getText());
                 configHandler.setDecodeFormat(pane_ffmpeg.getField_decodeFormat().getText());
                 configHandler.setEncodedVideoWidth(Integer.valueOf(pane_ffmpeg.getField_encodedVideoWidth().getText()));
