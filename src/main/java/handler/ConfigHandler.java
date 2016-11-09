@@ -110,6 +110,7 @@ public class ConfigHandler {
         } catch(final ClassCastException | NullPointerException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
+            e.printStackTrace();
 
             setDefaultSettings();
         }
@@ -165,6 +166,7 @@ public class ConfigHandler {
 
         configFile.put("FFMPEG Log Level", ffmpegLogLevel);
 
+        configFile.put("Use Custom FFMPEG Options", useFullyCustomFfmpegOptions);
         configFile.put("Custom FFMPEG Enc Options", fullyCustomFfmpegEncodingOptions);
         configFile.put("Custom FFMPEG Dec Options", fullyCustomFfmpegDecodingOptions);
 
@@ -210,6 +212,7 @@ public class ConfigHandler {
 
         configFile.put("FFMPEG Log Level", "info");
 
+        configFile.put("Use Custom FFMPEG Options", false);
         configFile.put("Custom FFMPEG Enc Options", "");
         configFile.put("Custom FFMPEG Dec Options", "");
 
