@@ -143,15 +143,6 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             // Delete leftovers:
             if(job.isArchiveFiles()) {
                 f.delete(); // This is just the archive, not the original handler.
-            } else {
-                if(configHandler.isDeleteSourceFileWhenEncoding()) {
-                    f.delete(); // This is the original handler.
-                }
-            }
-
-            if(configHandler.isDeleteSourceFileWhenDecoding()) {
-               f = new File(f.getAbsolutePath().replace(configHandler.getDecodeFormat(), ""));
-               f.delete();
             }
         }
     }
@@ -214,11 +205,6 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 // Finish statistics estimation:
                 statisticsModule.recordEnd();
                 statisticsHandler.recordData(false, statisticsHandler.calculateProcessingSpeed(f, statisticsModule));
-
-                // Delete leftovers:
-                if(configHandler.isDeleteSourceFileWhenDecoding()) {
-                    f.delete(); // This is just the archive, not the original handler.
-                }
             }
         } catch(Exception e) {
             e.printStackTrace();

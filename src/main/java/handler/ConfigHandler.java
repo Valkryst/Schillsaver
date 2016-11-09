@@ -50,11 +50,6 @@ public class ConfigHandler {
     /** The user-entered command line arguments to use when encoding with ffmpeg. */
     @Getter @Setter private String fullyCustomFfmpegDecodingOptions;
 
-    /** Whether or not to delete the source file after encoding. */
-    @Getter @Setter private boolean deleteSourceFileWhenEncoding;
-    /** whether or not to delete the osource file after decoding. */
-    @Getter @Setter private boolean deleteSourceFileWhenDecoding;
-
     /** The base commands to use when compressing a handler before encoding. */
     @Getter @Setter private String compressionCommands;
     /** The extension to use when outputting an archive. */
@@ -93,9 +88,6 @@ public class ConfigHandler {
             useFullyCustomFfmpegOptions = configFile.getBoolean("Use Custom FFMPEG Options");
             fullyCustomFfmpegEncodingOptions = configFile.getString("Custom FFMPEG Enc Options");
             fullyCustomFfmpegDecodingOptions = configFile.getString("Custom FFMPEG Dec Options");
-
-            deleteSourceFileWhenEncoding = configFile.getBoolean("Delete Source File When Enc");
-            deleteSourceFileWhenDecoding = configFile.getBoolean("Delete Source File When Dec");
 
             compressionCommands = configFile.getString("Compression Commands");
             compressionOutputExtension = configFile.getString("Compression Output Extension");
@@ -169,9 +161,6 @@ public class ConfigHandler {
         configFile.put("Use Custom FFMPEG Options", useFullyCustomFfmpegOptions);
         configFile.put("Custom FFMPEG Enc Options", fullyCustomFfmpegEncodingOptions);
         configFile.put("Custom FFMPEG Dec Options", fullyCustomFfmpegDecodingOptions);
-
-        configFile.put("Delete Source File When Enc", deleteSourceFileWhenEncoding);
-        configFile.put("Delete Source File When Dec", deleteSourceFileWhenDecoding);
 
         configFile.put("Compression Commands", compressionCommands);
         configFile.put("Compression Output Extension", compressionOutputExtension);
@@ -265,9 +254,6 @@ public class ConfigHandler {
 
         fullyCustomFfmpegEncodingOptions = "";
         fullyCustomFfmpegDecodingOptions = "";
-
-        deleteSourceFileWhenEncoding = false;
-        deleteSourceFileWhenDecoding = false;
 
         compressionCommands = "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on";
         compressionOutputExtension = "7z";

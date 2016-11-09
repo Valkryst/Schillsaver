@@ -76,8 +76,6 @@ public class SettingsDialogController extends Stage implements EventHandler {
                 configHandler.setEncodingLibrary(pane_ffmpeg.getField_encodingLibrary().getText());
                 configHandler.setFfmpegLogLevel(pane_ffmpeg.getComboBox_ffmpegLogLevel().getSelectionModel().getSelectedItem());
                 configHandler.setCompressionCommands(pane_archival.getField_compressionCommands().getText());
-                configHandler.setDeleteSourceFileWhenEncoding(pane_misc.getDeleteSourceFileWhenEncoding());
-                configHandler.setDeleteSourceFileWhenDecoding(pane_misc.getDeleteSourceFileWhenDecoding());
                 configHandler.setWarnUserIfSettingsMayNotWorkForYouTube(pane_misc.getWarnUserIfSettingsMayNotWorkForYouTube());
                 configHandler.createConfigFile();
 
