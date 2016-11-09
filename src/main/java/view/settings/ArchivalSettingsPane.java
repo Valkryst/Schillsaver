@@ -29,7 +29,7 @@ public class ArchivalSettingsPane extends TitledPane {
 
     public ArchivalSettingsPane(final Stage settingsStage, final ArchivalSettingsController controller, final ConfigHandler configHandler) {
         // Set Field Prompt Text:
-        field_compressionProgramPath.setPromptText("Archive Program Path");
+        field_compressionProgramPath.setPromptText("Archive Executable Path");
         field_compressionCommands.setPromptText("Archive Commandline Parameters");
         field_archiveOutputExtension.setPromptText("Archive Output Extension");
 
