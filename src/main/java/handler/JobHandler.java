@@ -31,17 +31,14 @@ public class JobHandler extends Task {
     @Override
     protected Object call() throws Exception {
         // Disable interface components:
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controller.getView().getButton_createJob().setDisable(true);
-                controller.getView().getButton_deleteSelectedJobs().setDisable(true);
-                controller.getView().getButton_deleteAllJobs().setDisable(true);
-                controller.getView().getButton_clearOutput().setDisable(true);
-                controller.getView().getButton_editSettings().setDisable(true);
-                controller.getView().getButton_encode().setDisable(true);
-                controller.getView().getButton_decode().setDisable(true);
-            }
+        Platform.runLater(() -> {
+            controller.getView().getButton_createJob().setDisable(true);
+            controller.getView().getButton_deleteSelectedJobs().setDisable(true);
+            controller.getView().getButton_deleteAllJobs().setDisable(true);
+            controller.getView().getButton_clearOutput().setDisable(true);
+            controller.getView().getButton_editSettings().setDisable(true);
+            controller.getView().getButton_encode().setDisable(true);
+            controller.getView().getButton_decode().setDisable(true);
         });
 
         // Run Jobs one-by-one:
@@ -53,17 +50,14 @@ public class JobHandler extends Task {
         }
 
         // Enable interface components:
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                controller.getView().getButton_createJob().setDisable(false);
-                controller.getView().getButton_deleteSelectedJobs().setDisable(false);
-                controller.getView().getButton_deleteAllJobs().setDisable(false);
-                controller.getView().getButton_clearOutput().setDisable(false);
-                controller.getView().getButton_editSettings().setDisable(false);
-                controller.getView().getButton_encode().setDisable(false);
-                controller.getView().getButton_decode().setDisable(false);
-            }
+        Platform.runLater(() -> {
+            controller.getView().getButton_createJob().setDisable(false);
+            controller.getView().getButton_deleteSelectedJobs().setDisable(false);
+            controller.getView().getButton_deleteAllJobs().setDisable(false);
+            controller.getView().getButton_clearOutput().setDisable(false);
+            controller.getView().getButton_editSettings().setDisable(false);
+            controller.getView().getButton_encode().setDisable(false);
+            controller.getView().getButton_decode().setDisable(false);
         });
 
         return null;
