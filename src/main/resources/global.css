@@ -50,9 +50,10 @@
 .content {
     -fx-background-color: midground-color;
     -fx-text-fill: text-color;
-    -fx-border-color: border-normal-color;
-    -fx-border-style: solid;
-    -fx-border-width: 1;
+
+    -fx-border-style: none;
+
+    -fx-background-radius: 0;
 }
 
 .content:focused{
@@ -68,9 +69,12 @@
 .password-field {
     -fx-background-color: #121212;
     -fx-text-fill: text-color;
-    -fx-border-color: border-normal-color;
+
+    -fx-border-color: #121212;
     -fx-border-style: solid;
     -fx-border-width: 1;
+
+    -fx-background-radius: 0;
 }
 
 .password-field:pressed, .password-field:hover, .password-field:focused {
@@ -87,7 +91,11 @@
     -fx-background-color: #121212;
     -fx-text-fill: text-color;
 
-    -fx-border-style: none;
+    -fx-border-color: #121212;
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
 }
 
 .text-area:hover, .text-area:focused {
@@ -98,7 +106,12 @@
 .text-field {
     -fx-background-color: #121212;
     -fx-text-fill: text-color;
-    -fx-border-style: none;
+
+    -fx-border-color: #121212;
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+
+    -fx-background-radius: 0;
 }
 
 .text-field:pressed, .text-field:hover, .text-field:focused {
@@ -115,9 +128,7 @@
     -fx-font-weight: bold;
 
     -fx-background-color: #0E0E0E;
-    -fx-border-color: border-normal-color;
-    -fx-border-style: solid;
-    -fx-border-width: 1;
+    -fx-border-style: none;
 }
 
 .titled-pane > .content {
@@ -129,6 +140,7 @@
     -fx-font-size: 12;
     -fx-background-color: background-color;
     -fx-text-fill: text-color;
+
     -fx-border-color: border-normal-color;
     -fx-border-style: solid;
     -fx-border-width: 1;
@@ -136,16 +148,21 @@
 
 /** Combo Box Menu */
 .combo-box {
-    -fx-background-color: #1C1C1C;
+    -fx-background-color: #121212;
 
 
-    -fx-border-color: border-normal-color;
+    -fx-border-color: #121212;
     -fx-border-style: solid;
     -fx-border-width: 1;
 
     -fx-text-fill: text-color;
 
     -fx-background-radius: 0;
+}
+
+/** Combo Box - When mouse is hovering over it. */
+.combo-box:hover {
+    -fx-border-color: border-selected-color;
 }
 
 /** Combo Box - When Tab-Focused */
