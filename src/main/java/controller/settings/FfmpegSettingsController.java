@@ -21,12 +21,8 @@ public class FfmpegSettingsController implements EventHandler {
     // todo JavaDoc
     private final Stage settingsStage;
 
-    /** The object that handles settings for encoding, decoding, compression, and a number of other features. */
-    private final ConfigHandler configHandler;
-
     public FfmpegSettingsController(final Stage settingsStage, final ConfigHandler configHandler) {
         this.settingsStage = settingsStage;
-        this.configHandler = configHandler;
         pane = new FfmpegSettingsPane(settingsStage, this, configHandler);
     }
 
