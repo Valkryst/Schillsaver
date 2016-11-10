@@ -1,6 +1,6 @@
 .main-root {
     /** Define Colors */
-    background-color: #1C1C1C;
+    background-color: #262626;
     midground-color: #2D3033;
     foreground-color: #7D7D7D;
     text-color: #FFFFFF;
@@ -20,12 +20,10 @@
 .button {
     -fx-max-width: 2147483647; /* Allow buttons to fill all horizontal space. */
     -fx-max-height: 2147483647; /* Allow buttons to fill all vertical space. */
-    -fx-background-color: #1C1C1C;
+    -fx-background-color: #393939;
 
 
-    -fx-border-color: border-normal-color;
-    -fx-border-style: solid;
-    -fx-border-width: 1;
+    -fx-border-style: none;
 
     -fx-text-fill: text-color;
 
@@ -68,7 +66,7 @@
 
 /** Password Field */
 .password-field {
-    -fx-background-color: midground-color;
+    -fx-background-color: #121212;
     -fx-text-fill: text-color;
     -fx-border-color: border-normal-color;
     -fx-border-style: solid;
@@ -86,11 +84,10 @@
 
 /** Text Area */
 .text-area {
-    -fx-background-color: background-color;
+    -fx-background-color: #121212;
     -fx-text-fill: text-color;
-    -fx-border-color: border-normal-color;
-    -fx-border-style: solid;
-    -fx-border-width: 1;
+
+    -fx-border-style: none;
 }
 
 .text-area:hover, .text-area:focused {
@@ -99,11 +96,9 @@
 
 /** Text Field */
 .text-field {
-    -fx-background-color: background-color;
+    -fx-background-color: #121212;
     -fx-text-fill: text-color;
-    -fx-border-color: border-normal-color;
-    -fx-border-style: solid;
-    -fx-border-width: 1;
+    -fx-border-style: none;
 }
 
 .text-field:pressed, .text-field:hover, .text-field:focused {
@@ -139,7 +134,7 @@
     -fx-border-width: 1;
 }
 
-/** Dropdown Menu */
+/** Combo Box Menu */
 .combo-box {
     -fx-background-color: #1C1C1C;
 
