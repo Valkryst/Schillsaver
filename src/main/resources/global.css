@@ -62,6 +62,8 @@
 
 /** Label */
 .label {
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
     -fx-text-fill: text-color;
 }
 
