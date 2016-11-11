@@ -3,8 +3,8 @@ package view.settings;
 import controller.settings.ArchivalSettingsController;
 import handler.ConfigHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -12,9 +12,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import lombok.Getter;
 
-public class ArchivalSettingsPane extends TitledPane {
-    /** The name of the Tab. */
-    private static final String TAB_NAME = "Archival";
+public class ArchivalSettingsPane extends VBox {
+    /** The label to define the Archival Settings section.. */
+    private final Label label_paneName = new Label("Archival Settings");
 
     /** The text field for the absolute path to the 7zip, or whichever compresssion program the user wants to use, executable. */
     @Getter private final TextField field_compressionProgramPath = new TextField();
@@ -50,19 +50,13 @@ public class ArchivalSettingsPane extends TitledPane {
         button_selectFile_compressionProgramPath.setOnAction(controller);
 
         // Setup the Layout:
-        final HBox panel_top = new HBox(10);
+        final HBox pane_middle = new HBox(10);
         HBox.setHgrow(field_compressionProgramPath, Priority.ALWAYS);
-        panel_top.getChildren().addAll(field_compressionProgramPath, button_selectFile_compressionProgramPath);
+        pane_middle.getChildren().addAll(field_compressionProgramPath, button_selectFile_compressionProgramPath);
 
 
-        final VBox panel = new VBox(4);
         HBox.setHgrow(field_compressionCommands, Priority.ALWAYS);
-        panel.getChildren().addAll(panel_top, field_compressionCommands, field_archiveOutputExtension);
-
-
-        this.setText(TAB_NAME);
-        this.setCollapsible(false);
-        this.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
-        this.setContent(panel);
+        this.setSpacing(4);
+        this.getChildren().addAll(label_paneName, pane_middle, field_compressionCommands, field_archiveOutputExtension);
     }
 }

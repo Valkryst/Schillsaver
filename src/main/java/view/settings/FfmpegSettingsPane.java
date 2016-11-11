@@ -12,10 +12,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 
 
-public class FfmpegSettingsPane extends TitledPane {
-    /** The name of the Tab. */
-    private static final String TAB_NAME = "FFMPEG";
-
+public class FfmpegSettingsPane extends VBox {
     /** The text field for the absolute path to ffmpeg/ffmpeg.exe. */
     @Getter private final TextField field_ffmpegPath = new TextField();
     /** The button to open the handler selection dialog for the ffmpeg executable. */
@@ -131,11 +128,8 @@ public class FfmpegSettingsPane extends TitledPane {
         final VBox panel_top = new VBox(4);
         panel_top.getChildren().addAll(panel_top_top, panel_top_center, panel_top_bottom);
 
-        final TitledPane pane_basicOptions = new TitledPane();
-        pane_basicOptions.setText("Basic Options");
-        pane_basicOptions.setCollapsible(false);
-        pane_basicOptions.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
-        pane_basicOptions.setContent(panel_top);
+        final VBox pane_basicOptions = new VBox(4);
+        pane_basicOptions.getChildren().addAll(new Label("Basic FFMPEG Options"), panel_top);
 
 
 
@@ -158,23 +152,13 @@ public class FfmpegSettingsPane extends TitledPane {
         final HBox panel_bottom = new HBox(10);
         panel_bottom.getChildren().addAll(pane_enableAdvancedOptions, panel_bottom_right);
 
-        final TitledPane pane_advancedOptions = new TitledPane();
+        final VBox pane_advancedOptions = new VBox(4);
         HBox.setHgrow(pane_advancedOptions, Priority.ALWAYS);
-        pane_advancedOptions.setText("Advanced Options");
-        pane_advancedOptions.setCollapsible(false);
-        pane_advancedOptions.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
-        pane_advancedOptions.setContent(panel_bottom);
+        pane_advancedOptions.getChildren().addAll(new Label("Advanced FFMPEG Options"), panel_bottom);
 
 
 
-        final VBox panel = new VBox(4);
-        panel.getChildren().addAll(pane_basicOptions, pane_advancedOptions);
-
-
-
-        this.setText(TAB_NAME);
-        this.setCollapsible(false);
-        this.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
-        this.setContent(panel);
+        this.setSpacing(12);
+        this.getChildren().addAll(pane_basicOptions, pane_advancedOptions);
     }
 }

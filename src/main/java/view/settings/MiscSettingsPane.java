@@ -2,15 +2,17 @@ package view.settings;
 
 import handler.ConfigHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MiscSettingsPane extends TitledPane {
-    /** The name of the Tab. */
-    private static final String TAB_NAME = "Misc";
+public class MiscSettingsPane extends VBox {
+    /** The label to define the Misc Settings section.. */
+    private final Label label_paneName = new Label("Misc Settings");
 
     /** The toggle group of the yes/no radio buttons of the enableWarnUserIfSettingsMayNotWorkForYouTube option. */
     private final ToggleGroup toggleGroup_enableWarnUserIfSettingsMayNotWorkForYouTube = new ToggleGroup();
@@ -46,15 +48,8 @@ public class MiscSettingsPane extends TitledPane {
 
 
 
-        final HBox panel = new HBox(10);
-        panel.getChildren().addAll(pane_enableWarnUserIfSettingsMayNotWorkForYouTube);
-
-
-
-        this.setText(TAB_NAME);
-        this.setCollapsible(false);
-        this.heightProperty().addListener((observable, oldValue, newValue) -> settingsStage.sizeToScene());
-        this.setContent(panel);
+        this.setSpacing(4);
+        this.getChildren().addAll(label_paneName, pane_enableWarnUserIfSettingsMayNotWorkForYouTube);
     }
 
     /** @return Whether or not to warn the user if settings may not work for YouTube. */

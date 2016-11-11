@@ -55,6 +55,7 @@ public class SettingsDialogView extends VBox {
         VBox.setVgrow(button_accept, Priority.ALWAYS);
         VBox.setVgrow(button_cancel, Priority.ALWAYS);
 
+        panel_top.setSpacing(12);
 
         panel_bottom.setAlignment(Pos.CENTER);
 
