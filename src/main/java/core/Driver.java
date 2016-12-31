@@ -16,16 +16,12 @@ public class Driver extends Application {
     }
 
     @Override
-    public void init() {
-        // Do something before the application starts.
-    }
+    public void init() {}
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final ConfigHandler configHandler = new ConfigHandler();
-        final StatisticsHandler statisticsHandler = new StatisticsHandler();
-
         // Load Config File:
+        final ConfigHandler configHandler = new ConfigHandler();
         configHandler.loadConfigSettings();
 
         // Setup the primary stage:
@@ -34,8 +30,8 @@ public class Driver extends Application {
         // Setup Enzo:
         Notification.Notifier.setPopupLocation(primaryStage, Pos.BOTTOM_CENTER);
 
-        // Add the frst scene to the primary stage:
-        final Scene scene = new Scene(new MainScreenController(primaryStage, configHandler, statisticsHandler).getView());
+        // Add the first scene to the primary stage:
+        final Scene scene = new Scene(new MainScreenController(primaryStage, configHandler, new StatisticsHandler()).getView());
 
         scene.getStylesheets().add("global.css");
         scene.getRoot().getStyleClass().add("main-root");
