@@ -5,11 +5,6 @@ format.This can be thought of like a QR code where every frame of the resulting
 video is a partof the data of the file that was encoded.
 The option to decode these encoded files is also available.
 
-If you'd like to contribute to Schillsaver, then you can find the GitHub repo [here](https://github.com/Valkryst/Schillsaver).
-
-Schillsaver is somewhat simple to use, so if you screw something up, then email 
-your OS, config file, and error log to me at *schillsaver@valkryst.com*.
-
 	
 
 # Requirements:
