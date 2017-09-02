@@ -68,12 +68,6 @@ public class Job {
 
     /** @return The full designation of the Job. This includes the unique ID, type, and name. */
     public String getFullDesignation() {
-        String s = "";
-        s += id;
-        s += " - ";
-        s += (isEncodeJob ? "Encode" : "Decode");
-        s += " - ";
-        s += name;
-        return s;
+        return id + " - " + (isEncodeJob ? "Encode" : "Decode") + " - " + name;
     }
 }
