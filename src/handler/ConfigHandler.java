@@ -93,14 +93,14 @@ public class ConfigHandler {
 
             ffmpegLogLevel = (String) jsonObject.get("FFMPEG Log Level");
 
-            useFullyCustomFfmpegOptions = Boolean.valueOf((String) jsonObject.get("Use Custom FFMPEG Options"));
+            useFullyCustomFfmpegOptions = (Boolean) jsonObject.get("Use Custom FFMPEG Options");
             fullyCustomFfmpegEncodingOptions = (String) jsonObject.get("Custom FFMPEG Enc Options");
             fullyCustomFfmpegDecodingOptions = (String) jsonObject.get("Custom FFMPEG Dec Options");
 
             compressionCommands = (String) jsonObject.get("Compression Commands");
             compressionOutputExtension = (String) jsonObject.get("Compression Output Extension");
 
-            warnUserIfSettingsMayNotWorkForYouTube = Boolean.valueOf((String) jsonObject.get("Warn If Settings Possibly Incompatible With YouTube"));
+            warnUserIfSettingsMayNotWorkForYouTube = (Boolean) jsonObject.get("Warn If Settings Possibly Incompatible With YouTube");
         } catch(final IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
