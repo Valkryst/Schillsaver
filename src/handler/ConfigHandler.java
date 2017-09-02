@@ -5,11 +5,13 @@ import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ConfigHandler {
     /** The name of the configuration handler. */
@@ -67,39 +69,45 @@ public class ConfigHandler {
     public void loadConfigSettings() {
         try (
             final InputStream inputStream = new FileInputStream("config.json");
-            final JsonReader reader = Json.createReader(inputStream);
+            final InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            final BufferedReader bufferedReader = new BufferedReader(streamReader);
         ) {
-            final JsonObject configFile = reader.readObject();
+            final List<String> inputLines = bufferedReader.lines().collect(Collectors.toList());
+            final String jsonData = String.join("\n", inputLines);
 
-            ffmpegPath = configFile.getString("FFMPEG Path");
-            compressionProgramPath = configFile.getString("Compression Program Path");
+            final JSONParser jsonParser = new JSONParser();
+            final JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonData);
 
-            encodeFormat = configFile.getString("Enc Format");
-            decodeFormat = configFile.getString("Dec Format");
 
-            encodedVideoWidth = configFile.getInt("Enc Vid Width");
-            encodedVideoHeight = configFile.getInt("Enc Vid Height");
-            encodedFramerate = configFile.getInt("Enc Vid Framerate");
-            macroBlockDimensions = configFile.getInt("Enc Vid Macro Block Dimensions");
-            encodingLibrary = configFile.getString("Enc Library");
+            ffmpegPath = (String) jsonObject.get("FFMPEG Path");
+            compressionProgramPath = (String) jsonObject.get("Compression Program Path");
 
-            ffmpegLogLevel = configFile.getString("FFMPEG Log Level");
+            encodeFormat = (String) jsonObject.get("Enc Format");
+            decodeFormat = (String) jsonObject.get("Dec Format");
 
-            useFullyCustomFfmpegOptions = configFile.getBoolean("Use Custom FFMPEG Options");
-            fullyCustomFfmpegEncodingOptions = configFile.getString("Custom FFMPEG Enc Options");
-            fullyCustomFfmpegDecodingOptions = configFile.getString("Custom FFMPEG Dec Options");
+            encodedVideoWidth = (int) (long) jsonObject.get("Enc Vid Width");
+            encodedVideoHeight = (int) (long) jsonObject.get("Enc Vid Height");
+            encodedFramerate = (int) (long) jsonObject.get("Enc Vid Framerate");
+            macroBlockDimensions = (int) (long) jsonObject.get("Enc Vid Macro Block Dimensions");
+            encodingLibrary = (String) jsonObject.get("Enc Library");
 
-            compressionCommands = configFile.getString("Compression Commands");
-            compressionOutputExtension = configFile.getString("Compression Output Extension");
+            ffmpegLogLevel = (String) jsonObject.get("FFMPEG Log Level");
 
-            warnUserIfSettingsMayNotWorkForYouTube = configFile.getBoolean("Warn If Settings Possibly Incompatible With YouTube");
+            useFullyCustomFfmpegOptions = Boolean.valueOf((String) jsonObject.get("Use Custom FFMPEG Options"));
+            fullyCustomFfmpegEncodingOptions = (String) jsonObject.get("Custom FFMPEG Enc Options");
+            fullyCustomFfmpegDecodingOptions = (String) jsonObject.get("Custom FFMPEG Dec Options");
+
+            compressionCommands = (String) jsonObject.get("Compression Commands");
+            compressionOutputExtension = (String) jsonObject.get("Compression Output Extension");
+
+            warnUserIfSettingsMayNotWorkForYouTube = Boolean.valueOf((String) jsonObject.get("Warn If Settings Possibly Incompatible With YouTube"));
         } catch(final IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
 
             createNewConfigFile();
             loadConfigSettings();
-        } catch(final ClassCastException | NullPointerException e) {
+        } catch(final ClassCastException | NullPointerException | ParseException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
             e.printStackTrace();
