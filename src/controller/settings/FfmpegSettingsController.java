@@ -251,7 +251,7 @@ public class FfmpegSettingsController implements EventHandler {
             // Show popup:
             if(stringBuilder.toString().isEmpty() == false) {
                 final Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setHeaderText("YouTube Compatability Warning(s)");
+                alert.setHeaderText("YouTube Compatibility Warning(s)");
                 alert.setContentText(stringBuilder.toString());
                 alert.showAndWait();
             }
