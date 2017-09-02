@@ -220,9 +220,9 @@ public class MainScreenController implements EventHandler {
      * user can run an en/decode Job.
      */
     private void showFfmpegPathErrorAndWait() {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setHeaderText("FFmpeg was not found.");
-        alert.setContentText("Please change the FFmpeg path in the settings menu.\nIf you have set the path, confirm that the file can be accessed.");
+        final Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("FFMPEG was not found.");
+        alert.setContentText("Please change the FFMPEG path in the settings menu.\nIf you have set the path, then confirm that the file can be accessed.");
         alert.showAndWait();
     }
 }
