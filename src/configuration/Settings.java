@@ -1,4 +1,4 @@
-package misc;
+package configuration;
 
 import lombok.NonNull;
 
