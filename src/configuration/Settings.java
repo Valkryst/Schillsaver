@@ -165,6 +165,22 @@ public class Settings {
     }
 
     /**
+     * Retrieves a setting as a boolean.
+     *
+     * @param setting
+     *         The setting.
+     *
+     * @return
+     *         The value.
+     *
+     * @throws NumberFormatException
+     *          If the setting string doesn't contain a parsable boolean.
+     */
+    public boolean getBooleanSetting(final @NonNull String setting) {
+        return Boolean.valueOf(settings.get(setting));
+    }
+
+    /**
      * Retrieves a setting as a byte.
      *
      * @param setting
