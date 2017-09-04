@@ -9,19 +9,6 @@ public class Settings {
     private final HashMap<String, String> settings = new HashMap<>();
 
     /**
-     * Sets the value of a setting.
-     *
-     * @param setting
-     *         The setting.
-     *
-     * @param value
-     *         The value.
-     */
-    public void setSetting(final @NonNull String setting, final @NonNull Object value) {
-        settings.put(setting, String.valueOf(value));
-    }
-
-    /**
      * Retrieves a setting as a byte.
      *
      * @param setting
@@ -126,5 +113,18 @@ public class Settings {
      */
     public String getStringSetting(final @NonNull String setting) {
         return settings.get(setting);
+    }
+
+    /**
+     * Sets the value of a setting.
+     *
+     * @param setting
+     *         The setting.
+     *
+     * @param value
+     *         The value.
+     */
+    public void setSetting(final @NonNull String setting, final @NonNull Object value) {
+        settings.put(setting, String.valueOf(value));
     }
 }
