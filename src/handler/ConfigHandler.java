@@ -248,7 +248,7 @@ public class ConfigHandler {
         compressionProgramPath = "";
 
         encodeFormat = "mkv";
-        decodeFormat = "jpg";
+        decodeFormat = "7z";
 
         encodedVideoWidth = 1280;
         encodedVideoHeight = 720;
