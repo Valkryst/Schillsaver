@@ -1,5 +1,6 @@
 package handler;
 
+import configuration.Settings;
 import controller.MainScreenController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -20,7 +21,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
     /** The controller for the main screen. */
     private final MainScreenController controller;
     /** The settings to use when encoding the file(s). */
-    private final ConfigHandler configHandler;
+    private final Settings settings;
 
     // todo JavaDoc
     final StatisticsHandler statisticsHandler;
@@ -34,16 +35,16 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
      * @param controller
      *         The controller for the main screen.
      *
-     * @param configHandler
+     * @param settings
      *         The settings to use when encoding the file(s).
      *
      * @param statisticsHandler
      *         todo JavaDoc
      */
-    public FFMPEGHandler(final Job job, final MainScreenController controller, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
+    public FFMPEGHandler(final Job job, final MainScreenController controller, final Settings settings, final StatisticsHandler statisticsHandler) {
         this.job = job;
         this.controller = controller;
-        this.configHandler = configHandler;
+        this.settings = settings;
         this.statisticsHandler = statisticsHandler;
     }
 
@@ -75,7 +76,7 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
         final ArchiveHandler archiveHandler = new ArchiveHandler();
 
         if(job.isArchiveFiles()) {
-            final File temp = archiveHandler.packFiles(job, job.getFiles(), controller, configHandler);
+            final File temp = archiveHandler.packFiles(job, job.getFiles(), controller, settings);
             job.getFiles().clear();
             job.getFiles().add(temp);
         }
@@ -85,38 +86,38 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
             statisticsModule.recordStart();
 
             // Pad the file:
-            FileHandler.padFile(f, configHandler);
+            FileHandler.padFile(f, settings);
 
             // Construct FFMPEG string:
             final StringBuilder stringBuilder = new StringBuilder();
             final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
             // Use the fully custom settings if they're enabled:
-            if(configHandler.isUseFullyCustomFfmpegOptions() && !configHandler.getFullyCustomFfmpegEncodingOptions().isEmpty()) {
+            if(settings.getBooleanSetting("Use Custom FFMPEG Options") && !settings.getStringSetting("Custom FFMPEG Enc Options").isEmpty()) {
                 formatter.format("\"%s\" %s",
-                        configHandler.getFfmpegPath(),
-                        configHandler.getFullyCustomFfmpegEncodingOptions());
+                        settings.getStringSetting("FFMPEG Path"),
+                        settings.getStringSetting("Custom FFMPEG Enc Options"));
 
                 // Insert the input filename:
                 final String inputFilename = "\"" + f.getAbsolutePath() + "\"";
                 stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", inputFilename));
 
                 // Insert the output filename:
-                final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
+                final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + settings.getStringSetting("Enc Format") + "\"";
                 stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
-            } else if (!configHandler.isUseFullyCustomFfmpegOptions()) {
+            } else if (!settings.getBooleanSetting("Use Custom FFMPEG Options")) {
                 formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s%s.%s\"",
-                        configHandler.getFfmpegPath(),
-                        (configHandler.getEncodedVideoWidth() / configHandler.getMacroBlockDimensions()),
-                        (configHandler.getEncodedVideoHeight() / configHandler.getMacroBlockDimensions()),
-                        configHandler.getEncodedFramerate(),
+                        settings.getStringSetting("FFMPEG Path"),
+                        settings.getIntegerSetting("Enc Vid Width") / settings.getIntegerSetting("Enc Vid Macro Block Dimensions"),
+                        settings.getIntegerSetting("Enc Vid Height") / settings.getIntegerSetting("Enc Vid Macro Block Dimensions"),
+                        settings.getIntegerSetting("Enc Vid Framerate"),
                         f.getAbsolutePath(),
-                        configHandler.getMacroBlockDimensions(),
-                        configHandler.getEncodingLibrary(),
-                        configHandler.getFfmpegLogLevel(),
+                        settings.getIntegerSetting("Enc Vid Macro Block Dimensions"),
+                        settings.getStringSetting("Enc Library"),
+                        settings.getStringSetting("FFMPEG Log Level"),
                         job.getOutputDirectory(),
                         FilenameUtils.getBaseName(f.getName()),
-                        configHandler.getEncodeFormat());
+                        settings.getStringSetting("Enc Format"));
             }
 
             Platform.runLater(() -> controller.getView()
@@ -162,27 +163,27 @@ public class FFMPEGHandler extends Task implements EventHandler<WorkerStateEvent
                 final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
                 // Use the fully custom settings if they're enabled:
-                if(configHandler.isUseFullyCustomFfmpegOptions() && ! configHandler.getFullyCustomFfmpegDecodingOptions().isEmpty()) {
+                if(settings.getBooleanSetting("Use Custom FFMPEG Options") && ! settings.getStringSetting("Custom FFMPEG Dec Options").isEmpty()) {
                     formatter.format("\"%s\" %s",
-                            configHandler.getFfmpegPath(),
-                            configHandler.getFullyCustomFfmpegEncodingOptions());
+                            settings.getStringSetting("FFMPEG Path"),
+                            settings.getStringSetting("Custom FFMPEG Enc Options"));
 
                     // Insert the input filename:
                     final String inputFilename = "\"" + f.getAbsolutePath() + "\"";
                     stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_INPUT", inputFilename));
 
                     // Insert the output filename:
-                    final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + configHandler.getEncodeFormat() + "\"";
+                    final String outputFilename = "\"" + FilenameUtils.getFullPath(f.getAbsolutePath()) + FilenameUtils.getBaseName(f.getName()) + "." + settings.getStringSetting("Dec Format") + "\"";
                     stringBuilder.replace(0, stringBuilder.length(), stringBuilder.toString().replace("FILE_OUTPUT", outputFilename));
-                } else if(! configHandler.isUseFullyCustomFfmpegOptions()) {
+                } else if(! settings.getBooleanSetting("Use Custom FFMPEG Options")) {
                     formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s%s.%s\"",
-                            configHandler.getFfmpegPath(),
+                            settings.getStringSetting("FFMPEG Path"),
                             f.getAbsolutePath(),
-                            (1.0 / configHandler.getMacroBlockDimensions()),
-                            configHandler.getFfmpegLogLevel(),
+                            (1.0 / settings.getIntegerSetting("Enc Vid Macro Block Dimensions")),
+                            settings.getStringSetting("FFMPEG Log Level"),
                             job.getOutputDirectory(),
                             FilenameUtils.getBaseName(f.getName()),
-                            configHandler.getDecodeFormat());
+                            settings.getStringSetting("Dec Format"));
                 }
 
                 Platform.runLater(() -> controller.getView()

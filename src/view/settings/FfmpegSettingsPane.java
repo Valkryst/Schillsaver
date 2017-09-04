@@ -1,7 +1,7 @@
 package view.settings;
 
+import configuration.Settings;
 import controller.settings.FfmpegSettingsController;
-import handler.ConfigHandler;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -13,6 +13,8 @@ import lombok.Getter;
 
 
 public class FfmpegSettingsPane extends VBox {
+    private static final String[] FFMPEG_LOG_LEVELS = {"quiet", "panic", "fatal", "error", "warning", "info", "verbose", "debug", "trace"};
+
     /** The text field for the absolute path to ffmpeg/ffmpeg.exe. */
     @Getter private final TextField field_ffmpegPath = new TextField();
     /** The button to open the handler selection dialog for the ffmpeg executable. */
@@ -33,7 +35,7 @@ public class FfmpegSettingsPane extends VBox {
     /** The text field for the codec library to use when encoding/decoding the library. */
     @Getter private final TextField field_encodingLibrary = new TextField();
     /** The combobox to select the logging level that ffmpeg should use. */
-    @Getter private final ComboBox<String> comboBox_ffmpegLogLevel = new ComboBox<>(FXCollections.observableArrayList(ConfigHandler.FFMPEG_LOG_LEVELS));
+    @Getter private final ComboBox<String> comboBox_ffmpegLogLevel = new ComboBox<>(FXCollections.observableArrayList(FFMPEG_LOG_LEVELS));
 
     /** The toggle group of the yes/no radio buttons of the useFullyCustomEncodingOptions option. */
     @Getter private final ToggleGroup toggleGroup_useFullyCustomEncodingOptions = new ToggleGroup();
@@ -48,7 +50,7 @@ public class FfmpegSettingsPane extends VBox {
 
 
 
-    public FfmpegSettingsPane(final Stage settingsStage, final FfmpegSettingsController controller, final ConfigHandler configHandler) {
+    public FfmpegSettingsPane(final Stage settingsStage, final FfmpegSettingsController controller, final Settings settings) {
         // Set Field Prompt Text:
         field_ffmpegPath.setPromptText("FFMPEG Executable Path");
         field_encodeFormat.setPromptText("Encode File Extension");
@@ -65,31 +67,31 @@ public class FfmpegSettingsPane extends VBox {
         toggleGroup_useFullyCustomEncodingOptions.getToggles().addAll(radioButton_useFullyCustomEncodingOptions_yes, radioButton_useFullyCustomEncodingOptions_no);
 
         // Set Default Values:
-        field_ffmpegPath.setText(configHandler.getFfmpegPath());
-        field_encodeFormat.setText(configHandler.getEncodeFormat());
-        field_decodeFormat.setText(configHandler.getDecodeFormat());
-        field_encodedVideoWidth.setText(String.valueOf(configHandler.getEncodedVideoWidth()));
-        field_encodedVideoHeight.setText(String.valueOf(configHandler.getEncodedVideoHeight()));
-        field_encodedFramerate.setText(String.valueOf(configHandler.getEncodedFramerate()));
-        field_macroBlockDimensions.setText(String.valueOf(configHandler.getMacroBlockDimensions()));
-        field_encodingLibrary.setText(configHandler.getEncodingLibrary());
+        field_ffmpegPath.setText(settings.getStringSetting("FFMPEG Path"));
+        field_encodeFormat.setText(settings.getStringSetting("Enc Format"));
+        field_decodeFormat.setText(settings.getStringSetting("Dec Format"));
+        field_encodedVideoWidth.setText(settings.getStringSetting("Enc Vid Width"));
+        field_encodedVideoHeight.setText(settings.getStringSetting("Enc Vid Height"));
+        field_encodedFramerate.setText(settings.getStringSetting("Enc Vid Framerate"));
+        field_macroBlockDimensions.setText(settings.getStringSetting("Enc Vid Macro Block Dimensions"));
+        field_encodingLibrary.setText(settings.getStringSetting("Enc Library"));
 
         // todo If there's a better way to do this, then do it.
-        for(int i = 0 ; i < ConfigHandler.FFMPEG_LOG_LEVELS.length ; i++) {
-            if(ConfigHandler.FFMPEG_LOG_LEVELS[i].equals(configHandler.getFfmpegLogLevel())) {
+        for(int i = 0 ; i < FFMPEG_LOG_LEVELS.length ; i++) {
+            if(FFMPEG_LOG_LEVELS[i].equals(settings.getStringSetting("FFMPEG Log Level"))) {
                 comboBox_ffmpegLogLevel.getSelectionModel().select(i);
                 break;
             }
         }
 
-        if(configHandler.isUseFullyCustomFfmpegOptions()) {
+        if (settings.getBooleanSetting("Use Custom FFMPEG Options")) {
             radioButton_useFullyCustomEncodingOptions_yes.setSelected(true);
         } else {
             radioButton_useFullyCustomEncodingOptions_no.setSelected(true);
         }
 
-        field_fullyCustomFfmpegEncodingOptions.setText(configHandler.getFullyCustomFfmpegEncodingOptions());
-        field_fullyCustomFfmpegDecodingptions.setText(configHandler.getFullyCustomFfmpegDecodingOptions());
+        field_fullyCustomFfmpegEncodingOptions.setText(settings.getStringSetting("Custom FFMPEG Enc Options"));
+        field_fullyCustomFfmpegDecodingptions.setText(settings.getStringSetting("Custom FFMPEG Dec Options"));
 
 
         // Set Component Tooltips:

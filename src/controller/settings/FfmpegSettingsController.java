@@ -1,6 +1,6 @@
 package controller.settings;
 
-import handler.ConfigHandler;
+import configuration.Settings;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -23,9 +23,9 @@ public class FfmpegSettingsController implements EventHandler {
     // todo JavaDoc
     private final Stage settingsStage;
 
-    public FfmpegSettingsController(final Stage settingsStage, final ConfigHandler configHandler) {
+    public FfmpegSettingsController(final Stage settingsStage, final Settings settings) {
         this.settingsStage = settingsStage;
-        pane = new FfmpegSettingsPane(settingsStage, this, configHandler);
+        pane = new FfmpegSettingsPane(settingsStage, this, settings);
     }
 
     @Override

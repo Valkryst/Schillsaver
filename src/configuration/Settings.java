@@ -16,31 +16,33 @@ public class Settings {
     private final HashMap<String, String> settings = new HashMap<>();
 
     public Settings() {
-        setSetting("FFMPEG Path", "");
-        setSetting("Compression Program Path", "");
+        settings.put("FFMPEG Path", "");
+        settings.put("Compression Program Path", "");
 
-        setSetting("Enc Format", "mkv");
-        setSetting("Dec Format", "7z");
+        settings.put("Enc Format", "mkv");
+        settings.put("Dec Format", "7z");
 
-        setSetting("Enc Vid Width", 1280);
-        setSetting("Enc Vid Height", 720);
-        setSetting("Enc Vid Framerate", 30);
-        setSetting("Enc Vid Macro Block Dimensions", 8);
-        setSetting("Enc Library", "libvpx");
+        settings.put("Enc Vid Width",  String.valueOf(1280));
+        settings.put("Enc Vid Height",  String.valueOf(720));
+        settings.put("Enc Vid Framerate", String.valueOf(30));
+        settings.put("Enc Vid Macro Block Dimensions", String.valueOf(8));
+        settings.put("Enc Library", "libvpx");
 
-        setSetting("FFMPEG Log Level", "info");
+        settings.put("FFMPEG Log Level", "info");
 
-        setSetting("Use Custom FFMPEG Options", false);
-        setSetting("Custom FFMPEG Enc Options", "");
-        setSetting("Custom FFMPEG Dec Options", "");
+        settings.put("Use Custom FFMPEG Options", String.valueOf(false));
+        settings.put("Custom FFMPEG Enc Options", "");
+        settings.put("Custom FFMPEG Dec Options", "");
 
-        setSetting("Delete Source File When Enc", false);
-        setSetting("Delete Source File When Dec", false);
+        settings.put("Delete Source File When Enc", String.valueOf(false));
+        settings.put("Delete Source File When Dec", String.valueOf(false));
 
-        setSetting("Compression Commands", "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on");
-        setSetting("Compression Output Extension", "7z");
+        settings.put("Compression Commands", "a -m0=lzma -mx=9 -mfb=64 -md=32m -ms=on");
+        settings.put("Compression Output Extension", "7z");
 
-        setSetting("Warn If Settings Possibly Incompatible With YouTube", true);
+        settings.put("Warn If Settings Possibly Incompatible With YouTube", String.valueOf(true));
+
+        validateSettings();
     }
 
     /**
@@ -84,16 +86,6 @@ public class Settings {
 
         if (getStringSetting("FFMPEG Log Level").isEmpty()) {
             throw new IllegalStateException("'FFMPEG Log Level' cannot be empty/not set.");
-        }
-
-
-
-        if (getStringSetting("Custom FFMPEG Enc Options").isEmpty()) {
-            throw new IllegalStateException("'Custom FFMPEG Enc Options' cannot be empty/not set.");
-        }
-
-        if (getStringSetting("Custom FFMPEG Dec Options").isEmpty()) {
-            throw new IllegalStateException("'Custom FFMPEG Dec Options' cannot be empty/not set.");
         }
 
 
@@ -143,23 +135,24 @@ public class Settings {
     }
 
     /**
-     * Loads the settings from a JSON file.
+     * Loads the settings from a the config file.
      *
-     * @throws IOException
-     *          If the names file exists but is a directory rather than a
-     *          regular file, does not exist but cannot be created, or
-     *          cannot be opened for any other reason.
+     * Creates the config file if it doesn't already exist.
      *
      * @throws ParseException
      *          If an error occurs while parsing the JSON.
      */
     public void loadFromFile() throws IOException, ParseException {
-        final JSONParser jsonParser = new JSONParser();
-        final JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("config.json"));
+        try {
+            final JSONParser jsonParser = new JSONParser();
+            final JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("config.json"));
 
-        jsonObject.forEach((key, value) -> {
-            settings.put((String) key, (String) value);
-        });
+            jsonObject.forEach((key, value) -> {
+                settings.put((String) key, (String) value);
+            });
+        } catch (final IOException e) {
+            writeToFile();
+        }
 
         validateSettings();
     }
@@ -296,8 +289,7 @@ public class Settings {
      * @param value
      *         The value.
      */
-    public void setSetting(final @NonNull String setting, final @NonNull java.io.Serializable value) {
+    public void setSetting(final @NonNull String setting, final @NonNull Object value) {
         settings.put(setting, String.valueOf(value));
-        validateSettings();
     }
 }

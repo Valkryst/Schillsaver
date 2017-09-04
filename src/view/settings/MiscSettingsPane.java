@@ -1,6 +1,6 @@
 package view.settings;
 
-import handler.ConfigHandler;
+import configuration.Settings;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -21,7 +21,7 @@ public class MiscSettingsPane extends VBox {
     /** The radio button that says not to warn the user if their settings may not work with YouTube. */
     private final RadioButton radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_no = new RadioButton("No");
 
-    public MiscSettingsPane(final Stage settingsStage, final ConfigHandler configHandler) {
+    public MiscSettingsPane(final Stage settingsStage, final Settings settings) {
         // Setup Toggle Groups:
 
         radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_yes.setToggleGroup(toggleGroup_enableWarnUserIfSettingsMayNotWorkForYouTube);
@@ -29,7 +29,7 @@ public class MiscSettingsPane extends VBox {
 
         // Set Default Values:
 
-        if(configHandler.isWarnUserIfSettingsMayNotWorkForYouTube()) {
+        if (settings.getBooleanSetting("Warn If Settings Possibly Incompatible With YouTube")) {
             radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_yes.setSelected(true);
         } else {
             radioButton_enableWarnUserIfSettingsMayNotWorkForYouTube_no.setSelected(true);

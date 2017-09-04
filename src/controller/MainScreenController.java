@@ -1,6 +1,6 @@
 package controller;
 
-import handler.ConfigHandler;
+import configuration.Settings;
 import handler.FFMPEGHandler;
 import handler.JobHandler;
 import handler.StatisticsHandler;
@@ -31,7 +31,7 @@ public class MainScreenController implements EventHandler {
     @Getter private final MainScreenModel model;
 
     /** The object that handles settings for encoding, decoding, compression, and a number of other features. */
-    private final ConfigHandler configHandler;
+    private final Settings settings;
 
     // todo JavaDoc
     private final StatisticsHandler statisticsHandler;
@@ -39,12 +39,12 @@ public class MainScreenController implements EventHandler {
     /**
      * Construct a new main screen controller.
      * @param primaryStage todo JavaDoc
-     * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
+     * @param settings The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @param statisticsHandler todo JavaDoc
      */
-    public MainScreenController(final Stage primaryStage, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler) {
+    public MainScreenController(final Stage primaryStage, final Settings settings, final StatisticsHandler statisticsHandler) {
         this.primaryStage = primaryStage;
-        this.configHandler = configHandler;
+        this.settings = settings;
         this.statisticsHandler = statisticsHandler;
 
         view = new MainScreenView(this);
@@ -57,7 +57,7 @@ public class MainScreenController implements EventHandler {
 
         // The button to open the handler selection dialog.
         if(source.equals(view.getButton_createJob())) {
-            final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, configHandler, statisticsHandler, null);
+            final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, settings, statisticsHandler, null);
             jobSetupDialogController.show();
 
 
@@ -86,7 +86,7 @@ public class MainScreenController implements EventHandler {
                 // update the Job List and model when the dialog is closed.
                 final Job job = model.getList_jobs().get(firstSelectedIndex);
 
-                final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, configHandler, statisticsHandler, job);
+                final JobSetupDialogController jobSetupDialogController = new JobSetupDialogController(primaryStage, settings, statisticsHandler, job);
                 jobSetupDialogController.getModel().getList_files().addAll(job.getFiles());
                 jobSetupDialogController.show();
 
@@ -107,7 +107,7 @@ public class MainScreenController implements EventHandler {
 
         // The button to encode the currently selected handler(s).
         if(source.equals(view.getButton_encode())) {
-            if (!new File(configHandler.getFfmpegPath()).exists()) {
+            if (!new File(settings.getStringSetting("FFMPEG Path")).exists()) {
                 showFfmpegPathErrorAndWait();
                 return;
             }
@@ -122,7 +122,7 @@ public class MainScreenController implements EventHandler {
                      .parallelStream()
                      .filter(Job::isEncodeJob)
                      .forEach(job -> {
-                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, this, configHandler, statisticsHandler);
+                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, this, settings, statisticsHandler);
                          ffmpegHandler.setOnSucceeded(ffmpegHandler);
                          preparedJobs.add(ffmpegHandler);
                      });
@@ -137,7 +137,7 @@ public class MainScreenController implements EventHandler {
 
         // The button to decode the currently selected handler(s).
         if(source.equals(view.getButton_decode())) {
-            if (!new File(configHandler.getFfmpegPath()).exists()) {
+            if (!new File(settings.getStringSetting("FFMPEG Path")).exists()) {
                 showFfmpegPathErrorAndWait();
                 return;
             }
@@ -152,7 +152,7 @@ public class MainScreenController implements EventHandler {
                      .parallelStream()
                      .filter(job -> ! job.isEncodeJob())
                      .forEach(job -> {
-                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, this, configHandler, statisticsHandler);
+                         final FFMPEGHandler ffmpegHandler = new FFMPEGHandler(job, this, settings, statisticsHandler);
                          ffmpegHandler.setOnSucceeded(ffmpegHandler);
                          preparedJobs.add(ffmpegHandler);
                      });
@@ -210,7 +210,7 @@ public class MainScreenController implements EventHandler {
 
         // The button to open the settings dialog.
         if(source.equals(view.getButton_editSettings())) {
-            new SettingsDialogController(primaryStage, configHandler).show();
+            new SettingsDialogController(primaryStage, settings).show();
         }
     }
 

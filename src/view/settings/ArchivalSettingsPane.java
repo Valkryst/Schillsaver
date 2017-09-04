@@ -1,7 +1,7 @@
 package view.settings;
 
+import configuration.Settings;
 import controller.settings.ArchivalSettingsController;
-import handler.ConfigHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -27,16 +27,16 @@ public class ArchivalSettingsPane extends VBox {
     /** The text field for the extension to use when outputting an archive. */
     @Getter private final TextField field_archiveOutputExtension = new TextField();
 
-    public ArchivalSettingsPane(final Stage settingsStage, final ArchivalSettingsController controller, final ConfigHandler configHandler) {
+    public ArchivalSettingsPane(final Stage settingsStage, final ArchivalSettingsController controller, final Settings settings) {
         // Set Field Prompt Text:
         field_compressionProgramPath.setPromptText("Archive Executable Path");
         field_compressionCommands.setPromptText("Archive Commandline Parameters");
         field_archiveOutputExtension.setPromptText("Archive Output Extension");
 
         // Set Default Values:
-        field_compressionProgramPath.setText(configHandler.getCompressionProgramPath());
-        field_compressionCommands.setText(configHandler.getCompressionCommands());
-        field_archiveOutputExtension.setText(configHandler.getCompressionOutputExtension());
+        field_compressionProgramPath.setText(settings.getStringSetting("Compression Program Path"));
+        field_compressionCommands.setText(settings.getStringSetting("Compression Commands"));
+        field_archiveOutputExtension.setText(settings.getStringSetting("Compression Output Extension"));
 
         // Set Component Tooltips:
         field_compressionProgramPath.setTooltip(new Tooltip("The absolute path to 7zip/7zip.exe or whichever compression program is specified."));

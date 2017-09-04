@@ -1,6 +1,6 @@
 package controller.settings;
 
-import handler.ConfigHandler;
+import configuration.Settings;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.stage.FileChooser;
@@ -17,9 +17,9 @@ public class ArchivalSettingsController implements EventHandler {
     // todo JavaDoc
     private final Stage settingsStage;
 
-    public ArchivalSettingsController(final Stage settingsStage, final ConfigHandler configHandler) {
+    public ArchivalSettingsController(final Stage settingsStage, final Settings settings) {
         this.settingsStage = settingsStage;
-        pane = new ArchivalSettingsPane(settingsStage, this, configHandler);
+        pane = new ArchivalSettingsPane(settingsStage, this, settings);
     }
 
     @Override

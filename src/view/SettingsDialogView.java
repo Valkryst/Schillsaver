@@ -1,9 +1,9 @@
 package view;
 
+import configuration.Settings;
 import controller.SettingsDialogController;
 import controller.settings.ArchivalSettingsController;
 import controller.settings.FfmpegSettingsController;
-import handler.ConfigHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
@@ -28,11 +28,11 @@ public class SettingsDialogView extends VBox {
     @Getter private final Button button_cancel = new Button("Cancel");
 
     // todo JavaDoc
-    public SettingsDialogView(final Stage settingsStage, final SettingsDialogController controller, final ConfigHandler configHandler) {
+    public SettingsDialogView(final Stage settingsStage, final SettingsDialogController controller, final Settings settings) {
         // Initialize Variables:
-        controller_archivalSettings = new ArchivalSettingsController(controller, configHandler);
-        controller_ffmpegSettings = new FfmpegSettingsController(controller, configHandler);
-        pane_miscSettings = new MiscSettingsPane(settingsStage, configHandler);
+        controller_archivalSettings = new ArchivalSettingsController(controller, settings);
+        controller_ffmpegSettings = new FfmpegSettingsController(controller, settings);
+        pane_miscSettings = new MiscSettingsPane(settingsStage, settings);
 
         // Set Component Tooltips:
         button_accept.setTooltip(new Tooltip("Accept and save the new settings."));

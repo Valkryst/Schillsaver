@@ -1,6 +1,7 @@
 package handler;
 
 
+import configuration.Settings;
 import controller.MainScreenController;
 import eu.hansolo.enzo.notification.Notification;
 import javafx.application.Platform;
@@ -22,20 +23,20 @@ public class ArchiveHandler {
      * @param job The Job being run.
      * @param selectedFiles The file(s) to compress.
      * @param controller The controller for the view in which the output text area resides.
-     * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
+     * @param settings The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @return The compressed archive.
      */
-    public File packFiles(final Job job, final List<File> selectedFiles, final MainScreenController controller, final ConfigHandler configHandler) {
+    public File packFiles(final Job job, final List<File> selectedFiles, final MainScreenController controller, final Settings settings) {
         // Basic command settings ripped from http://superuser.com/a/742034
         final StringBuilder stringBuilder = new StringBuilder();
         final Formatter formatter = new Formatter(stringBuilder, Locale.US);
 
         formatter.format("\"%s\" %s \"%s%s.%s\"",
-                        configHandler.getCompressionProgramPath(),
-                        configHandler.getCompressionCommands(),
+                        settings.getStringSetting("Compression Program Path"),
+                        settings.getStringSetting("Compression Commands"),
                         job.getOutputDirectory(),
                         job.getName(),
-                        configHandler.getCompressionOutputExtension());
+                        settings.getStringSetting("Compression Output Extension"));
 
         selectedFiles.parallelStream()
                      .forEach(file -> {
@@ -52,7 +53,7 @@ public class ArchiveHandler {
         CommandHandler.runProgram(stringBuilder.toString(), controller);
 
         // Return a File int to the newly created archive:
-        final File file = new File(job.getOutputDirectory() + job.getName() + "." + configHandler.getCompressionOutputExtension());
+        final File file = new File(job.getOutputDirectory() + job.getName() + "." + settings.getStringSetting("Compression Output Extension"));
 
         if (! file.exists()) {
             final String error = "The file " + file.toString() + " does not exist. The most-likely causes are incorrect " +

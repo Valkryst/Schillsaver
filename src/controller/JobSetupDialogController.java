@@ -1,7 +1,7 @@
 package controller;
 
+import configuration.Settings;
 import eu.hansolo.enzo.notification.Notification;
-import handler.ConfigHandler;
 import handler.StatisticsHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,8 +22,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import view.JobSetupDialogView;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFileChooser;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -42,14 +42,14 @@ public class JobSetupDialogController extends Stage implements EventHandler {
     /**
      * Construct a new job setup dialog controller.
      * @param primaryStage todo JavaDoc
-     * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
+     * @param settings The object that handles settings for encoding, decoding, compression, and a number of other features.
      * @param statisticsHandler todo JavaDoc
      * @param jobToEdit The job to load into the setup dialog. This is null if the user is creating a new job, not editing an existing one.
      */
-    public JobSetupDialogController(final Stage primaryStage, final ConfigHandler configHandler, final StatisticsHandler statisticsHandler, final Job jobToEdit) {
+    public JobSetupDialogController(final Stage primaryStage, final Settings settings, final StatisticsHandler statisticsHandler, final Job jobToEdit) {
         this.statisticsHandler = statisticsHandler;
 
-        view = new JobSetupDialogView(primaryStage, this, configHandler, jobToEdit);
+        view = new JobSetupDialogView(primaryStage, this, settings, jobToEdit);
         model = new JobSetupDialogModel();
 
         // Setup Stage:

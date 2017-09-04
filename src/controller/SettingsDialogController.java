@@ -1,6 +1,6 @@
 package controller;
 
-import handler.ConfigHandler;
+import configuration.Settings;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -20,16 +20,16 @@ public class SettingsDialogController extends Stage implements EventHandler {
     /**
      * The object that handles settings for encoding, decoding, compression, and a number of other features.
      */
-    private final ConfigHandler configHandler;
+    private final Settings settings;
 
     /**
      * Construct a new settings dialog controller.
-     * @param configHandler The object that handles settings for encoding, decoding, compression, and a number of other features.
+     * @param settings The object that handles settings for encoding, decoding, compression, and a number of other features.
      */
-    public SettingsDialogController(final Stage settingsStage, final ConfigHandler configHandler) {
-        this.configHandler = configHandler;
+    public SettingsDialogController(final Stage settingsStage, final Settings settings) {
+        this.settings = settings;
 
-        view = new SettingsDialogView(settingsStage, this, configHandler);
+        view = new SettingsDialogView(settingsStage, this, this.settings);
 
         // Setup Stage:
         final Scene scene = new Scene(view);
@@ -48,12 +48,12 @@ public class SettingsDialogController extends Stage implements EventHandler {
         final Object source = event.getSource();
 
         // The button to close the window and save settings.
-        if(source.equals(view.getButton_accept())) {
+        if (source.equals(view.getButton_accept())) {
             // Check to see if all data is correct.
             // If it is, then save the settings.
-            if(! view.getController_ffmpegSettings().areSettingsCorrect()) {
+            if (! view.getController_ffmpegSettings().areSettingsCorrect()) {
                 // Show any warnings about YouTube compatability:
-                if(configHandler.isWarnUserIfSettingsMayNotWorkForYouTube()) {
+                if (settings.getBooleanSetting("Warn If Settings Possibly Incompatible With YouTube")) {
                     view.getController_ffmpegSettings().displayWarningsAboutYouTubeCompatability();
                 }
 
@@ -61,23 +61,31 @@ public class SettingsDialogController extends Stage implements EventHandler {
                 final FfmpegSettingsPane pane_ffmpeg = view.getController_ffmpegSettings().getPane();
                 final MiscSettingsPane pane_misc = view.getPane_miscSettings();
 
-                configHandler.setFfmpegPath(pane_ffmpeg.getField_ffmpegPath().getText());
-                configHandler.setCompressionProgramPath(pane_archival.getField_compressionProgramPath().getText());
-                configHandler.setCompressionOutputExtension(pane_archival.getField_archiveOutputExtension().getText());
-                configHandler.setEncodeFormat(pane_ffmpeg.getField_encodeFormat().getText());
-                configHandler.setDecodeFormat(pane_ffmpeg.getField_decodeFormat().getText());
-                configHandler.setEncodedVideoWidth(Integer.valueOf(pane_ffmpeg.getField_encodedVideoWidth().getText()));
-                configHandler.setEncodedVideoHeight(Integer.valueOf(pane_ffmpeg.getField_encodedVideoHeight().getText()));
-                configHandler.setEncodedFramerate(Integer.valueOf(pane_ffmpeg.getField_encodedFramerate().getText()));
-                configHandler.setMacroBlockDimensions(Integer.valueOf(pane_ffmpeg.getField_macroBlockDimensions().getText()));
-                configHandler.setUseFullyCustomFfmpegOptions(pane_ffmpeg.getRadioButton_useFullyCustomEncodingOptions_yes().isSelected());
-                configHandler.setFullyCustomFfmpegEncodingOptions(pane_ffmpeg.getField_fullyCustomFfmpegEncodingOptions().getText());
-                configHandler.setFullyCustomFfmpegDecodingOptions(pane_ffmpeg.getField_fullyCustomFfmpegDecodingptions().getText());
-                configHandler.setEncodingLibrary(pane_ffmpeg.getField_encodingLibrary().getText());
-                configHandler.setFfmpegLogLevel(pane_ffmpeg.getComboBox_ffmpegLogLevel().getSelectionModel().getSelectedItem());
-                configHandler.setCompressionCommands(pane_archival.getField_compressionCommands().getText());
-                configHandler.setWarnUserIfSettingsMayNotWorkForYouTube(pane_misc.getWarnUserIfSettingsMayNotWorkForYouTube());
-                configHandler.createConfigFile();
+                settings.setSetting("FFMPEG Path", pane_ffmpeg.getField_ffmpegPath().getText());
+                settings.setSetting("Compression Program Path", pane_archival.getField_compressionProgramPath().getText());
+
+                settings.setSetting("Enc Format", pane_ffmpeg.getField_encodeFormat().getText());
+                settings.setSetting("Dec Format", pane_ffmpeg.getField_decodeFormat().getText());
+
+                settings.setSetting("Enc Vid Width", pane_ffmpeg.getField_encodedVideoWidth().getText());
+                settings.setSetting("Enc Vid Height", pane_ffmpeg.getField_encodedVideoHeight().getText());
+                settings.setSetting("Enc Vid Framerate", pane_ffmpeg.getField_encodedFramerate().getText());
+                settings.setSetting("Enc Vid Macro Block Dimensions", pane_ffmpeg.getField_macroBlockDimensions().getText());
+                settings.setSetting("Enc Library", pane_ffmpeg.getField_encodingLibrary().getText());
+
+                settings.setSetting("FFMPEG Log Level", pane_ffmpeg.getComboBox_ffmpegLogLevel().getSelectionModel().getSelectedItem());
+
+                settings.setSetting("Use Custom FFMPEG Options", pane_ffmpeg.getRadioButton_useFullyCustomEncodingOptions_yes().isSelected());
+                settings.setSetting("Custom FFMPEG Enc Options", pane_ffmpeg.getField_fullyCustomFfmpegEncodingOptions().getText());
+                settings.setSetting("Custom FFMPEG Dec Options", pane_ffmpeg.getField_fullyCustomFfmpegDecodingptions().getText());
+
+                settings.setSetting("Delete Source File When Enc", false);
+                settings.setSetting("Delete Source File When Dec", false);
+
+                settings.setSetting("Compression Commands", pane_archival.getField_compressionCommands().getText());
+                settings.setSetting("Compression Output Extension", pane_archival.getField_archiveOutputExtension().getText());
+
+                settings.setSetting("Warn If Settings Possibly Incompatible With YouTube", pane_misc.getWarnUserIfSettingsMayNotWorkForYouTube());
 
                 this.close();
             }

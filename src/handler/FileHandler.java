@@ -1,5 +1,6 @@
 package handler;
 
+import configuration.Settings;
 import eu.hansolo.enzo.notification.Notification;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +16,12 @@ public class FileHandler {
      * 1401 bytes and the frame size is 1400 bytes, then ffmpeg will
      * display an error about not having a full frame worth of bytes.
      * @param file The handler to pad.
-     * @param configHandler The settings to use when padding the handler.
+     * @param settings The settings to use when padding the handler.
      */
-    public static void padFile(final File file, final ConfigHandler configHandler) {
+    public static void padFile(final File file, final Settings settings) {
         try {
             final FileOutputStream outputStream = new FileOutputStream(file, true);
-            int numberOfBytesToPad = configHandler.getFrameSize() - ( (int) (file.length() % configHandler.getFrameSize()) );
+            int numberOfBytesToPad = settings.getIntegerSetting("Frame Size") - ( (int) (file.length() % settings.getIntegerSetting("Frame Size")) );
             outputStream.write(new byte[numberOfBytesToPad]);
             outputStream.close();
         } catch(final IOException e) {

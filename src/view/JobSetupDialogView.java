@@ -1,7 +1,7 @@
 package view;
 
+import configuration.Settings;
 import controller.JobSetupDialogController;
-import handler.ConfigHandler;
 import javafx.collections.FXCollections;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -58,7 +58,7 @@ public class JobSetupDialogView extends HBox {
     @Getter private final Button button_selectOutputDirectory = new Button("Select Output Folder");
 
     // todo JavaDoc
-    public JobSetupDialogView(final Stage settingsStage, final JobSetupDialogController controller, final ConfigHandler configHandler, final Job jobToEdit) {
+    public JobSetupDialogView(final Stage settingsStage, final JobSetupDialogController controller, final Settings settings, final Job jobToEdit) {
         // Setup Job  List:
         listView_selectedFiles.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -69,7 +69,7 @@ public class JobSetupDialogView extends HBox {
         setEventHandlers(controller);
 
         setRadioButtonToggleGroups();
-        setRadioButtonDefaults(configHandler);
+        setRadioButtonDefaults(settings);
 
         // Load Existing Data:
         if(jobToEdit != null) {
@@ -155,20 +155,17 @@ public class JobSetupDialogView extends HBox {
     /**
      * Sets the default selections for the radio button toggle groups.
      *
-     * @param configHandler
+     * @param settings
      *         todo JavaDoc
      */
-    private void setRadioButtonDefaults(final ConfigHandler configHandler) {
-        if(configHandler.getCompressionProgramPath().isEmpty()) {
+    private void setRadioButtonDefaults(final Settings settings) {
+        if(settings.getStringSetting("Compression Program Path").isEmpty()) {
             toggleGroup_archiveFiles_no.setSelected(true);
-        } else {
-            toggleGroup_archiveFiles_yes.setSelected(true);
-        }
 
-        // Disable archive options if no archival program is set:
-        if(configHandler.getCompressionProgramPath().isEmpty()) {
             toggleGroup_archiveFiles_yes.setDisable(true);
             toggleGroup_archiveFiles_no.setDisable(true);
+        } else {
+            toggleGroup_archiveFiles_yes.setSelected(true);
         }
     }
 
