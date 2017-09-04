@@ -13,6 +13,7 @@ The option to decode these encoded files is also available.
     * http://java.com/en/download/ or an equivalent Linux package.
     * See http://docs.oracle.com/javase/8/docs/technotes/guides/install/linux_jdk.html for
       more information on installing it for Linux.
+        * There may be issues with using OpenJDK.
 
     
 * A recent version of [FFMPEG](http://ffmpeg.org/download.html).
