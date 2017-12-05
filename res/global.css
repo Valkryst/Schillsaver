@@ -22,8 +22,6 @@
     -fx-max-height: 2147483647; /* Allow buttons to fill all vertical space. */
     -fx-background-color: #393939;
 
-    -fx-border-style: none;
-
     -fx-text-fill: text-color;
 
     -fx-background-radius: 0;
