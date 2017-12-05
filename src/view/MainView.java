@@ -100,4 +100,40 @@ public class MainView extends VBox implements View{
 
         return contentArea;
     }
+
+    /**
+     * Creates and adds a new output tab to the set of output tabs.
+     *
+     * @param title
+     *          The title of the tab.
+     *
+     * @return
+     *          The tab.
+     */
+    public Tab addOutputTab(final String title) {
+        // Create Text Area for Output
+        final TextArea textArea = new TextArea();
+        textArea.setEditable(false);
+
+        HBox.setHgrow(textArea, Priority.ALWAYS);
+        VBox.setVgrow(textArea, Priority.ALWAYS);
+
+        // Create Tab
+        final Tab tab = new Tab();
+        tab.setText(title);
+        tab.setContent(textArea);
+
+        outputPanes.getTabs().add(tab);
+        return tab;
+    }
+
+    /**
+     * Removes a tab from the set of output tabs.
+     *
+     * @param tab
+     *          The tab to remove.
+     */
+    public void removeOutputTab(final Tab tab) {
+        outputPanes.getTabs().remove(tab);
+    }
 }
