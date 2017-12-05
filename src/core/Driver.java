@@ -30,7 +30,7 @@ public class Driver extends Application {
         Notification.Notifier.setPopupLocation(primaryStage, Pos.BOTTOM_CENTER);
 
         // Add the first scene to the primary stage:
-        final Scene scene = new Scene(new MainController().getView());
+        final Scene scene = new Scene(new MainController(primaryStage).getView());
 
         scene.getStylesheets().add("global.css");
         scene.getRoot().getStyleClass().add("main-root");
