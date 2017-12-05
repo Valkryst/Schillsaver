@@ -93,7 +93,7 @@ public class MainController implements EventHandler {
     }
 
     private void processJob() {
-
+        view.addOutputTab(String.valueOf(System.currentTimeMillis()));
     }
 
     private void editProgramSettings() {
