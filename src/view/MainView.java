@@ -5,7 +5,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 
@@ -26,7 +25,7 @@ public class MainView extends VBox implements View{
         setComponentTooltips();
 
         final HBox menuBar = createMenuBar();
-        final TilePane contentArea = createContentArea();
+        final HBox contentArea = createContentArea();
         this.getChildren().addAll(menuBar, contentArea);
     }
 
@@ -90,8 +89,8 @@ public class MainView extends VBox implements View{
      * @return
      *         The content area panel.
      */
-    private TilePane createContentArea() {
-        final TilePane contentArea = new TilePane();
+    private HBox createContentArea() {
+        final HBox contentArea = new HBox();
 
         HBox.setHgrow(contentArea, Priority.ALWAYS);
         VBox.setVgrow(contentArea, Priority.ALWAYS);
