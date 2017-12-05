@@ -8,14 +8,14 @@ import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.Getter;
-import view.SettingsDialogView;
+import view.SettingsView;
 import view.settings.ArchivalSettingsPane;
 import view.settings.FfmpegSettingsPane;
 import view.settings.MiscSettingsPane;
 
-public class SettingsDialogController extends Stage implements EventHandler {
+public class SettingsController extends Stage implements EventHandler {
     // todo JavaDoc
-    @Getter private final SettingsDialogView view;
+    @Getter private final SettingsView view;
 
     /**
      * The object that handles settings for encoding, decoding, compression, and a number of other features.
@@ -26,10 +26,10 @@ public class SettingsDialogController extends Stage implements EventHandler {
      * Construct a new settings dialog controller.
      * @param settings The object that handles settings for encoding, decoding, compression, and a number of other features.
      */
-    public SettingsDialogController(final Stage settingsStage, final Settings settings) {
+    public SettingsController(final Stage settingsStage, final Settings settings) {
         this.settings = settings;
 
-        view = new SettingsDialogView(settingsStage, this, this.settings);
+        view = new SettingsView(settingsStage, this, this.settings);
 
         // Setup Stage:
         final Scene scene = new Scene(view);
