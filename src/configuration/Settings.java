@@ -148,7 +148,11 @@ public class Settings {
             final JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("config.json"));
 
             jsonObject.forEach((key, value) -> {
-                settings.put((String) key, (String) value);
+                if (value instanceof String == false) {
+                    settings.put((String) key, value.toString());
+                } else {
+                    settings.put((String) key, (String) value);
+                }
             });
         } catch (final IOException e) {
             writeToFile();
