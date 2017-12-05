@@ -1,8 +1,6 @@
 package view;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -40,6 +38,9 @@ public class MainView extends VBox implements View{
         button_processJobs = new Button("Process Jobs");
 
         jobsList = new ListView<>();
+        jobsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+
         outputPanes = new TabPane();
 
         button_programSettings = new Button();
