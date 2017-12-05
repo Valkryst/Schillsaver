@@ -9,17 +9,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 
 public class MainView extends VBox implements View{
-    private Button button_createJob;
-    private Button button_editJob;
-    private Button button_deleteSelectedJobs;
-    private Button button_processJobs;
+    @Getter private Button button_createJob;
+    @Getter private Button button_editJob;
+    @Getter private Button button_deleteSelectedJobs;
+    @Getter private Button button_processJobs;
 
-    private ListView<String> jobsList;
-    private TabPane outputPanes;
+    @Getter private ListView<String> jobsList;
+    @Getter private TabPane outputPanes;
 
-    private Button button_programSettings;
+    @Getter private Button button_programSettings;
 
     /** Constructs a new MainView. */
     public MainView() {
