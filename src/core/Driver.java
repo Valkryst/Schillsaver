@@ -3,7 +3,6 @@ package core;
 import configuration.Settings;
 import controller.MainScreenController;
 import eu.hansolo.enzo.notification.Notification;
-import handler.StatisticsHandler;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -31,7 +30,7 @@ public class Driver extends Application {
         Notification.Notifier.setPopupLocation(primaryStage, Pos.BOTTOM_CENTER);
 
         // Add the first scene to the primary stage:
-        final Scene scene = new Scene(new MainScreenController(primaryStage, settings, new StatisticsHandler()).getView());
+        final Scene scene = new Scene(new MainScreenController(primaryStage, settings).getView());
 
         scene.getStylesheets().add("global.css");
         scene.getRoot().getStyleClass().add("main-root");
