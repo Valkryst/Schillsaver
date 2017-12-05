@@ -53,9 +53,7 @@
     -fx-background-radius: 0;
 }
 
-.content:focused{
-    -fx-border-color: border-selected-color;
-}
+.content:focused{}
 
 /** Label */
 .label {
