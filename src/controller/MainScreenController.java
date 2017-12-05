@@ -37,9 +37,13 @@ public class MainScreenController implements EventHandler {
     private final StatisticsHandler statisticsHandler = new StatisticsHandler();
 
     /**
-     * Construct a new main screen controller.
-     * @param primaryStage todo JavaDoc
-     * @param settings The object that handles settings for encoding, decoding, compression, and a number of other features.
+     * Constructs a new MainScreenController.
+     *
+     * @param primaryStage
+     *          The primary stage.
+     *
+     * @param settings
+     *          The settings.
      */
     public MainScreenController(final Stage primaryStage, final Settings settings) {
         this.primaryStage = primaryStage;
