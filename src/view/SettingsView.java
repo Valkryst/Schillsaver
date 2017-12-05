@@ -1,7 +1,7 @@
 package view;
 
 import configuration.Settings;
-import controller.SettingsDialogController;
+import controller.SettingsController;
 import controller.settings.ArchivalSettingsController;
 import controller.settings.FfmpegSettingsController;
 import javafx.geometry.Pos;
@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import view.settings.MiscSettingsPane;
 
-public class SettingsDialogView extends VBox {
+public class SettingsView extends VBox {
     /** The controller for the archival settings section. */
     @Getter private final ArchivalSettingsController controller_archivalSettings;
     /** The controller for the FFMPEG settings section. */
@@ -28,7 +28,7 @@ public class SettingsDialogView extends VBox {
     @Getter private final Button button_cancel = new Button("Cancel");
 
     // todo JavaDoc
-    public SettingsDialogView(final Stage settingsStage, final SettingsDialogController controller, final Settings settings) {
+    public SettingsView(final Stage settingsStage, final SettingsController controller, final Settings settings) {
         // Initialize Variables:
         controller_archivalSettings = new ArchivalSettingsController(controller, settings);
         controller_ffmpegSettings = new FfmpegSettingsController(controller, settings);
