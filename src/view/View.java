@@ -11,6 +11,11 @@ public class View {
     /** The pane of the view. */
     @Getter protected Pane pane;
 
+    /** Constructs a new View. */
+    View() {
+        pane.setMinSize(512, 512);
+    }
+
     /**
      * Sets the tooltip of a JavaFX control.
      *
