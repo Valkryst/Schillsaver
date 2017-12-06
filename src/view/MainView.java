@@ -24,7 +24,7 @@ public class MainView extends View{
         initializeComponents();
         setComponentTooltips();
 
-        final HBox menuBar = createMenuBar();
+        final Pane menuBar = createMenuBar();
         contentArea = createContentArea();
 
         super.pane = new VBox();
@@ -64,11 +64,11 @@ public class MainView extends View{
      * @return
      *         The menu bar panel.
      */
-    private HBox createMenuBar() {
-        final HBox menuBar = new HBox();
+    private Pane createMenuBar() {
+        final HBox pane = new HBox();
 
-        HBox.setHgrow(menuBar, Priority.ALWAYS);
-        VBox.setVgrow(menuBar, Priority.NEVER);
+        HBox.setHgrow(pane, Priority.ALWAYS);
+        VBox.setVgrow(pane, Priority.NEVER);
 
         HBox.setHgrow(button_createJob, Priority.ALWAYS);
         HBox.setHgrow(button_editJob, Priority.ALWAYS);
@@ -76,13 +76,13 @@ public class MainView extends View{
         HBox.setHgrow(button_processJobs, Priority.ALWAYS);
         HBox.setHgrow(button_programSettings, Priority.ALWAYS);
 
-        menuBar.getChildren().addAll(button_createJob,
+        pane.getChildren().addAll(button_createJob,
                                          button_editJob,
                                          button_deleteSelectedJobs,
                                          button_processJobs,
                                          button_programSettings);
 
-        return menuBar;
+        return pane;
     }
 
     /**
