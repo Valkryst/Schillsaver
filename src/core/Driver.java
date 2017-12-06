@@ -40,7 +40,7 @@ public class Driver extends Application {
         Notification.Notifier.setPopupLocation(primaryStage, Pos.BOTTOM_CENTER);
 
         // Add the first scene to the primary stage:
-        final Scene scene = new Scene(new MainController(primaryStage).getView());
+        final Scene scene = new Scene(new MainController(this).getView());
 
         primaryStage.setTitle("Schillsaver - Powered by /g/entoomen\u00a9\u00ae");
         primaryStage.setScene(scene);
