@@ -184,3 +184,15 @@
 .combo-box .list-view .list-cell:selected {
     -fx-background-color: #23B5D3;
 }
+
+/** List View - (Even) List Cells */
+.list-view .list-cell:even {
+    -fx-background-color: #D3D3D3;
+    -fx-text-fill: black;
+}
+
+/** List View - (Odd) List Cells */
+.list-view .list-cell:odd {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
