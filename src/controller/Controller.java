@@ -29,7 +29,7 @@ public class Controller<M extends Model, V extends View> {
      *          The view.
      *
      * @throws java.lang.NullPointerException
-     *          If the model or view are null.
+     *          If the driver, model, or view are null.
      */
     public Controller(final Driver driver, final M model, final V view) {
         Objects.requireNonNull(driver);
