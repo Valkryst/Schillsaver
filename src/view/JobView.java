@@ -2,6 +2,10 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 
 public class JobView extends View {
@@ -14,6 +18,8 @@ public class JobView extends View {
     @Getter private TextField textField_jobName;
     @Getter private TextField textField_outputFolder;
 
+    @Getter private ListView<String> fileList;
+
     @Getter private Label label_timeEstimate;
 
     @Getter private ComboBox<String> comboBox_jobType;
@@ -24,6 +30,12 @@ public class JobView extends View {
 
     public JobView() {
         initializeComponents();
+
+        final Pane fileSelectionArea = createFileSelectionArea();
+        final Pane bottomMenuBar = createBottomMenuBar();
+
+        super.pane = new VBox();
+        super.pane.getChildren().addAll(fileSelectionArea, bottomMenuBar);
     }
 
     /** Initializes the components. */
@@ -39,6 +51,9 @@ public class JobView extends View {
 
         textField_outputFolder = new TextField();
         textField_outputFolder.setPromptText("Output Folder Path");
+
+        fileList = new ListView<>();
+        fileList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         label_timeEstimate = new Label("Unknown");
 
@@ -67,5 +82,59 @@ public class JobView extends View {
 
         setTooltip(radioButton_singleArchive_yes, "Combine all of the job's files into a single archive when processing the job.");
         setTooltip(radioButton_singleArchive_no, "Process each of the job's files individually when processing the job.");
+    }
+
+    /**
+     * Creates the file selection area.
+     *
+     * @return
+     *         The file selection area.
+     */
+    private Pane createFileSelectionArea() {
+        // Create the Button Pane
+        final GridPane buttonPane = new GridPane();
+
+        final ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(50);
+
+        final ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(50);
+
+        buttonPane.getColumnConstraints().addAll(column1, column2);
+
+        // Add controls to Button Pane:
+        buttonPane.add(button_addFiles, 0, 0);
+        buttonPane.add(button_removeSelectedFiles, 1, 0);
+
+        // Create the Pane:
+        final VBox pane = new VBox();
+        pane.getChildren().addAll(buttonPane, fileList);
+
+        return pane;
+    }
+
+    /**
+     * Creates the bottom menu bar.
+     *
+     * @return
+     *         The bottom menu bar.
+     */
+    private Pane createBottomMenuBar() {
+        // Create the Pane:
+        final GridPane pane = new GridPane();
+
+        final ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(50);
+
+        final ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(50);
+
+        pane.getColumnConstraints().addAll(column1, column2);
+
+        // Add the Components:
+        pane.add(button_accept, 0, 0);
+        pane.add(button_cancel, 1, 0);
+
+        return pane;
     }
 }
