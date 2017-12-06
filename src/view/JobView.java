@@ -1,6 +1,6 @@
 package view;
 
-public class JobView implements View {
+public class JobView extends View {
     public JobView() {
 
     }
