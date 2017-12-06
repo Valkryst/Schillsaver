@@ -9,10 +9,10 @@ import java.util.Objects;
 
 public class Controller<M extends Model, V extends View> {
     /** The driver. */
-    protected final Driver driver;
+    @Getter private final Driver driver;
 
     /** The model. */
-    protected final M model;
+    final M model;
     /** The view. */
     @Getter protected final V view;
 
