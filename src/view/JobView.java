@@ -33,6 +33,7 @@ public class JobView extends View {
         final Pane bottomMenuBar = createBottomMenuBar();
 
         super.pane = new VBox();
+        super.pane.setMinSize(512, 512);
         super.pane.getChildren().addAll(fileSelectionArea, bottomMenuBar);
     }
 

@@ -28,6 +28,7 @@ public class MainView extends View{
         contentArea = createContentArea();
 
         super.pane = new VBox();
+        super.pane.setMinSize(512, 512);
         super.pane.getChildren().addAll(menuBar, contentArea);
     }
 
