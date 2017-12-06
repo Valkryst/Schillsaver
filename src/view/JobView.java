@@ -51,6 +51,7 @@ public class JobView extends View {
 
         fileList = new ListView<>();
         fileList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        fileList.setFocusTraversable(false);
 
         label_timeEstimate = new Label("Unknown");
 
