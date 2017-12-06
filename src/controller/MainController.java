@@ -1,7 +1,6 @@
 package controller;
 
 import core.Driver;
-import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
@@ -9,14 +8,18 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
 import misc.Job;
+import model.MainModel;
 import view.MainView;
 
 import javax.swing.Timer;
+import java.util.List;
 
 public class MainController implements EventHandler {
     /** The driver. */
     private final Driver driver;
 
+    /** The model. */
+    @Getter private final MainModel model = new MainModel();
     /** The view. */
     @Getter private final MainView view = new MainView();
 
@@ -82,7 +85,7 @@ public class MainController implements EventHandler {
     /** Deletes all jobs selected within the view's job list. */
     private void deleteSelectedJobs() {
         final ListView<String> jobsList = view.getJobsList();
-        final ObservableList<String> selectedJobs = jobsList.getSelectionModel().getSelectedItems();
+        final List<String> selectedJobs = jobsList.getSelectionModel().getSelectedItems();
 
         // There's a quirk with the removeAll function where, if you have
         // multiple items using the same string and you delete any one
@@ -94,6 +97,10 @@ public class MainController implements EventHandler {
         //    "2", "3"
         jobsList.getItems().removeAll(selectedJobs);
         jobsList.getSelectionModel().clearSelection();
+
+        for (final String jobName : selectedJobs) {
+            model.getJobs().remove(jobName);
+        }
     }
 
     private void processJob() {
