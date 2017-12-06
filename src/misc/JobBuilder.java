@@ -2,7 +2,9 @@ package misc;
 
 import lombok.Data;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 @Data
@@ -52,8 +54,9 @@ public class JobBuilder {
             name = uuid.toString();
         }
 
+        // If the output dir isn't specified, try setting it to the home dir.
         if (outputDirectory.isEmpty()) {
-            throw new IllegalArgumentException("The output directory of a Job cannot be empty.");
+            setOutputToHomeDirectory();
         }
 
         // Ensure output directory has the correct trailing slash:
@@ -68,9 +71,20 @@ public class JobBuilder {
     /** Resets the state of the builder. */
     public void reset() {
         name = null;
-        outputDirectory = null;
+        setOutputToHomeDirectory();
         files = new ArrayList<>();
         isEncodeJob = true;
         singleArchive = false;
+    }
+
+    /** Sets the output directory to the home directory. */
+    private void setOutputToHomeDirectory() {
+        try {
+            final File home = FileSystemView.getFileSystemView().getHomeDirectory();
+            outputDirectory = home.getCanonicalPath() + "/";
+        } catch (final IOException e) {
+            // todo Throw an error or something if this happens, not sure yet.
+            e.printStackTrace();
+        }
     }
 }
