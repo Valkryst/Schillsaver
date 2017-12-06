@@ -2,10 +2,15 @@ package view;
 
 import javafx.scene.control.Control;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.Pane;
+import lombok.Getter;
 
 import java.util.Objects;
 
-public interface View {
+public class View {
+    /** The pane of the view. */
+    @Getter Pane pane = null;
+
     /**
      * Sets the tooltip of a JavaFX control.
      *
@@ -21,7 +26,7 @@ public interface View {
      * @throws java.lang.IllegalArgumentException
      *           If the message is empty.
      */
-    default void setTooltip(final Control control, final String message) {
+    static void setTooltip(final Control control, final String message) {
         Objects.requireNonNull(message);
 
         if (message.isEmpty()) {
