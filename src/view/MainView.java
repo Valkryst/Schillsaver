@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import lombok.Getter;
 
-public class MainView extends VBox implements View{
+public class MainView extends View{
     @Getter private Button button_createJob;
     @Getter private Button button_editJob;
     @Getter private Button button_deleteSelectedJobs;
@@ -26,7 +26,9 @@ public class MainView extends VBox implements View{
 
         final HBox menuBar = createMenuBar();
         contentArea = createContentArea();
-        this.getChildren().addAll(menuBar, contentArea);
+
+        super.pane = new VBox();
+        super.pane.getChildren().addAll(menuBar, contentArea);
     }
 
     /** Initializes the components. */
