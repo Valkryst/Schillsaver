@@ -1,6 +1,7 @@
 package core;
 
 import configuration.Settings;
+import controller.Controller;
 import controller.MainController;
 import eu.hansolo.enzo.notification.Notification;
 import javafx.application.Application;
@@ -8,10 +9,16 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import lombok.Getter;
 
 public class Driver extends Application {
     /** The primary stage. */
     private Stage primaryStage;
+
+    /** The previous scene's controller. */
+    @Getter private Controller previousController;
+    /** The current scene's controller. */
+    @Getter private Controller currentController;
 
     /** The previous scene. */
     private Scene previousScene;
@@ -40,11 +47,12 @@ public class Driver extends Application {
         Notification.Notifier.setPopupLocation(primaryStage, Pos.BOTTOM_CENTER);
 
         // Add the first scene to the primary stage:
-        final Scene scene = new Scene(new MainController(this).getView());
-        addStylesheet(scene);
+        currentController = new MainController(this);
+        currentScene = new Scene(currentController.getView().getPane());
+        addStylesheet(currentScene);
 
         primaryStage.setTitle("Schillsaver - Powered by /g/entoomen\u00a9\u00ae");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(currentScene);
         primaryStage.show();
     }
 
@@ -52,14 +60,17 @@ public class Driver extends Application {
      * Swaps the current scene with a new scene, so that the new scene
      * is displayed.
      *
-     * @param newScene
-     *          The new scene.
+     * @param controller
+     *          The controller of the new scene.
      */
-    public void swapToNewScene(final Scene newScene) {
-        previousScene = currentScene;
-        currentScene = newScene;
+    public void swapToNewScene(final Controller controller) {
+        previousController = currentController;
+        currentController = controller;
 
-        addStylesheet(newScene);
+        previousScene = currentScene;
+        currentScene = new Scene(controller.getView().getPane());
+
+        addStylesheet(currentScene);
 
         primaryStage.setScene(currentScene);
     }
@@ -69,9 +80,13 @@ public class Driver extends Application {
      * is displayed.
      */
     public void swapToPreviousScene() {
-        final Scene temp = previousScene;
+        final Controller tempC = previousController;
+        previousController = currentController;
+        currentController = tempC;
+
+        final Scene tempS = previousScene;
         previousScene = currentScene;
-        currentScene = temp;
+        currentScene = tempS;
 
         primaryStage.setScene(currentScene);
     }
