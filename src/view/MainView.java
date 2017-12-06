@@ -103,6 +103,8 @@ public class MainView extends VBox implements View{
         HBox.setHgrow(contentArea, Priority.ALWAYS);
         VBox.setVgrow(contentArea, Priority.ALWAYS);
 
+        jobsList.setFocusTraversable(false);
+
         contentArea.add(jobsList, 0, 0);
 
         return contentArea;
