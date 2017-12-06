@@ -18,6 +18,12 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         super(driver, new JobModel(), new JobView());
     }
 
+    /**
+     * Populates the view with the data of a Job.
+     *
+     * @param job
+     *          The job.
+     */
     public void editJob(final Job job) {
 
     }
