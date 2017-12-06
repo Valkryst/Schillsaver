@@ -21,7 +21,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      * @param driver
      *          The driver.
      */
-    public JobController(final Driver driver) {
+    JobController(final Driver driver) {
         super(driver, new JobModel(), new JobView());
 
         addEventHandlers();
