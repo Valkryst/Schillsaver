@@ -1,7 +1,6 @@
 package controller;
 
 import core.Driver;
-import eu.hansolo.enzo.notification.Notification;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
@@ -93,22 +92,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
     }
 
     /**
-     * Updates a job in the model.
-     *
-     * @param job
-     *          The job.
-     */
-    public void updateJob(final Job job) {
-        final String jobName = job.getName();
-
-        if (containsJob(jobName)) {
-            addJob(job);
-        } else {
-            model.getJobs().put(jobName, job);
-        }
-    }
-
-    /**
      * Adds a job into the model and the job list.
      *
      * If a job of the same name already exists, then an error is shown
@@ -118,13 +101,13 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *          The job.
      */
     public void addJob(final Job job) {
-        if (model.getJobs().containsKey(job.getName())) {
-            Notification.Notifier.INSTANCE.notifyError("Job Creation Error", "A job with the name " + job.getName() + " already exists.");
-            return;
+        final String jobName = job.getName();
+
+        if (! containsJob(jobName)) {
+            view.getJobsList().getItems().add(job.getName());
         }
 
-        view.getJobsList().getItems().add(job.getName());
-        model.getJobs().put(job.getName(), job);
+        model.getJobs().put(jobName, job);
     }
 
     /**
