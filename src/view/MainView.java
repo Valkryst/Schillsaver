@@ -92,15 +92,16 @@ public class MainView extends VBox implements View{
     private GridPane createContentArea() {
         final GridPane contentArea = new GridPane();
 
-        // Set job list's side to take up all space
         final ColumnConstraints column = new ColumnConstraints();
         column.setPercentWidth(100);
         contentArea.getColumnConstraints().add(column);
 
+        final RowConstraints row = new RowConstraints();
+        row.setPercentHeight(100);
+        contentArea.getRowConstraints().add(row);
+
         HBox.setHgrow(contentArea, Priority.ALWAYS);
         VBox.setVgrow(contentArea, Priority.ALWAYS);
-
-        fillAllAvailableSpace(jobsList);
 
         contentArea.add(jobsList, 0, 0);
 
@@ -132,10 +133,10 @@ public class MainView extends VBox implements View{
             // Set each side to use 50% of the space:
             contentArea.getColumnConstraints().clear();
 
-            ColumnConstraints column1 = new ColumnConstraints();
+            final ColumnConstraints column1 = new ColumnConstraints();
             column1.setPercentWidth(50);
 
-            ColumnConstraints column2 = new ColumnConstraints();
+            final ColumnConstraints column2 = new ColumnConstraints();
             column2.setPercentWidth(50);
 
             contentArea.getColumnConstraints().addAll(column1, column2);
@@ -146,28 +147,20 @@ public class MainView extends VBox implements View{
         tab.setText(title);
         tab.setContent(textArea);
 
+        tab.setOnClosed(e -> {
+            if (outputPanes.getTabs().size() == 0) {
+                contentArea.getChildren().remove(outputPanes);
+
+                // Set job list's side to take up all space
+                contentArea.getColumnConstraints().clear();
+
+                final ColumnConstraints column = new ColumnConstraints();
+                column.setPercentWidth(100);
+                contentArea.getColumnConstraints().add(column);
+            }
+        });
+
         outputPanes.getTabs().add(tab);
         return tab;
-    }
-
-    /**
-     * Removes a tab from the set of output tabs.
-     *
-     * @param tab
-     *          The tab to remove.
-     */
-    public void removeOutputTab(final Tab tab) {
-        outputPanes.getTabs().remove(tab);
-
-        if (outputPanes.getTabs().size() == 0) {
-            contentArea.getChildren().remove(outputPanes);
-
-            // Set job list's side to take up all space
-            contentArea.getColumnConstraints().clear();
-
-            final ColumnConstraints column = new ColumnConstraints();
-            column.setPercentWidth(100);
-            contentArea.getColumnConstraints().add(column);
-        }
     }
 }
