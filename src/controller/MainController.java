@@ -1,12 +1,12 @@
 package controller;
 
 import core.Driver;
+import eu.hansolo.enzo.notification.Notification;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
-import lombok.Getter;
 import misc.Job;
 import model.MainModel;
 import view.MainView;
@@ -14,15 +14,7 @@ import view.MainView;
 import javax.swing.Timer;
 import java.util.List;
 
-public class MainController implements EventHandler {
-    /** The driver. */
-    private final Driver driver;
-
-    /** The model. */
-    @Getter private final MainModel model = new MainModel();
-    /** The view. */
-    @Getter private final MainView view = new MainView();
-
+public class MainController extends Controller<MainModel, MainView> implements EventHandler {
     /**
      * Constructs a new MainController.
      *
@@ -30,8 +22,7 @@ public class MainController implements EventHandler {
      *          The driver.
      */
     public MainController(final Driver driver) {
-        this.driver = driver;
-
+        super(driver, new MainModel(), new MainView());
         addEventHandlers();
     }
 
@@ -53,11 +44,11 @@ public class MainController implements EventHandler {
         final Object source = event.getSource();
 
         if (source.equals(view.getButton_createJob())) {
-            createJob();
+            openJobView();
         }
 
         if (source.equals(view.getButton_editJob())) {
-            editJob();
+            openEditJobView();
         }
 
         if (source.equals(view.getButton_deleteSelectedJobs())) {
@@ -73,13 +64,91 @@ public class MainController implements EventHandler {
         }
     }
 
-    private Job createJob() {
-        view.getJobsList().getItems().addAll("1", "2", "3", "4", "5", "6");
-        return null;
+    /** Opens the JobView. */
+    private void openJobView() {
+        final JobController controller = new JobController(getDriver());
+        getDriver().swapToNewScene(controller);
     }
 
-    private Job editJob() {
-        return null;
+    /**
+     * Opens the JobView with the first of the currently selected Jobs.
+     *
+     * If no Jobs are selected, then nothing happens.
+     */
+    private void openEditJobView() {
+        final ListView<String> jobList = view.getJobsList();
+        final List<String> selectedJobs = jobList.getSelectionModel().getSelectedItems();
+
+        if (selectedJobs.size() == 0) {
+            return;
+        }
+
+        final String firstJobName = selectedJobs.get(0);
+        final Job job = model.getJobs().get(firstJobName);
+
+        final JobController controller = new JobController(getDriver());
+        controller.editJob(job);
+
+        getDriver().swapToNewScene(controller);
+    }
+
+    /**
+     * Updates a job in the model.
+     *
+     * @param job
+     *          The job.
+     */
+    public void updateJob(final Job job) {
+        final String jobName = job.getName();
+
+        if (containsJob(jobName)) {
+            addJob(job);
+        } else {
+            model.getJobs().put(jobName, job);
+        }
+    }
+
+    /**
+     * Adds a job into the model and the job list.
+     *
+     * If a job of the same name already exists, then an error is shown
+     * and nothing happens.
+     *
+     * @param job
+     *          The job.
+     */
+    public void addJob(final Job job) {
+        if (model.getJobs().containsKey(job.getName())) {
+            Notification.Notifier.INSTANCE.notifyError("Job Creation Error", "A job with the name " + job.getName() + " already exists.");
+            return;
+        }
+
+        view.getJobsList().getItems().add(job.getName());
+        model.getJobs().put(job.getName(), job);
+    }
+
+    /**
+     * Removes a job from the model and the job list.
+     *
+     * @param jobName
+     *          The name of the job.
+     */
+    public void deleteJob(final String jobName) {
+        view.getJobsList().getItems().remove(jobName);
+        model.getJobs().remove(jobName);
+    }
+
+    /**
+     * Determines whether the model contains a job with a specific name.
+     *
+     * @param jobName
+     *          The name.
+     *
+     * @return
+     *          Whether the model contains a job with the name.
+     */
+    public boolean containsJob(final String jobName) {
+        return model.getJobs().containsKey(jobName);
     }
 
     /** Deletes all jobs selected within the view's job list. */
@@ -87,19 +156,8 @@ public class MainController implements EventHandler {
         final ListView<String> jobsList = view.getJobsList();
         final List<String> selectedJobs = jobsList.getSelectionModel().getSelectedItems();
 
-        // There's a quirk with the removeAll function where, if you have
-        // multiple items using the same string and you delete any one
-        // of them, then all items using that string name are deleted.
-        //
-        // Ex:
-        //    "1", "2", "3", "1"
-        //    Delete "1"
-        //    "2", "3"
-        jobsList.getItems().removeAll(selectedJobs);
-        jobsList.getSelectionModel().clearSelection();
-
         for (final String jobName : selectedJobs) {
-            model.getJobs().remove(jobName);
+            deleteJob(jobName);
         }
     }
 
