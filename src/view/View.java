@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class View {
     /** The pane of the view. */
-    @Getter Pane pane = null;
+    @Getter protected Pane pane;
 
     /**
      * Sets the tooltip of a JavaFX control.
