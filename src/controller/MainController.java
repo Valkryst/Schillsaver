@@ -128,17 +128,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
     }
 
     /**
-     * Removes a job from the model and the view.
-     *
-     * @param jobName
-     *          The name of the job.
-     */
-    public void deleteJob(final String jobName) {
-        view.getJobsList().getItems().remove(jobName);
-        model.getJobs().remove(jobName);
-    }
-
-    /**
      * Determines whether the model contains a job with a specific name.
      *
      * @param jobName
@@ -157,7 +146,8 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final List<String> selectedJobs = jobsList.getSelectionModel().getSelectedItems();
 
         for (final String jobName : selectedJobs) {
-            deleteJob(jobName);
+            view.getJobsList().getItems().remove(jobName);
+            model.getJobs().remove(jobName);
         }
     }
 
