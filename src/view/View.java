@@ -5,7 +5,7 @@ import javafx.scene.control.Tooltip;
 
 import java.util.Objects;
 
-public class View {
+public interface View {
     /**
      * Sets the tooltip of a JavaFX control.
      *
@@ -21,7 +21,7 @@ public class View {
      * @throws java.lang.IllegalArgumentException
      *           If the message is empty.
      */
-    static void setTooltip(final Control control, final String message) {
+    default void setTooltip(final Control control, final String message) {
         Objects.requireNonNull(message);
 
         if (message.isEmpty()) {
