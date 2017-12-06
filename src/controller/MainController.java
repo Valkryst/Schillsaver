@@ -1,12 +1,12 @@
 package controller;
 
+import core.Driver;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
-import javafx.stage.Stage;
 import lombok.Getter;
 import misc.Job;
 import view.MainView;
@@ -14,8 +14,8 @@ import view.MainView;
 import javax.swing.Timer;
 
 public class MainController implements EventHandler {
-    /** The primary stage. */
-    private final Stage primaryStage;
+    /** The driver. */
+    private final Driver driver;
 
     /** The view. */
     @Getter private final MainView view = new MainView();
@@ -23,11 +23,11 @@ public class MainController implements EventHandler {
     /**
      * Constructs a new MainController.
      *
-     * @param primaryStage
-     *          The primary stage.
+     * @param driver
+     *          The driver.
      */
-    public MainController(final Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public MainController(final Driver driver) {
+        this.driver = driver;
 
         addEventHandlers();
     }
