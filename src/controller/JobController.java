@@ -72,8 +72,27 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      * @param job
      *          The job.
      */
-    public void editJob(final Job job) {
+    void editJob(final Job job) {
+        view.getTextField_jobName().setText(job.getName());
+        view.getTextField_outputFolder().setText(job.getOutputDirectory());
 
+        model.getFiles().addAll(job.getFiles());
+
+        for (final File file : job.getFiles()) {
+            view.getFileList().getItems().add(file.getName());
+        }
+
+        if (job.isEncodeJob()) {
+            view.getComboBox_jobType().getSelectionModel().select("Encode");
+        } else {
+            view.getComboBox_jobType().getSelectionModel().select("Decode");
+        }
+
+        if (job.isSingleArchive()) {
+            view.getRadioButton_singleArchive_yes().setSelected(true);
+        } else {
+            view.getRadioButton_singleArchive_no().setSelected(true);
+        }
     }
 
     @Override
