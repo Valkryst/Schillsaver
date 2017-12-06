@@ -3,6 +3,7 @@ package controller;
 import core.Driver;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.ListView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
@@ -11,6 +12,8 @@ import misc.JobBuilder;
 import model.JobModel;
 import view.JobView;
 
+import javax.swing.JFileChooser;
+import java.awt.HeadlessException;
 import java.io.File;
 import java.util.List;
 
@@ -125,6 +128,12 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         }
     }
 
+    /**
+     * Creates a new job using the data entered in the view.
+     *
+     * @return
+     *         The job.
+     */
     private Job createJob() {
         final JobBuilder builder = new JobBuilder();
         builder.setName(view.getTextField_jobName().getText());
@@ -163,11 +172,41 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         }
     }
 
+    /** Removes all files selected within the view's file list. */
     private void removeSelectedFiles() {
+        final ListView<String> fileList = view.getFileList();
+        final List<String> selectedFiles = fileList.getSelectionModel().getSelectedItems();
 
+        for (final String fileName : selectedFiles) {
+            view.getFileList().getItems().remove(fileName);
+            model.getFiles().removeIf(file -> file.getName().equals(fileName));
+        }
     }
 
+    /**
+     * Open a file chooser for the user to select an output directory for
+     * the job.
+     */
     private void selectOutputFolder() {
+        final JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDragEnabled(false);
+        fileChooser.setMultiSelectionEnabled(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
+        fileChooser.setDialogTitle("Directory Selection");
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+
+        fileChooser.setApproveButtonText("Accept");
+
+        try {
+            int returnVal = fileChooser.showOpenDialog(null);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                view.getTextField_outputFolder().setText(fileChooser.getSelectedFile().getPath() + "/");
+            }
+        } catch(final HeadlessException e) {
+            // todo Figure out what to do in this case.
+            e.printStackTrace();
+        }
     }
 }
