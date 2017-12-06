@@ -128,7 +128,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
     }
 
     /**
-     * Removes a job from the model and the job list.
+     * Removes a job from the model and the view.
      *
      * @param jobName
      *          The name of the job.
