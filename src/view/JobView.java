@@ -110,6 +110,10 @@ public class JobView extends View {
         final VBox pane = new VBox();
         pane.getChildren().addAll(buttonPane, fileList);
 
+        // Ensure pane and file list fill all available vertical space:
+        VBox.setVgrow(pane, Priority.ALWAYS);
+        VBox.setVgrow(fileList, Priority.ALWAYS);
+
         return pane;
     }
 
