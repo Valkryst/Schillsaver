@@ -27,6 +27,7 @@ public class JobView extends View {
 
     public JobView() {
         initializeComponents();
+        setComponentTooltips();
 
         final Pane fileSelectionArea = createFileSelectionArea();
         final Pane bottomMenuBar = createBottomMenuBar();
