@@ -41,6 +41,7 @@ public class Driver extends Application {
 
         // Add the first scene to the primary stage:
         final Scene scene = new Scene(new MainController(this).getView());
+        addStylesheet(scene);
 
         primaryStage.setTitle("Schillsaver - Powered by /g/entoomen\u00a9\u00ae");
         primaryStage.setScene(scene);
@@ -58,10 +59,7 @@ public class Driver extends Application {
         previousScene = currentScene;
         currentScene = newScene;
 
-        if (currentScene.getStylesheets().size() == 0) {
-            newScene.getStylesheets().add("global.css");
-            newScene.getRoot().getStyleClass().add("main-root");
-        }
+        addStylesheet(newScene);
 
         primaryStage.setScene(currentScene);
     }
@@ -76,5 +74,18 @@ public class Driver extends Application {
         currentScene = temp;
 
         primaryStage.setScene(currentScene);
+    }
+
+    /**
+     * Adds the global stylesheet to a scene.
+     *
+     * @param scene
+     *          The scene.
+     */
+    private void addStylesheet(final Scene scene) {
+        if (scene.getStylesheets().size() == 0) {
+            scene.getStylesheets().add("global.css");
+            scene.getRoot().getStyleClass().add("main-root");
+        }
     }
 }
