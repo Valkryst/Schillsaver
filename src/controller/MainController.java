@@ -4,10 +4,14 @@ import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import lombok.Getter;
 import misc.Job;
 import view.MainView;
+
+import javax.swing.Timer;
 
 public class MainController implements EventHandler {
     /** The primary stage. */
@@ -93,7 +97,11 @@ public class MainController implements EventHandler {
     }
 
     private void processJob() {
-        view.addOutputTab(String.valueOf(System.currentTimeMillis()));
+        final Tab tab = view.addOutputTab(String.valueOf(System.currentTimeMillis()));
+
+
+        final Timer timer = new Timer(1000, e -> ((TextArea) tab.getContent()).appendText("\n" + System.currentTimeMillis()));
+        timer.start();
     }
 
     private void editProgramSettings() {
