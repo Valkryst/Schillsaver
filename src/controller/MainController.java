@@ -64,6 +64,16 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
     }
 
+    /** Deserializes the jobs from a file, if the file exists. */
+    public void loadJobsFromFile() {
+        model.loadJobs();
+    }
+
+    /** Serializes the jobs to a file. */
+    public void saveJobsToFile() {
+        model.saveJobs();
+    }
+
     /** Opens the JobView. */
     private void openJobView() {
         final JobController controller = new JobController(getDriver());
