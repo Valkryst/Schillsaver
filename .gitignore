@@ -75,4 +75,5 @@ out/
 .idea/
 test/Driver.java
 log.txt
-jobs.ser
+Jobs.ser
+Settings.ser
