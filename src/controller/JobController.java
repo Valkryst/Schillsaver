@@ -134,7 +134,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         builder.setName(view.getTextField_jobName().getText());
         builder.setOutputDirectory(view.getTextField_outputFolder().getText());
         builder.setFiles(model.getFiles());
-        builder.setEncodeJob(view.getComboBox_jobType().getSelectionModel().isSelected(1));
+        builder.setEncodeJob(view.getComboBox_jobType().getSelectionModel().isSelected(0));
 
 
         Job job = null;
