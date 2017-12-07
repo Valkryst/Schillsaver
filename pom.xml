@@ -46,14 +46,9 @@
             <version>1.1.1</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.sevenzipjbinding</groupId>
-            <artifactId>sevenzipjbinding</artifactId>
-            <version>9.20-2.00beta</version>
-        </dependency>
-        <dependency>
-            <groupId>net.sf.sevenzipjbinding</groupId>
-            <artifactId>sevenzipjbinding-all-platforms</artifactId>
-            <version>9.20-2.00beta</version>
+            <groupId>xuggle</groupId>
+            <artifactId>xuggle-xuggler</artifactId>
+            <version>5.4</version>
         </dependency>
     </dependencies>
 
