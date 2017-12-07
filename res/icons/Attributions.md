@@ -3,4 +3,4 @@ Icons made by [Sarfraz Shoukat](https://www.flaticon.com/free-icon/sheet-and-pen
 * New.png
 * Edit.png
 * Delete.png
-    
+* Gear.png
