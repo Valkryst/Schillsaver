@@ -17,6 +17,9 @@ public class Settings implements Serializable {
 
     /** Construct a new Settings. */
     public Settings() {
+        settings.put("Total Encoding Threads", String.valueOf(2));
+        settings.put("Total Decoding Threads", String.valueOf(2));
+
         settings.put("Encoding Frame Dimensions", FrameDimension.P720.name());
         settings.put("Encoding Frame Rate", FrameRate.FPS30.name());
         settings.put("Encoding Block Size", String.valueOf(8));
@@ -73,6 +76,26 @@ public class Settings implements Serializable {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
         }
+    }
+
+    /**
+     * Retrieves the total number of encoding threads to use.
+     *
+     * @return
+     *          The total number of encoding threads.
+     */
+    public int getTotalEncodingThreads() {
+        return Integer.valueOf(settings.get("Total Encoding Threads"));
+    }
+
+    /**
+     * Retrieves the total number of decoding threads to use.
+     *
+     * @return
+     *          The total number of decoding threads.
+     */
+    public int getTotalDecodingThreads() {
+        return Integer.valueOf(settings.get("Total Decoding Threads"));
     }
 
     /**
