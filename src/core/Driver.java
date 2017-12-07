@@ -57,6 +57,23 @@ public class Driver extends Application {
         primaryStage.show();
     }
 
+    @Override
+    public void stop() {
+        MainController mainController = null;
+
+        if (previousController instanceof MainController) {
+            mainController = (MainController) previousController;
+        }
+
+        if (currentController instanceof MainController) {
+            mainController = (MainController) currentController;
+        }
+
+        if (mainController != null) {
+            mainController.saveJobsToFile();
+        }
+    }
+
     /**
      * Swaps the current scene with a new scene, so that the new scene
      * is displayed.
