@@ -196,3 +196,13 @@
     -fx-background-color: white;
     -fx-text-fill: black;
 }
+
+/** List View - (Odd, Selected) List Cells */
+.list-view .list-cell:odd:selected {
+    -fx-background-color: #91DAE9
+}
+
+/** List View - (Even, Selected) List Cells */
+.list-view .list-cell:even:selected {
+    -fx-background-color: #5AC8DE
+}
