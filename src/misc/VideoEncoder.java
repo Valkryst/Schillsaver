@@ -199,7 +199,6 @@ public class VideoEncoder {
         }
 
         gc.dispose();
-        System.out.println(System.currentTimeMillis() - start);
 
         return image;
     }
