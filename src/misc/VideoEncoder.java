@@ -155,7 +155,7 @@ public class VideoEncoder {
         final long start = System.currentTimeMillis();
 
         if (bytes.length > bitsPerFrame) {
-            throw new IllegalStateException("You cannot create a frame with more than " + (rows * columns) + " bits.");
+            throw new IllegalStateException("You cannot create a frame with more than " + bitsPerFrame + " bits.");
         } else {
             // When we hit the last frame, there won't be enough bits to
             // fill the entire frame with blocks, so we'll fill the rest of
