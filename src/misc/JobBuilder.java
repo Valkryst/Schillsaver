@@ -17,8 +17,6 @@ public class JobBuilder {
     private List<File> files;
     /** Whether the Job is an Encode Job or a Decode Job. */
     private boolean isEncodeJob = true;
-    /** Whether to pack all of the files into a single archive before encoding. */
-    private boolean singleArchive = false;
 
     /** Constructs a new JobBuilder. */
     public JobBuilder() {
@@ -74,7 +72,6 @@ public class JobBuilder {
         setOutputToHomeDirectory();
         files = new ArrayList<>();
         isEncodeJob = true;
-        singleArchive = false;
     }
 
     /** Sets the output directory to the home directory. */

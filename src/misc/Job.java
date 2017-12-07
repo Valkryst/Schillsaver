@@ -14,8 +14,6 @@ public class Job {
     @Getter private List<File> files;
     /** Whether the Job is an Encode Job or a Decode Job. */
     @Getter private boolean isEncodeJob = true;
-    /** Whether to pack all of the files into a single archive before encoding. */
-    @Getter private boolean singleArchive = false;
 
     /**
      * Constructs a new Job.
@@ -28,6 +26,5 @@ public class Job {
         outputDirectory = builder.getOutputDirectory();
         files = builder.getFiles();
         isEncodeJob = builder.isEncodeJob();
-        singleArchive = builder.isSingleArchive();
     }
 }
