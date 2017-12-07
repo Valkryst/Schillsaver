@@ -2,8 +2,6 @@ package misc;
 
 import lombok.Getter;
 
-import java.awt.Dimension;
-
 public enum FrameDimension {
     P240(426, 240),
     P360(640, 360),
@@ -13,10 +11,12 @@ public enum FrameDimension {
     P1440(2560, 1440),
     P2160(3840, 2160);
 
-    /** The frame dimensions. */
-    @Getter private final Dimension dimensions;
+    /** The width of the frame. */
+    @Getter private final int width;
+    /** The height of the frame. */
+    @Getter private final int height;
 
-    /** The number of bits that can be stored in each frame. */
+    /** The number of bits that can be stored in a frame. */
     @Getter private final int bitsPerFrame;
 
     /**
@@ -29,7 +29,8 @@ public enum FrameDimension {
      *          The frame height.
      */
     FrameDimension(final int width, final int height) {
-        dimensions = new Dimension(width, height);
+        this.width = width;
+        this.height = height;
         bitsPerFrame = (width * height) / 8;
     }
 }
