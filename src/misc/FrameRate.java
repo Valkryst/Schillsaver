@@ -1,5 +1,6 @@
 package misc;
 
+import io.humble.video.Rational;
 import lombok.Getter;
 
 public enum FrameRate {
@@ -7,7 +8,7 @@ public enum FrameRate {
     FPS60(60);
 
     /** The frame rate. */
-    @Getter private final int frameRate;
+    @Getter private final Rational frameRate;
 
     /**
      * Constructs a new FrameRate enum.
@@ -16,6 +17,6 @@ public enum FrameRate {
      *          The frame rate.
      */
     FrameRate(final int frameRate) {
-        this.frameRate = frameRate;
+        this.frameRate = Rational.make(1, frameRate);
     }
 }
