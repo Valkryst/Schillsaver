@@ -83,7 +83,7 @@ public class VideoEncoder {
             int frame = 0;
 
             while (fis.read(buffer) != -1) {
-                final BufferedImage image = createFrame(buffer);
+                final BufferedImage image = encodeFrame(buffer);
 
                 if (converter == null) {
                     converter = MediaPictureConverterFactory.createConverter(image, picture);
@@ -140,7 +140,7 @@ public class VideoEncoder {
      * @return
      *          The frame.
      */
-    private BufferedImage createFrame(byte[] bytes) {
+    private BufferedImage encodeFrame(byte[] bytes) {
         final long start = System.currentTimeMillis();
 
         if (bytes.length > bitsPerFrame) {
