@@ -1,6 +1,7 @@
 package controller;
 
 import core.Driver;
+import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
@@ -126,12 +127,14 @@ public class MainController extends Controller<MainModel, MainView> implements E
     /** Deletes all jobs selected within the view's job list. */
     private void deleteSelectedJobs() {
         final ListView<String> jobsList = view.getJobsList();
-        final List<String> selectedJobs = jobsList.getSelectionModel().getSelectedItems();
+        final List<String> selectedJobs = FXCollections.observableArrayList(jobsList.getSelectionModel().getSelectedItems());
 
         for (final String jobName : selectedJobs) {
             view.getJobsList().getItems().remove(jobName);
             model.getJobs().remove(jobName);
         }
+
+        jobsList.getSelectionModel().clearSelection();
     }
 
     private void processJob() {
