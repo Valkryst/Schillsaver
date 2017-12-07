@@ -1,6 +1,7 @@
 package controller;
 
 import core.Driver;
+import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
@@ -175,12 +176,14 @@ public class JobController extends Controller<JobModel, JobView> implements Even
     /** Removes all files selected within the view's file list. */
     private void removeSelectedFiles() {
         final ListView<String> fileList = view.getFileList();
-        final List<String> selectedFiles = fileList.getSelectionModel().getSelectedItems();
+        final List<String> selectedFiles = FXCollections.observableArrayList(fileList.getSelectionModel().getSelectedItems());
 
         for (final String fileName : selectedFiles) {
             view.getFileList().getItems().remove(fileName);
             model.getFiles().removeIf(file -> file.getName().equals(fileName));
         }
+
+        fileList.getSelectionModel().clearSelection();
     }
 
     /**
