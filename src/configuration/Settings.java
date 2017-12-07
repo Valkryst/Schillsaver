@@ -5,6 +5,7 @@ import misc.FrameRate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.Dimension;
 import java.io.*;
 import java.util.HashMap;
 
@@ -72,5 +73,46 @@ public class Settings implements Serializable {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
         }
+    }
+
+    /**
+     * Retrieves the frame dimensions.
+     *
+     * @return
+     *          The frame dimensions.
+     */
+    public FrameDimension getFrameDimensions() {
+        return FrameDimension.valueOf(settings.get("Encoding Frame Dimensions"));
+    }
+
+    /**
+     * Retrieves the frame rate.
+     *
+     * @return
+     *          The frame rate.
+     */
+    public FrameRate getFrameRate() {
+        return FrameRate.valueOf(settings.get("Encoding Frame Rate"));
+    }
+
+    /**
+     * Retrieves the block dimensions.
+     *
+     * @return
+     *          The block dimensions.
+     */
+    public Dimension getBlockDimensions() {
+        final int size = Integer.valueOf(settings.get("Encoding Block Size"));
+        return new Dimension(size, size);
+    }
+
+    /**
+     * Retrieves the encoding codec.
+     *
+     * @return
+     *          The encoding codec.
+     */
+    public String getCodec() {
+        return settings.get("Encoding Codec");
     }
 }
