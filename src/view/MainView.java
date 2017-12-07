@@ -1,8 +1,6 @@
 package view;
 
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import lombok.Getter;
 
@@ -34,19 +32,17 @@ public class MainView extends View{
 
     /** Initializes the components. */
     private void initializeComponents() {
-        button_createJob = new Button("Create Job");
-        button_editJob = new Button("Edit Job");
-        button_deleteSelectedJobs = new Button("Delete Selected Job(s)");
-        button_processJobs = new Button("Process Jobs");
+        button_createJob = createIconButton("icons/New.png", 32, 32);
+        button_editJob = createIconButton("icons/Edit.png", 32, 32);
+        button_deleteSelectedJobs = createIconButton("icons/Delete.png", 32, 32);
+        button_processJobs = createIconButton("icons/Process.png", 32, 32);
 
         jobsList = new ListView<>();
         jobsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-
         outputPanes = new TabPane();
 
-        button_programSettings = new Button();
-        button_programSettings.setGraphic(new ImageView(new Image("icons/Gear.png")));
+        button_programSettings = createIconButton("icons/Gear.png", 32, 32);
     }
 
     /** Sets the tooltips of the components. */
