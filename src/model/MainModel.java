@@ -16,7 +16,7 @@ public class MainModel extends Model {
 
     /** Deserializes the jobs map, if the file exists. */
     public void loadJobs() {
-        final String filePath = System.getProperty("user.dir") + "/jobs.ser";
+        final String filePath = System.getProperty("user.dir") + "/Jobs.ser";
 
         try (
             final FileInputStream fis = new FileInputStream(filePath);
@@ -39,7 +39,7 @@ public class MainModel extends Model {
 
     /** Serializes the jobs map to a file. */
     public void saveJobs() {
-        final String filePath = System.getProperty("user.dir") + "/jobs.ser";
+        final String filePath = System.getProperty("user.dir") + "/Jobs.ser";
 
         if (jobs.size() == 0) {
             // Delete the file:
