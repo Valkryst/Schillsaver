@@ -1,7 +1,10 @@
 package view;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -36,6 +39,25 @@ public class View {
         }
 
         control.setTooltip(new Tooltip(message));
+    }
+
+    /**
+     * Creates a button control with an icon on it.
+     *
+     * @param iconPath
+     *          The path to the icon.
+     *
+     * @param width
+     *          The width to resize the icon to.
+     *
+     * @param height
+     *          The height to resize the icon to.
+     */
+    static Button createIconButton(final String iconPath, final int width, final int height) {
+        final Button button = new Button();
+        final Image image = new Image(iconPath, (double) width, (double) height, true, true);
+        button.setGraphic(new ImageView(image));
+        return button;
     }
 
     /**
