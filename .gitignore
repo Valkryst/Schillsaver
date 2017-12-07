@@ -72,7 +72,7 @@ $RECYCLE.BIN/
 
 # Project Specific
 out/
-log/
 .idea/
 test/Driver.java
+log.txt
 jobs.ser
