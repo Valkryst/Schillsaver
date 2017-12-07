@@ -39,10 +39,10 @@ public class JobView extends View {
     /** Initializes the components. */
     private void initializeComponents() {
         button_addFiles = new Button("Add Files");
-        button_removeSelectedFiles = new Button("Remove Selected File(s)");
+        button_removeSelectedFiles = new Button("Remove Selected Files");
         button_selectOutputFolder = new Button("Select Output Folder");
-        button_accept = new Button("Accept");
-        button_cancel = new Button("Cancel");
+        button_accept = createIconButton("icons/Accept.png", 16, 16);
+        button_cancel = createIconButton("icons/Cancel.png", 16, 16);
 
         textField_jobName = new TextField();
         textField_jobName.setPromptText("Job Name");
