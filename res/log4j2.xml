@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
     <Properties>
-        <Property name="DIRECTORY_LOGS">log</Property>
-        <Property name="FILENAME">%d{yyyy/MMM/dd-HH}.txt</Property>
+        <Property name="FILENAME">log.txt</Property>
         <Property name="PATTERN">(%d{yyyy/MMM/dd-HH:mm:ss}) - %p - %C.%M.%L%n%m%n%n</Property>
     </Properties>
 
     <Appenders>
-        <File name="FILE" fileName="${DIRECTORY_LOGS}/${FILENAME}">
+        <File name="FILE" fileName="${FILENAME}">
             <PatternLayout pattern="${PATTERN}"/>
         </File>
     </Appenders>
