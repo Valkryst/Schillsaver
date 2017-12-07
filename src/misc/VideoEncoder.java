@@ -141,8 +141,6 @@ public class VideoEncoder {
      *          The frame.
      */
     private BufferedImage encodeFrame(byte[] bytes) {
-        final long start = System.currentTimeMillis();
-
         if (bytes.length > bitsPerFrame) {
             throw new IllegalStateException("You cannot create a frame with more than " + bitsPerFrame + " bits.");
         } else {
