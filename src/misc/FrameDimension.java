@@ -16,9 +16,6 @@ public enum FrameDimension {
     /** The height of the frame. */
     @Getter private final int height;
 
-    /** The number of bits that can be stored in a frame. */
-    @Getter private final int bitsPerFrame;
-
     /**
      * Construct a new FrameDimension enum.
      *
@@ -31,6 +28,5 @@ public enum FrameDimension {
     FrameDimension(final int width, final int height) {
         this.width = width;
         this.height = height;
-        bitsPerFrame = (width * height) / 8;
     }
 }
