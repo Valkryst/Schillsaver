@@ -16,6 +16,9 @@ public enum FrameDimension {
     /** The frame dimensions. */
     @Getter private final Dimension dimensions;
 
+    /** The number of bits that can be stored in each frame. */
+    @Getter private final int bitsPerFrame;
+
     /**
      * Construct a new FrameDimension enum.
      *
@@ -27,5 +30,6 @@ public enum FrameDimension {
      */
     FrameDimension(final int width, final int height) {
         dimensions = new Dimension(width, height);
+        bitsPerFrame = (width * height) / 8;
     }
 }
