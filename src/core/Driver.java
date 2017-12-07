@@ -3,9 +3,7 @@ package core;
 import configuration.Settings;
 import controller.Controller;
 import controller.MainController;
-import eu.hansolo.enzo.notification.Notification;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
@@ -44,12 +42,11 @@ public class Driver extends Application {
         // Setup the primary stage:
         primaryStage.getIcons().add(new Image("icon.png"));
 
-        // Setup Enzo:
-        Notification.Notifier.setPopupLocation(primaryStage, Pos.BOTTOM_CENTER);
-
         // Add the first scene to the primary stage:
         currentController = new MainController(this);
         currentScene = new Scene(currentController.getView().getPane());
+
+        ((MainController) currentController).loadJobsFromFile();
         addStylesheet(currentScene);
 
         primaryStage.setTitle("Schillsaver - Powered by /g/entoomen\u00a9\u00ae");
