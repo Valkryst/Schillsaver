@@ -23,11 +23,6 @@ public class VideoEncoder {
     private final int bitsPerFrame;
     private final FrameRate frameRate;
 
-    public static void main(String[] args) throws IOException, InterruptedException {
-        final VideoEncoder encoder = new VideoEncoder();
-        encoder.encode(new File("20MB.zip"), new File("20MB.mp4"));
-    }
-
     public VideoEncoder() {
         blockDimensions = new Dimension(8, 8);
         frameDimensions = FrameDimension.P720;
