@@ -1,5 +1,6 @@
 package misc;
 
+import configuration.Settings;
 import io.humble.video.*;
 import io.humble.video.awt.MediaPictureConverter;
 import io.humble.video.awt.MediaPictureConverterFactory;
@@ -16,50 +17,43 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class VideoEncoder {
-    private final Dimension blockDimensions;
-    private final FrameDimension frameDimensions;
+    private final Settings settings;
+
     private final int columns;
     private final int rows;
     private final int bitsPerFrame;
-    private final FrameRate frameRate;
 
-    public VideoEncoder() {
-        blockDimensions = new Dimension(8, 8);
-        frameDimensions = FrameDimension.P720;
+    /**
+     * Constructs a new VideoEncoder.
+     *
+     * @param settings
+     *          The settings.
+     *
+     * @throws IllegalStateException
+     *          If there's an issue with the encoding settings.
+     */
+    public VideoEncoder(final Settings settings) throws IllegalStateException {
+        this.settings = settings;
 
-        // Check if the widths are evenly divisible:
-        double divisionRemainder = frameDimensions.getWidth() % blockDimensions.width;
+        final FrameDimension frameDimensions = settings.getFrameDimensions();
+        final Dimension blockDimensions = settings.getBlockDimensions();
 
-        if (divisionRemainder != 0) {
-            throw new IllegalStateException("The frame height must be evenly divisible by the block height.");
-        }
-
-        // Check if the heights are evenly divisible:
-        divisionRemainder = frameDimensions.getHeight() % blockDimensions.height;
-
-        if (divisionRemainder != 0) {
-            throw new IllegalStateException("The frame width must be evenly divisible by the block width.");
-        }
-
-        // Calculate rows/columns:
         rows = frameDimensions.getHeight() / blockDimensions.height;
         columns = frameDimensions.getWidth() / blockDimensions.width;
-
         bitsPerFrame = (columns * rows) / 8;
-        frameRate = FrameRate.FPS30;
     }
 
     public void encode(final File inputFile, final File outputFile) throws IOException, InterruptedException {
         final Muxer muxer = Muxer.make(outputFile.getAbsolutePath(), null, "MP4");
         final MuxerFormat muxerFormat = muxer.getFormat();
-        final Codec codec = Codec.findEncodingCodecByName("libx264");
+        final Codec codec = Codec.findEncodingCodecByName(settings.getCodec());
 
-        final Rational frameRate = this.frameRate.getFrameRate();
+        final Rational frameRate = settings.getFrameRate().getFrameRate();
         final PixelFormat.Type pixelFormat = PixelFormat.Type.PIX_FMT_YUV420P;
 
         final Encoder encoder = Encoder.make(codec);
-        encoder.setWidth(frameDimensions.getWidth());
-        encoder.setHeight(frameDimensions.getHeight());
+        encoder.setWidth(settings.getFrameDimensions().getWidth());
+        encoder.setHeight(settings.getFrameDimensions().getHeight());
         encoder.setPixelFormat(pixelFormat);
         encoder.setTimeBase(frameRate);
 
@@ -162,6 +156,9 @@ public class VideoEncoder {
 
             bytes = newBits;
         }
+
+        final FrameDimension frameDimensions = settings.getFrameDimensions();
+        final Dimension blockDimensions = settings.getBlockDimensions();
 
         final BufferedImage image = new BufferedImage(frameDimensions.getWidth(), frameDimensions.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D gc = (Graphics2D) image.getGraphics();
