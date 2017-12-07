@@ -40,7 +40,7 @@ public class Driver extends Application {
         settings.loadFromFile();
 
         // Setup the primary stage:
-        primaryStage.getIcons().add(new Image("icon.png"));
+        primaryStage.getIcons().add(new Image("icons/Icon.png"));
 
         // Add the first scene to the primary stage:
         currentController = new MainController(this);
