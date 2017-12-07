@@ -39,6 +39,10 @@ public class MainModel extends Model {
 
     /** Serializes the jobs map to a file. */
     public void saveJobs() {
+        if (jobs.size() == 0) {
+            return;
+        }
+
         final String filePath = System.getProperty("user.dir") + "/jobs.ser";
 
         try (
