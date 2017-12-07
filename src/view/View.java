@@ -39,24 +39,6 @@ public class View {
     }
 
     /**
-     * Creates a GridPane with one row and one column where the column
-     * fills 100% of the width.
-     *
-     * @return
-     *         The pane.
-     */
-    static GridPane getFullGridPane() {
-        final GridPane pane = new GridPane();
-
-        final ColumnConstraints column = new ColumnConstraints();
-        column.setPercentWidth(100);
-
-        pane.getColumnConstraints().addAll(column);
-
-        return pane;
-    }
-
-    /**
      * Creates a GridPane with one row and two columns where each column
      * fills 50% of the width.
      *
