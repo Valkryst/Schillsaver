@@ -14,6 +14,9 @@ public class Driver extends Application {
     /** The primary stage. */
     @Getter private Stage primaryStage;
 
+    /** The settings. */
+    @Getter private Settings settings;
+
     /** The previous scene's controller. */
     @Getter private Controller previousController;
     /** The current scene's controller. */
@@ -35,9 +38,7 @@ public class Driver extends Application {
     public void start(final Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
 
-        // Load Config File:
-        final Settings settings = new Settings();
-        settings.loadFromFile();
+        settings.loadSettings();
 
         // Setup the primary stage:
         primaryStage.getIcons().add(new Image("icons/Icon.png"));
