@@ -167,7 +167,7 @@ public class VideoEncoder {
             for (int x = 0 ; x < columns ; x++) {
                 final int xPos = x * blockDimensions.width;
                 final int yPos = y * blockDimensions.height;
-                final int bit = getBitAt(bytes[byteIndex], bitIndex);
+                final int bit = (bytes[byteIndex] >> bitIndex) & 1;
 
                 if (bit == 0) {
                     gc.setColor(Color.BLACK);
@@ -191,21 +191,5 @@ public class VideoEncoder {
         gc.dispose();
 
         return image;
-    }
-
-    /**
-     * Retrieves the value of a bit at a specific position in a byte.
-     *
-     * @param byteVal
-     *          The byte.
-     *
-     * @param position
-     *          The position of the bit to retrieve.
-     *
-     * @return
-     *          The bit.
-     */
-    private int getBitAt(final byte byteVal, final int position) {
-        return (byteVal >> position) & 1;
     }
 }
