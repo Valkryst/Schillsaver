@@ -17,8 +17,8 @@ public class Settings implements Serializable {
 
     /** Construct a new Settings. */
     public Settings() {
-        settings.put("Total Encoding Threads", String.valueOf(2));
-        settings.put("Total Decoding Threads", String.valueOf(2));
+        settings.put("Total Encoding Threads", String.valueOf(1));
+        settings.put("Total Decoding Threads", String.valueOf(1));
 
         settings.put("Encoding Frame Dimensions", FrameDimension.P720.name());
         settings.put("Encoding Frame Rate", FrameRate.FPS30.name());
