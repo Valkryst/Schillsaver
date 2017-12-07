@@ -10,12 +10,3 @@ Icons made by [Hadrien](https://www.flaticon.com/authors/hadrien) from www.flati
 * Accept.png
 * Decline.png
 * Process.png
-
-Icons run through Zopfli:
-
-* Accept.png
-* Decline.png
-* Edit.png
-* Gear.png
-* New.png
-* Process.png
