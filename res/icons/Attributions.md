@@ -4,4 +4,10 @@ Icons made by [Sarfraz Shoukat](https://www.flaticon.com/free-icon/sheet-and-pen
 * Edit.png
 * Delete.png
 * Gear.png
+
+
+Icons made by [Hadrien](https://www.flaticon.com/authors/hadrien) from www.flaticon.com:
+
+* Accept.png
+* Decline.png
 * Process.png
