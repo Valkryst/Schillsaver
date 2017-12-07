@@ -39,7 +39,9 @@
 .button:focused {}
 
 /** Button - When user is clicking on it. */
-.button:armed {}
+.button:armed {
+    -fx-background-color: #4FC3DB
+}
 
 /** Content - is used as the content pane of a text-area */
 .content {
