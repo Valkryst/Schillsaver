@@ -1,6 +1,7 @@
 package view;
 
 import javafx.collections.FXCollections;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.Getter;
@@ -17,24 +18,22 @@ public class JobView extends View {
 
     @Getter private ListView<String> fileList;
 
-    @Getter private Label label_timeEstimate;
-
     @Getter private ComboBox<String> comboBox_jobType;
-
-    @Getter private ToggleGroup toggleGroup_singleArchive;
-    @Getter private RadioButton radioButton_singleArchive_yes;
-    @Getter private RadioButton radioButton_singleArchive_no;
 
     public JobView() {
         initializeComponents();
         setComponentTooltips();
 
         final Pane fileSelectionArea = createFileSelectionArea();
+        final Pane fileDetailsArea = createJobDetailsArea();
         final Pane bottomMenuBar = createBottomMenuBar();
+
+        final VBox vBox = new VBox();
+        vBox.getChildren().addAll(fileSelectionArea, fileDetailsArea);
 
         super.pane = new VBox();
         super.pane.setMinSize(512, 512);
-        super.pane.getChildren().addAll(fileSelectionArea, bottomMenuBar);
+        super.pane.getChildren().addAll(vBox, bottomMenuBar);
     }
 
     /** Initializes the components. */
@@ -53,15 +52,9 @@ public class JobView extends View {
 
         fileList = new ListView<>();
         fileList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        fileList.setFocusTraversable(false);
-
-        label_timeEstimate = new Label("Unknown");
 
         comboBox_jobType  = new ComboBox<>(FXCollections.observableArrayList("Encode", "Decode"));
-
-        toggleGroup_singleArchive = new ToggleGroup();
-        radioButton_singleArchive_yes = new RadioButton("Yes");
-        radioButton_singleArchive_no = new RadioButton("No");
+        comboBox_jobType.getSelectionModel().select("Encode");
     }
 
     /** Sets the tooltips of the components. */
@@ -76,12 +69,7 @@ public class JobView extends View {
 
         setTooltip(textField_outputFolder, "The path of the output folder.");
 
-        setTooltip(label_timeEstimate, "An estimate of how long the job will take to run.");
-
         setTooltip(comboBox_jobType, "The type of the job.");
-
-        setTooltip(radioButton_singleArchive_yes, "Combine all of the job's files into a single archive when processing the job.");
-        setTooltip(radioButton_singleArchive_no, "Process each of the job's files individually when processing the job.");
     }
 
     /**
@@ -91,16 +79,7 @@ public class JobView extends View {
      *         The file selection area.
      */
     private Pane createFileSelectionArea() {
-        // Create the Button Pane
-        final GridPane buttonPane = new GridPane();
-
-        final ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(50);
-
-        final ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(50);
-
-        buttonPane.getColumnConstraints().addAll(column1, column2);
+        final GridPane buttonPane = getHalvedGridPane();
 
         // Add controls to Button Pane:
         buttonPane.add(button_addFiles, 0, 0);
@@ -118,22 +97,43 @@ public class JobView extends View {
     }
 
     /**
+     * Creates the job details area.
+     *
+     * @return
+     *         The job details area.
+     */
+    private Pane createJobDetailsArea() {
+        // Add job type & name side-by-side
+        final HBox typeNamePane = new HBox();
+        typeNamePane.getChildren().addAll(comboBox_jobType, textField_jobName);
+
+        HBox.setHgrow(textField_jobName, Priority.ALWAYS);
+
+        // Add output folder field/button side-by-side:
+        final HBox outputPane = new HBox();
+        outputPane.getChildren().addAll(textField_outputFolder, button_selectOutputFolder);
+
+        HBox.setHgrow(textField_outputFolder, Priority.ALWAYS);
+
+        // Add panes to a VBox
+        final VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10, 0, 10, 0));
+        vBox.getChildren().addAll(typeNamePane, outputPane);
+
+        HBox.setHgrow(vBox, Priority.ALWAYS);
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+
+        return vBox;
+    }
+
+    /**
      * Creates the bottom menu bar.
      *
      * @return
      *         The bottom menu bar.
      */
     private Pane createBottomMenuBar() {
-        // Create the Pane:
-        final GridPane pane = new GridPane();
-
-        final ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(50);
-
-        final ColumnConstraints column2 = new ColumnConstraints();
-        column2.setPercentWidth(50);
-
-        pane.getColumnConstraints().addAll(column1, column2);
+        final GridPane pane = getHalvedGridPane();
 
         // Add the Components:
         pane.add(button_accept, 0, 0);
