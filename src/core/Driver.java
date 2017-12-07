@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.Getter;
 
@@ -72,6 +73,13 @@ public class Driver extends Application {
 
         addStylesheet(currentScene);
 
+        // Set new scene's pane to be the same size as the previous
+        // pane's scene.
+        final Pane previousPane = previousController.getView().getPane();
+        final Pane currentPane = currentController.getView().getPane();
+
+        currentPane.setPrefSize(previousPane.getWidth(), previousPane.getHeight());
+
         primaryStage.setScene(currentScene);
     }
 
@@ -87,6 +95,13 @@ public class Driver extends Application {
         final Scene tempS = previousScene;
         previousScene = currentScene;
         currentScene = tempS;
+
+        // Set new scene's pane to be the same size as the previous
+        // pane's scene.
+        final Pane previousPane = previousController.getView().getPane();
+        final Pane currentPane = currentController.getView().getPane();
+
+        currentPane.setPrefSize(previousPane.getWidth(), previousPane.getHeight());
 
         primaryStage.setScene(currentScene);
     }
