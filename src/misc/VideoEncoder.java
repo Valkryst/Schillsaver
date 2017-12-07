@@ -21,7 +21,7 @@ public class VideoEncoder {
     private final int columns;
     private final int rows;
     private final int bitsPerFrame;
-    private final int framerate;
+    private final FrameRate frameRate;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         final VideoEncoder encoder = new VideoEncoder();
@@ -51,7 +51,7 @@ public class VideoEncoder {
         columns = frameDimensions.getWidth() / blockDimensions.width;
 
         bitsPerFrame = (columns * rows) / 8;
-        framerate = 30;
+        frameRate = FrameRate.FPS30;
     }
 
     public void encode(final File inputFile, final File outputFile) throws IOException, InterruptedException {
@@ -59,14 +59,14 @@ public class VideoEncoder {
         final MuxerFormat muxerFormat = muxer.getFormat();
         final Codec codec = Codec.findEncodingCodecByName("libx264");
 
-        final Rational framerate = Rational.make(1, this.framerate);
+        final Rational frameRate = this.frameRate.getFrameRate();
         final PixelFormat.Type pixelFormat = PixelFormat.Type.PIX_FMT_YUV420P;
 
         final Encoder encoder = Encoder.make(codec);
         encoder.setWidth(frameDimensions.getWidth());
         encoder.setHeight(frameDimensions.getHeight());
         encoder.setPixelFormat(pixelFormat);
-        encoder.setTimeBase(framerate);
+        encoder.setTimeBase(frameRate);
 
         // Some formats require a global, rather than per-stream, header.
         if (muxerFormat.getFlag(MuxerFormat.Flag.GLOBAL_HEADER)) {
@@ -82,7 +82,7 @@ public class VideoEncoder {
         // to deal with the difference.
         MediaPictureConverter converter = null;
         final MediaPicture picture = MediaPicture.make(encoder.getWidth(), encoder.getHeight(), pixelFormat);
-        picture.setTimeBase(framerate);
+        picture.setTimeBase(frameRate);
 
         try (
             final FileInputStream fis = new FileInputStream(inputFile);
