@@ -46,7 +46,7 @@ public class MainView extends View{
         outputPanes = new TabPane();
 
         button_programSettings = new Button();
-        button_programSettings.setGraphic(new ImageView(new Image("Gear.png")));
+        button_programSettings.setGraphic(new ImageView(new Image("icons/Gear.png")));
     }
 
     /** Sets the tooltips of the components. */
