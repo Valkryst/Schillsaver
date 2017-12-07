@@ -2,6 +2,8 @@ package misc;
 
 import lombok.Getter;
 
+import java.awt.Dimension;
+
 public enum FrameDimension {
     P240(426, 240),
     P360(640, 360),
@@ -28,5 +30,26 @@ public enum FrameDimension {
     FrameDimension(final int width, final int height) {
         this.width = width;
         this.height = height;
+    }
+
+    /**
+     * Checks if the dimensions of the frame are evenly divisible by the dimensions
+     * of the blocks.
+     *
+     * @param blockDimensions
+     *          The block dimensions
+     *
+     * @throws IllegalStateException
+     *          If the width of the frame is not evenly divisible by the width of the block.
+     *          If the height of the frame is not evenly divisible by the height of the block.
+     */
+    public void isCompatibleBlockSize(final Dimension blockDimensions) throws IllegalStateException {
+        if ((this.getWidth() % blockDimensions.width) != 0) {
+            throw new IllegalStateException("The frame height must be evenly divisible by the block height.");
+        }
+
+        if ((this.getHeight() % blockDimensions.height) != 0) {
+            throw new IllegalStateException("The frame width must be evenly divisible by the block width.");
+        }
     }
 }
