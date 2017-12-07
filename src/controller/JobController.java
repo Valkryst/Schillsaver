@@ -91,12 +91,6 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         } else {
             view.getComboBox_jobType().getSelectionModel().select("Decode");
         }
-
-        if (job.isSingleArchive()) {
-            view.getRadioButton_singleArchive_yes().setSelected(true);
-        } else {
-            view.getRadioButton_singleArchive_no().setSelected(true);
-        }
     }
 
     @Override
@@ -141,7 +135,6 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         builder.setOutputDirectory(view.getTextField_outputFolder().getText());
         builder.setFiles(model.getFiles());
         builder.setEncodeJob(view.getComboBox_jobType().getSelectionModel().isSelected(1));
-        builder.setSingleArchive(view.getRadioButton_singleArchive_yes().isSelected());
 
 
         Job job = null;
