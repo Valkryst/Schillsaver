@@ -67,6 +67,10 @@ public class MainController extends Controller<MainModel, MainView> implements E
     /** Deserializes the jobs from a file, if the file exists. */
     public void loadJobsFromFile() {
         model.loadJobs();
+
+        for (final Job job : model.getJobs().values()) {
+            view.getJobsList().getItems().add(job.getName());
+        }
     }
 
     /** Serializes the jobs to a file. */
