@@ -39,11 +39,18 @@ public class MainModel extends Model {
 
     /** Serializes the jobs map to a file. */
     public void saveJobs() {
+        final String filePath = System.getProperty("user.dir") + "/jobs.ser";
+
         if (jobs.size() == 0) {
+            // Delete the file:
+            final File file = new File(filePath);
+
+            if (file.exists()) {
+                file.delete();
+            }
+
             return;
         }
-
-        final String filePath = System.getProperty("user.dir") + "/jobs.ser";
 
         try (
             final FileOutputStream fos = new FileOutputStream(filePath, false);
