@@ -3,9 +3,12 @@ package misc;
 import lombok.Getter;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
-public class Job {
+public class Job implements Serializable {
+    private static final long serialVersionUID = 0;
+
     /** The name of the Job. */
     @Getter private String name;
     /** The output directory. */
@@ -21,7 +24,7 @@ public class Job {
      * @param builder
      *          The builder
      */
-    public Job(final JobBuilder builder) {
+    Job(final JobBuilder builder) {
         name = builder.getName();
         outputDirectory = builder.getOutputDirectory();
         files = builder.getFiles();
