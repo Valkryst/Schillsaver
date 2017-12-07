@@ -138,4 +138,88 @@ public class Settings implements Serializable {
     public String getCodec() {
         return settings.get("Encoding Codec");
     }
+
+    /**
+     * Sets the new total number of encoding threads.
+     *
+     * @param totalEncodingThreads
+     *          The total number of encoding threads.
+     */
+    public void setTotalEncodingThreads(final int totalEncodingThreads) {
+        if (totalEncodingThreads < 0) {
+            settings.put("Total Encoding Threads", String.valueOf(1));
+        } else {
+            settings.put("Total Encoding Threads", String.valueOf(totalEncodingThreads));
+        }
+    }
+
+    /**
+     * Sets the new total number of decoding threads.
+     *
+     * @param totalDecodingThreads
+     *          The total number of decoding threads.
+     */
+    public void setTotalDecodingThreads(final int totalDecodingThreads) {
+        if (totalDecodingThreads < 0) {
+            settings.put("Total Decoding Threads", String.valueOf(1));
+        } else {
+            settings.put("Total Decoding Threads", String.valueOf(totalDecodingThreads));
+        }
+    }
+
+    /**
+     * Sets the new frame dimensions.
+     *
+     * @param frameDimensions
+     *          The frame dimensions.
+     */
+    public void setFrameDimensions(final FrameDimension frameDimensions) {
+        if (frameDimensions == null) {
+            settings.put("Encoding Frame Dimensions", FrameDimension.P720.name());
+        } else {
+            settings.put("Encoding Frame Dimensions", frameDimensions.name());
+        }
+    }
+
+    /**
+     * Sets the new frame rate.
+     *
+     * @param frameRate
+     *          The frame rate.
+     */
+    public void setFrameRate(final FrameRate frameRate) {
+        if (frameRate == null) {
+            settings.put("Encoding Frame Rate", FrameRate.FPS30.name());
+        } else {
+            settings.put("Encoding Frame Rate", frameRate.name());
+        }
+    }
+
+    /**
+     * Sets the new block size.
+     *
+     * @param blockSize
+     *          The block size.
+     */
+    public void setBlockDimensions(final int blockSize) {
+        if (blockSize < 1) {
+            settings.put("Encoding Block Size", String.valueOf(8));
+        } else {
+            settings.put("Encoding Block Size", String.valueOf(blockSize));
+        }
+    }
+
+    /**
+     * Sets the new codec.
+     *
+     * @param codec
+     *          The codec.
+     */
+    public void setCodec(final String codec) {
+        if (codec == null || codec.isEmpty()) {
+            settings.put("Encoding Codec", "libx264");
+        } else {
+            settings.put("Encoding Codec", codec);
+        }
+    }
 }
