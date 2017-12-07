@@ -2,6 +2,8 @@ package view;
 
 import javafx.scene.control.Control;
 import javafx.scene.control.Tooltip;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import lombok.Getter;
 
@@ -34,5 +36,44 @@ public class View {
         }
 
         control.setTooltip(new Tooltip(message));
+    }
+
+    /**
+     * Creates a GridPane with one row and one column where the column
+     * fills 100% of the width.
+     *
+     * @return
+     *         The pane.
+     */
+    static GridPane getFullGridPane() {
+        final GridPane pane = new GridPane();
+
+        final ColumnConstraints column = new ColumnConstraints();
+        column.setPercentWidth(100);
+
+        pane.getColumnConstraints().addAll(column);
+
+        return pane;
+    }
+
+    /**
+     * Creates a GridPane with one row and two columns where each column
+     * fills 50% of the width.
+     *
+     * @return
+     *         The pane.
+     */
+    static GridPane getHalvedGridPane() {
+        final GridPane pane = new GridPane();
+
+        final ColumnConstraints column1 = new ColumnConstraints();
+        column1.setPercentWidth(50);
+
+        final ColumnConstraints column2 = new ColumnConstraints();
+        column2.setPercentWidth(50);
+
+        pane.getColumnConstraints().addAll(column1, column2);
+
+        return pane;
     }
 }
