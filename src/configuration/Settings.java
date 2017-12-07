@@ -20,10 +20,13 @@ public class Settings implements Serializable {
         settings.put("Encoding Frame Rate", FrameRate.FPS30.name());
         settings.put("Encoding Block Size", String.valueOf(8));
         settings.put("Encoding Codec", "libx264");
+
+        loadSettings();
+        saveSettings();
     }
 
     /** Deserializes the settings, if the file exists. */
-    public void loadSettings() {
+    private void loadSettings() {
         final String filePath = System.getProperty("user.dir") + "/Settings.ser";
 
         try (
