@@ -56,7 +56,7 @@ public class VideoEncoder {
     }
 
     public void encode(final File inputFile, final File outputFile) throws IOException, InterruptedException {
-        final long totalFrames = (inputFile.length() * 8) / bitsPerFrame;
+        final long totalFrames = inputFile.length() / bitsPerFrame;
         final double totalSeconds = totalFrames / settings.getFrameRate().getFrameRate().getDenominator();
 
         outputAreaText.append("Encode Info:");
