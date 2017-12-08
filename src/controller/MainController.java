@@ -1,17 +1,17 @@
 package controller;
 
+import configuration.Settings;
 import core.Driver;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextArea;
 import misc.Job;
 import model.MainModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import view.MainView;
 
-import javax.swing.Timer;
 import java.util.List;
 
 public class MainController extends Controller<MainModel, MainView> implements EventHandler {
@@ -44,23 +44,56 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final Object source = event.getSource();
 
         if (source.equals(view.getButton_createJob())) {
-            openJobView();
+            if (view.getButton_createJob().isDisabled() == false) {
+                openJobView();
+            }
         }
 
         if (source.equals(view.getButton_editJob())) {
-            openEditJobView();
+            if (view.getButton_editJob().isDisabled() == false) {
+                openEditJobView();
+            }
         }
 
         if (source.equals(view.getButton_deleteSelectedJobs())) {
-            deleteSelectedJobs();
+            if (view.getButton_deleteSelectedJobs().isDisabled() == false) {
+                deleteSelectedJobs();
+            }
         }
 
         if (source.equals(view.getButton_processJobs())) {
-            processJobs();
+            if (view.getButton_processJobs().isDisabled() == false) {
+                // Disable Buttons:
+                view.getButton_createJob().setDisable(true);
+                view.getButton_editJob().setDisable(true);
+                view.getButton_deleteSelectedJobs().setDisable(true);
+                view.getButton_processJobs().setDisable(true);
+                view.getButton_programSettings().setDisable(true);
+
+                final Settings settings = getDriver().getSettings();
+
+                final List<Thread> encodeJobs = model.prepareEncodingJobs(settings, view);
+                final List<Thread> decodeJobs = model.prepareDecodingJobs(settings, view);
+
+                final Thread thread = new Thread(() -> {
+                    processJobs(encodeJobs, decodeJobs);
+
+                    // Enable Buttons:
+                    view.getButton_createJob().setDisable(false);
+                    view.getButton_editJob().setDisable(false);
+                    view.getButton_deleteSelectedJobs().setDisable(false);
+                    view.getButton_processJobs().setDisable(false);
+                    view.getButton_programSettings().setDisable(false);
+                });
+
+                thread.start();
+            }
         }
 
         if (source.equals(view.getButton_programSettings())) {
-            editProgramSettings();
+            if (view.getButton_programSettings().isDisabled() == false) {
+                editProgramSettings();
+            }
         }
     }
 
@@ -123,6 +156,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         model.getJobs().put(jobName, job);
+        model.saveJobs();
     }
 
     /**
@@ -149,14 +183,42 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         jobsList.getSelectionModel().clearSelection();
+        model.saveJobs();
     }
 
-    private void processJobs() {
-        final Tab tab = view.addOutputTab(String.valueOf(System.currentTimeMillis()));
+    private void processJobs(final List<Thread> encodeJobs, final List<Thread> decodeJobs) {
+        // Run Encode Jobs
+        final Thread mainEncodingThread = new Thread(() -> {
+           for (final Thread thread : encodeJobs) {
+               // todo Hook thread up to an encoding tab.
+               // todo Set tab, so that it cannot be closed
+               thread.start();
 
+               try {
+                   thread.join();
+               } catch (final InterruptedException e) {
+                   // todo Look into exception cause, maybe tell user
+                   final Logger logger = LogManager.getLogger();
+                   logger.error(e);
 
-        final Timer timer = new Timer(1000, e -> ((TextArea) tab.getContent()).appendText("\n" + System.currentTimeMillis()));
-        timer.start();
+                   e.printStackTrace();
+               }
+
+               // todo Set tab, so that it can be closed.
+           }
+        });
+
+        mainEncodingThread.start();
+
+        try {
+            mainEncodingThread.join();
+        } catch (InterruptedException e) {
+            // todo Look into exception cause, maybe tell user
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            e.printStackTrace();
+        }
     }
 
     private void editProgramSettings() {
