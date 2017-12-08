@@ -4,6 +4,7 @@ import configuration.Settings;
 import io.humble.video.*;
 import io.humble.video.awt.MediaPictureConverter;
 import io.humble.video.awt.MediaPictureConverterFactory;
+import javafx.scene.control.TextArea;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,9 +16,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class VideoEncoder {
     private final Settings settings;
+    private final TextArea outputArea;
 
     private final int columns;
     private final int rows;
@@ -29,11 +32,18 @@ public class VideoEncoder {
      * @param settings
      *          The settings.
      *
+     * @throws NullPointerException
+     *          If the settings or outputArea are null.
+     *
      * @throws IllegalStateException
      *          If there's an issue with the encoding settings.
      */
-    public VideoEncoder(final Settings settings) throws IllegalStateException {
+    public VideoEncoder(final Settings settings, final TextArea outputArea) throws IllegalStateException {
+        Objects.requireNonNull(settings);
+        Objects.requireNonNull(outputArea);
+
         this.settings = settings;
+        this.outputArea = outputArea;
 
         final FrameDimension frameDimensions = settings.getFrameDimensions();
         final Dimension blockDimensions = settings.getBlockDimensions();
