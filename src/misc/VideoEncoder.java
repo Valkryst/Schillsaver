@@ -169,15 +169,15 @@ public class VideoEncoder {
                 final int yPos = y * blockDimensions.height;
                 final int bit = (bytes[byteIndex] >> bitIndex) & 1;
 
-                if (bit == 0) {
-                    gc.setColor(Color.BLACK);
-                } else if (bit == 1) {
+                // BufferedImage starts as black, so we don't need
+                // to draw any black blocks.
+                if (bit == 1) {
                     gc.setColor(Color.WHITE);
-                } else {
+                    gc.fillRect(xPos, yPos, blockDimensions.width, blockDimensions.height);
+                } else if (bit != 0) {
                     gc.setColor(Color.MAGENTA);
+                    gc.fillRect(xPos, yPos, blockDimensions.width, blockDimensions.height);
                 }
-
-                gc.fillRect(xPos, yPos, blockDimensions.width, blockDimensions.height);
 
                 if (bitIndex == 7) {
                     byteIndex++;
