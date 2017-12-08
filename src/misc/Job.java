@@ -41,7 +41,7 @@ public class Job implements Serializable {
      * @throws IOException
      *         If an I/O error occurs.
      */
-    private File zipFiles() throws IOException {
+    public File zipFiles() throws IOException {
         final File zipFile = new File(name + ".zip");
 
         final FileOutputStream fos = new FileOutputStream(zipFile);
