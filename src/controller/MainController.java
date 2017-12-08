@@ -56,7 +56,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         if (source.equals(view.getButton_processJobs())) {
-            processJob();
+            processJobs();
         }
 
         if (source.equals(view.getButton_programSettings())) {
@@ -151,7 +151,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         jobsList.getSelectionModel().clearSelection();
     }
 
-    private void processJob() {
+    private void processJobs() {
         final Tab tab = view.addOutputTab(String.valueOf(System.currentTimeMillis()));
 
 
