@@ -40,7 +40,12 @@
 
 /** Button - When user is clicking on it. */
 .button:armed {
-    -fx-background-color: #4FC3DB
+    -fx-background-color: #4FC3DB;
+}
+
+/** Button - When the button is disabled. */
+.button:disabled, .button:disabled > * {
+    -fx-opacity: 0.5;
 }
 
 /** Content - is used as the content pane of a text-area */
