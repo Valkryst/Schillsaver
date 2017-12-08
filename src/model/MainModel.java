@@ -7,8 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MainModel extends Model {
     /** The jobs. */
@@ -61,5 +60,41 @@ public class MainModel extends Model {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
         }
+    }
+
+    /**
+     * Retrieves an unmodifiable list of encoding jobs.
+     *
+     * @return
+     *         The list of encoding jobs.
+     */
+    public List<Job> getEncodingJobs() {
+        final List<Job> encodingJobs = new ArrayList<>();
+
+        for (final Job job : jobs.values()) {
+            if (job.isEncodeJob()) {
+                encodingJobs.add(job);
+            }
+        }
+
+        return Collections.unmodifiableList(encodingJobs);
+    }
+
+    /**
+     * Retrieves an unmodifiable list of decoding jobs.
+     *
+     * @return
+     *         The list of decoding jobs.
+     */
+    public List<Job> getDecodingJobs() {
+        final List<Job> decodingJobs = new ArrayList<>();
+
+        for (final Job job : jobs.values()) {
+            if (job.isEncodeJob() == false) {
+                decodingJobs.add(job);
+            }
+        }
+
+        return Collections.unmodifiableList(decodingJobs);
     }
 }
