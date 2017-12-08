@@ -4,6 +4,7 @@ import configuration.Settings;
 import io.humble.video.*;
 import io.humble.video.awt.MediaPictureConverter;
 import io.humble.video.awt.MediaPictureConverterFactory;
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,6 +22,7 @@ import java.util.Objects;
 public class VideoEncoder {
     private final Settings settings;
     private final TextArea outputArea;
+    private StringBuilder outputAreaText = new StringBuilder();
 
     private final int columns;
     private final int rows;
@@ -54,6 +56,17 @@ public class VideoEncoder {
     }
 
     public void encode(final File inputFile, final File outputFile) throws IOException, InterruptedException {
+        final long totalFrames = (inputFile.length() * 8) / bitsPerFrame;
+        final double totalSeconds = totalFrames / settings.getFrameRate().getFrameRate().getDenominator();
+
+        outputAreaText.append("Encode Info:");
+        outputAreaText.append("\n\tInput File: ").append(inputFile.getAbsolutePath());
+        outputAreaText.append("\n\tOutput File: ").append(outputFile.getAbsolutePath());
+        outputAreaText.append("\n\tEstimated Frames: ").append(totalFrames);
+        outputAreaText.append("\n\tEstimated Video Length in Seconds: ").append(totalSeconds);
+        outputAreaText.append("\n\tEstimated Video Length in Minutes: ").append(totalSeconds / 60);
+        outputAreaText.append("\n\tEstimated Video Length in Hours: ").append(totalSeconds / 3600);
+
         final Muxer muxer = Muxer.make(outputFile.getAbsolutePath(), null, "MP4");
         final MuxerFormat muxerFormat = muxer.getFormat();
         final Codec codec = Codec.findEncodingCodecByName(settings.getCodec());
@@ -71,6 +84,17 @@ public class VideoEncoder {
         if (muxerFormat.getFlag(MuxerFormat.Flag.GLOBAL_HEADER)) {
             encoder.setFlag(Encoder.Flag.FLAG_GLOBAL_HEADER, true);
         }
+
+        outputAreaText.append("\n\nSettings:");
+        outputAreaText.append("\n\tFormat: MP4");
+        outputAreaText.append("\n\tCodec: ").append(codec.getName());
+        outputAreaText.append("\n\tFrame Rate Enum: ").append(settings.getFrameRate().name());
+        outputAreaText.append("\n\tFrame Rate: ").append(frameRate.getDenominator());
+        outputAreaText.append("\n\tFrame Dimensions Enum: ").append(settings.getFrameDimensions().name());
+        outputAreaText.append("\n\tFrame Width: ").append(settings.getFrameDimensions().getWidth());
+        outputAreaText.append("\n\tFrame Height: ").append(settings.getFrameDimensions().getHeight());
+        outputAreaText.append("\n\tPixel Format: ").append(pixelFormat.name());
+        outputAreaText.append("\n\nEncode Progress:");
 
         encoder.open(null, null);
         muxer.addNewStream(encoder);
@@ -110,6 +134,9 @@ public class VideoEncoder {
                 } while (packet.isComplete());
 
                 frame++;
+
+                final int finalFrame = frame - 1;
+                Platform.runLater(() -> outputArea.setText(outputAreaText + "\n\tProcessed Frames: " + finalFrame + "/" + totalFrames));
             }
 
             /*
