@@ -33,6 +33,47 @@ public enum FrameDimension {
     }
 
     /**
+     * Returns the FrameDimensions that matches the specified width/height.
+     *
+     * @param width
+     *          The width to check for.
+     *
+     * @param height
+     *          The height to check for.
+     *
+     * @return
+     *          The matching FrameDimension, or null if no FrameDimensions match
+     *          the given width/height.
+     */
+    public FrameDimension getFrameDimension(final int width, final int height) {
+        if (FrameDimension.P240.width == width && FrameDimension.P240.height == height) {
+            return FrameDimension.P240;
+        }
+
+        if (FrameDimension.P360.width == width && FrameDimension.P360.height == height) {
+            return FrameDimension.P360;
+        }
+
+        if (FrameDimension.P480.width == width && FrameDimension.P480.height == height) {
+            return FrameDimension.P480;
+        }
+
+        if (FrameDimension.P1080.width == width && FrameDimension.P1080.height == height) {
+            return FrameDimension.P1080;
+        }
+
+        if (FrameDimension.P1440.width == width && FrameDimension.P1440.height == height) {
+            return FrameDimension.P1440;
+        }
+
+        if (FrameDimension.P2160.width == width && FrameDimension.P2160.height == height) {
+            return FrameDimension.P2160;
+        }
+
+        return null;
+    }
+
+    /**
      * Checks if the dimensions of the frame are evenly divisible by the dimensions
      * of the blocks.
      *
