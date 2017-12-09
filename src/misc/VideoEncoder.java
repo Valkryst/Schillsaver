@@ -50,8 +50,6 @@ public class VideoEncoder {
         final FrameDimension frameDimensions = settings.getFrameDimensions();
         final Dimension blockDimensions = settings.getBlockDimensions();
 
-        frameDimensions.isCompatibleBlockSize(blockDimensions);
-
         rows = frameDimensions.getHeight() / blockDimensions.height;
         columns = frameDimensions.getWidth() / blockDimensions.width;
         bitsPerFrame = (columns * rows) / 8;
