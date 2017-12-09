@@ -174,7 +174,7 @@ public class VideoDecoder {
             demuxer.close();
         }
 
-        Platform.runLater(() -> outputArea.appendText("\nDecode Operation Completed"));
+        Platform.runLater(() -> outputArea.appendText("\n\nDecode Operation Completed"));
     }
 
     /**
