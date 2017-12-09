@@ -24,8 +24,8 @@ public class VideoEncoder {
     private final TextArea outputArea;
     private StringBuilder outputAreaText = new StringBuilder();
 
-    private final int columns;
-    private final int rows;
+    private final int numBlockColumns;
+    private final int numBlockRows;
     private final int bitsPerFrame;
 
     /**
@@ -50,9 +50,9 @@ public class VideoEncoder {
         final FrameDimension frameDimensions = settings.getFrameDimensions();
         final Dimension blockDimensions = settings.getBlockDimensions().getBlockSize();
 
-        rows = frameDimensions.getHeight() / blockDimensions.height;
-        columns = frameDimensions.getWidth() / blockDimensions.width;
-        bitsPerFrame = (columns * rows) / 8;
+        numBlockRows = frameDimensions.getHeight() / blockDimensions.height;
+        numBlockColumns = frameDimensions.getWidth() / blockDimensions.width;
+        bitsPerFrame = (numBlockColumns * numBlockRows) / 8;
     }
 
     public void encode(final File inputFile, final File outputFile) throws IOException, InterruptedException {
@@ -200,8 +200,8 @@ public class VideoEncoder {
         int byteIndex = 0;
         int bitIndex = 0;
 
-        for (int y = 0 ; y < rows ; y++) {
-            for (int x = 0 ; x < columns ; x++) {
+        for (int y = 0; y < numBlockRows; y++) {
+            for (int x = 0; x < numBlockColumns; x++) {
                 final int xPos = x * blockDimensions.width;
                 final int yPos = y * blockDimensions.height;
                 final int bit = (bytes[byteIndex] >> bitIndex) & 1;
