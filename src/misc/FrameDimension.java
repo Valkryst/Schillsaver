@@ -45,7 +45,7 @@ public enum FrameDimension {
      *          The matching FrameDimension, or null if no FrameDimensions match
      *          the given width/height.
      */
-    public FrameDimension getFrameDimension(final int width, final int height) {
+    public static FrameDimension getFrameDimension(final int width, final int height) {
         if (FrameDimension.P240.width == width && FrameDimension.P240.height == height) {
             return FrameDimension.P240;
         }
