@@ -1,11 +1,11 @@
 package configuration;
 
+import misc.BlockSize;
 import misc.FrameDimension;
 import misc.FrameRate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.Dimension;
 import java.io.*;
 import java.util.HashMap;
 
@@ -22,7 +22,7 @@ public class Settings implements Serializable {
 
         settings.put("Encoding Frame Dimensions", FrameDimension.P720.name());
         settings.put("Encoding Frame Rate", FrameRate.FPS30.name());
-        settings.put("Encoding Block Size", String.valueOf(8));
+        settings.put("Encoding Block Size", BlockSize.S8.name());
         settings.put("Encoding Codec", "libx264");
 
         loadSettings();
@@ -124,9 +124,8 @@ public class Settings implements Serializable {
      * @return
      *          The block dimensions.
      */
-    public Dimension getBlockDimensions() {
-        final int size = Integer.valueOf(settings.get("Encoding Block Size"));
-        return new Dimension(size, size);
+    public BlockSize getBlockDimensions() {
+        return BlockSize.valueOf(settings.get("Encoding Block Size"));
     }
 
     /**
@@ -201,11 +200,11 @@ public class Settings implements Serializable {
      * @param blockSize
      *          The block size.
      */
-    public void setBlockDimensions(final int blockSize) {
-        if (blockSize < 1) {
-            settings.put("Encoding Block Size", String.valueOf(8));
+    public void setBlockDimensions(final BlockSize blockSize) {
+        if (blockSize == null) {
+            settings.put("Encoding Block Size", blockSize.S8.name());
         } else {
-            settings.put("Encoding Block Size", String.valueOf(blockSize));
+            settings.put("Encoding Block Size", blockSize.name());
         }
     }
 
