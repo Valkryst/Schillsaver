@@ -58,6 +58,10 @@ public enum FrameDimension {
             return FrameDimension.P480;
         }
 
+        if (FrameDimension.P720.width == width && FrameDimension.P720.height == height) {
+            return FrameDimension.P720;
+        }
+
         if (FrameDimension.P1080.width == width && FrameDimension.P1080.height == height) {
             return FrameDimension.P1080;
         }
