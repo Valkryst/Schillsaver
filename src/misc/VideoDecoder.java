@@ -113,7 +113,6 @@ public class VideoDecoder {
         outputAreaText.append("\n\tFrame Dimensions Enum: ").append(frameDimensions.name());
         outputAreaText.append("\n\tFrame Width: ").append(frameDimensions.getWidth());
         outputAreaText.append("\n\tFrame Height: ").append(frameDimensions.getHeight());
-        outputAreaText.append("\n\tFrame Count: ").append(decoder.getFrameCount());
         outputAreaText.append("\n\tPixel Format: ").append(pixelFormat.name());
         outputAreaText.append("\n\nDecode Progress:");
 
@@ -125,7 +124,6 @@ public class VideoDecoder {
         try (
             final FileOutputStream fos = new FileOutputStream(outputFile);
         ) {
-            final int totalFrames = decoder.getFrameCount();
             int frame = 0;
 
             while (demuxer.read(packet) >= 0) {
@@ -148,7 +146,7 @@ public class VideoDecoder {
 
                     frame++;
                     final int finalFrame = frame - 1;
-                    Platform.runLater(() -> outputArea.setText(outputAreaText + "\n\tProcessed Frames: " + finalFrame + "/" + totalFrames));
+                    Platform.runLater(() -> outputArea.setText(outputAreaText + "\n\tProcessed Frames: " + finalFrame));
                 }
             }
 
