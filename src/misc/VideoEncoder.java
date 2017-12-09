@@ -166,7 +166,7 @@ public class VideoEncoder {
             muxer.close();
         }
 
-        Platform.runLater(() -> outputArea.appendText("\nEncode Operation Completed"));
+        Platform.runLater(() -> outputArea.appendText("\n\nEncode Operation Completed"));
     }
 
     /**
