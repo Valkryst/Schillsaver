@@ -48,7 +48,7 @@ public class VideoEncoder {
         this.outputArea = outputArea;
 
         final FrameDimension frameDimensions = settings.getFrameDimensions();
-        final Dimension blockDimensions = settings.getBlockDimensions();
+        final Dimension blockDimensions = settings.getBlockDimensions().getBlockSize();
 
         rows = frameDimensions.getHeight() / blockDimensions.height;
         columns = frameDimensions.getWidth() / blockDimensions.width;
@@ -193,7 +193,7 @@ public class VideoEncoder {
         }
 
         final FrameDimension frameDimensions = settings.getFrameDimensions();
-        final Dimension blockDimensions = settings.getBlockDimensions();
+        final Dimension blockDimensions = settings.getBlockDimensions().getBlockSize();
 
         final BufferedImage image = new BufferedImage(frameDimensions.getWidth(), frameDimensions.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D gc = (Graphics2D) image.getGraphics();
