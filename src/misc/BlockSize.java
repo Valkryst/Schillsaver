@@ -1,5 +1,7 @@
 package misc;
 
+import lombok.Getter;
+
 import java.awt.Dimension;
 
 public enum BlockSize {
@@ -11,7 +13,7 @@ public enum BlockSize {
     S10(10);
 
     /** The block size. */
-    private final Dimension blockSize;
+    @Getter private final Dimension blockSize;
 
     /**
      * Constructs a new BlockSize enum.
