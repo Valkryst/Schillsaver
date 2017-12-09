@@ -190,8 +190,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
         // Run Encode Jobs
         final Thread mainEncodingThread = new Thread(() -> {
            for (final Thread thread : encodeJobs) {
-               // todo Hook thread up to an encoding tab.
-               // todo Set tab, so that it cannot be closed
                thread.start();
 
                try {
@@ -203,15 +201,33 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
                    e.printStackTrace();
                }
-
-               // todo Set tab, so that it can be closed.
            }
         });
 
         mainEncodingThread.start();
 
+        // Run Decode Jobs
+        final Thread mainDecodingThread = new Thread(() -> {
+            for (final Thread thread : decodeJobs) {
+                thread.start();
+
+                try {
+                    thread.join();
+                } catch (final InterruptedException e) {
+                    // todo Look into exception cause, maybe tell user
+                    final Logger logger = LogManager.getLogger();
+                    logger.error(e);
+
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        mainDecodingThread.start();
+
         try {
             mainEncodingThread.join();
+            mainDecodingThread.join();
         } catch (InterruptedException e) {
             // todo Look into exception cause, maybe tell user
             final Logger logger = LogManager.getLogger();
