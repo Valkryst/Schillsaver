@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class VideoEncoder {
@@ -52,7 +51,7 @@ public class VideoEncoder {
 
         numBlockRows = frameDimensions.getHeight() / blockDimensions.height;
         numBlockColumns = frameDimensions.getWidth() / blockDimensions.width;
-        bitsPerFrame = (numBlockColumns * numBlockRows) / 8;
+        bitsPerFrame = numBlockColumns * numBlockRows;
     }
 
     public void encode(final File inputFile, final File outputFile) throws IOException, InterruptedException {
@@ -182,22 +181,10 @@ public class VideoEncoder {
     private BufferedImage encodeFrame(byte[] bytes) {
         if (bytes.length > bitsPerFrame) {
             throw new IllegalStateException("You cannot create a frame with more than " + bitsPerFrame + " bits.");
-        } else {
-            // When we hit the last frame, there won't be enough bits to
-            // fill the entire frame with blocks, so we'll fill the rest of
-            // the array with -1 for all the missing bits.
-            final byte[] newBits = new byte[bitsPerFrame];
-
-            Arrays.fill(newBits, (byte) -1);
-            System.arraycopy(bytes, 0, newBits, 0, bytes.length);
-
-            bytes = newBits;
         }
 
         final FrameDimension frameDimensions = settings.getFrameDimensions();
         final Dimension blockDimensions = settings.getBlockDimensions().getBlockSize();
-
-        final Color teal = new Color(127, 255, 255);
 
         final BufferedImage image = new BufferedImage(frameDimensions.getWidth(), frameDimensions.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D gc = (Graphics2D) image.getGraphics();
@@ -208,15 +195,13 @@ public class VideoEncoder {
             for (int x = 0; x < numBlockColumns; x++) {
                 final int xPos = x * blockDimensions.width;
                 final int yPos = y * blockDimensions.height;
-                final int bit = (bytes[byteIndex] >> bitIndex) & 1;
 
                 // BufferedImage starts as black, so we don't need
                 // to draw any black blocks.
+                final int bit = (bytes[byteIndex] >> bitIndex) & 1;
+
                 if (bit == 1) {
                     gc.setColor(Color.WHITE);
-                    gc.fillRect(xPos, yPos, blockDimensions.width, blockDimensions.height);
-                } else if (bit != 0) {
-                    gc.setColor(teal);
                     gc.fillRect(xPos, yPos, blockDimensions.width, blockDimensions.height);
                 }
 
