@@ -31,12 +31,16 @@ public enum FrameRate {
      *          Rational.
      */
     public static FrameRate getFrameRate(final Rational frameRate) {
-        if (FrameRate.FPS30.getFrameRate().equals(frameRate)) {
-            return FrameRate.FPS30;
+        if (FrameRate.FPS30.getFrameRate().getNumerator() == frameRate.getNumerator()) {
+            if (FrameRate.FPS30.getFrameRate().getDenominator() == frameRate.getDenominator()) {
+                return FrameRate.FPS30;
+            }
         }
 
-        if (FrameRate.FPS60.getFrameRate().equals(frameRate)) {
-            return FrameRate.FPS60;
+        if (FrameRate.FPS60.getFrameRate().getNumerator() == frameRate.getNumerator()) {
+            if (FrameRate.FPS60.getFrameRate().getDenominator() == frameRate.getDenominator()) {
+                return FrameRate.FPS60;
+            }
         }
 
         return null;
