@@ -6,6 +6,7 @@ import javafx.scene.control.TextArea;
 import lombok.Getter;
 import lombok.Setter;
 import misc.Job;
+import misc.VideoDecoder;
 import misc.VideoEncoder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
@@ -109,17 +110,31 @@ public class MainModel extends Model {
         for (final Job job : getDecodingJobs()) {
             final Tab tab = view.addOutputTab(job.getName());
 
-            final Thread thread = new Thread(() -> {
-                tab.setClosable(false);
+            for (final File inputFile : job.getFiles()) {
+                final Thread thread = new Thread(() -> {
+                    try {
+                        tab.setClosable(false);
 
-                // todo WRITE DECODE CODE
-                System.err.println("DECODE STUFF NOT WRITTEN IN MAINMODEL");
-                System.exit(1);
+                        final VideoDecoder videoDecoder = new VideoDecoder(settings, (TextArea) tab.getContent());
 
-                tab.setClosable(true);
-            });
+                        final File outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".zip");
 
-            decodingJobs.add(thread);
+                        videoDecoder.decode(inputFile, outputFile);
+
+                        inputFile.delete();
+                        tab.setClosable(true);
+                    } catch (final IOException | InterruptedException e) {
+                        // todo Couldn't decode the files, abort, log, tell user.
+                        // todo Could also be an exception when opening demuxer in the vid decoder class.
+                        final Logger logger = LogManager.getLogger();
+                        logger.error(e);
+
+                        e.printStackTrace();
+                    }
+                });
+
+                decodingJobs.add(thread);
+            }
         }
 
         return decodingJobs;
