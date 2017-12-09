@@ -165,6 +165,8 @@ public class VideoEncoder {
         } finally {
             muxer.close();
         }
+
+        Platform.runLater(() -> outputArea.appendText("\nEncode Operation Completed"));
     }
 
     /**
@@ -195,6 +197,8 @@ public class VideoEncoder {
         final FrameDimension frameDimensions = settings.getFrameDimensions();
         final Dimension blockDimensions = settings.getBlockDimensions().getBlockSize();
 
+        final Color teal = new Color(127, 255, 255);
+
         final BufferedImage image = new BufferedImage(frameDimensions.getWidth(), frameDimensions.getHeight(), BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D gc = (Graphics2D) image.getGraphics();
         int byteIndex = 0;
@@ -212,7 +216,7 @@ public class VideoEncoder {
                     gc.setColor(Color.WHITE);
                     gc.fillRect(xPos, yPos, blockDimensions.width, blockDimensions.height);
                 } else if (bit != 0) {
-                    gc.setColor(Color.MAGENTA);
+                    gc.setColor(teal);
                     gc.fillRect(xPos, yPos, blockDimensions.width, blockDimensions.height);
                 }
 
