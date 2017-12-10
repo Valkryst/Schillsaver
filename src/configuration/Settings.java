@@ -17,7 +17,7 @@ public class Settings implements Serializable {
 
     /** Construct a new Settings. */
     public Settings() {
-        settings.put("FFMPEG Path", "");
+        settings.put("FFMPEG Path", "D:\\Program Files (Portable)\\FFMPEG\\ffmpeg\\bin\\ffmpeg.exe");
 
         settings.put("Total Encoding Threads", String.valueOf(1));
         settings.put("Total Decoding Threads", String.valueOf(1));
@@ -87,7 +87,7 @@ public class Settings implements Serializable {
      *          The path to FFMPEG.
      */
     public String getFfmpegPath() {
-        return settings.get("FFMPEG PAth");
+        return settings.get("FFMPEG Path");
     }
 
     /**
