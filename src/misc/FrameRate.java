@@ -1,6 +1,5 @@
 package misc;
 
-import io.humble.video.Rational;
 import lombok.Getter;
 
 public enum FrameRate {
@@ -8,7 +7,7 @@ public enum FrameRate {
     FPS60(60);
 
     /** The frame rate. */
-    @Getter private final Rational frameRate;
+    @Getter private final int frameRate;
 
     /**
      * Constructs a new FrameRate enum.
@@ -17,30 +16,26 @@ public enum FrameRate {
      *          The frame rate.
      */
     FrameRate(final int frameRate) {
-        this.frameRate = Rational.make(1, frameRate);
+        this.frameRate = frameRate;
     }
 
     /**
-     * Returns the FrameRate that matches the specified Rational.
+     * Returns the FrameRate that matches the specified frame rate.
      *
      * @param frameRate
-     *          The Rational frame rate to check for.
+     *          The frame rate to check for.
      *
      * @return
      *          The matching FrameRate, or null if no FrameRate match the given
-     *          Rational.
+     *          frame rate.
      */
-    public static FrameRate getFrameRate(final Rational frameRate) {
-        if (FrameRate.FPS30.getFrameRate().getNumerator() == frameRate.getNumerator()) {
-            if (FrameRate.FPS30.getFrameRate().getDenominator() == frameRate.getDenominator()) {
-                return FrameRate.FPS30;
-            }
+    public static FrameRate getFrameRate(final int frameRate) {
+        if (frameRate == 30) {
+            return FrameRate.FPS30;
         }
 
-        if (FrameRate.FPS60.getFrameRate().getNumerator() == frameRate.getNumerator()) {
-            if (FrameRate.FPS60.getFrameRate().getDenominator() == frameRate.getDenominator()) {
-                return FrameRate.FPS60;
-            }
+        if (frameRate == 60) {
+            return FrameRate.FPS60;
         }
 
         return null;
