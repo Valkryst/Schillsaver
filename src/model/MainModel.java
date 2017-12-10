@@ -6,8 +6,11 @@ import javafx.scene.control.TextArea;
 import lombok.Getter;
 import lombok.Setter;
 import misc.Job;
-import misc.VideoDecoder;
-import misc.VideoEncoder;
+import net.bramp.ffmpeg.FFmpeg;
+import net.bramp.ffmpeg.FFmpegExecutor;
+import net.bramp.ffmpeg.FFmpegUtils;
+import net.bramp.ffmpeg.builder.FFmpegBuilder;
+import net.bramp.ffmpeg.job.FFmpegJob;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,6 +18,7 @@ import view.MainView;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class MainModel extends Model {
     /** The jobs. */
@@ -78,23 +82,79 @@ public class MainModel extends Model {
             final Thread thread = new Thread(() -> {
                 tab.setClosable(false);
 
-                final VideoEncoder videoEncoder = new VideoEncoder(settings, (TextArea) tab.getContent());
+                // Prepare Files:
+                final File inputFile;
+                final File outputFile;
 
                 try {
-                    final File inputFile = job.zipFiles();
-                    final File outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
-
-                    final boolean videoEncoded = videoEncoder.encode(inputFile, outputFile);
-
-                    if (videoEncoded) {
-                        inputFile.delete();
-                    }
+                    inputFile = job.zipFiles();
+                    outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
                 } catch (final IOException e) {
                     final TextArea outputArea = ((TextArea) tab.getContent());
                     outputArea.appendText("Error:");
                     outputArea.appendText("\n\t" + e.getMessage());
                     outputArea.appendText("\n\tSee log file for more information.");
+
+                    tab.setClosable(true);
+                    return;
                 }
+
+                // Build FFMPEG:
+                final FFmpeg ffmpeg;
+
+                try {
+                    ffmpeg = new FFmpeg(settings.getFfmpegPath());
+                } catch (final IOException e) {
+                    final TextArea outputArea = ((TextArea) tab.getContent());
+                    outputArea.appendText("Error:");
+                    outputArea.appendText("\n\t" + e.getMessage());
+                    outputArea.appendText("\n\tSee log file for more information.");
+
+                    tab.setClosable(true);
+                    return;
+                }
+
+                // Build FFMPEG Settings:
+                final FFmpegBuilder ffmpegBuilder = new FFmpegBuilder();
+                ffmpegBuilder.setInput(inputFile.getAbsolutePath());
+
+                ffmpegBuilder.overrideOutputFiles(true);
+                ffmpegBuilder.addOutput(outputFile.getAbsolutePath())
+                              .disableAudio()
+                              .disableSubtitle()
+                              .setVideoCodec("libx264")
+                              .setVideoFrameRate(settings.getFrameRate().getFrameRate(), 1)
+                              .done();
+
+                // Build FFMPEG Executor:
+                final FFmpegExecutor executor;
+
+                try {
+                    executor = new FFmpegExecutor(ffmpeg);
+                } catch (final IOException e) {
+                    final TextArea outputArea = ((TextArea) tab.getContent());
+                    outputArea.appendText("Error:");
+                    outputArea.appendText("\n\t" + e.getMessage());
+                    outputArea.appendText("\n\tSee log file for more information.");
+
+                    tab.setClosable(true);
+                    return;
+                }
+
+                // Build FFMPEG Job:
+                final TextArea outputArea = ((TextArea) tab.getContent());
+
+                final FFmpegJob ffmpegJob = executor.createJob(ffmpegBuilder, progress -> {
+                    final String text = String.format("status:%s frame:%d time:%s ms fps:%.0f speed:%.2fx",
+                                                         progress.status,
+                                                         progress.frame,
+                                                         FFmpegUtils.toTimecode(progress.out_time_ns, TimeUnit.NANOSECONDS),
+                                                         progress.fps.doubleValue(),
+                                                         progress.speed);
+                    outputArea.appendText(text);
+                });
+
+                ffmpegJob.run();
 
                 tab.setClosable(true);
             });
@@ -115,11 +175,7 @@ public class MainModel extends Model {
                 final Thread thread = new Thread(() -> {
                     tab.setClosable(false);
 
-                    final VideoDecoder videoDecoder = new VideoDecoder(settings, (TextArea) tab.getContent());
-
-                    final File outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".zip");
-
-                    videoDecoder.decode(inputFile, outputFile);
+                    System.err.println("DECODE STUFF NOT IMPLEMENTED, MAINMODEL");
 
                     inputFile.delete();
                     tab.setClosable(true);
