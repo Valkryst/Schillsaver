@@ -41,9 +41,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.humble</groupId>
-            <artifactId>humble-video-all</artifactId>
-            <version>0.2.1</version>
+            <groupId>com.github.hoary.javaav</groupId>
+            <artifactId>JavaAV</artifactId>
+            <version>0.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
