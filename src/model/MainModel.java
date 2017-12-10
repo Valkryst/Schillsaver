@@ -91,9 +91,9 @@ public class MainModel extends Model {
                     }
                 } catch (final IOException e) {
                     final TextArea outputArea = ((TextArea) tab.getContent());
-                    outputArea.appendText("\n\nError:");
-                    outputArea.appendText(e.getMessage());
-                    outputArea.appendText("See log file for more information.");
+                    outputArea.appendText("Error:");
+                    outputArea.appendText("\n\t" + e.getMessage());
+                    outputArea.appendText("\n\tSee log file for more information.");
                 }
 
                 tab.setClosable(true);
