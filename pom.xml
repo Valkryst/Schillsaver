@@ -41,9 +41,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.hoary.javaav</groupId>
-            <artifactId>JavaAV</artifactId>
-            <version>0.1</version>
+            <groupId>org.jcodec</groupId>
+            <artifactId>jcodec</artifactId>
+            <version>0.2.2</version>
         </dependency>
         <dependency>
             <groupId>io.humble</groupId>
