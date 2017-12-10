@@ -17,6 +17,8 @@ public class Settings implements Serializable {
 
     /** Construct a new Settings. */
     public Settings() {
+        settings.put("FFMPEG Path", "");
+
         settings.put("Total Encoding Threads", String.valueOf(1));
         settings.put("Total Decoding Threads", String.valueOf(1));
 
@@ -79,6 +81,16 @@ public class Settings implements Serializable {
     }
 
     /**
+     * Retrieves the path to FFMPEG.
+     *
+     * @return
+     *          The path to FFMPEG.
+     */
+    public String getFfmpegPath() {
+        return settings.get("FFMPEG PAth");
+    }
+
+    /**
      * Retrieves the total number of encoding threads to use.
      *
      * @return
@@ -136,6 +148,20 @@ public class Settings implements Serializable {
      */
     public String getCodec() {
         return settings.get("Encoding Codec");
+    }
+
+    /**
+     * Sets the new path to FFMPEG.
+     *
+     * @param ffmpegPath
+     *          The new path to FFMPEG.
+     */
+    public void setFfmpegPath(final String ffmpegPath) {
+        if (ffmpegPath == null) {
+            settings.put("FFMPEG Path", "");
+        } else {
+            settings.put("FFMPEG Path", ffmpegPath);
+        }
     }
 
     /**
