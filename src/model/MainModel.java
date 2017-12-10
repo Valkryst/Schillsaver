@@ -76,26 +76,27 @@ public class MainModel extends Model {
             final Tab tab = view.addOutputTab(job.getName());
 
             final Thread thread = new Thread(() -> {
+                tab.setClosable(false);
+
+                final VideoEncoder videoEncoder = new VideoEncoder(settings, (TextArea) tab.getContent());
+
                 try {
-                    tab.setClosable(false);
-
-                    final VideoEncoder videoEncoder = new VideoEncoder(settings, (TextArea) tab.getContent());
-
                     final File inputFile = job.zipFiles();
                     final File outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
 
-                    videoEncoder.encode(inputFile, outputFile);
+                    final boolean videoEncoded = videoEncoder.encode(inputFile, outputFile);
 
-                    inputFile.delete();
-                    tab.setClosable(true);
-                } catch (final IOException | InterruptedException e) {
-                    // todo Couldn't zip the files, abort, log, tell user.
-                    // todo Could also be an exception when opening muxer in the vid encoder class.
-                    final Logger logger = LogManager.getLogger();
-                    logger.error(e);
-
-                    e.printStackTrace();
+                    if (videoEncoded) {
+                        inputFile.delete();
+                    }
+                } catch (final IOException e) {
+                    final TextArea outputArea = ((TextArea) tab.getContent());
+                    outputArea.appendText("\n\nError:");
+                    outputArea.appendText(e.getMessage());
+                    outputArea.appendText("See log file for more information.");
                 }
+
+                tab.setClosable(true);
             });
 
             encodingJobs.add(thread);
@@ -112,25 +113,16 @@ public class MainModel extends Model {
 
             for (final File inputFile : job.getFiles()) {
                 final Thread thread = new Thread(() -> {
-                    try {
-                        tab.setClosable(false);
+                    tab.setClosable(false);
 
-                        final VideoDecoder videoDecoder = new VideoDecoder(settings, (TextArea) tab.getContent());
+                    final VideoDecoder videoDecoder = new VideoDecoder(settings, (TextArea) tab.getContent());
 
-                        final File outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".zip");
+                    final File outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".zip");
 
-                        videoDecoder.decode(inputFile, outputFile);
+                    videoDecoder.decode(inputFile, outputFile);
 
-                        inputFile.delete();
-                        tab.setClosable(true);
-                    } catch (final IOException | InterruptedException e) {
-                        // todo Couldn't decode the files, abort, log, tell user.
-                        // todo Could also be an exception when opening demuxer in the vid decoder class.
-                        final Logger logger = LogManager.getLogger();
-                        logger.error(e);
-
-                        e.printStackTrace();
-                    }
+                    inputFile.delete();
+                    tab.setClosable(true);
                 });
 
                 decodingJobs.add(thread);
