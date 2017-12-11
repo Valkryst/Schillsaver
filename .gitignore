@@ -77,3 +77,4 @@ test/Driver.java
 log.txt
 Jobs.ser
 Settings.ser
+ffmpeg/
