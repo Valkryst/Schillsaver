@@ -1,5 +1,6 @@
 package model;
 
+import com.valkryst.VMVC.model.Model;
 import lombok.Getter;
 
 import java.io.File;
