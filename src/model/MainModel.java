@@ -100,16 +100,6 @@ public class MainModel extends Model {
                 // todo FFMPEG STUFF
                 System.err.println("ENCODE STUFF NOT IMPLEMENTED, MAINMODEL");
 
-                /*
-                settings.put("Total Encoding Threads", String.valueOf(1));
-                settings.put("Total Decoding Threads", String.valueOf(1));
-
-                settings.put("Encoding Frame Dimensions", FrameDimension.P720.name());
-                settings.put("Encoding Frame Rate", FrameRate.FPS30.name());
-                settings.put("Encoding Block Size", BlockSize.S8.name());
-                settings.put("Encoding Codec", "libx264");
-                 */
-
                 tab.setClosable(true);
             });
 
