@@ -1,7 +1,8 @@
 package controller;
 
-import configuration.Settings;
-import core.Driver;
+import com.valkryst.VMVC.Application;
+import com.valkryst.VMVC.Settings;
+import com.valkryst.VMVC.controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -18,11 +19,11 @@ public class MainController extends Controller<MainModel, MainView> implements E
     /**
      * Constructs a new MainController.
      *
-     * @param driver
+     * @param application
      *          The driver.
      */
-    public MainController(final Driver driver) {
-        super(driver, new MainModel(), new MainView());
+    public MainController(final Application application) {
+        super(application, new MainModel(), new MainView());
         addEventHandlers();
     }
 
@@ -70,7 +71,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 view.getButton_processJobs().setDisable(true);
                 view.getButton_programSettings().setDisable(true);
 
-                final Settings settings = getDriver().getSettings();
+                final Settings settings = getApplication().getSettings();
 
                 final List<Thread> encodeJobs = model.prepareEncodingJobs(settings, view);
                 final List<Thread> decodeJobs = model.prepareDecodingJobs(settings, view);
@@ -113,8 +114,8 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
     /** Opens the JobView. */
     private void openJobView() {
-        final JobController controller = new JobController(getDriver());
-        getDriver().swapToNewScene(controller);
+        final JobController controller = new JobController(getApplication());
+        getApplication().swapToNewScene(controller);
     }
 
     /**
@@ -133,10 +134,10 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final String firstJobName = selectedJobs.get(0);
         final Job job = model.getJobs().get(firstJobName);
 
-        final JobController controller = new JobController(getDriver());
+        final JobController controller = new JobController(getApplication());
         controller.editJob(job);
 
-        getDriver().swapToNewScene(controller);
+        getApplication().swapToNewScene(controller);
     }
 
     /**
