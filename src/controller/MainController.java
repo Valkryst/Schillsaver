@@ -1,6 +1,6 @@
 package controller;
 
-import com.valkryst.VMVC.Application;
+import com.valkryst.VMVC.SceneManager;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.controller.Controller;
 import javafx.collections.FXCollections;
@@ -19,11 +19,14 @@ public class MainController extends Controller<MainModel, MainView> implements E
     /**
      * Constructs a new MainController.
      *
-     * @param application
-     *          The driver.
+     * @param sceneManager
+     *          The scene manager.
+     *
+     * @param settings
+     *          The settings.
      */
-    public MainController(final Application application) {
-        super(application, new MainModel(), new MainView());
+    public MainController(final SceneManager sceneManager, final Settings settings) {
+        super (sceneManager, settings, new MainModel(), new MainView());
         addEventHandlers();
     }
 
@@ -71,10 +74,8 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 view.getButton_processJobs().setDisable(true);
                 view.getButton_programSettings().setDisable(true);
 
-                final Settings settings = getApplication().getSettings();
-
-                final List<Thread> encodeJobs = model.prepareEncodingJobs(settings, view);
-                final List<Thread> decodeJobs = model.prepareDecodingJobs(settings, view);
+                final List<Thread> encodeJobs = model.prepareEncodingJobs(super.settings, view);
+                final List<Thread> decodeJobs = model.prepareDecodingJobs(super.settings, view);
 
                 final Thread thread = new Thread(() -> {
                     processJobs(encodeJobs, decodeJobs);
@@ -114,8 +115,8 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
     /** Opens the JobView. */
     private void openJobView() {
-        final JobController controller = new JobController(getApplication());
-        getApplication().swapToNewScene(controller);
+        final JobController controller = new JobController(sceneManager, settings);
+        sceneManager.swapToNewScene(controller);
     }
 
     /**
@@ -134,10 +135,10 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final String firstJobName = selectedJobs.get(0);
         final Job job = model.getJobs().get(firstJobName);
 
-        final JobController controller = new JobController(getApplication());
+        final JobController controller = new JobController(sceneManager, settings);
         controller.editJob(job);
 
-        getApplication().swapToNewScene(controller);
+        sceneManager.swapToNewScene(controller);
     }
 
     /**

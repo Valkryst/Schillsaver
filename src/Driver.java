@@ -1,5 +1,8 @@
-import com.valkryst.VMVC.Application;
+import com.valkryst.VMVC.SceneManager;
 import com.valkryst.VMVC.Settings;
+import controller.MainController;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import misc.BlockSize;
 import misc.FrameDimension;
 import misc.FrameRate;
@@ -9,8 +12,13 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Driver {
+public class Driver extends Application {
     public static void main(final String[] args) {
+            launch();
+    }
+
+    @Override
+    public void start(final Stage primaryStage) throws Exception {
         final HashMap<String, String> defaultSettings = new HashMap<>();
         defaultSettings.put("Total Encoding Threads", String.valueOf(1));
         defaultSettings.put("Total Decoding Threads", String.valueOf(1));
@@ -21,10 +29,11 @@ public class Driver {
         defaultSettings.put("Encoding Codec", "libx264");
 
         try {
+            final SceneManager sceneManager = new SceneManager(primaryStage);
             final Settings settings = new Settings(defaultSettings);
 
-            final Application application = new Application(settings);
-            application.launch();
+            final MainController mainController = new MainController(sceneManager, settings);
+            sceneManager.swapToNewScene(mainController);
         } catch (final IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
