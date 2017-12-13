@@ -197,7 +197,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
                try {
                    thread.join();
                } catch (final InterruptedException e) {
-                   // todo Look into exception cause, maybe tell user
                    final Logger logger = LogManager.getLogger();
                    logger.error(e);
 
@@ -216,7 +215,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 try {
                     thread.join();
                 } catch (final InterruptedException e) {
-                    // todo Look into exception cause, maybe tell user
                     final Logger logger = LogManager.getLogger();
                     logger.error(e);
 
@@ -231,7 +229,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
             mainEncodingThread.join();
             mainDecodingThread.join();
         } catch (InterruptedException e) {
-            // todo Look into exception cause, maybe tell user
             final Logger logger = LogManager.getLogger();
             logger.error(e);
 
