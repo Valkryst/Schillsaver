@@ -2,16 +2,21 @@ package model;
 
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.model.Model;
+import javafx.application.Platform;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
 import lombok.Setter;
+import misc.BlockSize;
+import misc.FrameDimension;
+import misc.FrameRate;
 import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import view.MainView;
 
+import java.awt.Dimension;
 import java.io.*;
 import java.util.*;
 
@@ -84,6 +89,70 @@ public class MainModel extends Model {
                 try {
                     inputFile = job.zipFiles(settings);
                     outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
+
+                    // Construct FFMPEG String:
+                    final FrameDimension frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
+                    final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
+                    final FrameRate frameRate = FrameRate.valueOf(settings.getStringSetting("Encoding Frame Rate"));
+                    final String codec = settings.getStringSetting("Encoding Codec");
+
+                    final StringBuilder sb = new StringBuilder();
+                    final Formatter formatter = new Formatter(sb, Locale.US);
+
+                    formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s\"",
+                                        settings.getStringSetting("FFMPEG Executable Path"),
+                                        frameDimension.getWidth() / blockSize.width,
+                                        frameDimension.getHeight() / blockSize.height,
+                                        frameRate.getFrameRate(),
+                                        inputFile.getAbsolutePath(),
+                                        blockSize.width,
+                                        codec,
+                                        "verbose",
+                                        job.getOutputDirectory(),
+                                        outputFile.getAbsolutePath());
+
+                    final String ffmpegLaunchCommand = sb.toString();
+                    sb.append(System.lineSeparator());
+                    sb.append(System.lineSeparator());
+                    sb.append(System.lineSeparator());
+
+                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(sb.toString()));
+
+
+                    // Construct FFMPEG Process:
+                    final ProcessBuilder builder = new ProcessBuilder(ffmpegLaunchCommand);
+                    builder.redirectErrorStream(true);
+
+                    final Process process = builder.start();
+                    Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
+
+                    // Run FFMPEG Process:
+                    try (
+                        final InputStream is = process.getInputStream();
+                        final InputStreamReader isr = new InputStreamReader(is);
+                        final BufferedReader br = new BufferedReader(isr);
+                    ) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            final String temp = line;
+                            Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(temp));
+                        }
+                    } catch (final IOException e) {
+                        final Logger logger = LogManager.getLogger();
+                        logger.error(e);
+
+                        final TextArea outputArea = ((TextArea) tab.getContent());
+                        outputArea.appendText("Error:");
+                        outputArea.appendText("\n\t" + e.getMessage());
+                        outputArea.appendText("\n\tSee log file for more information.");
+
+                        process.destroy();
+                        tab.setClosable(true);
+                        return;
+                    }
+
+
+                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText("Encoding Complete"));
                 } catch (final IOException e) {
                     final Logger logger = LogManager.getLogger();
                     logger.error(e);
@@ -96,9 +165,6 @@ public class MainModel extends Model {
                     tab.setClosable(true);
                     return;
                 }
-
-                // todo FFMPEG STUFF
-                System.err.println("ENCODE STUFF NOT IMPLEMENTED, MAINMODEL");
 
                 tab.setClosable(true);
             });
