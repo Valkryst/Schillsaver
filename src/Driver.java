@@ -32,8 +32,7 @@ public class Driver extends Application {
             final SceneManager sceneManager = new SceneManager(primaryStage);
             final Settings settings = new Settings(defaultSettings);
 
-            final MainController mainController = new MainController(sceneManager, settings);
-            sceneManager.swapToNewScene(mainController);
+            sceneManager.setInitialPane(new MainController(sceneManager, settings));
         } catch (final IOException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
