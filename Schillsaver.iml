@@ -13,18 +13,11 @@
     <orderEntry type="library" name="Enzo-0.3.6" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.6" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.8.2" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-core:2.10.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-api:2.10.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.16.16" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-all:0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-arch-i686-apple-darwin12:0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-arch-x86_64-apple-darwin12:0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-arch-i686-pc-linux-gnu6:0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-arch-x86_64-pc-linux-gnu6:0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-arch-i686-w64-mingw32:0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-arch-x86_64-w64-mingw32:0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: io.humble:humble-video-noarch:0.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.logging.log4j:log4j-slf4j-impl:2.10.0" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.8.0-alpha2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.16.16" level="project" />
+    <orderEntry type="library" name="Maven: com.github.Valkryst:VMVC:0.4.0" level="project" />
   </component>
 </module>

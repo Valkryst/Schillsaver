@@ -1,12 +1,12 @@
 package model;
 
-import configuration.Settings;
+import com.valkryst.VMVC.Settings;
+import com.valkryst.VMVC.model.Model;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
 import lombok.Setter;
 import misc.Job;
-import misc.VideoEncoder;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,26 +75,32 @@ public class MainModel extends Model {
             final Tab tab = view.addOutputTab(job.getName());
 
             final Thread thread = new Thread(() -> {
+                tab.setClosable(false);
+
+                // Prepare Files:
+                final File inputFile;
+                final File outputFile;
+
                 try {
-                    tab.setClosable(false);
-
-                    final VideoEncoder videoEncoder = new VideoEncoder(settings, (TextArea) tab.getContent());
-
-                    final File inputFile = job.zipFiles();
-                    final File outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
-
-                    videoEncoder.encode(inputFile, outputFile);
-
-                    inputFile.delete();
-                    tab.setClosable(true);
-                } catch (final IOException | InterruptedException e) {
-                    // todo Couldn't zip the files, abort, log, tell user.
-                    // todo Could also be an exception when opening muxer in the vid encoder class.
+                    inputFile = job.zipFiles(settings);
+                    outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
+                } catch (final IOException e) {
                     final Logger logger = LogManager.getLogger();
                     logger.error(e);
 
-                    e.printStackTrace();
+                    final TextArea outputArea = ((TextArea) tab.getContent());
+                    outputArea.appendText("Error:");
+                    outputArea.appendText("\n\t" + e.getMessage());
+                    outputArea.appendText("\n\tSee log file for more information.");
+
+                    tab.setClosable(true);
+                    return;
                 }
+
+                // todo FFMPEG STUFF
+                System.err.println("ENCODE STUFF NOT IMPLEMENTED, MAINMODEL");
+
+                tab.setClosable(true);
             });
 
             encodingJobs.add(thread);
@@ -109,17 +115,18 @@ public class MainModel extends Model {
         for (final Job job : getDecodingJobs()) {
             final Tab tab = view.addOutputTab(job.getName());
 
-            final Thread thread = new Thread(() -> {
-                tab.setClosable(false);
+            for (final File inputFile : job.getFiles()) {
+                final Thread thread = new Thread(() -> {
+                    tab.setClosable(false);
 
-                // todo WRITE DECODE CODE
-                System.err.println("DECODE STUFF NOT WRITTEN IN MAINMODEL");
-                System.exit(1);
+                    System.err.println("DECODE STUFF NOT IMPLEMENTED, MAINMODEL");
 
-                tab.setClosable(true);
-            });
+                    inputFile.delete();
+                    tab.setClosable(true);
+                });
 
-            decodingJobs.add(thread);
+                decodingJobs.add(thread);
+            }
         }
 
         return decodingJobs;

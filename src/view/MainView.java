@@ -1,10 +1,11 @@
 package view;
 
+import com.valkryst.VMVC.view.View;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.Getter;
 
-public class MainView extends View{
+public class MainView extends View {
     @Getter private Button button_createJob;
     @Getter private Button button_editJob;
     @Getter private Button button_deleteSelectedJobs;

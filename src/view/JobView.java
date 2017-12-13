@@ -1,5 +1,6 @@
 package view;
 
+import com.valkryst.VMVC.view.View;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -79,11 +80,7 @@ public class JobView extends View {
      *         The file selection area.
      */
     private Pane createFileSelectionArea() {
-        final GridPane buttonPane = getHalvedGridPane();
-
-        // Add controls to Button Pane:
-        buttonPane.add(button_addFiles, 0, 0);
-        buttonPane.add(button_removeSelectedFiles, 1, 0);
+        final GridPane buttonPane = createHorizontalGridPane(button_addFiles, button_removeSelectedFiles);
 
         // Create the Pane:
         final VBox pane = new VBox();
@@ -133,12 +130,6 @@ public class JobView extends View {
      *         The bottom menu bar.
      */
     private Pane createBottomMenuBar() {
-        final GridPane pane = getHalvedGridPane();
-
-        // Add the Components:
-        pane.add(button_accept, 0, 0);
-        pane.add(button_cancel, 1, 0);
-
-        return pane;
+        return createHorizontalGridPane(button_addFiles, button_cancel);
     }
 }

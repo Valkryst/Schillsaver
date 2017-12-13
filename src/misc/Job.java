@@ -1,7 +1,11 @@
 package misc;
 
+import com.valkryst.VMVC.Settings;
 import lombok.Getter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import java.awt.Dimension;
 import java.io.*;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -17,7 +21,7 @@ public class Job implements Serializable {
     /** The file(s) belonging to the Job.*/
     @Getter private List<File> files;
     /** Whether the Job is an Encode Job or a Decode Job. */
-    @Getter private boolean isEncodeJob = true;
+    @Getter private boolean isEncodeJob;
 
     /**
      * Constructs a new Job.
@@ -35,13 +39,16 @@ public class Job implements Serializable {
     /**
      * Zips all of the Job's files into a single archive.
      *
+     * @param settings
+     *          The settings.
+     *
      * @return
      *         The zip file.
      *
      * @throws IOException
      *         If an I/O error occurs.
      */
-    public File zipFiles() throws IOException {
+    public File zipFiles(final Settings settings) throws IOException {
         final File zipFile = new File(name + ".zip");
 
         final FileOutputStream fos = new FileOutputStream(zipFile);
@@ -69,6 +76,40 @@ public class Job implements Serializable {
         zos.close();
         fos.close();
 
-        return zipFile;
+        return padFile(zipFile, settings);
+    }
+
+    /**
+     * Pads the specified handler to ensure it contains enough data to
+     * have an exact number of frames. If there are, for example,
+     * 1401 bytes and the frame size is 1400 bytes, then ffmpeg will
+     * display an error about not having a full frame worth of bytes.
+     *
+     * @param file
+     *          The file.
+     *
+     * @param settings
+     *          The settings.
+     */
+    private static File padFile(final File file, final Settings settings) {
+        try (
+            final FileOutputStream outputStream = new FileOutputStream(file, true);
+        ) {
+            final FrameDimension frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
+            final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
+
+            int bytesPerFrame = frameDimension.getWidth() * frameDimension.getHeight();
+            bytesPerFrame /= blockSize.width * blockSize.height;
+            bytesPerFrame /= 8;
+
+            final int numberOfBytesToPad = bytesPerFrame - (int) (file.length() % bytesPerFrame);
+
+            outputStream.write(new byte[numberOfBytesToPad]);
+        } catch (final IOException e) {
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+        }
+
+        return file;
     }
 }

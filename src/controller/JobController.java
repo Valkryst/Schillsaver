@@ -1,6 +1,7 @@
 package controller;
 
-import core.Driver;
+import com.valkryst.VMVC.Application;
+import com.valkryst.VMVC.controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -22,11 +23,11 @@ public class JobController extends Controller<JobModel, JobView> implements Even
     /**
      * Constructs a new JobController.
      *
-     * @param driver
-     *          The driver.
+     * @param application
+     *          The application.
      */
-    JobController(final Driver driver) {
-        super(driver, new JobModel(), new JobView());
+    JobController(final Application application) {
+        super(application, new JobModel(), new JobView());
 
         addEventHandlers();
     }
@@ -110,16 +111,16 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         }
 
         if (source.equals(view.getButton_accept())) {
-            final Controller previousController = getDriver().getPreviousController();
+            final Controller previousController = getApplication().getPreviousController();
             final MainController controller = (MainController) previousController;
 
             controller.addJob(createJob());
 
-            getDriver().swapToPreviousScene();
+            getApplication().swapToPreviousScene();
         }
 
         if (source.equals(view.getButton_cancel())) {
-            getDriver().swapToPreviousScene();
+            getApplication().swapToPreviousScene();
         }
     }
 
@@ -154,7 +155,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         final FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Job File Selection");
 
-        final List<File> selectedFiles = fileChooser.showOpenMultipleDialog(getDriver().getPrimaryStage());
+        final List<File> selectedFiles = fileChooser.showOpenMultipleDialog(getApplication().getPrimaryStage());
 
         if (selectedFiles != null) {
             model.getFiles().addAll(selectedFiles);
