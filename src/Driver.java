@@ -20,7 +20,7 @@ public class Driver extends Application {
     @Override
     public void start(final Stage primaryStage) throws Exception {
         final HashMap<String, String> defaultSettings = new HashMap<>();
-        defaultSettings.put("FFMPEG Executable Path", "");
+        defaultSettings.put("FFMPEG Executable Path", "/usr/bin/ffmpeg");
 
         defaultSettings.put("Total Encoding Threads", String.valueOf(1));
         defaultSettings.put("Total Decoding Threads", String.valueOf(1));
