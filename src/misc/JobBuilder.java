@@ -98,6 +98,7 @@ public class JobBuilder {
                 final File file = new File(defaultEncodeDir);
                 if (file.exists() && file.isDirectory()) {
                     outputDirectory = defaultEncodeDir;
+                    return;
                 }
             }
         } else {
@@ -107,6 +108,7 @@ public class JobBuilder {
                 final File file = new File(defaultDecodeDir);
                 if (file.exists() && file.isDirectory()) {
                     outputDirectory = defaultDecodeDir;
+                    return;
                 }
             }
         }
