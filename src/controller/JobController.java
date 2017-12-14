@@ -165,6 +165,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
     private void addFiles() {
         final FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Job File Selection");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         final List<File> selectedFiles = fileChooser.showOpenMultipleDialog(sceneManager.getPrimaryStage());
 
