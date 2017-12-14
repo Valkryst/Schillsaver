@@ -99,6 +99,8 @@ public class MainModel extends Model {
                     final StringBuilder sb = new StringBuilder();
                     final Formatter formatter = new Formatter(sb, Locale.US);
 
+                    System.out.println(inputFile.getAbsolutePath());
+                    System.out.println(outputFile.getAbsolutePath());
                     formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s\"",
                                         settings.getStringSetting("FFMPEG Executable Path"),
                                         frameDimension.getWidth() / blockSize.width,
@@ -108,19 +110,12 @@ public class MainModel extends Model {
                                         blockSize.width,
                                         codec,
                                         "verbose",
-                                        job.getOutputDirectory(),
-                                        outputFile.getAbsolutePath());
+                                        outputFile.getAbsoluteFile());
 
-                    final String ffmpegLaunchCommand = sb.toString();
-                    sb.append(System.lineSeparator());
-                    sb.append(System.lineSeparator());
-                    sb.append(System.lineSeparator());
-
-                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(sb.toString()));
-
+                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(System.lineSeparator() + System.lineSeparator() + sb.toString()));
 
                     // Construct FFMPEG Process:
-                    final ProcessBuilder builder = new ProcessBuilder(ffmpegLaunchCommand);
+                    final ProcessBuilder builder = new ProcessBuilder(sb.toString());
                     builder.redirectErrorStream(true);
 
                     final Process process = builder.start();
@@ -135,7 +130,7 @@ public class MainModel extends Model {
                         String line;
                         while ((line = br.readLine()) != null) {
                             final String temp = line;
-                            Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(temp));
+                            Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(System.lineSeparator() + temp));
                         }
                     } catch (final IOException e) {
                         final Logger logger = LogManager.getLogger();
