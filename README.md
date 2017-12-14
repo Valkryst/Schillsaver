@@ -31,6 +31,19 @@ The option to decode these files is also available.
 
 * To open the program on Linux, you may need to open up the terminal and 
    run the command `java -jar Schillsaver.jar`.
+   
+* For a decode to work successfully, you *must* use the same block size setting 
+  that you encoded with, the other settings don't matter.
+  
+  So, if you've encoded a video with block size 8, then it has to be decoded with
+  block size 8. Any other size will result in a corrupt decode.
+  
+* When downloading your stored videos from YouTube, or whatever other service you
+  use, ensure that you download the video at the same resolution that you encoded
+  the video at.
+  
+  If you've encoded a 1080p video, then download it as 720p and try to decode the
+  video, you'll get a corrupt decode.
 
 * Schillsaver does it's best to clean up any temporary files if any issues occur.
 
