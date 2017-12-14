@@ -1,5 +1,6 @@
 package view;
 
+import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.view.View;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -21,9 +22,14 @@ public class JobView extends View {
 
     @Getter private ComboBox<String> comboBox_jobType;
 
-    /** Constructs a new JobView. */
-    public JobView() {
-        initializeComponents();
+    /**
+     * Constructs a new JobView.
+     *
+     * @param settings
+     *          The program settings.
+     */
+    public JobView(final Settings settings) {
+        initializeComponents(settings);
         setComponentTooltips();
 
         final Pane fileSelectionArea = createFileSelectionArea();
@@ -38,8 +44,13 @@ public class JobView extends View {
         super.pane.getChildren().addAll(vBox, bottomMenuBar);
     }
 
-    /** Initializes the components. */
-    private void initializeComponents() {
+    /**
+     * Initializes the components.
+     *
+     * @param settings
+     *          The program settings.
+     */
+    private void initializeComponents(final Settings settings) {
         button_addFiles = new Button("Add Files");
         button_removeSelectedFiles = new Button("Remove Selected Files");
         button_selectOutputFolder = new Button("Select Output Folder");
@@ -57,6 +68,22 @@ public class JobView extends View {
 
         comboBox_jobType  = new ComboBox<>(FXCollections.observableArrayList("Encode", "Decode"));
         comboBox_jobType.getSelectionModel().select("Encode");
+        textField_outputFolder.setText(settings.getStringSetting("Default Encoding Output Directory"));
+        comboBox_jobType.valueProperty().addListener((observableValue, oldValue, newValue) -> {
+            boolean canChange = textField_outputFolder.getText().isEmpty();
+            canChange |= textField_outputFolder.getText().equals(settings.getStringSetting("Default Encoding Output Directory"));
+            canChange |= textField_outputFolder.getText().equals(settings.getStringSetting("Default Decoding Output Directory"));
+
+            if (canChange == false) {
+                return;
+            }
+
+            if (newValue.equals("Encode")) {
+                textField_outputFolder.setText(settings.getStringSetting("Default Encoding Output Directory"));
+            } else {
+                textField_outputFolder.setText(settings.getStringSetting("Default Decoding Output Directory"));
+            }
+        });
     }
 
     /** Sets the tooltips of the components. */
