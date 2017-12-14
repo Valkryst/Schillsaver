@@ -50,8 +50,8 @@ public class SettingsView extends View {
         vBox.getChildren().add(createBottomMenuBar());
 
         this.pane = vBox;
-        this.pane.setMinSize(512, 133);
-        this.pane.setMaxHeight(133);
+        this.pane.setMinSize(512, 123);
+        this.pane.setMaxHeight(123);
     }
 
     /** Initializes the components. */
