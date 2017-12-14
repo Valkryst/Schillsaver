@@ -18,7 +18,7 @@ public class Driver extends Application {
     }
 
     @Override
-    public void start(final Stage primaryStage) throws Exception {
+    public void start(final Stage primaryStage) {
         final HashMap<String, String> defaultSettings = new HashMap<>();
         defaultSettings.put("FFMPEG Executable Path", "/usr/bin/ffmpeg");
 
