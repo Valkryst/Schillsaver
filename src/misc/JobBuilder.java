@@ -39,9 +39,6 @@ public class JobBuilder {
      *
      * @throws java.lang.NullPointerException
      *          If the output directory or files list is null.
-     *
-     * @throws java.lang.IllegalArgumentException
-     *          If the output directory is empty.
      */
     private void checkState() {
         Objects.requireNonNull(outputDirectory);
