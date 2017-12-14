@@ -152,7 +152,7 @@ public class MainModel extends Model {
                     }
 
 
-                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText("Encoding Complete"));
+                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText("\n\nEncoding Complete"));
                 } catch (final IOException e) {
                     final Logger logger = LogManager.getLogger();
                     logger.error(e);
