@@ -130,6 +130,6 @@ public class JobView extends View {
      *         The bottom menu bar.
      */
     private Pane createBottomMenuBar() {
-        return createHorizontalGridPane(button_addFiles, button_cancel);
+        return createHorizontalGridPane(button_accept, button_cancel);
     }
 }

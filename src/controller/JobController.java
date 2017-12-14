@@ -1,6 +1,7 @@
 package controller;
 
-import com.valkryst.VMVC.Application;
+import com.valkryst.VMVC.SceneManager;
+import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -23,12 +24,14 @@ public class JobController extends Controller<JobModel, JobView> implements Even
     /**
      * Constructs a new JobController.
      *
-     * @param application
-     *          The application.
+     * @param sceneManager
+     *          The scene manager.
+     *
+     * @param settings
+     *          The settings.
      */
-    JobController(final Application application) {
-        super(application, new JobModel(), new JobView());
-
+    public JobController(final SceneManager sceneManager, final Settings settings) {
+        super (sceneManager, settings, new JobModel(), new JobView());
         addEventHandlers();
     }
 
@@ -111,16 +114,16 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         }
 
         if (source.equals(view.getButton_accept())) {
-            final Controller previousController = getApplication().getPreviousController();
+            final Controller previousController = sceneManager.getPreviousController();
             final MainController controller = (MainController) previousController;
 
             controller.addJob(createJob());
 
-            getApplication().swapToPreviousScene();
+            sceneManager.swapToPreviousScene();
         }
 
         if (source.equals(view.getButton_cancel())) {
-            getApplication().swapToPreviousScene();
+            sceneManager.swapToPreviousScene();
         }
     }
 
@@ -155,7 +158,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         final FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Job File Selection");
 
-        final List<File> selectedFiles = fileChooser.showOpenMultipleDialog(getApplication().getPrimaryStage());
+        final List<File> selectedFiles = fileChooser.showOpenMultipleDialog(sceneManager.getPrimaryStage());
 
         if (selectedFiles != null) {
             model.getFiles().addAll(selectedFiles);
