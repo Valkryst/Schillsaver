@@ -18,6 +18,7 @@ import view.SettingsView;
 import javax.swing.JFileChooser;
 import java.awt.HeadlessException;
 import java.io.File;
+import java.io.IOException;
 
 public class SettingsController extends Controller<SettingsModel, SettingsView> implements EventHandler {
     /** The dialog stage containing the settings view. */
@@ -64,6 +65,17 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
 
         if (source.equals(view.getButton_accept())) {
             if (updateSettings()) {
+                try {
+                    settings.saveSettings();
+                } catch (final IOException e) {
+                    final Logger logger = LogManager.getLogger();
+                    logger.error(e);
+
+                    final String alertMessage = "There was an issue saving the settings.\nSee the log file for more information.";
+                    final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
+                    alert.showAndWait();
+                }
+
                 dialog.close();
             }
         }
