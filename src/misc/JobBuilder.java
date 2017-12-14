@@ -1,7 +1,11 @@
 package misc;
 
 import com.valkryst.VMVC.Settings;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import lombok.Data;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -62,6 +66,10 @@ public class JobBuilder {
         // If the output dir isn't specified, try setting it to the home dir.
         if (outputDirectory.isEmpty()) {
             setOutputToHomeDirectory();
+
+            if (outputDirectory.isEmpty()) {
+                throw new NullPointerException("The output directory was not set.");
+            }
         }
 
         // Ensure output directory has the correct trailing slash:
@@ -107,8 +115,12 @@ public class JobBuilder {
             final File home = FileSystemView.getFileSystemView().getHomeDirectory();
             outputDirectory = home.getCanonicalPath() + "/";
         } catch (final IOException e) {
-            // todo Throw an error or something if this happens, not sure yet.
-            e.printStackTrace();
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            final String alertMessage = "There was an issue retrieving the home directory path.\nSee the log file for more information.";
+            final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
+            alert.showAndWait();
         }
     }
 }
