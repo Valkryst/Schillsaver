@@ -32,7 +32,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      *          The scene manager.
      *
      * @param settings
-     *          The settings.
+     *          The program settings.
      */
     public JobController(final SceneManager sceneManager, final Settings settings) {
         super (sceneManager, settings, new JobModel(), new JobView());

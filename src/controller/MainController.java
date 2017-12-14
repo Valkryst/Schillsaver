@@ -23,7 +23,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *          The scene manager.
      *
      * @param settings
-     *          The settings.
+     *          The program settings.
      */
     public MainController(final SceneManager sceneManager, final Settings settings) {
         super (sceneManager, settings, new MainModel(), new MainView());
