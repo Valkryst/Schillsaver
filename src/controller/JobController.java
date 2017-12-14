@@ -35,7 +35,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      *          The program settings.
      */
     public JobController(final SceneManager sceneManager, final Settings settings) {
-        super (sceneManager, settings, new JobModel(), new JobView());
+        super (sceneManager, settings, new JobModel(), new JobView(settings));
         addEventHandlers();
     }
 
