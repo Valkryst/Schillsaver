@@ -6,6 +6,8 @@ import com.valkryst.VMVC.controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -13,6 +15,8 @@ import javafx.stage.FileChooser;
 import misc.Job;
 import misc.JobBuilder;
 import model.JobModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import view.JobView;
 
 import javax.swing.JFileChooser;
@@ -145,9 +149,13 @@ public class JobController extends Controller<JobModel, JobView> implements Even
 
         try {
             job = builder.build();
-        } catch (final NullPointerException | IllegalArgumentException e) {
-            // todo Handle case where job build fails
-            e.printStackTrace();
+        } catch (final NullPointerException e) {
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            final String alertMessage = "Unable to build job. Have you selected an output directory and/or any files?";
+            final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
+            alert.showAndWait();
         }
 
         return job;
@@ -205,8 +213,12 @@ public class JobController extends Controller<JobModel, JobView> implements Even
                 view.getTextField_outputFolder().setText(fileChooser.getSelectedFile().getPath() + "/");
             }
         } catch(final HeadlessException e) {
-            // todo Figure out what to do in this case.
-            e.printStackTrace();
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            final String alertMessage = "There was an issue selecting an output folder.\nSee the log file for more information.";
+            final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
+            alert.showAndWait();
         }
     }
 }
