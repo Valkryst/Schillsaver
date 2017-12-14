@@ -1,5 +1,6 @@
 package misc;
 
+import com.valkryst.VMVC.Settings;
 import lombok.Data;
 
 import javax.swing.filechooser.FileSystemView;
@@ -9,6 +10,9 @@ import java.util.*;
 
 @Data
 public class JobBuilder {
+    /** The program settings. */
+    private Settings settings;
+
     /** The name of the Job. */
     private String name;
     /** The output directory. */
@@ -18,8 +22,14 @@ public class JobBuilder {
     /** Whether the Job is an Encode Job or a Decode Job. */
     private boolean isEncodeJob = true;
 
-    /** Constructs a new JobBuilder. */
-    public JobBuilder() {
+    /**
+     * Constructs a new JobBuilder.
+     *
+     * @param settings
+     *          The program settings.
+     */
+    public JobBuilder(final Settings settings) {
+        this.settings = settings;
         reset();
     }
 
@@ -73,6 +83,26 @@ public class JobBuilder {
 
     /** Sets the output directory to the home directory. */
     private void setOutputToHomeDirectory() {
+        if (isEncodeJob) {
+            final String defaultEncodeDir = settings.getStringSetting("Default Encoding Output Directory");
+
+            if (defaultEncodeDir.isEmpty() == false) {
+                final File file = new File(defaultEncodeDir);
+                if (file.exists() && file.isDirectory()) {
+                    outputDirectory = defaultEncodeDir;
+                }
+            }
+        } else {
+            final String defaultDecodeDir = settings.getStringSetting("Default Decoding Output Directory");
+
+            if (defaultDecodeDir.isEmpty() == false) {
+                final File file = new File(defaultDecodeDir);
+                if (file.exists() && file.isDirectory()) {
+                    outputDirectory = defaultDecodeDir;
+                }
+            }
+        }
+
         try {
             final File home = FileSystemView.getFileSystemView().getHomeDirectory();
             outputDirectory = home.getCanonicalPath() + "/";
