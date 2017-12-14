@@ -45,23 +45,11 @@ public class Driver extends Application {
                 final String alertMessage = "You must set the path to FFMPEG's executable.";
                 final Alert alert = new Alert(Alert.AlertType.INFORMATION, alertMessage, ButtonType.OK);
                 alert.showAndWait();
-            }
 
-            while (settings.getStringSetting("FFMPEG Executable Path").isEmpty()) {
+
                 final File ffmpegFile = selectFFMPEGExecutable(primaryStage);
-
-                if (ffmpegFile != null) {
-                    settings.setSetting("FFMPEG Executable Path", ffmpegFile.getAbsolutePath());
-                    settings.saveSettings();
-                } else {
-                    final String alertMessage = "No file was selected, would you like to try again?";
-                    final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.YES, ButtonType.NO);
-                    alert.showAndWait();
-
-                    if (alert.getResult().equals(ButtonType.NO)) {
-                        System.exit(0);
-                    }
-                }
+                settings.setSetting("FFMPEG Executable Path", ffmpegFile.getAbsolutePath());
+                settings.saveSettings();
             }
         } catch (final IOException e) {
             final Logger logger = LogManager.getLogger();
@@ -79,10 +67,25 @@ public class Driver extends Application {
      *         The FFMPEG executable.
      */
     private File selectFFMPEGExecutable(final Stage primaryStage) {
-        final FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("FFMPEG Executable Selection");
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        File ffmpegFile = null;
 
-        return fileChooser.showOpenDialog(primaryStage);
+        while (ffmpegFile == null) {
+            final FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("FFMPEG Executable Selection");
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            ffmpegFile = fileChooser.showOpenDialog(primaryStage);
+
+            if (ffmpegFile == null) {
+                final String alertMessage = "No file was selected, would you like to try again?";
+                final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.YES, ButtonType.NO);
+                alert.showAndWait();
+
+                if (alert.getResult().equals(ButtonType.NO)) {
+                    System.exit(0);
+                }
+            }
+        }
+
+        return ffmpegFile;
     }
 }
