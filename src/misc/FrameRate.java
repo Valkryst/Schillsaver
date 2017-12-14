@@ -18,26 +18,4 @@ public enum FrameRate {
     FrameRate(final int frameRate) {
         this.frameRate = frameRate;
     }
-
-    /**
-     * Returns the FrameRate that matches the specified frame rate.
-     *
-     * @param frameRate
-     *          The frame rate to check for.
-     *
-     * @return
-     *          The matching FrameRate, or null if no FrameRate match the given
-     *          frame rate.
-     */
-    public static FrameRate getFrameRate(final int frameRate) {
-        if (frameRate == 30) {
-            return FrameRate.FPS30;
-        }
-
-        if (frameRate == 60) {
-            return FrameRate.FPS60;
-        }
-
-        return null;
-    }
 }
