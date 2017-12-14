@@ -28,6 +28,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
     public MainController(final SceneManager sceneManager, final Settings settings) {
         super (sceneManager, settings, new MainModel(), new MainView());
         addEventHandlers();
+        model.loadJobs();
     }
 
     /**
