@@ -19,12 +19,10 @@ The option to decode these files is also available.
     
 * A recent version of [FFMPEG](http://ffmpeg.org/download.html).
 
-# Instructions:
+## Misc. Notes
 
 * To open the program on Linux, you may need to open up the terminal and 
-  run the command "java -jar Schillsaver.jar".
-  
-# Misc. Notes
+   run the command "java -jar Schillsaver.jar".
 
 * Schillsaver does it's best to clean up any temporary files if any issues occur.
 
