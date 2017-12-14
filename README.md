@@ -1,4 +1,4 @@
-# Introduction:
+## Introduction:
 
 Schillsaver is a program that encodes files from their native formats into a video
 of black and white blocks, which represent the bits of the source file.
@@ -8,7 +8,7 @@ portion of the source file's data.
 
 The option to decode these files is also available.
 
-# Requirements:
+## Requirements:
 
 * Any version of Java from 8 onwards.
     * http://java.com/en/download/ or an equivalent Linux package.
