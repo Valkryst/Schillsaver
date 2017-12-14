@@ -193,6 +193,15 @@ public class MainController extends Controller<MainModel, MainView> implements E
         model.saveJobs();
     }
 
+    /**
+     * Processes the encode and decode jobs.
+     *
+     * @param encodeJobs
+     *          The encode jobs.
+     *
+     * @param decodeJobs
+     *          The decode jobs.
+     */
     private void processJobs(final List<Thread> encodeJobs, final List<Thread> decodeJobs) {
         // Run Encode Jobs
         final Thread mainEncodingThread = new Thread(() -> {
@@ -201,6 +210,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
                try {
                    thread.join();
+                   saveJobsToFile();
                } catch (final InterruptedException e) {
                    final Logger logger = LogManager.getLogger();
                    logger.error(e);
@@ -219,6 +229,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
                 try {
                     thread.join();
+                    saveJobsToFile();
                 } catch (final InterruptedException e) {
                     final Logger logger = LogManager.getLogger();
                     logger.error(e);
