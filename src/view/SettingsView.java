@@ -22,6 +22,8 @@ public class SettingsView extends View {
     @Getter private Button button_selectFfmpegExecutablePath;
     @Getter private Button button_selectDefaultEncodingFolder;
     @Getter private Button button_selectDefaultDecodingFolder;
+    @Getter private Button button_accept;
+    @Getter private Button button_cancel;
 
     @Getter private TextField textField_ffmpegExecutablePath;
     @Getter private TextField textField_defaultEncodingFolder;
@@ -45,10 +47,11 @@ public class SettingsView extends View {
         vBox.getChildren().add(createControlRow(button_selectDefaultEncodingFolder, textField_defaultEncodingFolder));
         vBox.getChildren().add(createControlRow(button_selectDefaultDecodingFolder, textField_defaultDecodingFolder));
         vBox.getChildren().add(hBox);
+        vBox.getChildren().add(createBottomMenuBar());
 
         this.pane = vBox;
-        this.pane.setMinSize(512, 108);
-        this.pane.setMaxHeight(100);
+        this.pane.setMinSize(512, 133);
+        this.pane.setMaxHeight(133);
     }
 
     /** Initializes the components. */
@@ -56,6 +59,8 @@ public class SettingsView extends View {
         button_selectFfmpegExecutablePath = new Button("Select FFMPEG Executable Path");
         button_selectDefaultEncodingFolder = new Button("Select Default Encoding Folder");
         button_selectDefaultDecodingFolder = new Button("Select Default Decoding Folder");
+        button_accept = createIconButton("icons/Accept.png", 16, 16);
+        button_cancel = createIconButton("icons/Cancel.png", 16, 16);
 
         textField_ffmpegExecutablePath = new TextField(settings.getStringSetting("FFMPEG Executable Path"));
         textField_ffmpegExecutablePath.setPromptText("FFMPEG Executable Path");
@@ -128,5 +133,15 @@ public class SettingsView extends View {
         button.setMinWidth(200);
 
         return hBox;
+    }
+
+    /**
+     * Creates the bottom menu bar.
+     *
+     * @return
+     *         The bottom menu bar.
+     */
+    private Pane createBottomMenuBar() {
+        return createHorizontalGridPane(button_accept, button_cancel);
     }
 }
