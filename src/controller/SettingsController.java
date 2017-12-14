@@ -80,13 +80,30 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
      *          Whether or not the update succeeded.
      */
     private boolean updateSettings() {
-        final String ffmpegPath = view.getTextField_ffmpegExecutablePath().getText();
-        final String encodeFolderPath = view.getTextField_defaultEncodingFolder().getText();
-        final String decodeFolderPath = view.getTextField_defaultDecodingFolder().getText();
-        final String codec = view.getTextField_codec().getText();
-        final String frameDimension = view.getComboBox_frameDimensions().getSelectionModel().getSelectedItem();
-        final String frameRate = view.getComboBox_frameRate().getSelectionModel().getSelectedItem();
-        final String blockSize = view.getComboBox_blockSize().getSelectionModel().getSelectedItem();
+        String ffmpegPath = view.getTextField_ffmpegExecutablePath().getText();
+        String encodeFolderPath = view.getTextField_defaultEncodingFolder().getText();
+        String decodeFolderPath = view.getTextField_defaultDecodingFolder().getText();
+        String codec = view.getTextField_codec().getText();
+        String frameDimension = view.getComboBox_frameDimensions().getSelectionModel().getSelectedItem();
+        String frameRate = view.getComboBox_frameRate().getSelectionModel().getSelectedItem();
+        String blockSize = view.getComboBox_blockSize().getSelectionModel().getSelectedItem();
+
+        // Ensure some strings are empty if they're null.
+        if (ffmpegPath == null) {
+            ffmpegPath = "";
+        }
+
+        if (encodeFolderPath == null) {
+            encodeFolderPath = "";
+        }
+
+        if (decodeFolderPath == null) {
+            decodeFolderPath = "";
+        }
+
+        if (codec == null) {
+            codec = "";
+        }
 
         // Validate FFMPEG Path:
         File temp = new File(ffmpegPath);
@@ -104,7 +121,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
         // Validate Encode Folder Path:
         temp = new File(encodeFolderPath);
 
-        if (temp.exists() && temp.isDirectory()) {
+        if (encodeFolderPath.isEmpty() || (temp.exists() && temp.isDirectory())) {
             settings.setSetting("Default Encoding Output Directory", encodeFolderPath);
         } else {
             final String alertMessage = "The default encode folder path either doesn't exist or isn't a directory.";
@@ -118,7 +135,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
         // Validate Decode Folder Path:
         temp = new File(decodeFolderPath);
 
-        if (temp.exists() && temp.isDirectory()) {
+        if (decodeFolderPath.isEmpty() || (temp.exists() && temp.isDirectory())) {
             settings.setSetting("Default Decoding Output Directory", decodeFolderPath);
         } else {
             final String alertMessage = "The default decode folder path either doesn't exist or isn't a directory.";
