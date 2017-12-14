@@ -95,7 +95,7 @@ public class MainModel extends Model {
                 tab.setClosable(false);
 
                 // Prepare Files:
-                final File inputFile;
+                File inputFile = null;
                 final File outputFile;
 
                 try {
@@ -148,7 +148,7 @@ public class MainModel extends Model {
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {
-                            outputArea.appendText("Error:");
+                            outputArea.appendText("\nError:");
                             outputArea.appendText("\n\t" + e.getMessage());
                             outputArea.appendText("\n\tSee log file for more information.");
                         });
@@ -166,10 +166,14 @@ public class MainModel extends Model {
 
                     final TextArea outputArea = ((TextArea) tab.getContent());
                     Platform.runLater(() -> {
-                        outputArea.appendText("Error:");
+                        outputArea.appendText("\nError:");
                         outputArea.appendText("\n\t" + e.getMessage());
                         outputArea.appendText("\n\tSee log file for more information.");
                     });
+
+                    if (inputFile != null) {
+                        inputFile.delete();
+                    }
 
                     tab.setClosable(true);
                     return;
@@ -214,7 +218,7 @@ public class MainModel extends Model {
                         if (outputFile.delete() == false) {
                             final TextArea outputArea = ((TextArea) tab.getContent());
                             Platform.runLater(() -> {
-                                outputArea.appendText("Error:");
+                                outputArea.appendText("\nError:");
                                 outputArea.appendText("\n\tUnable to delete " + outputFile.getAbsolutePath());
                                 outputArea.appendText("\n\tTry manually deleting the file, then re-running this decode job.");
                             });
@@ -270,7 +274,7 @@ public class MainModel extends Model {
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {
-                            outputArea.appendText("Error:");
+                            outputArea.appendText("\nError:");
                             outputArea.appendText("\n\t" + e.getMessage());
                             outputArea.appendText("\n\tSee log file for more information.");
                         });
