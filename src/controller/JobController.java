@@ -39,10 +39,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         addEventHandlers();
     }
 
-    /**
-     * Sets all of the view's controls to use this class as their
-     * event handler.
-     */
+    /** Sets all of the view's controls to use this class as their event handler. */
     private void addEventHandlers() {
         view.getButton_addFiles().setOnAction(this);
         view.getButton_removeSelectedFiles().setOnAction(this);

@@ -32,10 +32,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         loadJobsFromFile();
     }
 
-    /**
-     * Sets all of the view's controls to use this class as their
-     * event handler.
-     */
+    /** Sets all of the view's controls to use this class as their event handler. */
     private void addEventHandlers() {
         view.getButton_createJob().setOnAction(this);
         view.getButton_editJob().setOnAction(this);
