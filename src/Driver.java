@@ -26,9 +26,6 @@ public class Driver extends Application {
         final HashMap<String, String> defaultSettings = new HashMap<>();
         defaultSettings.put("FFMPEG Executable Path", "");
 
-        defaultSettings.put("Total Encoding Threads", String.valueOf(1));
-        defaultSettings.put("Total Decoding Threads", String.valueOf(1));
-
         defaultSettings.put("Encoding Frame Dimensions", FrameDimension.P720.name());
         defaultSettings.put("Encoding Frame Rate", FrameRate.FPS30.name());
         defaultSettings.put("Encoding Block Size", BlockSize.S8.name());
