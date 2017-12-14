@@ -51,7 +51,6 @@ public class SettingsView extends View {
 
         this.pane = vBox;
         this.pane.setMinSize(720, 123);
-        this.pane.setMaxHeight(123);
     }
 
     /** Initializes the components. */
