@@ -138,7 +138,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      *         The job.
      */
     private Job createJob() {
-        final JobBuilder builder = new JobBuilder();
+        final JobBuilder builder = new JobBuilder(settings);
         builder.setName(view.getTextField_jobName().getText());
         builder.setOutputDirectory(view.getTextField_outputFolder().getText());
         builder.setFiles(model.getFiles());
