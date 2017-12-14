@@ -21,6 +21,7 @@ public class JobView extends View {
 
     @Getter private ComboBox<String> comboBox_jobType;
 
+    /** Constructs a new JobView. */
     public JobView() {
         initializeComponents();
         setComponentTooltips();
