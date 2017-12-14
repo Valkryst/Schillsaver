@@ -6,7 +6,10 @@ import com.valkryst.VMVC.controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.control.ListView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import misc.Job;
 import model.MainModel;
 import org.apache.logging.log4j.LogManager;
@@ -96,7 +99,22 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         if (source.equals(view.getButton_programSettings())) {
             if (view.getButton_programSettings().isDisabled() == false) {
-                sceneManager.swapToNewScene(new SettingsController(sceneManager, settings));
+                final SettingsController controller = new SettingsController(sceneManager, settings);
+
+                final Scene scene = new Scene(controller.getView().getPane());
+                scene.getStylesheets().add("global.css");
+                scene.getRoot().getStyleClass().add("main-root");
+
+                final Stage dialog = new Stage();
+                dialog.setTitle("Settings");
+                dialog.setScene(scene);
+                dialog.setResizable(false);
+                dialog.initOwner(sceneManager.getPrimaryStage());
+                dialog.initModality(Modality.APPLICATION_MODAL);
+
+                controller.setDialog(dialog);
+
+                dialog.show();
             }
         }
     }
