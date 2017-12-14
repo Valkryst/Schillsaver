@@ -28,7 +28,8 @@ public class MainController extends Controller<MainModel, MainView> implements E
     public MainController(final SceneManager sceneManager, final Settings settings) {
         super (sceneManager, settings, new MainModel(), new MainView());
         addEventHandlers();
-        model.loadJobs();
+
+        loadJobsFromFile();
     }
 
     /**
@@ -51,18 +52,21 @@ public class MainController extends Controller<MainModel, MainView> implements E
         if (source.equals(view.getButton_createJob())) {
             if (view.getButton_createJob().isDisabled() == false) {
                 openJobView();
+                saveJobsToFile();
             }
         }
 
         if (source.equals(view.getButton_editJob())) {
             if (view.getButton_editJob().isDisabled() == false) {
                 openEditJobView();
+                saveJobsToFile();
             }
         }
 
         if (source.equals(view.getButton_deleteSelectedJobs())) {
             if (view.getButton_deleteSelectedJobs().isDisabled() == false) {
                 deleteSelectedJobs();
+                saveJobsToFile();
             }
         }
 
