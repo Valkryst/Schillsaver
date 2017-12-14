@@ -166,6 +166,7 @@ public class MainModel extends Model {
                     return;
                 }
 
+                inputFile.delete();
                 tab.setClosable(true);
             });
 
