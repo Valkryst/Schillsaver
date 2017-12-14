@@ -181,6 +181,9 @@ public class MainModel extends Model {
 
                 inputFile.delete();
                 tab.setClosable(true);
+
+                view.getJobsList().getItems().remove(job.getName());
+                getJobs().remove(job.getName());
             });
 
             encodingJobs.add(thread);
@@ -290,6 +293,9 @@ public class MainModel extends Model {
                     Platform.runLater(() -> ((TextArea) tab.getContent()).appendText("\n\nDecoding Complete"));
 
                     tab.setClosable(true);
+
+                    view.getJobsList().getItems().remove(job.getName());
+                    getJobs().remove(job.getName());
                 });
 
                 decodingJobs.add(thread);
