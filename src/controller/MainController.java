@@ -96,7 +96,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         if (source.equals(view.getButton_programSettings())) {
             if (view.getButton_programSettings().isDisabled() == false) {
-                editProgramSettings();
+                sceneManager.swapToNewScene(new SettingsController(sceneManager, settings));
             }
         }
     }
@@ -247,9 +247,5 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
             e.printStackTrace();
         }
-    }
-
-    private void editProgramSettings() {
-
     }
 }
