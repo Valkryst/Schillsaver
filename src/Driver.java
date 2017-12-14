@@ -4,6 +4,7 @@ import controller.MainController;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import misc.BlockSize;
@@ -23,6 +24,8 @@ public class Driver extends Application {
 
     @Override
     public void start(final Stage primaryStage) {
+        primaryStage.getIcons().add(new Image("icons/Icon.png"));
+
         final HashMap<String, String> defaultSettings = new HashMap<>();
         defaultSettings.put("FFMPEG Executable Path", "");
 
