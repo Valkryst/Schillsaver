@@ -24,8 +24,19 @@ public enum FrameDimension {
      *
      * @param height
      *          The frame height.
+     *
+     * @throws IllegalArgumentException
+     *          If the width or height is less than one.
      */
     FrameDimension(final int width, final int height) {
+        if (width < 1) {
+            throw new IllegalArgumentException("The width cannot be < 1.");
+        }
+
+        if (height < 1) {
+            throw new IllegalArgumentException("The height cannot be < 1.");
+        }
+
         this.width = width;
         this.height = height;
     }
