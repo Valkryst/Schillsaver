@@ -2,6 +2,7 @@ package misc;
 
 import com.valkryst.VMVC.Settings;
 import lombok.Getter;
+import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,8 +29,11 @@ public class Job implements Serializable {
      *
      * @param builder
      *          The builder
+     *
+     * @throws NullPointerException
+     *         If the builder is null.
      */
-    Job(final JobBuilder builder) {
+    Job(final @NonNull JobBuilder builder) {
         name = builder.getName();
         outputDirectory = builder.getOutputDirectory();
         files = builder.getFiles();
@@ -47,8 +51,11 @@ public class Job implements Serializable {
      *
      * @throws IOException
      *         If an I/O error occurs.
+     *
+     * @throws NullPointerException
+     *         If the settings is null.
      */
-    public File zipFiles(final Settings settings) throws IOException {
+    public File zipFiles(final @NonNull Settings settings) throws IOException {
         final File zipFile = new File(name + ".zip");
 
         final FileOutputStream fos = new FileOutputStream(zipFile);
@@ -90,8 +97,11 @@ public class Job implements Serializable {
      *
      * @param settings
      *          The settings.
+     *
+     * @throws NullPointerException
+     *         If the file or settings is null.
      */
-    private static File padFile(final File file, final Settings settings) {
+    private static File padFile(final @NonNull File file, final @NonNull Settings settings) {
         try (
             final FileOutputStream outputStream = new FileOutputStream(file, true);
         ) {
