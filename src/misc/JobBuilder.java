@@ -4,6 +4,7 @@ import com.valkryst.VMVC.Settings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import lombok.Data;
+import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,8 +32,11 @@ public class JobBuilder {
      *
      * @param settings
      *          The program settings.
+     *
+     * @throws NullPointerException
+     *         If the settings is null.
      */
-    public JobBuilder(final Settings settings) {
+    public JobBuilder(final @NonNull Settings settings) {
         this.settings = settings;
         reset();
     }
