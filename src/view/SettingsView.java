@@ -129,7 +129,7 @@ public class SettingsView extends View {
         hBox.getChildren().add(button);
         hBox.getChildren().add(field);
 
-        button.setMinWidth(200);
+        button.setMinWidth(256);
 
         return hBox;
     }
