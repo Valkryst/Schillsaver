@@ -32,6 +32,9 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
      *
      * @param settings
      *          The program settings.
+     *
+     * @throws NullPointerException
+     *         If the sceneManager or settings is null.
      */
     SettingsController(final SceneManager sceneManager, final Settings settings) {
         super (sceneManager, settings, new SettingsModel(), new SettingsView(settings));

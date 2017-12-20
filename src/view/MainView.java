@@ -4,6 +4,7 @@ import com.valkryst.VMVC.view.View;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.Getter;
+import lombok.NonNull;
 
 public class MainView extends View {
     @Getter private Button button_createJob;
@@ -118,8 +119,11 @@ public class MainView extends View {
      *
      * @return
      *          The tab.
+     *
+     * @throws NullPointerException
+     *         If the title is null.
      */
-    public Tab addOutputTab(final String title) {
+    public Tab addOutputTab(final @NonNull String title) {
         // Create Text Area for Output
         final TextArea textArea = new TextArea();
         textArea.setEditable(false);

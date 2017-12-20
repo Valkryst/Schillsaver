@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import misc.BlockSize;
 import misc.FrameDimension;
@@ -84,8 +85,11 @@ public class MainModel extends Model {
      *
      * @return
      *          The threads.
+     *
+     * @throws NullPointerException
+     *         If the settings or view is null.
      */
-    public List<Thread> prepareEncodingJobs(final Settings settings, final MainView view) {
+    public List<Thread> prepareEncodingJobs(final @NonNull Settings settings, final @NonNull MainView view) {
         final List<Thread> encodingJobs = new ArrayList<>();
 
         for (final Job job : getEncodingJobs()) {
@@ -205,8 +209,11 @@ public class MainModel extends Model {
      *
      * @return
      *          The threads.
+     *
+     * @throws NullPointerException
+     *         If the settings or view is null.
      */
-    public List<Thread> prepareDecodingJobs(final Settings settings, final MainView view) {
+    public List<Thread> prepareDecodingJobs(final @NonNull Settings settings, final @NonNull MainView view) {
         final List<Thread> decodingJobs = new ArrayList<>();
 
         for (final Job job : getDecodingJobs()) {

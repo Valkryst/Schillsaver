@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.NonNull;
 import misc.Job;
 import model.MainModel;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +28,9 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *
      * @param settings
      *          The program settings.
+     *
+     * @throws NullPointerException
+     *         If the sceneManager or settings is null.
      */
     public MainController(final SceneManager sceneManager, final Settings settings) {
         super (sceneManager, settings, new MainModel(), new MainView());
@@ -169,8 +173,11 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *
      * @param job
      *          The job.
+     *
+     * @throws NullPointerException
+     *         If the job is null.
      */
-    void addJob(final Job job) {
+    void addJob(final @NonNull Job job) {
         final String jobName = job.getName();
 
         if (! containsJob(jobName)) {
@@ -189,8 +196,11 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *
      * @return
      *          Whether the model contains a job with the name.
+     *
+     * @throws NullPointerException
+     *         If the jobName is null.
      */
-    private boolean containsJob(final String jobName) {
+    private boolean containsJob(final @NonNull String jobName) {
         return model.getJobs().containsKey(jobName);
     }
 
@@ -216,8 +226,11 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *
      * @param decodeJobs
      *          The decode jobs.
+     *
+     * @throws NullPointerException
+     *         If the encodeJobs or decodeJobs is null.
      */
-    private void processJobs(final List<Thread> encodeJobs, final List<Thread> decodeJobs) {
+    private void processJobs(final @NonNull List<Thread> encodeJobs, final @NonNull List<Thread> decodeJobs) {
         // Run Encode Jobs
         final Thread mainEncodingThread = new Thread(() -> {
            for (final Thread thread : encodeJobs) {

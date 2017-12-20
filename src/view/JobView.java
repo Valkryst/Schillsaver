@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.Getter;
+import lombok.NonNull;
 
 public class JobView extends View {
     @Getter private Button button_addFiles;
@@ -27,8 +28,11 @@ public class JobView extends View {
      *
      * @param settings
      *          The program settings.
+     *
+     * @throws NullPointerException
+     *         If the settings is null.
      */
-    public JobView(final Settings settings) {
+    public JobView(final @NonNull Settings settings) {
         initializeComponents(settings);
         setComponentTooltips();
 
@@ -49,8 +53,11 @@ public class JobView extends View {
      *
      * @param settings
      *          The program settings.
+     *
+     * @throws NullPointerException
+     *         If the settings is null.
      */
-    private void initializeComponents(final Settings settings) {
+    private void initializeComponents(final @NonNull Settings settings) {
         button_addFiles = new Button("Add Files");
         button_removeSelectedFiles = new Button("Remove Selected Files");
         button_selectOutputFolder = new Button("Select Output Folder");

@@ -11,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
+import lombok.NonNull;
 import misc.BlockSize;
 import misc.FrameDimension;
 import misc.FrameRate;
@@ -34,7 +35,7 @@ public class SettingsView extends View {
     @Getter private ComboBox<String> comboBox_frameRate;
     @Getter private ComboBox<String> comboBox_blockSize;
 
-    public SettingsView(final Settings settings) {
+    public SettingsView(final @NonNull Settings settings) {
         initializeComponents(settings);
         setComponentTooltips();
 
@@ -54,7 +55,7 @@ public class SettingsView extends View {
     }
 
     /** Initializes the components. */
-    private void initializeComponents(final Settings settings) {
+    private void initializeComponents(final @NonNull Settings settings) {
         button_selectFfmpegExecutablePath = new Button("Select FFMPEG Executable Path");
         button_selectDefaultEncodingFolder = new Button("Select Default Encoding Folder");
         button_selectDefaultDecodingFolder = new Button("Select Default Decoding Folder");
@@ -120,7 +121,7 @@ public class SettingsView extends View {
         setTooltip(comboBox_blockSize, "The block size to use when encoding and decoding.");
     }
 
-    private Pane createControlRow(final Button button, final TextField field) {
+    private Pane createControlRow(final @NonNull Button button, final @NonNull TextField field) {
         final HBox hBox = new HBox();
 
         HBox.setHgrow(button, Priority.NEVER);

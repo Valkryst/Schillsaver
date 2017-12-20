@@ -12,6 +12,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
+import lombok.NonNull;
 import misc.Job;
 import misc.JobBuilder;
 import model.JobModel;
@@ -33,8 +34,11 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      *
      * @param settings
      *          The program settings.
+     *
+     * @throws NullPointerException
+     *         If the sceneManager or settings is null.
      */
-    public JobController(final SceneManager sceneManager, final Settings settings) {
+    public JobController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings) {
         super (sceneManager, settings, new JobModel(), new JobView(settings));
         addEventHandlers();
     }
@@ -80,8 +84,11 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      *
      * @param job
      *          The job.
+     *
+     * @throws NullPointerException
+     *         If the job is null.
      */
-    void editJob(final Job job) {
+    void editJob(final @NonNull Job job) {
         view.getTextField_jobName().setText(job.getName());
         view.getTextField_outputFolder().setText(job.getOutputDirectory());
 
