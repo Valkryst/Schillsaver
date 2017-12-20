@@ -52,15 +52,36 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
         final Object source = event.getSource();
 
         if (source.equals(view.getButton_selectFfmpegExecutablePath())) {
-            view.getTextField_ffmpegExecutablePath().setText(selectFfmpegExecutablePath());
+            String newPath = selectFfmpegExecutablePath();
+            final String oldPath = view.getTextField_ffmpegExecutablePath().getText();
+
+            if (newPath.isEmpty()) {
+                newPath = oldPath;
+            }
+
+            view.getTextField_ffmpegExecutablePath().setText(newPath);
         }
 
         if (source.equals(view.getButton_selectDefaultEncodingFolder())) {
-            view.getTextField_defaultEncodingFolder().setText(selectFolder());
+            String newPath = selectFolder();
+            final String oldPath = view.getTextField_defaultEncodingFolder().getText();
+
+            if (newPath.isEmpty()) {
+                newPath = oldPath;
+            }
+
+            view.getTextField_defaultEncodingFolder().setText(newPath);
         }
 
         if (source.equals(view.getButton_selectDefaultDecodingFolder())) {
-            view.getTextField_defaultDecodingFolder().setText(selectFolder());
+            String newPath = selectFolder();
+            final String oldPath = view.getTextField_defaultDecodingFolder().getText();
+
+            if (newPath.isEmpty()) {
+                newPath = oldPath;
+            }
+
+            view.getTextField_defaultDecodingFolder().setText(newPath);
         }
 
         if (source.equals(view.getButton_accept())) {
