@@ -120,7 +120,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
     }
 
     /** Deserializes the jobs from a file, if the file exists. */
-    public void loadJobsFromFile() {
+    private void loadJobsFromFile() {
         model.loadJobs();
 
         for (final Job job : model.getJobs().values()) {
@@ -129,7 +129,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
     }
 
     /** Serializes the jobs to a file. */
-    public void saveJobsToFile() {
+    private void saveJobsToFile() {
         model.saveJobs();
     }
 
