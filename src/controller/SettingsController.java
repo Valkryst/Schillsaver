@@ -181,7 +181,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
 
         // Validate Codec:
         if (codec.isEmpty()) {
-            final String alertMessage = "No codec was set.";
+            final String alertMessage = "No codec was set. Defaulting to libx264.";
             final Alert alert = new Alert(Alert.AlertType.WARNING, alertMessage, ButtonType.OK);
             alert.showAndWait();
 
