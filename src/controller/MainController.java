@@ -170,7 +170,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
      * @param job
      *          The job.
      */
-    public void addJob(final Job job) {
+    void addJob(final Job job) {
         final String jobName = job.getName();
 
         if (! containsJob(jobName)) {
@@ -190,7 +190,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
      * @return
      *          Whether the model contains a job with the name.
      */
-    public boolean containsJob(final String jobName) {
+    private boolean containsJob(final String jobName) {
         return model.getJobs().containsKey(jobName);
     }
 
