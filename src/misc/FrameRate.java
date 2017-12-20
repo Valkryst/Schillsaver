@@ -14,8 +14,15 @@ public enum FrameRate {
      *
      * @param frameRate
      *          The frame rate.
+     *
+     * @throws IllegalArgumentException
+     *          If the frameRate is less than one.
      */
     FrameRate(final int frameRate) {
+        if (frameRate < 1) {
+            throw new IllegalArgumentException("The frameRate cannot be < 1.");
+        }
+
         this.frameRate = frameRate;
     }
 }
