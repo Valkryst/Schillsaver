@@ -162,6 +162,10 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final JobController controller = new JobController(sceneManager, settings);
         controller.editJob(job);
 
+        view.getJobsList().getItems().remove(job.getName());
+        model.getJobs().remove(job.getName());
+        view.getJobsList().getSelectionModel().clearSelection();
+
         sceneManager.swapToNewScene(controller);
     }
 
