@@ -33,7 +33,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
      * @param settings
      *          The program settings.
      */
-    public SettingsController(final SceneManager sceneManager, final Settings settings) {
+    SettingsController(final SceneManager sceneManager, final Settings settings) {
         super (sceneManager, settings, new SettingsModel(), new SettingsView(settings));
         addEventHandlers();
     }
