@@ -50,6 +50,8 @@ The option to decode these files is also available.
 * Schillsaver does it's best to clean up any temporary files if any issues occur.
 
     * Please open an issue if you find a case where leftover files exist.
+    
+    * The `Jobs.ser`, `log.txt`, and `Settings.ser` files don't count towards this. The `.ser` files are used to save program data.
 
 * When running an encode job, the files of the job are combined into a single zip
    file before encoding.
@@ -59,3 +61,5 @@ The option to decode these files is also available.
 
 * YouTube may not support 60 FPS videos when the video's resolution is less than
    1080p.
+
+* The `log.txt` file will contain warnings about being unable to load `Jobs.ser`, you can ignore those messages.
