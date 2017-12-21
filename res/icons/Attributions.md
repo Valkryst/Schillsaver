@@ -9,4 +9,7 @@ Icons made by [Hadrien](https://www.flaticon.com/authors/hadrien) from www.flati
 
 * Accept.png
 * Decline.png
+
+Icons edited by Valkryst using Sarafraz Shoukat's work:
+
 * Process.png
