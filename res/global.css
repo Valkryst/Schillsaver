@@ -22,9 +22,6 @@
     -fx-max-height: 2147483647; /* Allow buttons to fill all vertical space. */
     -fx-background-color: #393939;
 
-
-    -fx-border-style: none;
-
     -fx-text-fill: text-color;
 
     -fx-background-radius: 0;
@@ -39,12 +36,17 @@
 }
 
 /** Button - When Tab-Focused */
-.button:focused {
-    -fx-border-color: border-selected-color;
-}
+.button:focused {}
 
 /** Button - When user is clicking on it. */
-.button:armed {}
+.button:armed {
+    -fx-background-color: #4FC3DB;
+}
+
+/** Button - When the button is disabled. */
+.button:disabled, .button:disabled > * {
+    -fx-opacity: 0.5;
+}
 
 /** Content - is used as the content pane of a text-area */
 .content {
@@ -56,9 +58,7 @@
     -fx-background-radius: 0;
 }
 
-.content:focused{
-    -fx-border-color: border-selected-color;
-}
+.content:focused{}
 
 /** Label */
 .label {
@@ -190,4 +190,26 @@
 /** Combo Box - Combo Box List Cells - (When cell selected?) */
 .combo-box .list-view .list-cell:selected {
     -fx-background-color: #23B5D3;
+}
+
+/** List View - (Even) List Cells */
+.list-view .list-cell:even {
+    -fx-background-color: #D3D3D3;
+    -fx-text-fill: black;
+}
+
+/** List View - (Odd) List Cells */
+.list-view .list-cell:odd {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+/** List View - (Odd, Selected) List Cells */
+.list-view .list-cell:odd:selected {
+    -fx-background-color: #91DAE9
+}
+
+/** List View - (Even, Selected) List Cells */
+.list-view .list-cell:even:selected {
+    -fx-background-color: #5AC8DE
 }
