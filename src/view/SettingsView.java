@@ -44,6 +44,7 @@ public class SettingsView extends View {
         hBox.getChildren().addAll(textField_codec, comboBox_frameDimensions, comboBox_frameRate, comboBox_blockSize);
 
         final VBox vBox = new VBox();
+        VBox.setVgrow(vBox, Priority.ALWAYS);
         vBox.getChildren().add(createControlRow(button_selectFfmpegExecutablePath, textField_ffmpegExecutablePath));
         vBox.getChildren().add(createControlRow(button_selectDefaultEncodingFolder, textField_defaultEncodingFolder));
         vBox.getChildren().add(createControlRow(button_selectDefaultDecodingFolder, textField_defaultDecodingFolder));
@@ -123,6 +124,7 @@ public class SettingsView extends View {
 
     private Pane createControlRow(final @NonNull Button button, final @NonNull TextField field) {
         final HBox hBox = new HBox();
+        VBox.setVgrow(hBox, Priority.ALWAYS);
 
         HBox.setHgrow(button, Priority.NEVER);
         HBox.setHgrow(field, Priority.ALWAYS);
