@@ -27,6 +27,10 @@ The option to decode these files is also available.
     
 * A recent version of [FFMPEG](http://ffmpeg.org/download.html).
 
+### Links:
+
+* https://www.reddit.com/r/Schillsaver/
+
 ### Misc. Notes
 
 * To open the program on Linux, you may need to open up the terminal and 
