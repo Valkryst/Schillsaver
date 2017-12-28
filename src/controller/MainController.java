@@ -123,7 +123,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 controller.setDialog(dialog);
 
                 dialog.show();
-                return;
             }
         }
     }

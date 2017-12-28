@@ -111,14 +111,17 @@ public class JobController extends Controller<JobModel, JobView> implements Even
 
         if (source.equals(view.getButton_addFiles())) {
             addFiles();
+            return;
         }
 
         if (source.equals(view.getButton_removeSelectedFiles())) {
             removeSelectedFiles();
+            return;
         }
 
         if (source.equals(view.getButton_selectOutputFolder())) {
             selectOutputFolder();
+            return;
         }
 
         if (source.equals(view.getButton_accept())) {
@@ -128,6 +131,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             controller.addJob(createJob());
 
             sceneManager.swapToPreviousScene();
+            return;
         }
 
         if (source.equals(view.getButton_cancel())) {

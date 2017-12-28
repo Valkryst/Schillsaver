@@ -63,6 +63,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
             }
 
             view.getTextField_ffmpegExecutablePath().setText(newPath);
+            return;
         }
 
         if (source.equals(view.getButton_selectDefaultEncodingFolder())) {
@@ -74,6 +75,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
             }
 
             view.getTextField_defaultEncodingFolder().setText(newPath);
+            return;
         }
 
         if (source.equals(view.getButton_selectDefaultDecodingFolder())) {
@@ -85,6 +87,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
             }
 
             view.getTextField_defaultDecodingFolder().setText(newPath);
+            return;
         }
 
         if (source.equals(view.getButton_accept())) {
@@ -101,6 +104,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
                 }
 
                 dialog.close();
+                return;
             }
         }
 
