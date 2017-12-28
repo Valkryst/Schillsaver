@@ -50,7 +50,7 @@ public class MainView extends View {
     /** Sets the tooltips of the components. */
     private void setComponentTooltips() {
         setTooltip(button_createJob, "Create a new job.");
-        setTooltip(button_editJob, "Edit the selected job..");
+        setTooltip(button_editJob, "Edit the selected job.");
         setTooltip(button_deleteSelectedJobs, "Delete all selected jobs.");
         setTooltip(button_processJobs, "Process jobs.");
 
