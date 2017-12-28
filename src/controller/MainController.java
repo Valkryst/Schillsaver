@@ -57,6 +57,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
             if (view.getButton_createJob().isDisabled() == false) {
                 openJobView();
                 saveJobsToFile();
+                return;
             }
         }
 
@@ -64,6 +65,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
             if (view.getButton_editJob().isDisabled() == false) {
                 openEditJobView();
                 saveJobsToFile();
+                return;
             }
         }
 
@@ -71,6 +73,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
             if (view.getButton_deleteSelectedJobs().isDisabled() == false) {
                 deleteSelectedJobs();
                 saveJobsToFile();
+                return;
             }
         }
 
@@ -98,6 +101,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 });
 
                 thread.start();
+                return;
             }
         }
 
@@ -119,6 +123,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 controller.setDialog(dialog);
 
                 dialog.show();
+                return;
             }
         }
     }
