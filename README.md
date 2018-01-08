@@ -20,9 +20,8 @@ The option to decode these files is also available.
 
 * Any version of Java from 8 onwards.
     * http://java.com/en/download/ or an equivalent Linux package.
-    * See http://docs.oracle.com/javase/8/docs/technotes/guides/install/linux_jdk.html for
-      more information on installing it for Linux.
-        * There may be issues with using OpenJDK.
+    * See [here](http://docs.oracle.com/javase/8/docs/technotes/guides/install/linux_jdk.html) for
+      more information on installing Java on Linux.
 
     
 * A recent version of [FFMPEG](http://ffmpeg.org/download.html).
