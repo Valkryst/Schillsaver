@@ -67,7 +67,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             if (db.hasFiles()) {
                 for (final File file : db.getFiles()) {
                     view.getFileList().getItems().add(file.getName());
-                    model.getFiles().add(file);
+                    model.addFile(file);
                 }
 
                 event.setDropCompleted(true);
@@ -92,7 +92,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         view.getTextField_jobName().setText(job.getName());
         view.getTextField_outputFolder().setText(job.getOutputDirectory());
 
-        model.getFiles().addAll(job.getFiles());
+        job.getFiles().forEach(model::addFile);
 
         for (final File file : job.getFiles()) {
             view.getFileList().getItems().add(file.getName());
@@ -178,7 +178,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         final List<File> selectedFiles = fileChooser.showOpenMultipleDialog(sceneManager.getPrimaryStage());
 
         if (selectedFiles != null) {
-            model.getFiles().addAll(selectedFiles);
+            selectedFiles.forEach(model::addFile);
 
             // Add all of the files to the list:
             for (final File f : selectedFiles) {
@@ -194,7 +194,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
 
         for (final String fileName : selectedFiles) {
             view.getFileList().getItems().remove(fileName);
-            model.getFiles().removeIf(file -> file.getName().equals(fileName));
+            model.removeFilesWithFilename(fileName);
         }
 
         fileList.getSelectionModel().clearSelection();
