@@ -117,9 +117,18 @@ public class SettingsView extends View {
         setTooltip(textField_defaultDecodingFolder, "The path to the default decoding folder that all decode jobs will output to.");
         setTooltip(textField_codec, "The codec to use when encoding and decoding.");
 
-        setTooltip(comboBox_frameDimensions, "The frame dimensions to use when encoding.");
         setTooltip(comboBox_frameRate, "The frame rate to use when encoding.");
         setTooltip(comboBox_blockSize, "The block size to use when encoding and decoding.");
+
+        // Build the Frame Dimensions tooltip:
+        final StringBuilder frameDimensionsTooltip = new StringBuilder();
+        frameDimensionsTooltip.append("The frame dimensions to use when encoding.");
+
+        for (final FrameDimension frameDimension : FrameDimension.values()) {
+            frameDimensionsTooltip.append("\n    ").append(frameDimension);
+        }
+
+        setTooltip(comboBox_frameDimensions, frameDimensionsTooltip.toString());
     }
 
     private Pane createControlRow(final @NonNull Button button, final @NonNull TextField field) {
