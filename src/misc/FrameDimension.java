@@ -40,4 +40,9 @@ public enum FrameDimension {
         this.width = width;
         this.height = height;
     }
+
+    @Override
+    public String toString() {
+        return this.name() + ": " + width + "x" + height;
+    }
 }
