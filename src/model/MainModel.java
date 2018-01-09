@@ -261,24 +261,32 @@ public class MainModel extends Model {
                             return;
                         }
                     }
-
-                    // Construct FFMPEG String:
+                    // Construct FFMPEG Command:
                     final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
 
-                    final StringBuilder sb = new StringBuilder();
-                    final Formatter formatter = new Formatter(sb, Locale.US);
+                    final List<String> ffmpegCommands = new ArrayList<>();
+                    ffmpegCommands.add(settings.getStringSetting("FFMPEG Executable Path"));
 
-                    formatter.format("\"%s\" -i \"%s\" -vf \"format=pix_fmts=monob,scale=iw*%f:-1\" -sws_flags area -loglevel %s -f rawvideo \"%s\"",
-                            settings.getStringSetting("FFMPEG Executable Path"),
-                            inputFile.getAbsolutePath(),
-                            1.0 / blockSize.width,
-                            "verbose",
-                            outputFile.getAbsoluteFile());
+                    ffmpegCommands.add("-i");
+                    ffmpegCommands.add(inputFile.getAbsolutePath());
 
-                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(sb.toString()));
+                    ffmpegCommands.add("-vf");
+                    ffmpegCommands.add("format=pix_fmts=monob,scale=iw*" + (1.0 / blockSize.width) + ":-1");
+
+                    ffmpegCommands.add("-sws_flags");
+                    ffmpegCommands.add("area");
+
+                    ffmpegCommands.add("-loglevel");
+                    ffmpegCommands.add("verbose");
+
+                    ffmpegCommands.add("-f");
+                    ffmpegCommands.add("rawvideo");
+
+                    ffmpegCommands.add("-y");
+                    ffmpegCommands.add(outputFile.getAbsolutePath());
 
                     // Construct FFMPEG Process:
-                    final ProcessBuilder builder = new ProcessBuilder(sb.toString());
+                    final ProcessBuilder builder = new ProcessBuilder(ffmpegCommands);
                     builder.redirectErrorStream(true);
 
                     Process process = null;
