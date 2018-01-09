@@ -106,30 +106,52 @@ public class MainModel extends Model {
                     inputFile = job.zipFiles(settings);
                     outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
 
-                    // Construct FFMPEG String:
+                    // Construct FFMPEG Command:
                     final FrameDimension frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
                     final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
                     final FrameRate frameRate = FrameRate.valueOf(settings.getStringSetting("Encoding Frame Rate"));
                     final String codec = settings.getStringSetting("Encoding Codec");
 
-                    final StringBuilder sb = new StringBuilder();
-                    final Formatter formatter = new Formatter(sb, Locale.US);
+                    final List<String> ffmpegCommands = new ArrayList<>();
+                    ffmpegCommands.add(settings.getStringSetting("FFMPEG Executable Path"));
 
-                    formatter.format("\"%s\" -f rawvideo -pix_fmt monob -s %dx%d -r %d -i \"%s\" -vf \"scale=iw*%d:-1\" -sws_flags neighbor -c:v %s -threads 8 -loglevel %s -y \"%s\"",
-                                        settings.getStringSetting("FFMPEG Executable Path"),
-                                        frameDimension.getWidth() / blockSize.width,
-                                        frameDimension.getHeight() / blockSize.height,
-                                        frameRate.getFrameRate(),
-                                        inputFile.getAbsolutePath(),
-                                        blockSize.width,
-                                        codec,
-                                        "verbose",
-                                        outputFile.getAbsoluteFile());
+                    ffmpegCommands.add("-f");
+                    ffmpegCommands.add("rawvideo");
 
-                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(sb.toString()));
+                    ffmpegCommands.add("-pix_fmt");
+                    ffmpegCommands.add("monob");
+
+                    ffmpegCommands.add("-s");
+                    ffmpegCommands.add((frameDimension.getWidth() / blockSize.width) + "x" + (frameDimension.getHeight() / blockSize.height));
+
+                    ffmpegCommands.add("-r");
+                    ffmpegCommands.add(String.valueOf(frameRate.getFrameRate()));
+
+                    ffmpegCommands.add("-i");
+                    ffmpegCommands.add(inputFile.getAbsolutePath());
+
+                    ffmpegCommands.add("-vf");
+                    ffmpegCommands.add("scale=iw*" + (blockSize.width) +":-1");
+
+                    ffmpegCommands.add("-sws_flags");
+                    ffmpegCommands.add("neighbor");
+
+                    ffmpegCommands.add("-c:v");
+                    ffmpegCommands.add(codec);
+
+                    ffmpegCommands.add("-threads");
+                    ffmpegCommands.add("8");
+
+                    ffmpegCommands.add("-loglevel");
+                    ffmpegCommands.add("verbose");
+
+                    ffmpegCommands.add("-y");
+                    ffmpegCommands.add(outputFile.getAbsolutePath());
+
+                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(ffmpegCommands.toString()));
 
                     // Construct FFMPEG Process:
-                    final ProcessBuilder builder = new ProcessBuilder(sb.toString());
+                    final ProcessBuilder builder = new ProcessBuilder(ffmpegCommands);
                     builder.redirectErrorStream(true);
 
                     final Process process = builder.start();
