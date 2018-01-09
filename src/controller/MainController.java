@@ -178,6 +178,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         model.getJobs().remove(job.getName());
         view.getJobsList().getSelectionModel().clearSelection();
 
+        controller.getView().getButton_cancel().setDisable(true);
         sceneManager.swapToNewScene(controller);
     }
 
