@@ -83,11 +83,7 @@ public class JobView extends View {
         comboBox_jobType.getSelectionModel().select("Encode");
         textField_outputFolder.setText(settings.getStringSetting("Default Encoding Output Directory"));
         comboBox_jobType.valueProperty().addListener((observableValue, oldValue, newValue) -> {
-            boolean canChange = textField_outputFolder.getText().isEmpty();
-            canChange |= textField_outputFolder.getText().equals(settings.getStringSetting("Default Encoding Output Directory"));
-            canChange |= textField_outputFolder.getText().equals(settings.getStringSetting("Default Decoding Output Directory"));
-
-            if (canChange == false) {
+            if (textField_outputFolder.getText().isEmpty()) {
                 return;
             }
 
