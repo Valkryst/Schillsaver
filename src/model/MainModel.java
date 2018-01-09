@@ -319,6 +319,9 @@ public class MainModel extends Model {
     /**
      * Retrieves an unmodifiable list of encoding jobs.
      *
+     * The jobs are sorted from smallest filesize to largest filesize before
+     * being returned.
+     *
      * @return
      *         The list of encoding jobs.
      */
@@ -331,11 +334,16 @@ public class MainModel extends Model {
             }
         }
 
+        encodingJobs.sort(Comparator.comparingLong(Job::getFileSize));
+
         return Collections.unmodifiableList(encodingJobs);
     }
 
     /**
      * Retrieves an unmodifiable list of decoding jobs.
+     *
+     * The jobs are sorted from smallest filesize to largest filesize before
+     * being returned.
      *
      * @return
      *         The list of decoding jobs.
@@ -348,6 +356,8 @@ public class MainModel extends Model {
                 decodingJobs.add(job);
             }
         }
+
+        decodingJobs.sort(Comparator.comparingLong(Job::getFileSize));
 
         return Collections.unmodifiableList(decodingJobs);
     }
