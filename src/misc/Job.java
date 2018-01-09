@@ -122,4 +122,21 @@ public class Job implements Serializable {
 
         return file;
     }
+
+    /**
+     * Retrieves the summed pre-padding pre-zipped filesize of the job's
+     * files.
+     *
+     * @return
+     *          The pre-padding pre-zipped filesize of the job.
+     */
+    public long getFileSize() {
+        long fileSize = 0;
+
+        for (final File file : files) {
+            fileSize += file.length();
+        }
+
+        return fileSize;
+    }
 }
