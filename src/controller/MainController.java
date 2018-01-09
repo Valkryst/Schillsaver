@@ -34,7 +34,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
      * @throws NullPointerException
      *         If the sceneManager or settings is null.
      */
-    public MainController(final SceneManager sceneManager, final Settings settings) {
+    public MainController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings) {
         super (sceneManager, settings, new MainModel(), new MainView());
         addEventHandlers();
 
