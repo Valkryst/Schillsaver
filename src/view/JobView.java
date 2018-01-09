@@ -96,6 +96,20 @@ public class JobView extends View {
             } else {
                 textField_outputFolder.setText(settings.getStringSetting("Default Decoding Output Directory"));
             }
+
+            if (textField_outputFolder.getText().isEmpty()) {
+                try {
+                    final File home = FileSystemView.getFileSystemView().getHomeDirectory();
+                    textField_outputFolder.setText(home.getCanonicalPath() + "/");
+                } catch (final IOException e) {
+                    final Logger logger = LogManager.getLogger();
+                    logger.error(e);
+
+                    final String alertMessage = "There was an issue retrieving the home directory path.\nSee the log file for more information.";
+                    final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
+                    alert.showAndWait();
+                }
+            }
         });
     }
 
@@ -119,48 +133,7 @@ public class JobView extends View {
 
         setTooltip(comboBox_jobType, "The type of the job.");
 
-        // Get Home Directory Path:
-        String homeDirectory = "";
-
-        try {
-            final File home = FileSystemView.getFileSystemView().getHomeDirectory();
-            homeDirectory = home.getCanonicalPath() + "/";
-        } catch (final IOException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
-
-            final String alertMessage = "There was an issue retrieving the home directory path.\nSee the log file for more information.";
-            final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
-            alert.showAndWait();
-        }
-
-        // Create the output folder tooltip:
-        final String encodingOutputDir = settings.getStringSetting("Default Encoding Output Directory");
-        final String decodingOutputDir = settings.getStringSetting("Default Decoding Output Directory");
-
-        String outputFolderTooltip = "The path of the output folder.\n";
-
-        if (! encodingOutputDir.isEmpty()) {
-            outputFolderTooltip += "\nEncoding jobs default to '" + settings.getStringSetting("Default Encoding Output Directory") + "'.";
-        } else {
-            if (homeDirectory.isEmpty()) {
-                outputFolderTooltip += "\nNo default was set for Encoding jobs.";
-            } else {
-                outputFolderTooltip += "\nEncoding jobs default to '" + homeDirectory + "'.";
-            }
-        }
-
-        if (! decodingOutputDir.isEmpty()) {
-            outputFolderTooltip += "\nDecoding jobs default to '" + settings.getStringSetting("Default Decoding Output Directory") + "'.";
-        } else {
-            if (homeDirectory.isEmpty()) {
-                outputFolderTooltip += "\nNo default was set for Decoding jobs.";
-            } else {
-                outputFolderTooltip += "\nDecoding jobs default to '" + homeDirectory + "'.";
-            }
-        }
-
-        setTooltip(textField_outputFolder, outputFolderTooltip);
+        setTooltip(textField_outputFolder, "The path of the output folder.");
     }
 
     /**
