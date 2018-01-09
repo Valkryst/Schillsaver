@@ -57,6 +57,9 @@ public class JobBuilder {
      *
      * @throws NullPointerException
      *          If the output directory or files list is null.
+     *
+     * @throws IllegalArgumentException
+     *          If the output directory doesn't exist or isn't a directory.
      */
     private void checkState() {
         Objects.requireNonNull(outputDirectory);
@@ -79,6 +82,19 @@ public class JobBuilder {
         // Ensure output directory has the correct trailing slash:
         if (!outputDirectory.endsWith("\\") && !outputDirectory.endsWith("/")) {
             outputDirectory += "/";
+        }
+
+        // Ensure the output directory is actually a directory:
+        final File outputDirectory = new File(this.outputDirectory);
+
+        if (! outputDirectory.exists()) {
+            if (! outputDirectory.mkdir()) {
+                throw new IllegalArgumentException("The output directory '" + this.outputDirectory + "' does not exist and could not be created.");
+            }
+        }
+
+        if (! outputDirectory.isDirectory()) {
+            throw new IllegalArgumentException("The output directory '" + this.outputDirectory + "' is not a directory.");
         }
     }
 
