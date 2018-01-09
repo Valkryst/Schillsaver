@@ -35,6 +35,15 @@ public class SettingsView extends View {
     @Getter private ComboBox<String> comboBox_frameRate;
     @Getter private ComboBox<String> comboBox_blockSize;
 
+    /**
+     * Constructs a new SettingsView.
+     *
+     * @param settings
+     *          The program settings.
+     *
+     * @throws NullPointerException
+     *         If the settings is null.
+     */
     public SettingsView(final @NonNull Settings settings) {
         initializeComponents(settings);
         setComponentTooltips();
