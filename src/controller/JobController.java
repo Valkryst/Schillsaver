@@ -126,6 +126,11 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             final Controller previousController = sceneManager.getPreviousController();
             final MainController controller = (MainController) previousController;
 
+            if (model.getFiles().size() == 0) {
+                sceneManager.swapToPreviousScene();
+                return;
+            }
+
             final Job job = createJob();
 
             if (job != null) {
