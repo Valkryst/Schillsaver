@@ -2,7 +2,10 @@ package view;
 
 import com.valkryst.VMVC.view.View;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.NonNull;
 
@@ -17,7 +20,7 @@ public class MainView extends View {
 
     @Getter private Button button_programSettings;
 
-    private final GridPane contentArea;
+    private final SplitPane contentArea;
 
     /** Constructs a new MainView. */
     public MainView() {
@@ -90,23 +93,14 @@ public class MainView extends View {
      * @return
      *         The content area panel.
      */
-    private GridPane createContentArea() {
-        final GridPane contentArea = new GridPane();
-
-        final ColumnConstraints column = new ColumnConstraints();
-        column.setPercentWidth(100);
-        contentArea.getColumnConstraints().add(column);
-
-        final RowConstraints row = new RowConstraints();
-        row.setPercentHeight(100);
-        contentArea.getRowConstraints().add(row);
+    private SplitPane createContentArea() {
+        final SplitPane contentArea = new SplitPane();
+        contentArea.getItems().add(jobsList);
 
         HBox.setHgrow(contentArea, Priority.ALWAYS);
         VBox.setVgrow(contentArea, Priority.ALWAYS);
 
         jobsList.setFocusTraversable(false);
-
-        contentArea.add(jobsList, 0, 0);
 
         return contentArea;
     }
@@ -134,18 +128,7 @@ public class MainView extends View {
 
         // Add Output Tab View If Necessary
         if (outputPanes.getTabs().size() == 0) {
-            contentArea.add(outputPanes, 1, 0);
-
-            // Set each side to use 50% of the space:
-            contentArea.getColumnConstraints().clear();
-
-            final ColumnConstraints column1 = new ColumnConstraints();
-            column1.setPercentWidth(50);
-
-            final ColumnConstraints column2 = new ColumnConstraints();
-            column2.setPercentWidth(50);
-
-            contentArea.getColumnConstraints().addAll(column1, column2);
+            contentArea.getItems().add(outputPanes);
         }
 
         // Create Tab
@@ -155,14 +138,7 @@ public class MainView extends View {
 
         tab.setOnClosed(e -> {
             if (outputPanes.getTabs().size() == 0) {
-                contentArea.getChildren().remove(outputPanes);
-
-                // Set job list's side to take up all space
-                contentArea.getColumnConstraints().clear();
-
-                final ColumnConstraints column = new ColumnConstraints();
-                column.setPercentWidth(100);
-                contentArea.getColumnConstraints().add(column);
+                contentArea.getItems().remove(outputPanes);
             }
         });
 
