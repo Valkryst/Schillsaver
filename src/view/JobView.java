@@ -8,6 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.Getter;
 import lombok.NonNull;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.IOException;
 
 public class JobView extends View {
     @Getter private Button button_addFiles;
@@ -34,7 +40,7 @@ public class JobView extends View {
      */
     public JobView(final @NonNull Settings settings) {
         initializeComponents(settings);
-        setComponentTooltips();
+        setComponentTooltips(settings);
 
         final Pane fileSelectionArea = createFileSelectionArea();
         final Pane fileDetailsArea = createJobDetailsArea();
@@ -93,8 +99,16 @@ public class JobView extends View {
         });
     }
 
-    /** Sets the tooltips of the components. */
-    private void setComponentTooltips() {
+    /**
+     * Sets the tooltips of the components.
+     *
+     * @param settings
+     *          The program settings.
+     *
+     * @throws NullPointerException
+     *          If the settings is null.
+     */
+    private void setComponentTooltips(final @NonNull Settings settings) {
         setTooltip(button_addFiles, "Opens a file selection dialog to select files to add to the job.");
         setTooltip(button_removeSelectedFiles, "Removes all selected files from the list.");
         setTooltip(button_selectOutputFolder, "Opens a folder selection dialog to select the output folder of the job.");
@@ -103,9 +117,50 @@ public class JobView extends View {
 
         setTooltip(textField_jobName, "The name of the job. This must be unique.");
 
-        setTooltip(textField_outputFolder, "The path of the output folder.");
-
         setTooltip(comboBox_jobType, "The type of the job.");
+
+        // Get Home Directory Path:
+        String homeDirectory = "";
+
+        try {
+            final File home = FileSystemView.getFileSystemView().getHomeDirectory();
+            homeDirectory = home.getCanonicalPath() + "/";
+        } catch (final IOException e) {
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            final String alertMessage = "There was an issue retrieving the home directory path.\nSee the log file for more information.";
+            final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
+            alert.showAndWait();
+        }
+
+        // Create the output folder tooltip:
+        final String encodingOutputDir = settings.getStringSetting("Default Encoding Output Directory");
+        final String decodingOutputDir = settings.getStringSetting("Default Decoding Output Directory");
+
+        String outputFolderTooltip = "The path of the output folder.\n";
+
+        if (! encodingOutputDir.isEmpty()) {
+            outputFolderTooltip += "\nEncoding jobs default to '" + settings.getStringSetting("Default Encoding Output Directory") + "'.";
+        } else {
+            if (homeDirectory.isEmpty()) {
+                outputFolderTooltip += "\nNo default was set for Encoding jobs.";
+            } else {
+                outputFolderTooltip += "\nEncoding jobs default to '" + homeDirectory + "'.";
+            }
+        }
+
+        if (! decodingOutputDir.isEmpty()) {
+            outputFolderTooltip += "\nDecoding jobs default to '" + settings.getStringSetting("Default Decoding Output Directory") + "'.";
+        } else {
+            if (homeDirectory.isEmpty()) {
+                outputFolderTooltip += "\nNo default was set for Decoding jobs.";
+            } else {
+                outputFolderTooltip += "\nDecoding jobs default to '" + homeDirectory + "'.";
+            }
+        }
+
+        setTooltip(textField_outputFolder, outputFolderTooltip);
     }
 
     /**
