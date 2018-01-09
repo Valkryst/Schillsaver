@@ -55,7 +55,7 @@ public class JobBuilder {
     /**
      * Checks the state of the builder.
      *
-     * @throws java.lang.NullPointerException
+     * @throws NullPointerException
      *          If the output directory or files list is null.
      */
     private void checkState() {
