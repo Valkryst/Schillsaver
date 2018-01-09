@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.NonNull;
 import lombok.Setter;
 import model.SettingsModel;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +37,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
      * @throws NullPointerException
      *         If the sceneManager or settings is null.
      */
-    SettingsController(final SceneManager sceneManager, final Settings settings) {
+    SettingsController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings) {
         super (sceneManager, settings, new SettingsModel(), new SettingsView(settings));
         addEventHandlers();
     }
