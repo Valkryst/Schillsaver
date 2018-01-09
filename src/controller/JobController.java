@@ -149,7 +149,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         final JobBuilder builder = new JobBuilder(settings);
         builder.setName(view.getTextField_jobName().getText());
         builder.setOutputDirectory(view.getTextField_outputFolder().getText());
-        builder.setFiles(model.getFiles());
+        builder.setFiles(model.getSortedFiles());
         builder.setEncodeJob(view.getComboBox_jobType().getSelectionModel().isSelected(0));
 
 
