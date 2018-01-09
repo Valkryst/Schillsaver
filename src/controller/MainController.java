@@ -20,6 +20,8 @@ import view.MainView;
 import java.util.List;
 
 public class MainController extends Controller<MainModel, MainView> implements EventHandler {
+    private final Stage settingsDialog = new Stage();
+
     /**
      * Constructs a new MainController.
      *
@@ -37,6 +39,21 @@ public class MainController extends Controller<MainModel, MainView> implements E
         addEventHandlers();
 
         loadJobsFromFile();
+
+        // Construct Settings Dialog:
+        final SettingsController controller = new SettingsController(sceneManager, settings);
+
+        final Scene scene = new Scene(controller.getView().getPane());
+        scene.getStylesheets().add("global.css");
+        scene.getRoot().getStyleClass().add("main-root");
+
+        settingsDialog.setTitle("Settings");
+        settingsDialog.setScene(scene);
+        settingsDialog.setResizable(false);
+        settingsDialog.initOwner(sceneManager.getPrimaryStage());
+        settingsDialog.initModality(Modality.APPLICATION_MODAL);
+
+        controller.setDialog(settingsDialog);
     }
 
     /** Sets the view's controls to use this class as their event handler. */
@@ -113,16 +130,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 scene.getStylesheets().add("global.css");
                 scene.getRoot().getStyleClass().add("main-root");
 
-                final Stage dialog = new Stage();
-                dialog.setTitle("Settings");
-                dialog.setScene(scene);
-                dialog.setResizable(false);
-                dialog.initOwner(sceneManager.getPrimaryStage());
-                dialog.initModality(Modality.APPLICATION_MODAL);
-
-                controller.setDialog(dialog);
-
-                dialog.show();
+                settingsDialog.show();
             }
         }
     }
