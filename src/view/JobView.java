@@ -40,7 +40,7 @@ public class JobView extends View {
      */
     public JobView(final @NonNull Settings settings) {
         initializeComponents(settings);
-        setComponentTooltips(settings);
+        setComponentTooltips();
 
         final Pane fileSelectionArea = createFileSelectionArea();
         final Pane fileDetailsArea = createJobDetailsArea();
@@ -113,16 +113,8 @@ public class JobView extends View {
         });
     }
 
-    /**
-     * Sets the tooltips of the components.
-     *
-     * @param settings
-     *          The program settings.
-     *
-     * @throws NullPointerException
-     *          If the settings is null.
-     */
-    private void setComponentTooltips(final @NonNull Settings settings) {
+    /** Sets the tooltips of the components. */
+    private void setComponentTooltips() {
         setTooltip(button_addFiles, "Opens a file selection dialog to select files to add to the job.");
         setTooltip(button_removeSelectedFiles, "Removes all selected files from the list.");
         setTooltip(button_selectOutputFolder, "Opens a folder selection dialog to select the output folder of the job.");
