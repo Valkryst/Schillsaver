@@ -80,9 +80,6 @@ public class JobBuilder {
         if (!outputDirectory.endsWith("\\") && !outputDirectory.endsWith("/")) {
             outputDirectory += "/";
         }
-
-        // Ensure the files are sorted from smallest to largest:
-        this.files.sort(Comparator.comparing(File::length));
     }
 
     /** Resets the state of the builder. */
