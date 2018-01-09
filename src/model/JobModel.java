@@ -6,6 +6,7 @@ import lombok.NonNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class JobModel extends Model {
@@ -47,5 +48,17 @@ public class JobModel extends Model {
      */
     public List<File> getFiles() {
         return Collections.unmodifiableList(files);
+    }
+
+    /**
+     * Sorts the job's files, from smallest to largest filesize, then
+     * retrieves the job's files.
+     *
+     * @return
+     *          A sorted unmodifiable list of the job's files.
+     */
+    public List<File> getSortedFiles() {
+        files.sort(Comparator.comparing(File::length));
+        return getFiles();
     }
 }
