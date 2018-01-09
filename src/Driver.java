@@ -1,3 +1,4 @@
+import com.valkryst.VMVC.AlertManager;
 import com.valkryst.VMVC.SceneManager;
 import com.valkryst.VMVC.Settings;
 import controller.MainController;
@@ -44,10 +45,7 @@ public class Driver extends Application {
 
             // Deal with initial FFMPEG executable setup:
             if (settings.getStringSetting("FFMPEG Executable Path").isEmpty()) {
-                final String alertMessage = "You must set the path to FFMPEG's executable.";
-                final Alert alert = new Alert(Alert.AlertType.INFORMATION, alertMessage, ButtonType.OK);
-                alert.showAndWait();
-
+                AlertManager.showErrorAndWait("You must set the path to FFMPEG's executable.");
 
                 final File ffmpegFile = selectFFMPEGExecutable(primaryStage);
                 settings.setSetting("FFMPEG Executable Path", ffmpegFile.getAbsolutePath());

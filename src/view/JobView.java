@@ -1,5 +1,6 @@
 package view;
 
+import com.valkryst.VMVC.AlertManager;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.view.View;
 import javafx.collections.FXCollections;
@@ -9,7 +10,6 @@ import javafx.scene.layout.*;
 import lombok.Getter;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -99,10 +99,7 @@ public class JobView extends View {
                     textField_outputFolder.setText(home.getCanonicalPath() + "/");
                 } catch (final IOException e) {
                     LogManager.getLogger().error(e);
-
-                    final String alertMessage = "There was an issue retrieving the home directory path.\nSee the log file for more information.";
-                    final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
-                    alert.showAndWait();
+                    AlertManager.showErrorAndWait("There was an issue retrieving the home directory path.\nSee the log file for more information.");
                 }
             }
         });

@@ -1,17 +1,18 @@
 package misc;
 
+import com.valkryst.VMVC.AlertManager;
 import com.valkryst.VMVC.Settings;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import lombok.Data;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Data
 public class JobBuilder {
@@ -135,10 +136,7 @@ public class JobBuilder {
             outputDirectory = home.getCanonicalPath() + "/";
         } catch (final IOException e) {
             LogManager.getLogger().error(e);
-
-            final String alertMessage = "There was an issue retrieving the home directory path.\nSee the log file for more information.";
-            final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
-            alert.showAndWait();
+            AlertManager.showErrorAndWait("There was an issue retrieving the home directory path.\nSee the log file for more information.");
         }
     }
 }

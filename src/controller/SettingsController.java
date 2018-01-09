@@ -1,19 +1,17 @@
 package controller;
 
+import com.valkryst.VMVC.AlertManager;
 import com.valkryst.VMVC.SceneManager;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.controller.Controller;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.NonNull;
 import lombok.Setter;
 import model.SettingsModel;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import view.SettingsView;
 
 import javax.swing.JFileChooser;
@@ -98,9 +96,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
                 } catch (final IOException e) {
                     LogManager.getLogger().error(e);
 
-                    final String alertMessage = "There was an issue saving the settings.\nSee the log file for more information.";
-                    final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
-                    alert.showAndWait();
+                    AlertManager.showErrorAndWait("There was an issue saving the settings.\nSee the log file for more information.");
                 }
 
                 dialog.close();
@@ -151,10 +147,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
         if (temp.exists() && temp.isFile()) {
             settings.setSetting("FFMPEG Executable Path", ffmpegPath);
         } else {
-            final String alertMessage = "The FFMPEG executable path either doesn't exist or isn't a file.";
-            final Alert alert = new Alert(Alert.AlertType.WARNING, alertMessage, ButtonType.OK);
-            alert.showAndWait();
-
+            AlertManager.showWarningAndWait("The FFMPEG executable path either doesn't exist or isn't a file.");
             return false;
         }
 
@@ -164,12 +157,9 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
         if (encodeFolderPath.isEmpty() || (temp.exists() && temp.isDirectory())) {
             settings.setSetting("Default Encoding Output Directory", encodeFolderPath);
         } else {
-            final String alertMessage = "The default encode folder path either doesn't exist or isn't a directory.";
-            final Alert alert = new Alert(Alert.AlertType.WARNING, alertMessage, ButtonType.OK);
-            alert.showAndWait();
-
+            AlertManager.showWarningAndWait("The default encode folder path either doesn't exist or isn't a directory.");
             view.getTextField_defaultEncodingFolder().clear();
-             return false;
+            return false;
         }
 
         // Validate Decode Folder Path:
@@ -178,20 +168,14 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
         if (decodeFolderPath.isEmpty() || (temp.exists() && temp.isDirectory())) {
             settings.setSetting("Default Decoding Output Directory", decodeFolderPath);
         } else {
-            final String alertMessage = "The default decode folder path either doesn't exist or isn't a directory.";
-            final Alert alert = new Alert(Alert.AlertType.WARNING, alertMessage, ButtonType.OK);
-            alert.showAndWait();
-
+            AlertManager.showWarningAndWait("The default decode folder path either doesn't exist or isn't a directory.");
             view.getTextField_defaultDecodingFolder().clear();
             return false;
         }
 
         // Validate Codec:
         if (codec.isEmpty()) {
-            final String alertMessage = "No codec was set. Defaulting to libx264.";
-            final Alert alert = new Alert(Alert.AlertType.WARNING, alertMessage, ButtonType.OK);
-            alert.showAndWait();
-
+            AlertManager.showWarningAndWait("No codec was set. Defaulting to libx264.");
             view.getTextField_codec().setText("libx264");
             return false;
         } else {
@@ -258,10 +242,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
             }
         } catch(final HeadlessException e) {
             LogManager.getLogger().error(e);
-
-            final String alertMessage = "There was an issue selecting the folder.\nSee the log file for more information.";
-            final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
-            alert.showAndWait();
+            AlertManager.showErrorAndWait("There was an issue selecting the folder.\nSee the log file for more information.");
         }
 
         return "";
