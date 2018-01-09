@@ -128,9 +128,13 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             final Controller previousController = sceneManager.getPreviousController();
             final MainController controller = (MainController) previousController;
 
-            controller.addJob(createJob());
+            final Job job = createJob();
 
-            sceneManager.swapToPreviousScene();
+            if (job != null) {
+                controller.addJob(job);
+                sceneManager.swapToPreviousScene();
+            }
+
             return;
         }
 
@@ -163,6 +167,13 @@ public class JobController extends Controller<JobModel, JobView> implements Even
 
             final String alertMessage = "Unable to build job. Have you selected an output directory and/or any files?";
             final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
+            alert.showAndWait();
+        } catch (final IllegalArgumentException e) {
+            final Logger logger = LogManager.getLogger();
+            logger.error(e);
+
+            final String alertMessage = "The output directory does not exist and\ncould not be created.";
+            final Alert alert = new Alert(Alert.AlertType.ERROR,alertMessage, ButtonType.OK);
             alert.showAndWait();
         }
 
