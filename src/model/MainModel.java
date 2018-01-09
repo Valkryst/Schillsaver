@@ -310,7 +310,6 @@ public class MainModel extends Model {
                         isr.close();
                         is.close();
                     } catch (final IOException e) {
-                        System.out.println(System.currentTimeMillis());
                         final Logger logger = LogManager.getLogger();
                         logger.error(e);
 
