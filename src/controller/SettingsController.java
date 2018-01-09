@@ -96,8 +96,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
                 try {
                     settings.saveSettings();
                 } catch (final IOException e) {
-                    final Logger logger = LogManager.getLogger();
-                    logger.error(e);
+                    LogManager.getLogger().error(e);
 
                     final String alertMessage = "There was an issue saving the settings.\nSee the log file for more information.";
                     final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
@@ -258,8 +257,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
                 }
             }
         } catch(final HeadlessException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+            LogManager.getLogger().error(e);
 
             final String alertMessage = "There was an issue selecting the folder.\nSee the log file for more information.";
             final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);

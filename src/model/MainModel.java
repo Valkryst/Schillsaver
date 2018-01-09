@@ -14,7 +14,6 @@ import misc.FrameRate;
 import misc.Job;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import view.MainView;
 
 import java.awt.Dimension;
@@ -36,8 +35,7 @@ public class MainModel extends Model {
             final Object object = ois.readObject();
             jobs = (Map<String, Job>) object;
         } catch (IOException | ClassNotFoundException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+            LogManager.getLogger().error(e);
 
             // Delete the file:
             final File file = new File(filePath);
@@ -69,8 +67,7 @@ public class MainModel extends Model {
         ) {
             oos.writeObject(jobs);
         } catch (IOException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+            LogManager.getLogger().error(e);
         }
     }
 
@@ -169,8 +166,7 @@ public class MainModel extends Model {
                             Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(System.lineSeparator() + temp));
                         }
                     } catch (final IOException e) {
-                        final Logger logger = LogManager.getLogger();
-                        logger.error(e);
+                        LogManager.getLogger().error(e);
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {
@@ -187,8 +183,7 @@ public class MainModel extends Model {
 
                     Platform.runLater(() -> ((TextArea) tab.getContent()).appendText("\n\nEncoding Complete"));
                 } catch (final IOException e) {
-                    final Logger logger = LogManager.getLogger();
-                    logger.error(e);
+                    LogManager.getLogger().error(e);
 
                     final TextArea outputArea = ((TextArea) tab.getContent());
                     Platform.runLater(() -> {
@@ -310,8 +305,7 @@ public class MainModel extends Model {
                         isr.close();
                         is.close();
                     } catch (final IOException e) {
-                        final Logger logger = LogManager.getLogger();
-                        logger.error(e);
+                        LogManager.getLogger().error(e);
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {

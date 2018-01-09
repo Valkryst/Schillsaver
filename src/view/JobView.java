@@ -98,8 +98,7 @@ public class JobView extends View {
                     final File home = FileSystemView.getFileSystemView().getHomeDirectory();
                     textField_outputFolder.setText(home.getCanonicalPath() + "/");
                 } catch (final IOException e) {
-                    final Logger logger = LogManager.getLogger();
-                    logger.error(e);
+                    LogManager.getLogger().error(e);
 
                     final String alertMessage = "There was an issue retrieving the home directory path.\nSee the log file for more information.";
                     final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);

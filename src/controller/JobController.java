@@ -17,7 +17,6 @@ import misc.Job;
 import misc.JobBuilder;
 import model.JobModel;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import view.JobView;
 
 import javax.swing.JFileChooser;
@@ -162,15 +161,13 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         try {
             job = builder.build();
         } catch (final NullPointerException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+            LogManager.getLogger().error(e);
 
             final String alertMessage = "Unable to build job. Have you selected an output directory and/or any files?";
             final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);
             alert.showAndWait();
         } catch (final IllegalArgumentException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+            LogManager.getLogger().error(e);
 
             final String alertMessage = "The output directory does not exist and\ncould not be created.";
             final Alert alert = new Alert(Alert.AlertType.ERROR,alertMessage, ButtonType.OK);
@@ -233,8 +230,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
                 view.getTextField_outputFolder().setText(fileChooser.getSelectedFile().getPath() + "/");
             }
         } catch(final HeadlessException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+            LogManager.getLogger().error(e);
 
             final String alertMessage = "There was an issue selecting an output folder.\nSee the log file for more information.";
             final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.OK);

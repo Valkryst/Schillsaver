@@ -11,7 +11,6 @@ import misc.BlockSize;
 import misc.FrameDimension;
 import misc.FrameRate;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,8 +54,7 @@ public class Driver extends Application {
                 settings.saveSettings();
             }
         } catch (final IOException e) {
-            final Logger logger = LogManager.getLogger();
-            logger.error(e);
+            LogManager.getLogger().error(e);
         }
     }
 
