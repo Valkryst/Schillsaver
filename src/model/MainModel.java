@@ -21,21 +21,21 @@ import java.io.*;
 import java.util.*;
 
 public class MainModel extends Model {
+    private final static String JOBS_FILE_PATH = System.getProperty("user.dir") + "/Jobs.ser";
+
     /** The jobs. */
     @Getter @Setter private Map<String, Job> jobs = new HashMap<>();
 
     /** Deserializes the jobs map, if the file exists. */
     public void loadJobs() {
-        final String filePath = System.getProperty("user.dir") + "/Jobs.ser";
-
         try {
-            final Object object = deserializeObject(filePath);
+            final Object object = deserializeObject(JOBS_FILE_PATH);
             jobs = (Map<String, Job>) object;
         } catch (final IOException | ClassNotFoundException e) {
             LogManager.getLogger().error(e);
 
             // Delete the file:
-            final File file = new File(filePath);
+            final File file = new File(JOBS_FILE_PATH);
 
             if (file.exists()) {
                 file.delete();
@@ -45,11 +45,9 @@ public class MainModel extends Model {
 
     /** Serializes the jobs map to a file. */
     public void saveJobs() {
-        final String filePath = System.getProperty("user.dir") + "/Jobs.ser";
-
         if (jobs.size() == 0) {
             // Delete the file:
-            final File file = new File(filePath);
+            final File file = new File(JOBS_FILE_PATH);
 
             if (file.exists()) {
                 file.delete();
@@ -59,7 +57,7 @@ public class MainModel extends Model {
         }
 
         try {
-            serializeObject(filePath, jobs);
+            serializeObject(JOBS_FILE_PATH, jobs);
         } catch (final IOException e) {
             LogManager.getLogger().error(e);
         }
