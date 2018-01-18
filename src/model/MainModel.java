@@ -28,11 +28,8 @@ public class MainModel extends Model {
     public void loadJobs() {
         final String filePath = System.getProperty("user.dir") + "/Jobs.ser";
 
-        try (
-            final FileInputStream fis = new FileInputStream(filePath);
-            final ObjectInputStream ois = new ObjectInputStream(fis);
-        ) {
-            final Object object = ois.readObject();
+        try {
+            final Object object = deserializeObject(filePath);
             jobs = (Map<String, Job>) object;
         } catch (final IOException | ClassNotFoundException e) {
             LogManager.getLogger().error(e);
@@ -61,11 +58,8 @@ public class MainModel extends Model {
             return;
         }
 
-        try (
-            final FileOutputStream fos = new FileOutputStream(filePath, false);
-            final ObjectOutputStream oos = new ObjectOutputStream(fos);
-        ) {
-            oos.writeObject(jobs);
+        try {
+            serializeObject(filePath, jobs);
         } catch (final IOException e) {
             LogManager.getLogger().error(e);
         }
