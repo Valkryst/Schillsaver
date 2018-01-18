@@ -34,7 +34,7 @@ public class MainModel extends Model {
         ) {
             final Object object = ois.readObject();
             jobs = (Map<String, Job>) object;
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (final IOException | ClassNotFoundException e) {
             LogManager.getLogger().error(e);
 
             // Delete the file:
@@ -66,7 +66,7 @@ public class MainModel extends Model {
             final ObjectOutputStream oos = new ObjectOutputStream(fos);
         ) {
             oos.writeObject(jobs);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LogManager.getLogger().error(e);
         }
     }
