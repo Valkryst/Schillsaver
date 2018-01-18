@@ -74,24 +74,27 @@ public class MainController extends Controller<MainModel, MainView> implements E
             if (view.getButton_createJob().isDisabled() == false) {
                 openJobView();
                 saveJobsToFile();
-                return;
             }
+
+            return;
         }
 
         if (source.equals(view.getButton_editJob())) {
             if (view.getButton_editJob().isDisabled() == false) {
                 openEditJobView();
                 saveJobsToFile();
-                return;
             }
+
+            return;
         }
 
         if (source.equals(view.getButton_deleteSelectedJobs())) {
             if (view.getButton_deleteSelectedJobs().isDisabled() == false) {
                 deleteSelectedJobs();
                 saveJobsToFile();
-                return;
             }
+
+            return;
         }
 
         if (source.equals(view.getButton_processJobs())) {
@@ -118,8 +121,9 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 });
 
                 thread.start();
-                return;
             }
+
+            return;
         }
 
         if (source.equals(view.getButton_programSettings())) {
