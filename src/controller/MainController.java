@@ -7,6 +7,8 @@ import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -18,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import view.MainView;
 
 import java.util.List;
+import java.util.Optional;
 
 public class MainController extends Controller<MainModel, MainView> implements EventHandler {
     private final Stage settingsDialog = new Stage();
@@ -73,7 +76,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         if (source.equals(view.getButton_createJob())) {
             if (view.getButton_createJob().isDisabled() == false) {
                 openJobView();
-                saveJobsToFile();
+                model.saveJobs();
             }
 
             return;
@@ -82,7 +85,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         if (source.equals(view.getButton_editJob())) {
             if (view.getButton_editJob().isDisabled() == false) {
                 openEditJobView();
-                saveJobsToFile();
+                model.saveJobs();
             }
 
             return;
@@ -91,7 +94,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         if (source.equals(view.getButton_deleteSelectedJobs())) {
             if (view.getButton_deleteSelectedJobs().isDisabled() == false) {
                 deleteSelectedJobs();
-                saveJobsToFile();
+                model.saveJobs();
             }
 
             return;
@@ -146,11 +149,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
         for (final Job job : model.getJobs().values()) {
             view.getJobsList().getItems().add(job.getName());
         }
-    }
-
-    /** Serializes the jobs to a file. */
-    private void saveJobsToFile() {
-        model.saveJobs();
     }
 
     /** Opens the JobView. */
@@ -227,6 +225,20 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
     /** Deletes all jobs selected within the view's job list. */
     private void deleteSelectedJobs() {
+        // Prompt the user to confirm their choice.
+        final Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText("Are you sure you want to delete the job(s)?");
+        alert.setContentText("");
+        alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+        final Optional<ButtonType> alertResult = alert.showAndWait();
+
+        if (alertResult.isPresent() == false || alertResult.get() == ButtonType.NO) {
+            return;
+        }
+
+        // Delete jobs if user confirmed choice.
         final ListView<String> jobsList = view.getJobsList();
         final List<String> selectedJobs = FXCollections.observableArrayList(jobsList.getSelectionModel().getSelectedItems());
 
@@ -236,7 +248,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         jobsList.getSelectionModel().clearSelection();
-        model.saveJobs();
     }
 
     /**
@@ -259,7 +270,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
                try {
                    thread.join();
-                   saveJobsToFile();
+                   model.saveJobs();
                } catch (final InterruptedException e) {
                    final Logger logger = LogManager.getLogger();
                    logger.error(e);
@@ -278,7 +289,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
                 try {
                     thread.join();
-                    saveJobsToFile();
+                    model.saveJobs();
                 } catch (final InterruptedException e) {
                     final Logger logger = LogManager.getLogger();
                     logger.error(e);
