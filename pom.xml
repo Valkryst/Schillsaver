@@ -6,7 +6,7 @@
 
     <groupId>com.github.Valkryst</groupId>
     <artifactId>Schillsaver</artifactId>
-    <version>12.1.0</version>
+    <version>12.1.1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
