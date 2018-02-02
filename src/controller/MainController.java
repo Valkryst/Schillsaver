@@ -58,13 +58,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         controller.setDialog(settingsDialog);
 
-        // Disable the Edit, Delete, and Process buttons if there are no
-        // jobs in the list.
-        if (model.getJobs().size() == 0) {
-            view.getButton_editJob().setDisable(true);
-            view.getButton_deleteSelectedJobs().setDisable(true);
-            view.getButton_processJobs().setDisable(true);
-        }
+        updateButtonStates();
     }
 
     /** Sets the view's controls to use this class as their event handler. */
@@ -214,13 +208,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         model.getJobs().put(jobName, job);
         model.saveJobs();
 
-        // Enable the Edit, Delete, and Process buttons if there are no
-        // jobs in the list.
-        if (model.getJobs().size() > 0) {
-            view.getButton_editJob().setDisable(false);
-            view.getButton_deleteSelectedJobs().setDisable(false);
-            view.getButton_processJobs().setDisable(false);
-        }
+        updateButtonStates();
     }
 
     /**
@@ -265,13 +253,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         jobsList.getSelectionModel().clearSelection();
 
-        // Disable the Edit, Delete, and Process buttons if there are no
-        // jobs in the list.
-        if (model.getJobs().size() == 0) {
-            view.getButton_editJob().setDisable(true);
-            view.getButton_deleteSelectedJobs().setDisable(true);
-            view.getButton_processJobs().setDisable(true);
-        }
+        updateButtonStates();
     }
 
     /**
@@ -334,5 +316,18 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Updates the disabled state of the Edit, Delete, and Process buttons
+     * to reflect the list of jobs. If there are no jobs, then the buttons
+     * are disabled. Else they're enabled.
+     */
+    private void updateButtonStates() {
+        boolean disableButtons = model.getJobs().size() == 0;
+
+        view.getButton_editJob().setDisable(disableButtons);
+        view.getButton_deleteSelectedJobs().setDisable(disableButtons);
+        view.getButton_processJobs().setDisable(disableButtons);
     }
 }
