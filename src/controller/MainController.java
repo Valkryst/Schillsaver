@@ -52,7 +52,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         settingsDialog.setTitle("Settings");
         settingsDialog.setScene(scene);
-        settingsDialog.setResizable(false);
         settingsDialog.initOwner(sceneManager.getPrimaryStage());
         settingsDialog.initModality(Modality.APPLICATION_MODAL);
 
