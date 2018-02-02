@@ -57,6 +57,14 @@ public class MainController extends Controller<MainModel, MainView> implements E
         settingsDialog.initModality(Modality.APPLICATION_MODAL);
 
         controller.setDialog(settingsDialog);
+
+        // Disable the Edit, Delete, and Process buttons if there are no
+        // jobs in the list.
+        if (model.getJobs().size() == 0) {
+            view.getButton_editJob().setDisable(true);
+            view.getButton_deleteSelectedJobs().setDisable(true);
+            view.getButton_processJobs().setDisable(true);
+        }
     }
 
     /** Sets the view's controls to use this class as their event handler. */
@@ -205,6 +213,14 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         model.getJobs().put(jobName, job);
         model.saveJobs();
+
+        // Enable the Edit, Delete, and Process buttons if there are no
+        // jobs in the list.
+        if (model.getJobs().size() > 0) {
+            view.getButton_editJob().setDisable(false);
+            view.getButton_deleteSelectedJobs().setDisable(false);
+            view.getButton_processJobs().setDisable(false);
+        }
     }
 
     /**
@@ -248,6 +264,14 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         jobsList.getSelectionModel().clearSelection();
+
+        // Disable the Edit, Delete, and Process buttons if there are no
+        // jobs in the list.
+        if (model.getJobs().size() == 0) {
+            view.getButton_editJob().setDisable(true);
+            view.getButton_deleteSelectedJobs().setDisable(true);
+            view.getButton_processJobs().setDisable(true);
+        }
     }
 
     /**
