@@ -275,7 +275,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
                try {
                    thread.join();
-                   model.saveJobs();
                } catch (final InterruptedException e) {
                    final Logger logger = LogManager.getLogger();
                    logger.error(e);
@@ -294,7 +293,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
                 try {
                     thread.join();
-                    model.saveJobs();
                 } catch (final InterruptedException e) {
                     final Logger logger = LogManager.getLogger();
                     logger.error(e);

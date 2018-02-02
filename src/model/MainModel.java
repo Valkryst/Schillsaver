@@ -197,7 +197,8 @@ public class MainModel extends Model {
 
                 Platform.runLater(() -> {
                     view.getJobsList().getItems().remove(job.getName());
-                    getJobs().remove(job.getName());
+                    jobs.remove(job.getName());
+                    saveJobs();
                 });
             });
 
@@ -320,7 +321,8 @@ public class MainModel extends Model {
 
                     Platform.runLater(() -> {
                         view.getJobsList().getItems().remove(job.getName());
-                        getJobs().remove(job.getName());
+                        jobs.remove(job.getName());
+                        saveJobs();
                     });
                 });
 
