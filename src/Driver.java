@@ -26,6 +26,8 @@ public class Driver extends Application {
     public void start(final Stage primaryStage) {
         primaryStage.getIcons().add(new Image("icons/Icon.png"));
         primaryStage.setTitle("Schillsaver - Powered by /g/entoomen\u00a9\u00ae");
+        primaryStage.setMinWidth(512);
+        primaryStage.setMinHeight(512);
 
         final HashMap<String, String> defaultSettings = new HashMap<>();
         defaultSettings.put("FFMPEG Executable Path", "");
