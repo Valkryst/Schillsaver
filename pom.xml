@@ -57,6 +57,11 @@
             <artifactId>VMVC</artifactId>
             <version>0.9.2</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.Valkryst</groupId>
+            <artifactId>VIcons</artifactId>
+            <version>0.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>
