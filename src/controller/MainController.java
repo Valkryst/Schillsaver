@@ -3,6 +3,7 @@ package controller;
 import com.valkryst.VMVC.SceneManager;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.controller.Controller;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -307,6 +308,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         try {
             mainEncodingThread.join();
             mainDecodingThread.join();
+            Platform.runLater(this::updateButtonStates);
         } catch (InterruptedException e) {
             final Logger logger = LogManager.getLogger();
             logger.error(e);
