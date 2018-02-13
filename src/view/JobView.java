@@ -1,5 +1,6 @@
 package view;
 
+import com.valkryst.VIcons.VIconType;
 import com.valkryst.VMVC.AlertManager;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.view.View;
@@ -69,8 +70,8 @@ public class JobView extends View {
         button_addFiles = new Button("Add Files");
         button_removeSelectedFiles = new Button("Remove Selected Files");
         button_selectOutputFolder = new Button("Select Output Folder");
-        button_accept = createIconButton("icons/Accept.png", 16, 16);
-        button_cancel = createIconButton("icons/Cancel.png", 16, 16);
+        button_accept = createIconButton(VIconType.BUTTON_ACCEPT.getFilePath(), 16, 16);
+        button_cancel = createIconButton(VIconType.BUTTON_CANCEL.getFilePath(), 16, 16);
 
         textField_jobName = new TextField();
         textField_jobName.setPromptText("Job Name");

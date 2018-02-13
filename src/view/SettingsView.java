@@ -1,5 +1,6 @@
 package view;
 
+import com.valkryst.VIcons.VIconType;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.view.View;
 import javafx.collections.FXCollections;
@@ -69,8 +70,8 @@ public class SettingsView extends View {
         button_selectFfmpegExecutablePath = new Button("Select FFMPEG Executable Path");
         button_selectDefaultEncodingFolder = new Button("Select Default Encoding Folder");
         button_selectDefaultDecodingFolder = new Button("Select Default Decoding Folder");
-        button_accept = createIconButton("icons/Accept.png", 16, 16);
-        button_cancel = createIconButton("icons/Cancel.png", 16, 16);
+        button_accept = createIconButton(VIconType.BUTTON_ACCEPT.getFilePath(), 16, 16);
+        button_cancel = createIconButton(VIconType.BUTTON_CANCEL.getFilePath(), 16, 16);
 
         textField_ffmpegExecutablePath = new TextField(settings.getStringSetting("FFMPEG Executable Path"));
         textField_ffmpegExecutablePath.setPromptText("FFMPEG Executable Path");

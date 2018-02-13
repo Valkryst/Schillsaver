@@ -1,5 +1,6 @@
 package view;
 
+import com.valkryst.VIcons.VIconType;
 import com.valkryst.VMVC.view.View;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -37,17 +38,17 @@ public class MainView extends View {
 
     /** Initializes the components. */
     private void initializeComponents() {
-        button_createJob = createIconButton("icons/New.png", 32, 32);
-        button_editJob = createIconButton("icons/Edit.png", 32, 32);
-        button_deleteSelectedJobs = createIconButton("icons/Delete.png", 32, 32);
-        button_processJobs = createIconButton("icons/Process.png", 32, 32);
+        button_createJob = createIconButton(VIconType.FILE_NEW.getFilePath(), 32, 32);
+        button_editJob = createIconButton(VIconType.FILE_EDIT.getFilePath(), 32, 32);
+        button_deleteSelectedJobs = createIconButton(VIconType.FILE_DELETE.getFilePath(), 32, 32);
+        button_processJobs = createIconButton(VIconType.FILE_PROCESS.getFilePath(), 32, 32);
 
         jobsList = new ListView<>();
         jobsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         outputPanes = new TabPane();
 
-        button_programSettings = createIconButton("icons/Gear.png", 32, 32);
+        button_programSettings = createIconButton(VIconType.SETTINGS.getFilePath(), 32, 32);
     }
 
     /** Sets the tooltips of the components. */
