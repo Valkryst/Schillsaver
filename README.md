@@ -1,12 +1,3 @@
-#### License: 
-
-Use this code however you wish. Modifications and improvements are welcome.
-
-Please refer to the LICENSE file for additional information.
-
----
-
-### Introduction:
 
 Schillsaver is a program that encodes files from their native formats into a video
 of black and white blocks, which represent the bits of the source file.

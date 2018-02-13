@@ -12,4 +12,7 @@ Icons made by [Hadrien](https://www.flaticon.com/authors/hadrien) from www.flati
 
 Icons edited by Valkryst using Sarafraz Shoukat's work:
 
+* Delete.png
+* Edit.png
+* New.png
 * Process.png
