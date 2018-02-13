@@ -49,6 +49,8 @@ public class JobView extends View {
         final VBox vBox = new VBox();
         vBox.getChildren().addAll(fileSelectionArea, fileDetailsArea);
 
+        VBox.setVgrow(vBox, Priority.ALWAYS);
+
         super.pane = new VBox();
         super.pane.setMinSize(512, 512);
         super.pane.getChildren().addAll(vBox, bottomMenuBar);
@@ -165,7 +167,6 @@ public class JobView extends View {
         vBox.getChildren().addAll(typeNamePane, outputPane);
 
         HBox.setHgrow(vBox, Priority.ALWAYS);
-        VBox.setVgrow(vBox, Priority.ALWAYS);
 
         return vBox;
     }
