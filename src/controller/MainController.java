@@ -39,13 +39,13 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *         If the sceneManager or settings is null.
      */
     public MainController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings) {
-        super (sceneManager, settings, new MainModel(), new MainView());
+        super(sceneManager, settings, new MainModel(), new MainView());
         addEventHandlers();
 
         loadJobsFromFile();
 
         // Construct Settings Dialog:
-        final SettingsController controller = new SettingsController(sceneManager, settings);
+        final var controller = new SettingsController(sceneManager, settings);
 
         final Scene scene = new Scene(controller.getView().getPane());
         scene.getStylesheets().add("global.css");
@@ -76,7 +76,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final Object source = event.getSource();
 
         if (source.equals(view.getButton_createJob())) {
-            if (view.getButton_createJob().isDisabled() == false) {
+            if (! view.getButton_createJob().isDisabled()) {
                 openJobView();
                 model.saveJobs();
             }
@@ -85,7 +85,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         if (source.equals(view.getButton_editJob())) {
-            if (view.getButton_editJob().isDisabled() == false) {
+            if (! view.getButton_editJob().isDisabled()) {
                 openEditJobView();
                 model.saveJobs();
             }
@@ -94,7 +94,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         if (source.equals(view.getButton_deleteSelectedJobs())) {
-            if (view.getButton_deleteSelectedJobs().isDisabled() == false) {
+            if (! view.getButton_deleteSelectedJobs().isDisabled()) {
                 deleteSelectedJobs();
                 model.saveJobs();
             }
@@ -103,7 +103,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         if (source.equals(view.getButton_processJobs())) {
-            if (view.getButton_processJobs().isDisabled() == false) {
+            if (! view.getButton_processJobs().isDisabled()) {
                 // Disable Buttons:
                 view.getButton_createJob().setDisable(true);
                 view.getButton_editJob().setDisable(true);
@@ -114,7 +114,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 final List<Thread> encodeJobs = model.prepareEncodingJobs(super.settings, view);
                 final List<Thread> decodeJobs = model.prepareDecodingJobs(super.settings, view);
 
-                final Thread thread = new Thread(() -> {
+                final var thread = new Thread(() -> {
                     processJobs(encodeJobs, decodeJobs);
 
                     // Enable Buttons:
@@ -133,9 +133,9 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         if (source.equals(view.getButton_programSettings())) {
             if (view.getButton_programSettings().isDisabled() == false) {
-                final SettingsController controller = new SettingsController(sceneManager, settings);
+                final var controller = new SettingsController(sceneManager, settings);
 
-                final Scene scene = new Scene(controller.getView().getPane());
+                final var scene = new Scene(controller.getView().getPane());
                 scene.getStylesheets().add("global.css");
                 scene.getRoot().getStyleClass().add("main-root");
 
@@ -155,7 +155,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
     /** Opens the JobView. */
     private void openJobView() {
-        final JobController controller = new JobController(sceneManager, settings);
+        final var controller = new JobController(sceneManager, settings);
         sceneManager.swapToNewScene(controller);
     }
 
@@ -175,7 +175,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final String firstJobName = selectedJobs.get(0);
         final Job job = model.getJobs().get(firstJobName);
 
-        final JobController controller = new JobController(sceneManager, settings);
+        final var controller = new JobController(sceneManager, settings);
         controller.editJob(job);
 
         view.getJobsList().getItems().remove(job.getName());
@@ -238,7 +238,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         final Optional<ButtonType> alertResult = alert.showAndWait();
 
-        if (alertResult.isPresent() == false || alertResult.get() == ButtonType.NO) {
+        if (! alertResult.isPresent() || alertResult.get() == ButtonType.NO) {
             return;
         }
 
@@ -270,7 +270,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
      */
     private void processJobs(final @NonNull List<Thread> encodeJobs, final @NonNull List<Thread> decodeJobs) {
         // Run Encode Jobs
-        final Thread mainEncodingThread = new Thread(() -> {
+        final var mainEncodingThread = new Thread(() -> {
            for (final Thread thread : encodeJobs) {
                thread.start();
 
@@ -288,7 +288,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
         mainEncodingThread.start();
 
         // Run Decode Jobs
-        final Thread mainDecodingThread = new Thread(() -> {
+        final var mainDecodingThread = new Thread(() -> {
             for (final Thread thread : decodeJobs) {
                 thread.start();
 
@@ -310,7 +310,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
             mainDecodingThread.join();
             Platform.runLater(this::updateButtonStates);
         } catch (InterruptedException e) {
-            final Logger logger = LogManager.getLogger();
+            final var logger = LogManager.getLogger();
             logger.error(e);
 
             e.printStackTrace();

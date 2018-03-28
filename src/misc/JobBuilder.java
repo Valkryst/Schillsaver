@@ -112,7 +112,7 @@ public class JobBuilder {
         if (isEncodeJob) {
             final String defaultEncodeDir = settings.getStringSetting("Default Encoding Output Directory");
 
-            if (defaultEncodeDir.isEmpty() == false) {
+            if (! defaultEncodeDir.isEmpty()) {
                 final File file = new File(defaultEncodeDir);
                 if (file.exists() && file.isDirectory()) {
                     outputDirectory = defaultEncodeDir;
@@ -122,7 +122,7 @@ public class JobBuilder {
         } else {
             final String defaultDecodeDir = settings.getStringSetting("Default Decoding Output Directory");
 
-            if (defaultDecodeDir.isEmpty() == false) {
+            if (! defaultDecodeDir.isEmpty()) {
                 final File file = new File(defaultDecodeDir);
                 if (file.exists() && file.isDirectory()) {
                     outputDirectory = defaultDecodeDir;

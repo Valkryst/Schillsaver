@@ -57,15 +57,15 @@ public class Job implements Serializable {
     public File zipFiles(final @NonNull Settings settings) throws IOException {
         final File zipFile = new File(name + ".zip");
 
-        final FileOutputStream fos = new FileOutputStream(zipFile);
-        final ZipOutputStream zos = new ZipOutputStream(fos);
+        final var fos = new FileOutputStream(zipFile);
+        final var zos = new ZipOutputStream(fos);
 
         byte[] buffer = new byte[32_768];
 
         for (final File file : files) {
-            if (file.isDirectory() == false) {
-                final ZipEntry entry = new ZipEntry(file.getName());
-                final FileInputStream fis = new FileInputStream(file);
+            if (! file.isDirectory()) {
+                final var entry = new ZipEntry(file.getName());
+                final var fis = new FileInputStream(file);
 
                 zos.putNextEntry(entry);
 
@@ -102,9 +102,9 @@ public class Job implements Serializable {
      */
     private static File padFile(final @NonNull File file, final @NonNull Settings settings) {
         try (
-            final FileOutputStream outputStream = new FileOutputStream(file, true);
+            final var outputStream = new FileOutputStream(file, true);
         ) {
-            final FrameDimension frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
+            final var frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
             final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
 
             int bytesPerFrame = frameDimension.getWidth() * frameDimension.getHeight();

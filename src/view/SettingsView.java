@@ -49,11 +49,11 @@ public class SettingsView extends View {
         initializeComponents(settings);
         setComponentTooltips();
 
-        final HBox hBox = new HBox();
+        final var hBox = new HBox();
         HBox.setHgrow(textField_codec, Priority.ALWAYS);
         hBox.getChildren().addAll(textField_codec, comboBox_frameDimensions, comboBox_frameRate, comboBox_blockSize);
 
-        final VBox vBox = new VBox();
+        final var vBox = new VBox();
         VBox.setVgrow(vBox, Priority.ALWAYS);
         vBox.getChildren().add(createControlRow(button_selectFfmpegExecutablePath, textField_ffmpegExecutablePath));
         vBox.getChildren().add(createControlRow(button_selectDefaultEncodingFolder, textField_defaultEncodingFolder));
@@ -134,7 +134,7 @@ public class SettingsView extends View {
         final StringBuilder frameDimensionsTooltip = new StringBuilder();
         frameDimensionsTooltip.append("The frame dimensions to use when encoding.");
 
-        for (final FrameDimension frameDimension : FrameDimension.values()) {
+        for (final var frameDimension : FrameDimension.values()) {
             frameDimensionsTooltip.append("\n    ").append(frameDimension);
         }
 

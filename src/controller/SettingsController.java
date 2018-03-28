@@ -36,7 +36,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
      *         If the sceneManager or settings is null.
      */
     SettingsController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings) {
-        super (sceneManager, settings, new SettingsModel(), new SettingsView(settings));
+        super(sceneManager, settings, new SettingsModel(), new SettingsView(settings));
         addEventHandlers();
     }
 
@@ -196,7 +196,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
      *          The file path.
      */
     private String selectFfmpegExecutablePath() {
-        final FileChooser fileChooser = new FileChooser();
+        final var fileChooser = new FileChooser();
         fileChooser.setTitle("FFMPEG Executable Selection");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
@@ -218,7 +218,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
      *          The file path.
      */
     private String selectFolder() {
-        final JFileChooser fileChooser = new JFileChooser();
+        final var fileChooser = new JFileChooser();
         fileChooser.setDragEnabled(false);
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

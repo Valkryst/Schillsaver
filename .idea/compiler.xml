@@ -9,8 +9,6 @@
         <module name="Schillsaver" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="1.8">
-      <module name="Schillsaver" target="1.8" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="9" />
   </component>
 </project>

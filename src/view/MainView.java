@@ -120,7 +120,7 @@ public class MainView extends View {
      */
     public Tab addOutputTab(final @NonNull String title) {
         // Create Text Area for Output
-        final TextArea textArea = new TextArea();
+        final var textArea = new TextArea();
         textArea.setEditable(false);
         textArea.setFocusTraversable(false);
 

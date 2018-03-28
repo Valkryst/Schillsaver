@@ -72,14 +72,14 @@ public class Driver extends Application {
         File ffmpegFile = null;
 
         while (ffmpegFile == null) {
-            final FileChooser fileChooser = new FileChooser();
+            final var fileChooser = new FileChooser();
             fileChooser.setTitle("FFMPEG Executable Selection");
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             ffmpegFile = fileChooser.showOpenDialog(primaryStage);
 
             if (ffmpegFile == null) {
                 final String alertMessage = "No file was selected, would you like to try again?";
-                final Alert alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.YES, ButtonType.NO);
+                final var alert = new Alert(Alert.AlertType.ERROR, alertMessage, ButtonType.YES, ButtonType.NO);
                 alert.showAndWait();
 
                 if (alert.getResult().equals(ButtonType.NO)) {

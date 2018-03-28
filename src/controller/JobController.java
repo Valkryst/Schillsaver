@@ -37,7 +37,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      *         If the sceneManager or settings is null.
      */
     public JobController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings) {
-        super (sceneManager, settings, new JobModel(), new JobView(settings));
+        super(sceneManager, settings, new JobModel(), new JobView(settings));
         addEventHandlers();
     }
 
@@ -153,7 +153,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      *         The job.
      */
     private Job createJob() {
-        final JobBuilder builder = new JobBuilder(settings);
+        final var builder = new JobBuilder(settings);
         builder.setName(view.getTextField_jobName().getText());
         builder.setOutputDirectory(view.getTextField_outputFolder().getText());
         builder.setFiles(model.getFiles());
@@ -166,11 +166,9 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             job = builder.build();
         } catch (final NullPointerException e) {
             LogManager.getLogger().error(e);
-
             AlertManager.showErrorAndWait("Unable to build job. Have you selected an output directory and/or any files?");
         } catch (final IllegalArgumentException e) {
             LogManager.getLogger().error(e);
-
             AlertManager.showErrorAndWait("The output directory does not exist and\ncould not be created.");
         }
 
@@ -179,11 +177,11 @@ public class JobController extends Controller<JobModel, JobView> implements Even
 
     /** Opens a file chooser for the user to add files to the job. */
     private void addFiles() {
-        final FileChooser fileChooser = new FileChooser();
+        final var fileChooser = new FileChooser();
         fileChooser.setTitle("Job File Selection");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-        final List<File> selectedFiles = fileChooser.showOpenMultipleDialog(sceneManager.getPrimaryStage());
+        final var selectedFiles = fileChooser.showOpenMultipleDialog(sceneManager.getPrimaryStage());
 
         if (selectedFiles != null) {
             selectedFiles.forEach(model::addFile);
@@ -213,7 +211,7 @@ public class JobController extends Controller<JobModel, JobView> implements Even
      * the job.
      */
     private void selectOutputFolder() {
-        final JFileChooser fileChooser = new JFileChooser();
+        final var fileChooser = new JFileChooser();
         fileChooser.setDragEnabled(false);
         fileChooser.setMultiSelectionEnabled(false);
         fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -231,7 +229,6 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             }
         } catch(final HeadlessException e) {
             LogManager.getLogger().error(e);
-
             AlertManager.showErrorAndWait("There was an issue selecting an output folder.\nSee the log file for more information.");
         }
     }
