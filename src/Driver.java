@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class Driver extends Application {
     public static void main(final String[] args) {
-            launch();
+        launch();
     }
 
     @Override
