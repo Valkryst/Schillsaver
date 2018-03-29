@@ -4,7 +4,6 @@ import com.valkryst.VIcons.VIconType;
 import com.valkryst.VMVC.AlertManager;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.view.View;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -82,7 +81,7 @@ public class JobView extends View {
         fileList = new ListView<>();
         fileList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        comboBox_jobType  = new ComboBox<>(FXCollections.observableArrayList("Encode", "Decode"));
+        comboBox_jobType = createComboBox("Encode", "Decode");
         comboBox_jobType.getSelectionModel().select("Encode");
         textField_outputFolder.setText(settings.getStringSetting("Default Encoding Output Directory"));
         comboBox_jobType.valueProperty().addListener((observableValue, oldValue, newValue) -> {

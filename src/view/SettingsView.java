@@ -3,7 +3,6 @@ package view;
 import com.valkryst.VIcons.VIconType;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.view.View;
-import javafx.collections.FXCollections;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -94,7 +93,7 @@ public class SettingsView extends View {
         for (final FrameDimension dimension : FrameDimension.values()) {
             frameDimensions.add(dimension.name());
         }
-        comboBox_frameDimensions = new ComboBox<>(FXCollections.observableArrayList(frameDimensions));
+        comboBox_frameDimensions = createComboBox(frameDimensions);
         comboBox_frameDimensions.getSelectionModel().select(settings.getStringSetting("Encoding Frame Dimensions"));
 
         // Setup Frame Rate Combo Box:
@@ -103,7 +102,7 @@ public class SettingsView extends View {
         for (final FrameRate rate : FrameRate.values()) {
             frameRates.add(rate.name());
         }
-        comboBox_frameRate = new ComboBox<>(FXCollections.observableArrayList(frameRates));
+        comboBox_frameRate = createComboBox(frameRates);
         comboBox_frameRate.getSelectionModel().select(settings.getStringSetting("Encoding Frame Rate"));
 
         // Setup Block Size Combo Box:
@@ -112,7 +111,7 @@ public class SettingsView extends View {
         for (final BlockSize size : BlockSize.values()) {
             blockSizes.add(size.name());
         }
-        comboBox_blockSize = new ComboBox<>(FXCollections.observableArrayList(blockSizes));
+        comboBox_blockSize = createComboBox(blockSizes);
         comboBox_blockSize.getSelectionModel().select(settings.getStringSetting("Encoding Block Size"));
     }
 
