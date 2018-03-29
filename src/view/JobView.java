@@ -46,8 +46,7 @@ public class JobView extends View {
         final Pane fileDetailsArea = createJobDetailsArea();
         final Pane bottomMenuBar = createBottomMenuBar();
 
-        final VBox vBox = new VBox();
-        vBox.getChildren().addAll(fileSelectionArea, fileDetailsArea);
+        final VBox vBox = new VBox(fileSelectionArea, fileDetailsArea);
 
         VBox.setVgrow(vBox, Priority.ALWAYS);
 
@@ -132,8 +131,7 @@ public class JobView extends View {
         final GridPane buttonPane = createHorizontalGridPane(button_addFiles, button_removeSelectedFiles);
 
         // Create the Pane:
-        final VBox pane = new VBox();
-        pane.getChildren().addAll(buttonPane, fileList);
+        final VBox pane = new VBox(buttonPane, fileList);
 
         // Ensure pane and file list fill all available vertical space:
         VBox.setVgrow(pane, Priority.ALWAYS);
@@ -150,21 +148,16 @@ public class JobView extends View {
      */
     private Pane createJobDetailsArea() {
         // Add job type & name side-by-side
-        final HBox typeNamePane = new HBox();
-        typeNamePane.getChildren().addAll(comboBox_jobType, textField_jobName);
-
+        final HBox typeNamePane = new HBox(comboBox_jobType, textField_jobName);
         HBox.setHgrow(textField_jobName, Priority.ALWAYS);
 
         // Add output folder field/button side-by-side:
-        final HBox outputPane = new HBox();
-        outputPane.getChildren().addAll(textField_outputFolder, button_selectOutputFolder);
-
+        final HBox outputPane = new HBox(textField_outputFolder, button_selectOutputFolder);
         HBox.setHgrow(textField_outputFolder, Priority.ALWAYS);
 
         // Add panes to a VBox
-        final VBox vBox = new VBox();
+        final VBox vBox = new VBox(typeNamePane, outputPane);
         vBox.setPadding(new Insets(10, 0, 10, 0));
-        vBox.getChildren().addAll(typeNamePane, outputPane);
 
         HBox.setHgrow(vBox, Priority.ALWAYS);
 

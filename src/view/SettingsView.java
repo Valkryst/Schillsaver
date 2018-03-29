@@ -48,9 +48,8 @@ public class SettingsView extends View {
         initializeComponents(settings);
         setComponentTooltips();
 
-        final HBox hBox = new HBox();
+        final HBox hBox = new HBox(textField_codec, comboBox_frameDimensions, comboBox_frameRate, comboBox_blockSize);
         HBox.setHgrow(textField_codec, Priority.ALWAYS);
-        hBox.getChildren().addAll(textField_codec, comboBox_frameDimensions, comboBox_frameRate, comboBox_blockSize);
 
         final VBox vBox = new VBox();
         VBox.setVgrow(vBox, Priority.ALWAYS);
@@ -141,14 +140,11 @@ public class SettingsView extends View {
     }
 
     private Pane createControlRow(final @NonNull Button button, final @NonNull TextField field) {
-        final HBox hBox = new HBox();
+        final HBox hBox = new HBox(button, field);
         VBox.setVgrow(hBox, Priority.ALWAYS);
 
         HBox.setHgrow(button, Priority.NEVER);
         HBox.setHgrow(field, Priority.ALWAYS);
-
-        hBox.getChildren().add(button);
-        hBox.getChildren().add(field);
 
         button.setMinWidth(256);
 
