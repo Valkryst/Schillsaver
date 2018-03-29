@@ -133,10 +133,7 @@ public class MainView extends View {
         }
 
         // Create Tab
-        final Tab tab = new Tab();
-        tab.setText(title);
-        tab.setContent(textArea);
-
+        final Tab tab = new Tab(title, textArea);
         tab.setOnClosed(e -> {
             if (outputPanes.getTabs().size() == 0) {
                 contentArea.getItems().remove(outputPanes);
