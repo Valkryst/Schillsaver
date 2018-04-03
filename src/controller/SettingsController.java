@@ -55,10 +55,9 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
 
         if (source.equals(view.getButton_selectFfmpegExecutablePath())) {
             String newPath = selectFfmpegExecutablePath();
-            final String oldPath = view.getTextField_ffmpegExecutablePath().getText();
 
             if (newPath.isEmpty()) {
-                newPath = oldPath;
+                newPath = view.getTextField_ffmpegExecutablePath().getText();
             }
 
             view.getTextField_ffmpegExecutablePath().setText(newPath);
@@ -67,10 +66,9 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
 
         if (source.equals(view.getButton_selectDefaultEncodingFolder())) {
             String newPath = selectFolder();
-            final String oldPath = view.getTextField_defaultEncodingFolder().getText();
 
             if (newPath.isEmpty()) {
-                newPath = oldPath;
+                newPath = view.getTextField_defaultEncodingFolder().getText();
             }
 
             view.getTextField_defaultEncodingFolder().setText(newPath);
@@ -79,10 +77,9 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
 
         if (source.equals(view.getButton_selectDefaultDecodingFolder())) {
             String newPath = selectFolder();
-            final String oldPath = view.getTextField_defaultDecodingFolder().getText();
 
             if (newPath.isEmpty()) {
-                newPath = oldPath;
+                newPath = view.getTextField_defaultDecodingFolder().getText();
             }
 
             view.getTextField_defaultDecodingFolder().setText(newPath);
@@ -95,7 +92,6 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
                     settings.saveSettings();
                 } catch (final IOException e) {
                     LogManager.getLogger().error(e);
-
                     AlertManager.showErrorAndWait("There was an issue saving the settings.\nSee the log file for more information.");
                 }
 
