@@ -96,11 +96,8 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             view.getFileList().getItems().add(file.getName());
         }
 
-        if (job.isEncodeJob()) {
-            view.getComboBox_jobType().getSelectionModel().select("Encode");
-        } else {
-            view.getComboBox_jobType().getSelectionModel().select("Decode");
-        }
+        final String jobType = job.isEncodeJob() ? "Encode" : "Decode";
+        view.getComboBox_jobType().getSelectionModel().select(jobType);
     }
 
     @Override
@@ -166,11 +163,9 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             job = builder.build();
         } catch (final NullPointerException e) {
             LogManager.getLogger().error(e);
-
             AlertManager.showErrorAndWait("Unable to build job. Have you selected an output directory and/or any files?");
         } catch (final IllegalArgumentException e) {
             LogManager.getLogger().error(e);
-
             AlertManager.showErrorAndWait("The output directory does not exist and\ncould not be created.");
         }
 
