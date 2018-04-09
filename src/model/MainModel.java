@@ -29,7 +29,7 @@ public class MainModel extends Model {
     /** Deserializes the jobs map, if the file exists. */
     public void loadJobs() {
         try {
-            final Object object = deserializeObject(JOBS_FILE_PATH);
+            final Object object = deserializeObjectWithGZIP(JOBS_FILE_PATH);
             jobs = (Map<String, Job>) object;
         } catch (final IOException | ClassNotFoundException e) {
             LogManager.getLogger().error(e);
@@ -57,7 +57,7 @@ public class MainModel extends Model {
         }
 
         try {
-            serializeObject(JOBS_FILE_PATH, jobs);
+            serializeObjectWithGZIP(JOBS_FILE_PATH, jobs);
         } catch (final IOException e) {
             LogManager.getLogger().error(e);
         }
@@ -150,7 +150,7 @@ public class MainModel extends Model {
                     try (
                         final InputStream is = process.getInputStream();
                         final InputStreamReader isr = new InputStreamReader(is);
-                        final BufferedReader br = new BufferedReader(isr);
+                        final BufferedReader br = new BufferedReader(isr)
                     ) {
                         String line;
                         while ((line = br.readLine()) != null) {
