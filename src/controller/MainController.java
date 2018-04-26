@@ -11,6 +11,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.NonNull;
@@ -20,6 +22,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import view.MainView;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,6 +62,33 @@ public class MainController extends Controller<MainModel, MainView> implements E
         controller.setDialog(settingsDialog);
 
         updateButtonStates();
+
+        // Allow the user to drag and drop files onto the view in order to
+        // quickly open up job creation.
+        view.getPane().setOnDragOver(event -> {
+            System.out.println("Drag over done.");
+
+            if (event.getDragboard().hasFiles()) {
+                event.acceptTransferModes(TransferMode.COPY);
+            } else {
+                event.consume();
+            }
+        });
+
+        view.getPane().setOnDragDropped(event -> {
+            final Dragboard db = event.getDragboard();
+
+            if (db.hasFiles()) {
+                final var jc = new JobController(sceneManager, settings, db.getFiles());
+                sceneManager.swapToNewScene(jc);
+
+                event.setDropCompleted(true);
+            } else {
+                event.setDropCompleted(false);
+            }
+
+            event.consume();
+        });
     }
 
     /** Sets the view's controls to use this class as their event handler. */
