@@ -41,6 +41,32 @@ public class JobController extends Controller<JobModel, JobView> implements Even
         addEventHandlers();
     }
 
+    /**
+     * Constructs a new JobController.
+     *
+     * @param sceneManager
+     *          The scene manager.
+     *
+     * @param settings
+     *          The program settings.
+     *
+     * @param files
+     *          The files to add to the job.
+     *
+     * @throws NullPointerException
+     *         If the sceneManager or settings is null.
+     */
+    public JobController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings, final List<File> files) {
+        this(sceneManager, settings);
+
+        if (files != null) {
+            for (final File file : files) {
+                model.addFile(file);
+                view.getFileList().getItems().add(file.getName());
+            }
+        }
+    }
+
     /** Sets all of the view's controls to use this class as their event handler. */
     private void addEventHandlers() {
         view.getButton_addFiles().setOnAction(this);
