@@ -9,9 +9,9 @@ The option to decode these files is also available.
 
 ### Requirements:
 
-* Any version of Java from 8 onwards.
+* Any version of Java from 10 onwards.
     * http://java.com/en/download/ or an equivalent Linux package.
-    * See [here](http://docs.oracle.com/javase/8/docs/technotes/guides/install/linux_jdk.html) for
+    * See [here](http://docs.oracle.com/javase/10/docs/technotes/guides/install/linux_jdk.html) for
       more information on installing Java on Linux.
 
     
