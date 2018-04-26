@@ -3,7 +3,6 @@ package view;
 import com.valkryst.VIcons.VIconType;
 import com.valkryst.VMVC.Settings;
 import com.valkryst.VMVC.view.View;
-import javafx.collections.FXCollections;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -49,11 +48,10 @@ public class SettingsView extends View {
         initializeComponents(settings);
         setComponentTooltips();
 
-        final var hBox = new HBox();
+        final HBox hBox = new HBox(textField_codec, comboBox_frameDimensions, comboBox_frameRate, comboBox_blockSize);
         HBox.setHgrow(textField_codec, Priority.ALWAYS);
-        hBox.getChildren().addAll(textField_codec, comboBox_frameDimensions, comboBox_frameRate, comboBox_blockSize);
 
-        final var vBox = new VBox();
+        final VBox vBox = new VBox();
         VBox.setVgrow(vBox, Priority.ALWAYS);
         vBox.getChildren().add(createControlRow(button_selectFfmpegExecutablePath, textField_ffmpegExecutablePath));
         vBox.getChildren().add(createControlRow(button_selectDefaultEncodingFolder, textField_defaultEncodingFolder));
@@ -94,7 +92,7 @@ public class SettingsView extends View {
         for (final FrameDimension dimension : FrameDimension.values()) {
             frameDimensions.add(dimension.name());
         }
-        comboBox_frameDimensions = new ComboBox<>(FXCollections.observableArrayList(frameDimensions));
+        comboBox_frameDimensions = createComboBox(frameDimensions);
         comboBox_frameDimensions.getSelectionModel().select(settings.getStringSetting("Encoding Frame Dimensions"));
 
         // Setup Frame Rate Combo Box:
@@ -103,7 +101,7 @@ public class SettingsView extends View {
         for (final FrameRate rate : FrameRate.values()) {
             frameRates.add(rate.name());
         }
-        comboBox_frameRate = new ComboBox<>(FXCollections.observableArrayList(frameRates));
+        comboBox_frameRate = createComboBox(frameRates);
         comboBox_frameRate.getSelectionModel().select(settings.getStringSetting("Encoding Frame Rate"));
 
         // Setup Block Size Combo Box:
@@ -112,7 +110,7 @@ public class SettingsView extends View {
         for (final BlockSize size : BlockSize.values()) {
             blockSizes.add(size.name());
         }
-        comboBox_blockSize = new ComboBox<>(FXCollections.observableArrayList(blockSizes));
+        comboBox_blockSize = createComboBox(blockSizes);
         comboBox_blockSize.getSelectionModel().select(settings.getStringSetting("Encoding Block Size"));
     }
 
@@ -134,7 +132,7 @@ public class SettingsView extends View {
         final StringBuilder frameDimensionsTooltip = new StringBuilder();
         frameDimensionsTooltip.append("The frame dimensions to use when encoding.");
 
-        for (final var frameDimension : FrameDimension.values()) {
+        for (final FrameDimension frameDimension : FrameDimension.values()) {
             frameDimensionsTooltip.append("\n    ").append(frameDimension);
         }
 
@@ -142,14 +140,11 @@ public class SettingsView extends View {
     }
 
     private Pane createControlRow(final @NonNull Button button, final @NonNull TextField field) {
-        final HBox hBox = new HBox();
+        final HBox hBox = new HBox(button, field);
         VBox.setVgrow(hBox, Priority.ALWAYS);
 
         HBox.setHgrow(button, Priority.NEVER);
         HBox.setHgrow(field, Priority.ALWAYS);
-
-        hBox.getChildren().add(button);
-        hBox.getChildren().add(field);
 
         button.setMinWidth(256);
 

@@ -29,7 +29,7 @@ public class MainModel extends Model {
     /** Deserializes the jobs map, if the file exists. */
     public void loadJobs() {
         try {
-            final var object = deserializeObject(JOBS_FILE_PATH);
+            final Object object = deserializeObjectWithGZIP(JOBS_FILE_PATH);
             jobs = (Map<String, Job>) object;
         } catch (final IOException | ClassNotFoundException e) {
             LogManager.getLogger().error(e);
@@ -57,7 +57,7 @@ public class MainModel extends Model {
         }
 
         try {
-            serializeObject(JOBS_FILE_PATH, jobs);
+            serializeObjectWithGZIP(JOBS_FILE_PATH, jobs);
         } catch (final IOException e) {
             LogManager.getLogger().error(e);
         }
@@ -96,9 +96,9 @@ public class MainModel extends Model {
                     outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
 
                     // Construct FFMPEG Command:
-                    final var frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
+                    final FrameDimension frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
                     final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
-                    final var frameRate = FrameRate.valueOf(settings.getStringSetting("Encoding Frame Rate"));
+                    final FrameRate frameRate = FrameRate.valueOf(settings.getStringSetting("Encoding Frame Rate"));
                     final String codec = settings.getStringSetting("Encoding Codec");
 
                     final List<String> ffmpegCommands = new ArrayList<>();
@@ -140,17 +140,17 @@ public class MainModel extends Model {
                     Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(ffmpegCommands.toString()));
 
                     // Construct FFMPEG Process:
-                    final var builder = new ProcessBuilder(ffmpegCommands);
+                    final ProcessBuilder builder = new ProcessBuilder(ffmpegCommands);
                     builder.redirectErrorStream(true);
 
-                    final var process = builder.start();
+                    final Process process = builder.start();
                     Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
 
                     // Run FFMPEG Process:
                     try (
-                        final var is = process.getInputStream();
-                        final var isr = new InputStreamReader(is);
-                        final var br = new BufferedReader(isr);
+                        final InputStream is = process.getInputStream();
+                        final InputStreamReader isr = new InputStreamReader(is);
+                        final BufferedReader br = new BufferedReader(isr)
                     ) {
                         String line;
                         while ((line = br.readLine()) != null) {
@@ -177,7 +177,7 @@ public class MainModel extends Model {
                 } catch (final IOException e) {
                     LogManager.getLogger().error(e);
 
-                    final var outputArea = ((TextArea) tab.getContent());
+                    final TextArea outputArea = ((TextArea) tab.getContent());
                     Platform.runLater(() -> {
                         outputArea.appendText("\nError:");
                         outputArea.appendText("\n\t" + e.getMessage());
@@ -238,7 +238,7 @@ public class MainModel extends Model {
 
                     if (outputFile.exists()) {
                         if (outputFile.delete() == false) {
-                            final var outputArea = ((TextArea) tab.getContent());
+                            final TextArea outputArea = ((TextArea) tab.getContent());
                             Platform.runLater(() -> {
                                 outputArea.appendText("\nError:");
                                 outputArea.appendText("\n\tUnable to delete " + outputFile.getAbsolutePath());
@@ -274,7 +274,7 @@ public class MainModel extends Model {
                     ffmpegCommands.add(outputFile.getAbsolutePath());
 
                     // Construct FFMPEG Process:
-                    final var builder = new ProcessBuilder(ffmpegCommands);
+                    final ProcessBuilder builder = new ProcessBuilder(ffmpegCommands);
                     builder.redirectErrorStream(true);
 
                     Process process = null;
@@ -284,9 +284,9 @@ public class MainModel extends Model {
                         Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
 
                         // Run FFMPEG Process:
-                        final var is = process.getInputStream();
-                        final var isr = new InputStreamReader(is);
-                        final var br = new BufferedReader(isr);
+                        final InputStream is = process.getInputStream();
+                        final InputStreamReader isr = new InputStreamReader(is);
+                        final BufferedReader br = new BufferedReader(isr);
 
                         String line;
                         while ((line = br.readLine()) != null) {
@@ -369,7 +369,7 @@ public class MainModel extends Model {
         final List<Job> decodingJobs = new ArrayList<>();
 
         for (final Job job : jobs.values()) {
-            if (! job.isEncodeJob()) {
+            if (job.isEncodeJob() == false) {
                 decodingJobs.add(job);
             }
         }

@@ -96,11 +96,8 @@ public class JobController extends Controller<JobModel, JobView> implements Even
             view.getFileList().getItems().add(file.getName());
         }
 
-        if (job.isEncodeJob()) {
-            view.getComboBox_jobType().getSelectionModel().select("Encode");
-        } else {
-            view.getComboBox_jobType().getSelectionModel().select("Decode");
-        }
+        final String jobType = job.isEncodeJob() ? "Encode" : "Decode";
+        view.getComboBox_jobType().getSelectionModel().select(jobType);
     }
 
     @Override

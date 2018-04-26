@@ -31,9 +31,8 @@ public class MainView extends View {
         final Pane menuBar = createMenuBar();
         contentArea = createContentArea();
 
-        super.pane = new VBox();
+        super.pane = new VBox(menuBar, contentArea);
         super.pane.setMinSize(512, 512);
-        super.pane.getChildren().addAll(menuBar, contentArea);
     }
 
     /** Initializes the components. */
@@ -68,7 +67,7 @@ public class MainView extends View {
      *         The menu bar panel.
      */
     private Pane createMenuBar() {
-        final HBox pane = new HBox();
+        final HBox pane = new HBox(button_createJob, button_editJob, button_deleteSelectedJobs, button_processJobs, button_programSettings);
 
         HBox.setHgrow(pane, Priority.ALWAYS);
         VBox.setVgrow(pane, Priority.NEVER);
@@ -78,12 +77,6 @@ public class MainView extends View {
         HBox.setHgrow(button_deleteSelectedJobs, Priority.ALWAYS);
         HBox.setHgrow(button_processJobs, Priority.ALWAYS);
         HBox.setHgrow(button_programSettings, Priority.ALWAYS);
-
-        pane.getChildren().addAll(button_createJob,
-                                         button_editJob,
-                                         button_deleteSelectedJobs,
-                                         button_processJobs,
-                                         button_programSettings);
 
         return pane;
     }
@@ -95,8 +88,7 @@ public class MainView extends View {
      *         The content area panel.
      */
     private SplitPane createContentArea() {
-        final SplitPane contentArea = new SplitPane();
-        contentArea.getItems().add(jobsList);
+        final SplitPane contentArea = new SplitPane(jobsList);
 
         HBox.setHgrow(contentArea, Priority.ALWAYS);
         VBox.setVgrow(contentArea, Priority.ALWAYS);
@@ -133,10 +125,7 @@ public class MainView extends View {
         }
 
         // Create Tab
-        final Tab tab = new Tab();
-        tab.setText(title);
-        tab.setContent(textArea);
-
+        final Tab tab = new Tab(title, textArea);
         tab.setOnClosed(e -> {
             if (outputPanes.getTabs().size() == 0) {
                 contentArea.getItems().remove(outputPanes);
