@@ -66,8 +66,6 @@ public class MainController extends Controller<MainModel, MainView> implements E
         // Allow the user to drag and drop files onto the view in order to
         // quickly open up job creation.
         view.getPane().setOnDragOver(event -> {
-            System.out.println("Drag over done.");
-
             if (event.getDragboard().hasFiles()) {
                 event.acceptTransferModes(TransferMode.COPY);
             } else {
