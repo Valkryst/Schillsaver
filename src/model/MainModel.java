@@ -273,6 +273,8 @@ public class MainModel extends Model {
                     ffmpegCommands.add("-y");
                     ffmpegCommands.add(outputFile.getAbsolutePath());
 
+                    Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(ffmpegCommands.toString()));
+
                     // Construct FFMPEG Process:
                     final ProcessBuilder builder = new ProcessBuilder(ffmpegCommands);
                     builder.redirectErrorStream(true);
