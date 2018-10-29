@@ -11,4 +11,9 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="10" />
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Schillsaver" options="--add-modules=javafx.controls,javafx.graphics,javafx.base" />
+    </option>
+  </component>
 </project>
