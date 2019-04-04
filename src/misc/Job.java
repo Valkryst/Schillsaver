@@ -3,7 +3,6 @@ package misc;
 import com.valkryst.VMVC.Settings;
 import lombok.Getter;
 import lombok.NonNull;
-import org.apache.logging.log4j.LogManager;
 
 import java.awt.Dimension;
 import java.io.*;
@@ -115,7 +114,7 @@ public class Job implements Serializable {
 
             outputStream.write(new byte[numberOfBytesToPad]);
         } catch (final IOException e) {
-            LogManager.getLogger().error(e);
+            System.err.println(e.getMessage());
         }
 
         return file;

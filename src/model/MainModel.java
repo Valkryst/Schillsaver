@@ -13,7 +13,6 @@ import misc.FrameDimension;
 import misc.FrameRate;
 import misc.Job;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
 import view.MainView;
 
 import java.awt.Dimension;
@@ -31,9 +30,9 @@ public class MainModel extends Model {
         try {
             final Object object = deserializeObjectWithGZIP(JOBS_FILE_PATH);
             jobs = (Map<String, Job>) object;
-        } catch (final IOException | ClassNotFoundException e) {
-            LogManager.getLogger().error(e);
-
+        } catch (final IOException e) {
+            System.err.println(e.getMessage());
+        } catch (final ClassNotFoundException e) {
             // Delete the file:
             final File file = new File(JOBS_FILE_PATH);
 
@@ -59,7 +58,7 @@ public class MainModel extends Model {
         try {
             serializeObjectWithGZIP(JOBS_FILE_PATH, jobs);
         } catch (final IOException e) {
-            LogManager.getLogger().error(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -158,7 +157,7 @@ public class MainModel extends Model {
                             Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(System.lineSeparator() + temp));
                         }
                     } catch (final IOException e) {
-                        LogManager.getLogger().error(e);
+                        System.err.println(e.getMessage());
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {
@@ -175,7 +174,7 @@ public class MainModel extends Model {
 
                     Platform.runLater(() -> ((TextArea) tab.getContent()).appendText("\n\nEncoding Complete"));
                 } catch (final IOException e) {
-                    LogManager.getLogger().error(e);
+                    System.err.println(e.getMessage());
 
                     final TextArea outputArea = ((TextArea) tab.getContent());
                     Platform.runLater(() -> {
@@ -300,7 +299,7 @@ public class MainModel extends Model {
                         isr.close();
                         is.close();
                     } catch (final IOException e) {
-                        LogManager.getLogger().error(e);
+                        System.err.println(e.getMessage());
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {

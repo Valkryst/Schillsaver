@@ -18,11 +18,8 @@ import javafx.stage.Stage;
 import lombok.NonNull;
 import misc.Job;
 import model.MainModel;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import view.MainView;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -305,9 +302,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                try {
                    thread.join();
                } catch (final InterruptedException e) {
-                   final Logger logger = LogManager.getLogger();
-                   logger.error(e);
-
+                   System.err.println(e.getMessage());
                    e.printStackTrace();
                }
            }
@@ -323,9 +318,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 try {
                     thread.join();
                 } catch (final InterruptedException e) {
-                    final Logger logger = LogManager.getLogger();
-                    logger.error(e);
-
+                    System.err.println(e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -338,9 +331,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
             mainDecodingThread.join();
             Platform.runLater(this::updateButtonStates);
         } catch (InterruptedException e) {
-            final var logger = LogManager.getLogger();
-            logger.error(e);
-
+            System.err.println(e.getMessage());
             e.printStackTrace();
         }
     }

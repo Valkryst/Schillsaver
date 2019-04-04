@@ -4,7 +4,6 @@ import com.valkryst.VMVC.AlertManager;
 import com.valkryst.VMVC.Settings;
 import lombok.Data;
 import lombok.NonNull;
-import org.apache.logging.log4j.LogManager;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -135,7 +134,7 @@ public class JobBuilder {
             final File home = FileSystemView.getFileSystemView().getHomeDirectory();
             outputDirectory = home.getCanonicalPath() + "/";
         } catch (final IOException e) {
-            LogManager.getLogger().error(e);
+            System.err.println(e.getMessage());
             AlertManager.showErrorAndWait("There was an issue retrieving the home directory path.\nSee the log file for more information.");
         }
     }

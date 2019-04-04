@@ -9,7 +9,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.Getter;
 import lombok.NonNull;
-import org.apache.logging.log4j.LogManager;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -99,7 +98,7 @@ public class JobView extends View {
                     final File home = FileSystemView.getFileSystemView().getHomeDirectory();
                     textField_outputFolder.setText(home.getCanonicalPath() + "/");
                 } catch (final IOException e) {
-                    LogManager.getLogger().error(e);
+                    System.err.println(e.getMessage());
                     AlertManager.showErrorAndWait("There was an issue retrieving the home directory path.\nSee the log file for more information.");
                 }
             }

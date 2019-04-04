@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import lombok.NonNull;
 import lombok.Setter;
 import model.SettingsModel;
-import org.apache.logging.log4j.LogManager;
 import view.SettingsView;
 
 import javax.swing.JFileChooser;
@@ -91,7 +90,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
                 try {
                     settings.saveSettings();
                 } catch (final IOException e) {
-                    LogManager.getLogger().error(e);
+                    System.err.println(e.getMessage());
                     AlertManager.showErrorAndWait("There was an issue saving the settings.\nSee the log file for more information.");
                 }
 
@@ -237,7 +236,7 @@ public class SettingsController extends Controller<SettingsModel, SettingsView> 
                 }
             }
         } catch(final HeadlessException e) {
-            LogManager.getLogger().error(e);
+            System.err.println(e.getMessage());
             AlertManager.showErrorAndWait("There was an issue selecting the folder.\nSee the log file for more information.");
         }
 
