@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import misc.BlockSize;
 import misc.FrameDimension;
 import misc.FrameRate;
-import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +49,7 @@ public class JFXDriver extends Application {
                 settings.saveSettings();
             }
         } catch (final IOException e) {
-            LogManager.getLogger().error(e);
+            System.err.println(e.getMessage());
         }
     }
 
