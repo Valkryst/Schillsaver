@@ -127,7 +127,6 @@ dependency-reduced-pom.xml
 
 
 # Project Specific
-test/Driver.java
 log.txt
 Jobs.ser
 Settings.ser
