@@ -53,7 +53,7 @@ The option to decode these files is also available.
    * This choice was made in the effort to both simplify the program's logic and to
       slightly reduce the resulting file size of the encoded video.
 
-* YouTube may not support 60 FPS videos when the video's resolution is less than
-   1080p.
+* YouTube will not support 60 FPS videos when the video's resolution is less than
+   720p.
 
 * The `log.txt` file will contain warnings about being unable to load `Jobs.ser`, you can ignore those messages.
