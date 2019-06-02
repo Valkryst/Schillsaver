@@ -1,70 +1,42 @@
-package misc;
+package com.valkryst.Schillsaver.job;
 
-import com.valkryst.VMVC.AlertManager;
-import com.valkryst.VMVC.Settings;
+import com.valkryst.Schillsaver.job.archive.ArchiveType;
+import com.valkryst.Schillsaver.log.LogLevel;
+import com.valkryst.Schillsaver.setting.Settings;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Data
 public class JobBuilder {
-    /** The program settings. */
-    private Settings settings;
-
     /** The name of the Job. */
     private String name;
     /** The output directory. */
     private String outputDirectory;
-    /** The file(s) belonging to the Job.*/
+    /** The type of archiver to archive the file(s) with. */
+    private ArchiveType archiveType;
+    /** The file(s) to process.*/
     private List<File> files;
     /** Whether the Job is an Encode Job or a Decode Job. */
-    private boolean isEncodeJob = true;
+    private boolean isEncodeJob;
 
     /**
-     * Constructs a new JobBuilder.
-     *
-     * @param settings
-     *          The program settings.
-     *
-     * @throws NullPointerException
-     *         If the settings is null.
-     */
-    public JobBuilder(final @NonNull Settings settings) {
-        this.settings = settings;
-        reset();
-    }
-
-    /**
-     * Build a new job.
+     * Builds a new Job.
      *
      * @return
      *         The job.
-     */
-    public Job build() {
-        checkState();
-        return new Job(this);
-    }
-
-    /**
-     * Checks the state of the builder.
-     *
-     * @throws NullPointerException
-     *          If the output directory or files list is null.
      *
      * @throws IllegalArgumentException
      *          If the output directory doesn't exist or isn't a directory.
      */
-    private void checkState() {
-        Objects.requireNonNull(outputDirectory);
-        Objects.requireNonNull(files);
-
+    public Job build() {
         if (name == null || name.isEmpty()) {
             final UUID uuid = UUID.randomUUID();
             name = uuid.toString();
@@ -96,20 +68,24 @@ public class JobBuilder {
         if (! outputDirectory.isDirectory()) {
             throw new IllegalArgumentException("The output directory '" + this.outputDirectory + "' is not a directory.");
         }
-    }
 
-    /** Resets the state of the builder. */
-    public void reset() {
-        name = null;
-        setOutputToHomeDirectory();
-        files = new ArrayList<>();
-        isEncodeJob = true;
+        // Ensure there's an archive type:
+        if (archiveType == null) {
+            archiveType = ArchiveType.ZIP;
+        }
+
+        // Ensure there's a files list:
+        if (files == null) {
+            files = new LinkedList<>();
+        }
+
+        return new Job(this);
     }
 
     /** Sets the output directory to the home directory. */
     private void setOutputToHomeDirectory() {
         if (isEncodeJob) {
-            final String defaultEncodeDir = settings.getStringSetting("Default Encoding Output Directory");
+            final String defaultEncodeDir = Settings.getInstance().getStringSetting("Default Encoding Output Directory");
 
             if (! defaultEncodeDir.isEmpty()) {
                 final File file = new File(defaultEncodeDir);
@@ -119,7 +95,7 @@ public class JobBuilder {
                 }
             }
         } else {
-            final String defaultDecodeDir = settings.getStringSetting("Default Decoding Output Directory");
+            final String defaultDecodeDir = Settings.getInstance().getStringSetting("Default Decoding Output Directory");
 
             if (! defaultDecodeDir.isEmpty()) {
                 final File file = new File(defaultDecodeDir);
@@ -134,8 +110,10 @@ public class JobBuilder {
             final File home = FileSystemView.getFileSystemView().getHomeDirectory();
             outputDirectory = home.getCanonicalPath() + "/";
         } catch (final IOException e) {
-            System.err.println(e.getMessage());
-            AlertManager.showErrorAndWait("There was an issue retrieving the home directory path.\nSee the log file for more information.");
+            final Alert alert = new Alert(Alert.AlertType.ERROR, "There was an issue retrieving the home directory path.\nSee the log file for more information.", ButtonType.OK);
+            alert.showAndWait();
+
+            Settings.getInstance().getLogger().log(e, LogLevel.ERROR);
         }
     }
 }
