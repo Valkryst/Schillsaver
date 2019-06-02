@@ -1,11 +1,12 @@
 package com.valkryst.Schillsaver.job.encode;
 
-import com.valkryst.Schillsaver.job.Cache;
 import lombok.NonNull;
+
+import java.util.HashMap;
 
 public class EndecFactory {
     /** The cache of created endecs. */
-    private final static Cache<EndecType, Endec> CACHE = new Cache<>();
+    private final static HashMap<EndecType, Endec> CACHE = new HashMap<>();
 
     // Ensure no instance of the factory can be created.
     private EndecFactory() {}
@@ -23,14 +24,14 @@ public class EndecFactory {
      *          If the type is null.
      */
     public static Endec create(final @NonNull EndecType type) {
-        if (CACHE.contains(type)) {
-            return CACHE.retrieve(type);
+        if (CACHE.containsKey(type)) {
+            return CACHE.get(type);
         }
 
         switch (type) {
             case FFMPEG: {
                 final FFMPEGEndec endec = new FFMPEGEndec();
-                CACHE.add(type, endec);
+                CACHE.put(type, endec);
                 return endec;
             }
             default: {

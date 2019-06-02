@@ -1,11 +1,12 @@
 package com.valkryst.Schillsaver.job.archive;
 
-import com.valkryst.Schillsaver.job.Cache;
 import lombok.NonNull;
+
+import java.util.HashMap;
 
 public class ArchiverFactory {
     /** The cache of created archivers. */
-    private final static Cache<ArchiveType, Archiver> CACHE = new Cache<>();
+    private final static HashMap<ArchiveType, Archiver> CACHE = new HashMap<>();
 
     // Ensure no instance of the factory can be created.
     private ArchiverFactory() {}
@@ -23,14 +24,14 @@ public class ArchiverFactory {
      *          If the type is null.
      */
     public static Archiver create(final @NonNull ArchiveType type) {
-        if (CACHE.contains(type)) {
-            return CACHE.retrieve(type);
+        if (CACHE.containsKey(type)) {
+            return CACHE.get(type);
         }
 
         switch (type) {
             case ZIP: {
                 final ZipArchiver archiver = new ZipArchiver();
-                CACHE.add(type, archiver);
+                CACHE.put(type, archiver);
                 return archiver;
             }
             default: {
