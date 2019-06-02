@@ -1,25 +1,17 @@
 
-Schillsaver is a program that encodes files from their native formats into a video
-of black and white blocks, which represent the bits of the source file.
+Schillsaver is a program that encodes files from their native formats into a video of black and white blocks, which represent the bits of the source file.
 
-This is somewhat similar to a QA code, where every frame of the video is a small
-portion of the source file's data.
+This is somewhat similar to a QA code, where every frame of the video is a small portion of the source file's data.
 
 The option to decode these files is also available.
 
-### Requirements:
+## Requirements
 
-* Any version of Java from 10 onwards.
-    * http://java.com/en/download/ or an equivalent Linux package.
-    * See [here](http://docs.oracle.com/javase/10/docs/technotes/guides/install/linux_jdk.html) for
-      more information on installing Java on Linux.
-
-    
+* [Java 11](https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html)
 * A recent version of [FFMPEG](http://ffmpeg.org/download.html).
-
 * [Schillsaver](https://github.com/Valkryst/Schillsaver/releases)
 
-### Links:
+## Links
 
 * https://www.reddit.com/r/Schillsaver/
 
@@ -47,13 +39,6 @@ The option to decode these files is also available.
     
     * The `Jobs.ser`, `log.txt`, and `Settings.ser` files don't count towards this. The `.ser` files are used to save program data.
 
-* When running an encode job, the files of the job are combined into a single zip
-   file before encoding.
-   
-   * This choice was made in the effort to both simplify the program's logic and to
-      slightly reduce the resulting file size of the encoded video.
-
-* YouTube will not support 60 FPS videos when the video's resolution is less than
-   720p.
+* YouTube will not support 60 FPS videos when the video's resolution is less than 720p.
 
 * The `log.txt` file will contain warnings about being unable to load `Jobs.ser`, you can ignore those messages.
