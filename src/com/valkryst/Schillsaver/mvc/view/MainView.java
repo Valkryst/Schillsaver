@@ -1,7 +1,9 @@
-package view;
+package com.valkryst.Schillsaver.mvc.view;
 
+import com.valkryst.Schillsaver.mvc.JFXHelper;
+import com.valkryst.Schillsaver.mvc.model.Model;
 import com.valkryst.VIcons.VIconType;
-import com.valkryst.VMVC.view.View;
+import javafx.application.Platform;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,41 +25,46 @@ public class MainView extends View {
 
     private final SplitPane contentArea;
 
-    /** Constructs a new MainView. */
-    public MainView() {
+    /**
+     * Constructs a new MainView.
+     *
+     * @param model
+     *          The model.
+     */
+    public MainView(final Model model) {
         initializeComponents();
         setComponentTooltips();
 
         final Pane menuBar = createMenuBar();
         contentArea = createContentArea();
 
-        super.pane = new VBox(menuBar, contentArea);
-        super.pane.setMinSize(512, 512);
+        super.setPane(new VBox(menuBar, contentArea));
+        super.getPane().setMinSize(512, 512);
     }
 
     /** Initializes the components. */
     private void initializeComponents() {
-        button_createJob = createIconButton(VIconType.FILE_NEW.getFilePath(), 32, 32);
-        button_editJob = createIconButton(VIconType.FILE_EDIT.getFilePath(), 32, 32);
-        button_deleteSelectedJobs = createIconButton(VIconType.FILE_DELETE.getFilePath(), 32, 32);
-        button_processJobs = createIconButton(VIconType.FILE_PROCESS.getFilePath(), 32, 32);
+        button_createJob = JFXHelper.createIconButton(VIconType.FILE_NEW.getFilePath(), 32, 32);
+        button_editJob = JFXHelper.createIconButton(VIconType.FILE_EDIT.getFilePath(), 32, 32);
+        button_deleteSelectedJobs = JFXHelper.createIconButton(VIconType.FILE_DELETE.getFilePath(), 32, 32);
+        button_processJobs = JFXHelper.createIconButton(VIconType.FILE_PROCESS.getFilePath(), 32, 32);
 
         jobsList = new ListView<>();
         jobsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         outputPanes = new TabPane();
 
-        button_programSettings = createIconButton(VIconType.SETTINGS.getFilePath(), 32, 32);
+        button_programSettings = JFXHelper.createIconButton(VIconType.SETTINGS.getFilePath(), 32, 32);
     }
 
     /** Sets the tooltips of the components. */
     private void setComponentTooltips() {
-        setTooltip(button_createJob, "Create a new job.");
-        setTooltip(button_editJob, "Edit the selected job.");
-        setTooltip(button_deleteSelectedJobs, "Delete all selected jobs.");
-        setTooltip(button_processJobs, "Process jobs.");
+        JFXHelper.setTooltip(button_createJob, "Create a new job.");
+        JFXHelper.setTooltip(button_editJob, "Edit the selected job.");
+        JFXHelper.setTooltip(button_deleteSelectedJobs, "Delete all selected jobs.");
+        JFXHelper.setTooltip(button_processJobs, "Process jobs.");
 
-        setTooltip(button_programSettings, "Edit the program settings.");
+        JFXHelper.setTooltip(button_programSettings, "Edit the program setting.");
     }
 
     /**
@@ -120,19 +127,21 @@ public class MainView extends View {
         VBox.setVgrow(textArea, Priority.ALWAYS);
 
         // Add Output Tab View If Necessary
-        if (outputPanes.getTabs().size() == 0) {
-            contentArea.getItems().add(outputPanes);
-        }
-
-        // Create Tab
-        final Tab tab = new Tab(title, textArea);
-        tab.setOnClosed(e -> {
+        Platform.runLater(() -> {
             if (outputPanes.getTabs().size() == 0) {
-                contentArea.getItems().remove(outputPanes);
+                contentArea.getItems().add(outputPanes);
             }
         });
 
-        outputPanes.getTabs().add(tab);
+        // Create Tab
+        final Tab tab = new Tab(title, textArea);
+        tab.setOnClosed(e -> Platform.runLater(() -> {
+            if (outputPanes.getTabs().size() == 0) {
+                contentArea.getItems().remove(outputPanes);
+            }
+        }));
+
+        Platform.runLater(() -> outputPanes.getTabs().add(tab));
         return tab;
     }
 }

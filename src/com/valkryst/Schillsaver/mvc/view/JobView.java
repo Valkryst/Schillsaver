@@ -1,10 +1,10 @@
-package view;
+package com.valkryst.Schillsaver.mvc.view;
 
+import com.valkryst.Schillsaver.log.LogLevel;
+import com.valkryst.Schillsaver.mvc.JFXHelper;
+import com.valkryst.Schillsaver.mvc.model.JobModel;
+import com.valkryst.Schillsaver.setting.Settings;
 import com.valkryst.VIcons.VIconType;
-import com.valkryst.VMVC.AlertManager;
-import com.valkryst.VMVC.Settings;
-import com.valkryst.VMVC.view.View;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import lombok.Getter;
@@ -31,14 +31,14 @@ public class JobView extends View {
     /**
      * Constructs a new JobView.
      *
-     * @param settings
-     *          The program settings.
+     * @param model
+     *          The model.
      *
      * @throws NullPointerException
-     *         If the settings is null.
+     *         If the model is null.
      */
-    public JobView(final @NonNull Settings settings) {
-        initializeComponents(settings);
+    public JobView(final @NonNull JobModel model) {
+        initializeComponents(model);
         setComponentTooltips();
 
         final Pane fileSelectionArea = createFileSelectionArea();
@@ -49,26 +49,26 @@ public class JobView extends View {
 
         VBox.setVgrow(vBox, Priority.ALWAYS);
 
-        super.pane = new VBox();
-        super.pane.setMinSize(512, 512);
-        super.pane.getChildren().addAll(vBox, bottomMenuBar);
+        super.setPane(new VBox());
+        super.getPane().setMinSize(512, 512);
+        super.getPane().getChildren().addAll(vBox, bottomMenuBar);
     }
 
     /**
      * Initializes the components.
      *
-     * @param settings
-     *          The program settings.
+     * @param model
+     *          The model.
      *
      * @throws NullPointerException
-     *         If the settings is null.
+     *         If the model is null.
      */
-    private void initializeComponents(final @NonNull Settings settings) {
+    private void initializeComponents(final @NonNull JobModel model) {
         button_addFiles = new Button("Add Files");
         button_removeSelectedFiles = new Button("Remove Selected Files");
         button_selectOutputFolder = new Button("Select Output Folder");
-        button_accept = createIconButton(VIconType.BUTTON_ACCEPT.getFilePath(), 16, 16);
-        button_cancel = createIconButton(VIconType.BUTTON_CANCEL.getFilePath(), 16, 16);
+        button_accept = JFXHelper.createIconButton(VIconType.BUTTON_ACCEPT.getFilePath(), 16, 16);
+        button_cancel = JFXHelper.createIconButton(VIconType.BUTTON_CANCEL.getFilePath(), 16, 16);
 
         textField_jobName = new TextField();
         textField_jobName.setPromptText("Job Name");
@@ -79,18 +79,18 @@ public class JobView extends View {
         fileList = new ListView<>();
         fileList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        comboBox_jobType = createComboBox("Encode", "Decode");
-        comboBox_jobType.getSelectionModel().select("Encode");
-        textField_outputFolder.setText(settings.getStringSetting("Default Encoding Output Directory"));
+        comboBox_jobType = JFXHelper.createComboBox("Encode", "Decode");
+        comboBox_jobType.getSelectionModel().select(model.getJob().isEncodeJob() ? "Encode" : "Decode");
+        textField_outputFolder.setText(Settings.getInstance().getStringSetting(model.getJob().isEncodeJob() ? "Default Encoding Output Directory" : "Default Decoding Output Directory"));
         comboBox_jobType.valueProperty().addListener((observableValue, oldValue, newValue) -> {
             if (textField_outputFolder.getText().isEmpty()) {
                 return;
             }
 
             if (newValue.equals("Encode")) {
-                textField_outputFolder.setText(settings.getStringSetting("Default Encoding Output Directory"));
+                textField_outputFolder.setText(Settings.getInstance().getStringSetting("Default Encoding Output Directory"));
             } else {
-                textField_outputFolder.setText(settings.getStringSetting("Default Decoding Output Directory"));
+                textField_outputFolder.setText(Settings.getInstance().getStringSetting("Default Decoding Output Directory"));
             }
 
             if (textField_outputFolder.getText().isEmpty()) {
@@ -98,8 +98,10 @@ public class JobView extends View {
                     final File home = FileSystemView.getFileSystemView().getHomeDirectory();
                     textField_outputFolder.setText(home.getCanonicalPath() + "/");
                 } catch (final IOException e) {
-                    System.err.println(e.getMessage());
-                    AlertManager.showErrorAndWait("There was an issue retrieving the home directory path.\nSee the log file for more information.");
+                    final Alert alert = new Alert(Alert.AlertType.ERROR, "There was an issue retrieving the home directory path.", ButtonType.OK);
+                    alert.showAndWait();
+
+                    Settings.getInstance().getLogger().log(e, LogLevel.ERROR);
                 }
             }
         });
@@ -107,17 +109,17 @@ public class JobView extends View {
 
     /** Sets the tooltips of the components. */
     private void setComponentTooltips() {
-        setTooltip(button_addFiles, "Opens a file selection dialog to select files to add to the job.");
-        setTooltip(button_removeSelectedFiles, "Removes all selected files from the list.");
-        setTooltip(button_selectOutputFolder, "Opens a folder selection dialog to select the output folder of the job.");
-        setTooltip(button_accept, "Accepts and creates the job, then returns to the main screen.");
-        setTooltip(button_cancel, "Cancels job creation and returns to the main screen.");
+        JFXHelper.setTooltip(button_addFiles, "Opens a file selection dialog to select files to add to the job.");
+        JFXHelper.setTooltip(button_removeSelectedFiles, "Removes all selected files from the list.");
+        JFXHelper.setTooltip(button_selectOutputFolder, "Opens a folder selection dialog to select the output folder of the job.");
+        JFXHelper.setTooltip(button_accept, "Accepts and creates the job, then returns to the main screen.");
+        JFXHelper.setTooltip(button_cancel, "Cancels job creation and returns to the main screen.");
 
-        setTooltip(textField_jobName, "The name of the job. This must be unique.");
+        JFXHelper.setTooltip(textField_jobName, "The name of the job. This must be unique.");
 
-        setTooltip(comboBox_jobType, "The type of the job.");
+        JFXHelper.setTooltip(comboBox_jobType, "The type of the job.");
 
-        setTooltip(textField_outputFolder, "The path of the output folder.");
+        JFXHelper.setTooltip(textField_outputFolder, "The path of the output folder.");
     }
 
     /**
@@ -127,7 +129,7 @@ public class JobView extends View {
      *         The file selection area.
      */
     private Pane createFileSelectionArea() {
-        final GridPane buttonPane = createHorizontalGridPane(button_addFiles, button_removeSelectedFiles);
+        final GridPane buttonPane = JFXHelper.createHorizontalGridPane(button_addFiles, button_removeSelectedFiles);
 
         // Create the Pane:
         final VBox pane = new VBox(buttonPane, fileList);
@@ -156,8 +158,6 @@ public class JobView extends View {
 
         // Add panes to a VBox
         final VBox vBox = new VBox(typeNamePane, outputPane);
-        vBox.setPadding(new Insets(10, 0, 10, 0));
-
         HBox.setHgrow(vBox, Priority.ALWAYS);
 
         return vBox;
@@ -170,6 +170,6 @@ public class JobView extends View {
      *         The bottom menu bar.
      */
     private Pane createBottomMenuBar() {
-        return createHorizontalGridPane(button_accept, button_cancel);
+        return JFXHelper.createHorizontalGridPane(button_accept, button_cancel);
     }
 }
