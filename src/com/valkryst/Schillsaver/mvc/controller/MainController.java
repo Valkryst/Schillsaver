@@ -1,8 +1,18 @@
-package controller;
+package com.valkryst.Schillsaver.mvc.controller;
 
-import com.valkryst.VMVC.SceneManager;
-import com.valkryst.VMVC.Settings;
-import com.valkryst.VMVC.controller.Controller;
+import com.valkryst.Schillsaver.SceneManager;
+import com.valkryst.Schillsaver.job.Job;
+import com.valkryst.Schillsaver.job.JobBuilder;
+import com.valkryst.Schillsaver.job.encode.Endec;
+import com.valkryst.Schillsaver.job.encode.EndecFactory;
+import com.valkryst.Schillsaver.job.encode.EndecType;
+import com.valkryst.Schillsaver.log.LogLevel;
+import com.valkryst.Schillsaver.mvc.model.JobModel;
+import com.valkryst.Schillsaver.mvc.model.MainModel;
+import com.valkryst.Schillsaver.mvc.model.SettingsModel;
+import com.valkryst.Schillsaver.mvc.view.MainView;
+import com.valkryst.Schillsaver.mvc.view.SettingsView;
+import com.valkryst.Schillsaver.setting.Settings;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.Event;
@@ -16,52 +26,45 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import lombok.NonNull;
-import misc.Job;
-import model.MainModel;
-import view.MainView;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
-public class MainController extends Controller<MainModel, MainView> implements EventHandler {
-    private final Stage settingsDialog = new Stage();
-
+public class MainController extends Controller implements EventHandler {
     /**
      * Constructs a new MainController.
      *
-     * @param sceneManager
-     *          The scene manager.
+     * @param model
+     *          The model.
      *
-     * @param settings
-     *          The program settings.
+     * @param view
+     *          The view.
      *
      * @throws NullPointerException
-     *         If the sceneManager or settings is null.
+     *          If the model or view are null.
      */
-    public MainController(final @NonNull SceneManager sceneManager, final @NonNull Settings settings) {
-        super(sceneManager, settings, new MainModel(), new MainView());
-        addEventHandlers();
+    public MainController(final @NonNull MainModel model, final @NonNull MainView view) {
+        super(model, view);
 
-        loadJobsFromFile();
+        // Load saved jobs.
+        model.loadJobs();
 
-        // Construct Settings Dialog:
-        final var controller = new SettingsController(sceneManager, settings);
-
-        final Scene scene = new Scene(controller.getView().getPane());
-        scene.getStylesheets().add("global.css");
-        scene.getRoot().getStyleClass().add("main-root");
-
-        settingsDialog.setTitle("Settings");
-        settingsDialog.setScene(scene);
-        settingsDialog.initOwner(sceneManager.getPrimaryStage());
-        settingsDialog.initModality(Modality.APPLICATION_MODAL);
-
-        controller.setDialog(settingsDialog);
+        for (final Job job : model.getJobs().values()) {
+            ((MainView) super.getView()).getJobsList().getItems().add(job.getName());
+        }
 
         updateButtonStates();
 
-        // Allow the user to drag and drop files onto the view in order to
-        // quickly open up job creation.
+        // Set the view's controls to use this controller as their event handler.
+        view.getButton_createJob().setOnAction(this);
+        view.getButton_editJob().setOnAction(this);
+        view.getButton_deleteSelectedJobs().setOnAction(this);
+        view.getButton_processJobs().setOnAction(this);
+
+        view.getButton_programSettings().setOnAction(this);
+
+        // Allow the user to drag and drop files onto the view in order to quickly open up job creation.
         view.getPane().setOnDragOver(event -> {
             if (event.getDragboard().hasFiles()) {
                 event.acceptTransferModes(TransferMode.COPY);
@@ -74,8 +77,32 @@ public class MainController extends Controller<MainModel, MainView> implements E
             final Dragboard db = event.getDragboard();
 
             if (db.hasFiles()) {
-                final var jc = new JobController(sceneManager, settings, db.getFiles());
-                sceneManager.swapToNewScene(jc);
+                final JobBuilder builder = new JobBuilder();
+                builder.setName("");
+
+                // Based on the input files, create either an encode or decode job.
+                final List<File> files = db.getFiles();
+                boolean areAllMp4 = true;
+
+                for (final File file : files) {
+                    if (file.getAbsolutePath().endsWith(".mp4") == false) {
+                        areAllMp4 = false;
+                        break;
+                    }
+                }
+
+                if (areAllMp4) {
+                    builder.setOutputDirectory(Settings.getInstance().getStringSetting("Default Decoding Output Directory"));
+                } else {
+                    builder.setOutputDirectory(Settings.getInstance().getStringSetting("Default Encoding Output Directory"));
+                }
+
+                builder.setFiles(db.getFiles());
+                builder.setEncodeJob(!areAllMp4);
+
+                // Swap to the job view.
+                final JobController controller = new JobController(new JobModel(builder.build()));
+                SceneManager.getInstance().swapToNewScene(controller);
 
                 event.setDropCompleted(true);
             } else {
@@ -86,18 +113,11 @@ public class MainController extends Controller<MainModel, MainView> implements E
         });
     }
 
-    /** Sets the view's controls to use this class as their event handler. */
-    private void addEventHandlers() {
-        view.getButton_createJob().setOnAction(this);
-        view.getButton_editJob().setOnAction(this);
-        view.getButton_deleteSelectedJobs().setOnAction(this);
-        view.getButton_processJobs().setOnAction(this);
-
-        view.getButton_programSettings().setOnAction(this);
-    }
-
     @Override
     public void handle(final Event event) {
+        final MainModel model = (MainModel) super.getModel();
+        final MainView view = (MainView) super.getView();
+
         final Object source = event.getSource();
 
         if (source.equals(view.getButton_createJob())) {
@@ -136,8 +156,10 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 view.getButton_processJobs().setDisable(true);
                 view.getButton_programSettings().setDisable(true);
 
-                final List<Thread> encodeJobs = model.prepareEncodingJobs(super.settings, view);
-                final List<Thread> decodeJobs = model.prepareDecodingJobs(super.settings, view);
+                final Endec endec = EndecFactory.create(EndecType.FFMPEG);
+
+                final List<Thread> encodeJobs = endec.prepareEncodingJobs(this);
+                final List<Thread> decodeJobs = endec.prepareDecodingJobs(this);
 
                 final var thread = new Thread(() -> {
                     processJobs(encodeJobs, decodeJobs);
@@ -158,30 +180,31 @@ public class MainController extends Controller<MainModel, MainView> implements E
 
         if (source.equals(view.getButton_programSettings())) {
             if (view.getButton_programSettings().isDisabled() == false) {
-                final var controller = new SettingsController(sceneManager, settings);
+                final SettingsModel settingsModel = new SettingsModel();
+                final SettingsView settingsView = new SettingsView(settingsModel);
+                final SettingsController settingsController = new SettingsController(settingsModel, settingsView);
 
-                final var scene = new Scene(controller.getView().getPane());
+                final Scene scene = new Scene(settingsView.getPane());
                 scene.getStylesheets().add("global.css");
                 scene.getRoot().getStyleClass().add("main-root");
 
-                settingsDialog.show();
+                final Stage stage = new Stage();
+                stage.setTitle("Settings");
+                stage.setScene(scene);
+                stage.initOwner(SceneManager.getInstance().getStage());
+                stage.initModality(Modality.APPLICATION_MODAL);
+
+                settingsController.setDialog(stage);
+
+                stage.show();
             }
-        }
-    }
-
-    /** Deserializes the jobs from a file, if the file exists. */
-    private void loadJobsFromFile() {
-        model.loadJobs();
-
-        for (final Job job : model.getJobs().values()) {
-            view.getJobsList().getItems().add(job.getName());
         }
     }
 
     /** Opens the JobView. */
     private void openJobView() {
-        final var controller = new JobController(sceneManager, settings);
-        sceneManager.swapToNewScene(controller);
+        final var controller = new JobController(new JobModel());
+        SceneManager.getInstance().swapToNewScene(controller);
     }
 
     /**
@@ -190,32 +213,32 @@ public class MainController extends Controller<MainModel, MainView> implements E
      * If no Jobs are selected, then nothing happens.
      */
     private void openEditJobView() {
-        final ListView<String> jobList = view.getJobsList();
+        final ListView<String> jobList = ((MainView) super.getView()).getJobsList();
         final List<String> selectedJobs = jobList.getSelectionModel().getSelectedItems();
 
         if (selectedJobs.size() == 0) {
             return;
         }
 
+        final MainModel model = (MainModel) super.getModel();
+        final MainView view = (MainView) super.getView();
+
         final String firstJobName = selectedJobs.get(0);
         final Job job = model.getJobs().get(firstJobName);
 
-        final var controller = new JobController(sceneManager, settings);
-        controller.editJob(job);
+        final JobController controller = new JobController(new JobModel(job));
 
         view.getJobsList().getItems().remove(job.getName());
         model.getJobs().remove(job.getName());
         view.getJobsList().getSelectionModel().clearSelection();
 
-        controller.getView().getButton_cancel().setDisable(true);
-        sceneManager.swapToNewScene(controller);
+        SceneManager.getInstance().swapToNewScene(controller);
     }
 
     /**
      * Adds a job into the model and the job list.
      *
-     * If a job of the same name already exists, then an error is shown
-     * and nothing happens.
+     * If a job of the same name already exists, then an error is shown and nothing happens.
      *
      * @param job
      *          The job.
@@ -227,9 +250,10 @@ public class MainController extends Controller<MainModel, MainView> implements E
         final String jobName = job.getName();
 
         if (! containsJob(jobName)) {
-            view.getJobsList().getItems().add(job.getName());
+            ((MainView) super.getView()).getJobsList().getItems().add(job.getName());
         }
 
+        final MainModel model = (MainModel) super.getModel();
         model.getJobs().put(jobName, job);
         model.saveJobs();
 
@@ -249,7 +273,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
      *         If the jobName is null.
      */
     private boolean containsJob(final @NonNull String jobName) {
-        return model.getJobs().containsKey(jobName);
+        return ((MainModel) super.getModel()).getJobs().containsKey(jobName);
     }
 
     /** Deletes all jobs selected within the view's job list. */
@@ -268,6 +292,9 @@ public class MainController extends Controller<MainModel, MainView> implements E
         }
 
         // Delete jobs if user confirmed choice.
+        final MainModel model = (MainModel) super.getModel();
+        final MainView view = (MainView) super.getView();
+
         final ListView<String> jobsList = view.getJobsList();
         final List<String> selectedJobs = FXCollections.observableArrayList(jobsList.getSelectionModel().getSelectedItems());
 
@@ -296,16 +323,15 @@ public class MainController extends Controller<MainModel, MainView> implements E
     private void processJobs(final @NonNull List<Thread> encodeJobs, final @NonNull List<Thread> decodeJobs) {
         // Run Encode Jobs
         final var mainEncodingThread = new Thread(() -> {
-           for (final Thread thread : encodeJobs) {
-               thread.start();
+            for (final Thread thread : encodeJobs) {
+                thread.start();
 
-               try {
-                   thread.join();
-               } catch (final InterruptedException e) {
-                   System.err.println(e.getMessage());
-                   e.printStackTrace();
-               }
-           }
+                try {
+                    thread.join();
+                } catch (final InterruptedException e) {
+                    Settings.getInstance().getLogger().log(e, LogLevel.FATAL);
+                }
+            }
         });
 
         mainEncodingThread.start();
@@ -318,8 +344,7 @@ public class MainController extends Controller<MainModel, MainView> implements E
                 try {
                     thread.join();
                 } catch (final InterruptedException e) {
-                    System.err.println(e.getMessage());
-                    e.printStackTrace();
+                    Settings.getInstance().getLogger().log(e, LogLevel.FATAL);
                 }
             }
         });
@@ -331,18 +356,20 @@ public class MainController extends Controller<MainModel, MainView> implements E
             mainDecodingThread.join();
             Platform.runLater(this::updateButtonStates);
         } catch (InterruptedException e) {
-            System.err.println(e.getMessage());
-            e.printStackTrace();
+            Settings.getInstance().getLogger().log(e, LogLevel.FATAL);
         }
     }
 
     /**
-     * Updates the disabled state of the Edit, Delete, and Process buttons
-     * to reflect the list of jobs. If there are no jobs, then the buttons
-     * are disabled. Else they're enabled.
+     * Updates the disabled state of the Edit, Delete, and Process buttons to reflect the list of jobs.
+     *
+     * If there are no jobs, then the buttons are disabled. Else they're enabled.
      */
     private void updateButtonStates() {
-        boolean disableButtons = model.getJobs().size() == 0;
+        final MainModel model = (MainModel) super.getModel();
+        final MainView view = (MainView) super.getView();
+
+        final boolean disableButtons = model.getJobs().size() == 0;
 
         view.getButton_editJob().setDisable(disableButtons);
         view.getButton_deleteSelectedJobs().setDisable(disableButtons);

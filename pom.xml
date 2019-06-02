@@ -35,18 +35,13 @@
         </dependency>
         <dependency>
             <groupId>com.github.Valkryst</groupId>
-            <artifactId>VMVC</artifactId>
-            <version>0.9.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.Valkryst</groupId>
             <artifactId>VIcons</artifactId>
-            <version>0.1.0</version>
+            <version>9f00734</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.0</version>
+            <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -84,7 +79,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <mainClass>Driver</mainClass>
+                    <mainClass>com.valkryst.Schillsaver.Driver</mainClass>
                 </configuration>
             </plugin>
 
@@ -131,7 +126,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Driver</mainClass>
+                            <mainClass>com.valkryst.Schillsaver.Driver</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

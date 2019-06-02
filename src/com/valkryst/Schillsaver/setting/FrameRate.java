@@ -1,4 +1,4 @@
-package misc;
+package com.valkryst.Schillsaver.setting;
 
 import lombok.Getter;
 
@@ -20,7 +20,7 @@ public enum FrameRate {
      */
     FrameRate(final int frameRate) {
         if (frameRate < 1) {
-            throw new IllegalArgumentException("The frameRate cannot be < 1.");
+            throw new IllegalArgumentException("The frame rate cannot be < 1.");
         }
 
         this.frameRate = frameRate;

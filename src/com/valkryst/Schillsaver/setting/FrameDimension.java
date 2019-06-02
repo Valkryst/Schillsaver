@@ -1,4 +1,4 @@
-package misc;
+package com.valkryst.Schillsaver.setting;
 
 import lombok.Getter;
 
@@ -11,19 +11,19 @@ public enum FrameDimension {
     P1440(2560, 1440),
     P2160(3840, 2160);
 
-    /** The width of the frame. */
+    /** The frame's width. */
     @Getter private final int width;
-    /** The height of the frame. */
+    /** The frame's height. */
     @Getter private final int height;
 
     /**
      * Construct a new FrameDimension enum.
      *
      * @param width
-     *          The frame width.
+     *          The frame's width.
      *
      * @param height
-     *          The frame height.
+     *          The frame's height.
      *
      * @throws IllegalArgumentException
      *          If the width or height is less than one.
