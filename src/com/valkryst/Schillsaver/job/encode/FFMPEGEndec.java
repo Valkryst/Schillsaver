@@ -1,102 +1,51 @@
-package model;
+package com.valkryst.Schillsaver.job.encode;
 
-import com.valkryst.VMVC.Settings;
-import com.valkryst.VMVC.model.Model;
+import com.valkryst.Schillsaver.job.Job;
+import com.valkryst.Schillsaver.log.LogLevel;
+import com.valkryst.Schillsaver.mvc.controller.MainController;
+import com.valkryst.Schillsaver.mvc.model.MainModel;
+import com.valkryst.Schillsaver.mvc.view.MainView;
+import com.valkryst.Schillsaver.setting.BlockSize;
+import com.valkryst.Schillsaver.setting.FrameDimension;
+import com.valkryst.Schillsaver.setting.FrameRate;
+import com.valkryst.Schillsaver.setting.Settings;
 import javafx.application.Platform;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
-import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
-import misc.BlockSize;
-import misc.FrameDimension;
-import misc.FrameRate;
-import misc.Job;
 import org.apache.commons.io.FilenameUtils;
-import view.MainView;
 
-import java.awt.Dimension;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class MainModel extends Model {
-    private final static String JOBS_FILE_PATH = System.getProperty("user.dir") + "/Jobs.ser";
+public class FFMPEGEndec extends Endec {
+    @Override
+    public List<Thread> prepareEncodingJobs(final @NonNull MainController controller) {
+        final MainModel model = (MainModel) controller.getModel();
+        final MainView view = (MainView) controller.getView();
 
-    /** The jobs. */
-    @Getter @Setter private Map<String, Job> jobs = new HashMap<>();
-
-    /** Deserializes the jobs map, if the file exists. */
-    public void loadJobs() {
-        try {
-            final Object object = deserializeObjectWithGZIP(JOBS_FILE_PATH);
-            jobs = (Map<String, Job>) object;
-        } catch (final IOException e) {
-            System.err.println(e.getMessage());
-        } catch (final ClassNotFoundException e) {
-            // Delete the file:
-            final File file = new File(JOBS_FILE_PATH);
-
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-    }
-
-    /** Serializes the jobs map to a file. */
-    public void saveJobs() {
-        if (jobs.size() == 0) {
-            // Delete the file:
-            final File file = new File(JOBS_FILE_PATH);
-
-            if (file.exists()) {
-                file.delete();
-            }
-
-            return;
-        }
-
-        try {
-            serializeObjectWithGZIP(JOBS_FILE_PATH, jobs);
-        } catch (final IOException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
-    /**
-     * Prepares each of the encoding jobs with their own thread.
-     *
-     * @param settings
-     *          The settings.
-     *
-     * @param view
-     *          The view.
-     *
-     * @return
-     *          The threads.
-     *
-     * @throws NullPointerException
-     *         If the settings or view is null.
-     */
-    public List<Thread> prepareEncodingJobs(final @NonNull Settings settings, final @NonNull MainView view) {
         final List<Thread> encodingJobs = new ArrayList<>();
 
-        for (final Job job : getEncodingJobs()) {
+        for (final Job job : model.getEncodingJobs()) {
             final Tab tab = view.addOutputTab(job.getName());
 
             final Thread thread = new Thread(() -> {
                 tab.setClosable(false);
 
-                // Prepare Files:
+                // Prepare Files
                 File inputFile = null;
                 final File outputFile;
 
                 try {
-                    inputFile = job.zipFiles(settings);
+                    inputFile = job.getArchiver().archive(job.getName(), job.getFiles());
                     outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
 
                     // Construct FFMPEG Command:
+                    final Settings settings = Settings.getInstance();
+
                     final FrameDimension frameDimension = FrameDimension.valueOf(settings.getStringSetting("Encoding Frame Dimensions"));
-                    final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
+                    final int blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
                     final FrameRate frameRate = FrameRate.valueOf(settings.getStringSetting("Encoding Frame Rate"));
                     final String codec = settings.getStringSetting("Encoding Codec");
 
@@ -110,7 +59,7 @@ public class MainModel extends Model {
                     ffmpegCommands.add("monob");
 
                     ffmpegCommands.add("-s");
-                    ffmpegCommands.add((frameDimension.getWidth() / blockSize.width) + "x" + (frameDimension.getHeight() / blockSize.height));
+                    ffmpegCommands.add((frameDimension.getWidth() / blockSize) + "x" + (frameDimension.getHeight() / blockSize));
 
                     ffmpegCommands.add("-r");
                     ffmpegCommands.add(String.valueOf(frameRate.getFrameRate()));
@@ -119,7 +68,7 @@ public class MainModel extends Model {
                     ffmpegCommands.add(inputFile.getAbsolutePath());
 
                     ffmpegCommands.add("-vf");
-                    ffmpegCommands.add("scale=iw*" + (blockSize.width) +":-1");
+                    ffmpegCommands.add("scale=iw*" + (blockSize) +":-1");
 
                     ffmpegCommands.add("-sws_flags");
                     ffmpegCommands.add("neighbor");
@@ -133,19 +82,22 @@ public class MainModel extends Model {
                     ffmpegCommands.add("-loglevel");
                     ffmpegCommands.add("verbose");
 
+                    ffmpegCommands.add("-preset");
+                    ffmpegCommands.add("veryfast");
+
                     ffmpegCommands.add("-y");
                     ffmpegCommands.add(outputFile.getAbsolutePath());
 
                     Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(ffmpegCommands.toString()));
 
-                    // Construct FFMPEG Process:
+                    // Construct FFMPEG Process
                     final ProcessBuilder builder = new ProcessBuilder(ffmpegCommands);
                     builder.redirectErrorStream(true);
 
                     final Process process = builder.start();
                     Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
 
-                    // Run FFMPEG Process:
+                    // Run FFMPEG Process
                     try (
                         final InputStream is = process.getInputStream();
                         final InputStreamReader isr = new InputStreamReader(is);
@@ -157,7 +109,7 @@ public class MainModel extends Model {
                             Platform.runLater(() -> ((TextArea) tab.getContent()).appendText(System.lineSeparator() + temp));
                         }
                     } catch (final IOException e) {
-                        System.err.println(e.getMessage());
+                        Settings.getInstance().getLogger().log(e, LogLevel.ERROR);
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {
@@ -171,10 +123,9 @@ public class MainModel extends Model {
                         return;
                     }
 
-
                     Platform.runLater(() -> ((TextArea) tab.getContent()).appendText("\n\nEncoding Complete"));
                 } catch (final IOException e) {
-                    System.err.println(e.getMessage());
+                    Settings.getInstance().getLogger().log(e, LogLevel.ERROR);
 
                     final TextArea outputArea = ((TextArea) tab.getContent());
                     Platform.runLater(() -> {
@@ -196,8 +147,8 @@ public class MainModel extends Model {
 
                 Platform.runLater(() -> {
                     view.getJobsList().getItems().remove(job.getName());
-                    jobs.remove(job.getName());
-                    saveJobs();
+                    model.getJobs().remove(job.getName());
+                    model.saveJobs();
                 });
             });
 
@@ -207,25 +158,14 @@ public class MainModel extends Model {
         return encodingJobs;
     }
 
-    /**
-     * Prepares each of the decoding jobs with their own thread.
-     *
-     * @param settings
-     *          The settings.
-     *
-     * @param view
-     *          The view.
-     *
-     * @return
-     *          The threads.
-     *
-     * @throws NullPointerException
-     *         If the settings or view is null.
-     */
-    public List<Thread> prepareDecodingJobs(final @NonNull Settings settings, final @NonNull MainView view) {
+    @Override
+    public List<Thread> prepareDecodingJobs(final @NonNull MainController controller) {
+        final MainModel model = (MainModel) controller.getModel();
+        final MainView view = (MainView) controller.getView();
+
         final List<Thread> decodingJobs = new ArrayList<>();
 
-        for (final Job job : getDecodingJobs()) {
+        for (final Job job : model.getDecodingJobs()) {
             final Tab tab = view.addOutputTab(job.getName());
 
             for (final File inputFile : job.getFiles()) {
@@ -249,16 +189,16 @@ public class MainModel extends Model {
                         }
                     }
                     // Construct FFMPEG Command:
-                    final Dimension blockSize = BlockSize.valueOf(settings.getStringSetting("Encoding Block Size")).getBlockSize();
+                    final int blockSize = BlockSize.valueOf(Settings.getInstance().getStringSetting("Encoding Block Size")).getBlockSize();
 
                     final List<String> ffmpegCommands = new ArrayList<>();
-                    ffmpegCommands.add(settings.getStringSetting("FFMPEG Executable Path"));
+                    ffmpegCommands.add(Settings.getInstance().getStringSetting("FFMPEG Executable Path"));
 
                     ffmpegCommands.add("-i");
                     ffmpegCommands.add(inputFile.getAbsolutePath());
 
                     ffmpegCommands.add("-vf");
-                    ffmpegCommands.add("format=pix_fmts=monob,scale=iw*" + (1.0 / blockSize.width) + ":-1");
+                    ffmpegCommands.add("format=pix_fmts=monob,scale=iw*" + (1.0 / blockSize) + ":-1");
 
                     ffmpegCommands.add("-sws_flags");
                     ffmpegCommands.add("area");
@@ -268,6 +208,9 @@ public class MainModel extends Model {
 
                     ffmpegCommands.add("-f");
                     ffmpegCommands.add("rawvideo");
+
+                    ffmpegCommands.add("-preset");
+                    ffmpegCommands.add("veryfast");
 
                     ffmpegCommands.add("-y");
                     ffmpegCommands.add(outputFile.getAbsolutePath());
@@ -299,7 +242,7 @@ public class MainModel extends Model {
                         isr.close();
                         is.close();
                     } catch (final IOException e) {
-                        System.err.println(e.getMessage());
+                        Settings.getInstance().getLogger().log(e, LogLevel.ERROR);
 
                         final TextArea outputArea = ((TextArea) tab.getContent());
                         Platform.runLater(() -> {
@@ -322,8 +265,8 @@ public class MainModel extends Model {
 
                     Platform.runLater(() -> {
                         view.getJobsList().getItems().remove(job.getName());
-                        jobs.remove(job.getName());
-                        saveJobs();
+                        model.getJobs().remove(job.getName());
+                        model.saveJobs();
                     });
                 });
 
@@ -332,51 +275,5 @@ public class MainModel extends Model {
         }
 
         return decodingJobs;
-    }
-
-    /**
-     * Retrieves an unmodifiable list of encoding jobs.
-     *
-     * The jobs are sorted from smallest filesize to largest filesize before
-     * being returned.
-     *
-     * @return
-     *         The list of encoding jobs.
-     */
-    private List<Job> getEncodingJobs() {
-        final List<Job> encodingJobs = new ArrayList<>();
-
-        for (final Job job : jobs.values()) {
-            if (job.isEncodeJob()) {
-                encodingJobs.add(job);
-            }
-        }
-
-        encodingJobs.sort(Comparator.comparingLong(Job::getFileSize));
-
-        return Collections.unmodifiableList(encodingJobs);
-    }
-
-    /**
-     * Retrieves an unmodifiable list of decoding jobs.
-     *
-     * The jobs are sorted from smallest filesize to largest filesize before
-     * being returned.
-     *
-     * @return
-     *         The list of decoding jobs.
-     */
-    private List<Job> getDecodingJobs() {
-        final List<Job> decodingJobs = new ArrayList<>();
-
-        for (final Job job : jobs.values()) {
-            if (job.isEncodeJob() == false) {
-                decodingJobs.add(job);
-            }
-        }
-
-        decodingJobs.sort(Comparator.comparingLong(Job::getFileSize));
-
-        return Collections.unmodifiableList(decodingJobs);
     }
 }
