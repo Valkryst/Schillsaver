@@ -44,18 +44,6 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
-
-        <!-- JavaFX -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>12</version>
-        </dependency>
     </dependencies>
 
     <build>
