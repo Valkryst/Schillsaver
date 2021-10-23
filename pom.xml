@@ -87,7 +87,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.valkryst.Schillsaver.Driver</mainClass>
+                            <mainClass>main.java.Schillsaver.Driver</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
