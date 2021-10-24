@@ -10,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
 import lombok.NonNull;
 
 import java.util.List;
@@ -147,46 +146,6 @@ public class JFXHelper {
 
         for (int i = 0 ; i < controls.length ; i++) {
             pane.add(controls[i], i, 0);
-        }
-
-        return pane;
-    }
-
-    /**
-     * Creates a GridPane with only one column, but where there are as many rows as there are controls passed
-     * to the function.
-     *
-     * Ex:
-     *      If you pass in two controls, then there will be one column with two rows where each row uses 50%
-     *      of the height.
-     *
-     * Ex:
-     *      If you pass in four controls, then there will be one column with four rows where each row uses 25%
-     *      of the height.
-     *
-     * @param controls
-     *          The controls.
-     *
-     * @return
-     *          The pane.
-     */
-    public static GridPane createVerticalGridPane(final Control... controls) {
-        if (controls.length == 0) {
-            return new GridPane();
-        }
-
-        final GridPane pane = new GridPane();
-        final double sectionHeight = 100.0 / controls.length;
-
-        for (final Control ignored : controls) {
-            final RowConstraints constraints = new RowConstraints();
-            constraints.setPercentHeight(sectionHeight);
-
-            pane.getRowConstraints().add(constraints);
-        }
-
-        for (int i = 0 ; i < controls.length ; i++) {
-            pane.add(controls[i], 0, i);
         }
 
         return pane;

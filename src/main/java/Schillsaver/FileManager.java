@@ -44,34 +44,6 @@ public class FileManager {
     }
 
     /**
-     * Serializes an object to a file. Overwrites the file if it already exists.
-     *
-     * @param filePath
-     *          The path to the file.
-     *
-     * @param object
-     *          The object to serialize.
-     *
-     * @throws NullPointerException
-     *          If the filePath is null.
-     *
-     * @throws IOException
-     *          If an IO error occurs.
-     */
-    public static void serializeObject(final @NonNull String filePath, final @NonNull Object object) throws IOException {
-        final FileOutputStream fos = new FileOutputStream(filePath, false);
-        final ObjectOutputStream oos = new ObjectOutputStream(fos);
-
-        oos.writeObject(object);
-
-        oos.flush();
-        fos.flush();
-
-        oos.close();
-        fos.close();
-    }
-
-    /**
      * Deserializes an object from a file using GZIP to decompress the file, if the file exists.
      *
      * If the file causes an exception, then the file is deleted.

@@ -105,14 +105,4 @@ public class ZipArchiver implements Serializable {
 
         return this.padFile(zipFile);
     }
-
-	/**
-	 * Retrieves the file name, appended with the archive extension.
-	 *
-	 * @return
-	 *          The file name, appended with the archive extension.
-	 */
-    public String getFileName(final String fileName) {
-        return fileName + EXTENSION;
-    }
 }
