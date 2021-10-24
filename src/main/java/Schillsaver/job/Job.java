@@ -8,14 +8,12 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Job implements Serializable {
-    private static final long serialVersionUID = 1;
+    private static final long serialVersionUID = 2;
 
     /** The name of the Job. */
     @Getter private final String name;
     /** The output directory. */
     @Getter private final String outputDirectory;
-    /** The archiver used to archive the file(s). */
-    @Getter private final ZipArchiver archiver;
     /** The file(s) to process.*/
     @Getter private final List<File> files;
     /** Whether the Job is an Encode Job or a Decode Job. */
@@ -33,7 +31,6 @@ public class Job implements Serializable {
     Job(final @NonNull JobBuilder builder) {
         name = builder.getName();
         outputDirectory = builder.getOutputDirectory();
-        archiver = new ZipArchiver();
         files = builder.getFiles();
         isEncodeJob = builder.isEncodeJob();
     }

@@ -47,7 +47,7 @@ public class FFMPEGEndec {
                 final File outputFile;
 
                 try {
-                    inputFile = job.getArchiver().archive(job.getName(), job.getFiles());
+                    inputFile = new ZipArchiver().archive(job.getName(), job.getFiles());
                     outputFile = new File(job.getOutputDirectory() + FilenameUtils.removeExtension(inputFile.getName()) + ".mp4");
 
                     // Construct FFMPEG Command:
