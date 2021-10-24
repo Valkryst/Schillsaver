@@ -1,11 +1,10 @@
 package Schillsaver.job;
 
-import Schillsaver.job.archive.Archiver;
-import Schillsaver.job.archive.ArchiverFactory;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.io.*;
+import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
 public class Job implements Serializable {
@@ -16,7 +15,7 @@ public class Job implements Serializable {
     /** The output directory. */
     @Getter private final String outputDirectory;
     /** The archiver used to archive the file(s). */
-    @Getter private final Archiver archiver;
+    @Getter private final ZipArchiver archiver;
     /** The file(s) to process.*/
     @Getter private final List<File> files;
     /** Whether the Job is an Encode Job or a Decode Job. */
@@ -34,7 +33,7 @@ public class Job implements Serializable {
     Job(final @NonNull JobBuilder builder) {
         name = builder.getName();
         outputDirectory = builder.getOutputDirectory();
-        archiver = ArchiverFactory.create(builder.getArchiveType());
+        archiver = new ZipArchiver();
         files = builder.getFiles();
         isEncodeJob = builder.isEncodeJob();
     }

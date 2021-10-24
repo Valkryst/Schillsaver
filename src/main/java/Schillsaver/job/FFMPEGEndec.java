@@ -1,6 +1,5 @@
-package Schillsaver.job.encode;
+package Schillsaver.job;
 
-import Schillsaver.job.Job;
 import Schillsaver.mvc.controller.MainController;
 import Schillsaver.mvc.model.MainModel;
 import Schillsaver.mvc.view.MainView;
@@ -18,8 +17,19 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FFMPEGEndec extends Endec {
-    @Override
+public class FFMPEGEndec {
+	/**
+	 * Prepares all of the encoding jobs.
+	 *
+	 * @param controller
+	 *          The controller.
+	 *
+	 * @return
+	 *          The prepared jobs.
+	 *
+	 * @throws NullPointerException
+	 *          If the job or controller is null.
+	 */
     public List<Thread> prepareEncodingJobs(final @NonNull MainController controller) {
         final MainModel model = (MainModel) controller.getModel();
         final MainView view = (MainView) controller.getView();
@@ -157,7 +167,18 @@ public class FFMPEGEndec extends Endec {
         return encodingJobs;
     }
 
-    @Override
+	/**
+	 * Prepares all of the decoding jobs.
+	 *
+	 * @param controller
+	 *          The controller.
+	 *
+	 * @return
+	 *          The prepared jobs.
+	 *
+	 * @throws NullPointerException
+	 *          If the job or controller is null.
+	 */
     public List<Thread> prepareDecodingJobs(final @NonNull MainController controller) {
         final MainModel model = (MainModel) controller.getModel();
         final MainView view = (MainView) controller.getView();

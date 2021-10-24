@@ -1,6 +1,5 @@
 package Schillsaver.job;
 
-import Schillsaver.job.archive.ArchiveType;
 import Schillsaver.setting.Settings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -19,8 +18,6 @@ public class JobBuilder {
     private String name;
     /** The output directory. */
     private String outputDirectory;
-    /** The type of archiver to archive the file(s) with. */
-    private ArchiveType archiveType;
     /** The file(s) to process.*/
     private List<File> files;
     /** Whether the Job is an Encode Job or a Decode Job. */
@@ -66,11 +63,6 @@ public class JobBuilder {
 
         if (! outputDirectory.isDirectory()) {
             throw new IllegalArgumentException("The output directory '" + this.outputDirectory + "' is not a directory.");
-        }
-
-        // Ensure there's an archive type:
-        if (archiveType == null) {
-            archiveType = ArchiveType.ZIP;
         }
 
         // Ensure there's a files list:

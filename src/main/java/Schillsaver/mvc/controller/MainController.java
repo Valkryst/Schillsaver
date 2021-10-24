@@ -3,9 +3,7 @@ package Schillsaver.mvc.controller;
 import Schillsaver.SceneManager;
 import Schillsaver.job.Job;
 import Schillsaver.job.JobBuilder;
-import Schillsaver.job.encode.Endec;
-import Schillsaver.job.encode.EndecFactory;
-import Schillsaver.job.encode.EndecType;
+import Schillsaver.job.FFMPEGEndec;
 import Schillsaver.mvc.model.JobModel;
 import Schillsaver.mvc.model.MainModel;
 import Schillsaver.mvc.model.SettingsModel;
@@ -155,7 +153,7 @@ public class MainController extends Controller implements EventHandler {
                 view.getButton_processJobs().setDisable(true);
                 view.getButton_programSettings().setDisable(true);
 
-                final Endec endec = EndecFactory.create(EndecType.FFMPEG);
+				final FFMPEGEndec endec = new FFMPEGEndec();
 
                 final List<Thread> encodeJobs = endec.prepareEncodingJobs(this);
                 final List<Thread> decodeJobs = endec.prepareDecodingJobs(this);
