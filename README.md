@@ -20,7 +20,7 @@ is up to you.
 ## Requirements
 
 * [FFMPEG](https://ffmpeg.org/download.html)
-* [Java 19](https://github.com/Valkryst/Install_Java)
+* [Java 21](https://github.com/Valkryst/Install_Java)
 * [Schillsaver](https://github.com/Valkryst/Schillsaver/releases)
 
 ## Notes
