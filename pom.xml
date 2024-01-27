@@ -45,12 +45,6 @@
             <version>3.13.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.Valkryst</groupId>
-            <artifactId>VIcons</artifactId>
-            <version>9f00734</version>
-        </dependency>
-
         <!-- JSON I/O -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
