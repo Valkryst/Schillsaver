@@ -50,6 +50,51 @@
             <artifactId>VIcons</artifactId>
             <version>9f00734</version>
         </dependency>
+
+        <!-- JSON I/O -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+
+        <!-- Locate "special" folders and directories. -->
+        <dependency>
+            <groupId>net.harawata</groupId>
+            <artifactId>appdirs</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+        <!-- MVC -->
+        <dependency>
+            <groupId>com.github.Valkryst</groupId>
+            <artifactId>VMVC</artifactId>
+            <version>0d3561d613db3f790f1639a04fb22a7a63ad44f0</version>
+        </dependency>
+
+        <!-- UI Theme -->
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.formdev</groupId>
+            <artifactId>flatlaf-intellij-themes</artifactId>
+            <version>3.1</version>
+        </dependency>
+
+        <!-- UI Components -->
+        <dependency>
+            <groupId>com.github.Valkryst</groupId>
+            <artifactId>JCopyButton</artifactId>
+            <version>2024.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.Valkryst</groupId>
+            <artifactId>JPathList</artifactId>
+            <version>2023.11.11-2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -80,8 +125,9 @@
                 </configuration>
             </plugin>
 
-            <!-- Used to include all of the dependencies in the packaged Jar file -->
+            <!-- Used to include all the dependencies in the packaged Jar file -->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.6.0</version>
                 <configuration>

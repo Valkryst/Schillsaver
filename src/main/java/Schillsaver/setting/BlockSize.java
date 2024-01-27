@@ -1,14 +1,15 @@
 package Schillsaver.setting;
 
-import lombok.Getter;
-
 public enum BlockSize {
     S6(6),
     S8(8),
     S10(10);
 
     /** The block size. */
-    @Getter private final int blockSize;
+    public final int blockSize;
+
+    /** Number of pixels in a block. */
+    public final long pixelCount;
 
     /**
      * Constructs a new BlockSize enum.
@@ -25,5 +26,6 @@ public enum BlockSize {
         }
 
         this.blockSize = blockSize;
+        this.pixelCount = (long) blockSize * blockSize;
     }
 }
