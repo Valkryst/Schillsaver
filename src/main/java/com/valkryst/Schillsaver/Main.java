@@ -1,8 +1,8 @@
-package Schillsaver;
+package com.valkryst.Schillsaver;
 
-import Schillsaver.display.Display;
-import Schillsaver.display.model.MainModel;
-import Schillsaver.display.model.SettingsTabModel;
+import com.valkryst.Schillsaver.display.Display;
+import com.valkryst.Schillsaver.display.model.MainModel;
+import com.valkryst.Schillsaver.display.model.SettingsTabModel;
 import com.formdev.flatlaf.intellijthemes.FlatDraculaIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatLightFlatIJTheme;
 

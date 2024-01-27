@@ -1,4 +1,4 @@
-package Schillsaver.setting;
+package com.valkryst.Schillsaver.setting;
 
 public enum BlockSize {
     S6(6),

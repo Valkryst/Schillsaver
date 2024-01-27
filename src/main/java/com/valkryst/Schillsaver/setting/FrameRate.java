@@ -1,4 +1,4 @@
-package Schillsaver.setting;
+package com.valkryst.Schillsaver.setting;
 
 import lombok.Getter;
 

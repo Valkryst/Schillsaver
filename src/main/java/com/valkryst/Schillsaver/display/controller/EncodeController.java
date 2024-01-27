@@ -1,10 +1,10 @@
-package Schillsaver.display.controller;
+package com.valkryst.Schillsaver.display.controller;
 
-import Schillsaver.archiver.Archiver;
-import Schillsaver.encoder.Encoder;
-import Schillsaver.display.Display;
-import Schillsaver.display.model.EncodeModel;
-import Schillsaver.display.model.SettingsTabModel;
+import com.valkryst.Schillsaver.archiver.Archiver;
+import com.valkryst.Schillsaver.encoder.Encoder;
+import com.valkryst.Schillsaver.display.Display;
+import com.valkryst.Schillsaver.display.model.EncodeModel;
+import com.valkryst.Schillsaver.display.model.SettingsTabModel;
 import com.valkryst.VMVC.controller.Controller;
 import lombok.NonNull;
 

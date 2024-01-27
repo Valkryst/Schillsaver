@@ -1,8 +1,8 @@
-package Schillsaver.display.view;
+package com.valkryst.Schillsaver.display.view;
 
-import Schillsaver.display.Display;
-import Schillsaver.display.controller.DecodeController;
-import Schillsaver.display.model.TextOutputModel;
+import com.valkryst.Schillsaver.display.Display;
+import com.valkryst.Schillsaver.display.controller.DecodeController;
+import com.valkryst.Schillsaver.display.model.TextOutputModel;
 import com.valkryst.JPathList.JPathList;
 import com.valkryst.VMVC.view.View;
 import lombok.NonNull;

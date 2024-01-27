@@ -1,13 +1,13 @@
-package Schillsaver.display.model;
+package com.valkryst.Schillsaver.display.model;
 
-import Schillsaver.FrameResolution;
-import Schillsaver.Framerate;
-import Schillsaver.display.controller.SettingsTabController;
-import Schillsaver.display.view.SettingsTabView;
-import Schillsaver.io.FileIO;
-import Schillsaver.io.FolderIO;
-import Schillsaver.setting.BlockSize;
-import Schillsaver.setting.SwingTheme;
+import com.valkryst.Schillsaver.FrameResolution;
+import com.valkryst.Schillsaver.Framerate;
+import com.valkryst.Schillsaver.display.controller.SettingsTabController;
+import com.valkryst.Schillsaver.display.view.SettingsTabView;
+import com.valkryst.Schillsaver.io.FileIO;
+import com.valkryst.Schillsaver.io.FolderIO;
+import com.valkryst.Schillsaver.setting.BlockSize;
+import com.valkryst.Schillsaver.setting.SwingTheme;
 import com.google.gson.JsonObject;
 import com.valkryst.VMVC.model.Model;
 import lombok.Getter;

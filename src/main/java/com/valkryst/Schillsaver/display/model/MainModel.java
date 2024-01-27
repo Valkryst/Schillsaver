@@ -1,7 +1,7 @@
-package Schillsaver.display.model;
+package com.valkryst.Schillsaver.display.model;
 
-import Schillsaver.display.controller.MainController;
-import Schillsaver.display.view.MainView;
+import com.valkryst.Schillsaver.display.controller.MainController;
+import com.valkryst.Schillsaver.display.view.MainView;
 import com.valkryst.VMVC.model.Model;
 import lombok.NonNull;
 

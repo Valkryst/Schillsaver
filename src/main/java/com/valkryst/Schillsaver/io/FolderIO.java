@@ -1,4 +1,4 @@
-package Schillsaver.io;
+package com.valkryst.Schillsaver.io;
 
 import lombok.NonNull;
 import net.harawata.appdirs.AppDirsFactory;

@@ -1,6 +1,6 @@
-package Schillsaver.encoder;
+package com.valkryst.Schillsaver.encoder;
 
-import Schillsaver.display.model.SettingsTabModel;
+import com.valkryst.Schillsaver.display.model.SettingsTabModel;
 import lombok.NonNull;
 import lombok.Setter;
 

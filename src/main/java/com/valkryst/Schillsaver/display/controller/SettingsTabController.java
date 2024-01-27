@@ -1,10 +1,10 @@
-package Schillsaver.display.controller;
+package com.valkryst.Schillsaver.display.controller;
 
-import Schillsaver.FrameResolution;
-import Schillsaver.Framerate;
-import Schillsaver.display.model.SettingsTabModel;
-import Schillsaver.setting.BlockSize;
-import Schillsaver.setting.SwingTheme;
+import com.valkryst.Schillsaver.FrameResolution;
+import com.valkryst.Schillsaver.Framerate;
+import com.valkryst.Schillsaver.display.model.SettingsTabModel;
+import com.valkryst.Schillsaver.setting.BlockSize;
+import com.valkryst.Schillsaver.setting.SwingTheme;
 import com.valkryst.VMVC.controller.Controller;
 import lombok.NonNull;
 

@@ -1,7 +1,7 @@
-package Schillsaver.display.view;
+package com.valkryst.Schillsaver.display.view;
 
-import Schillsaver.display.Display;
-import Schillsaver.display.controller.TextOutputController;
+import com.valkryst.Schillsaver.display.Display;
+import com.valkryst.Schillsaver.display.controller.TextOutputController;
 import com.valkryst.JCopyButton.JCopyButton;
 import com.valkryst.VMVC.view.View;
 import lombok.NonNull;

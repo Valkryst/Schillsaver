@@ -1,4 +1,4 @@
-package Schillsaver.display;
+package com.valkryst.Schillsaver.display;
 
 import com.valkryst.VMVC.view.View;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package Schillsaver;
+package com.valkryst.Schillsaver;
 
 public enum Framerate {
     FPS_30(30),

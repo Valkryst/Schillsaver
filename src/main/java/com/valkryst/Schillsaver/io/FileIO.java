@@ -1,4 +1,4 @@
-package Schillsaver.io;
+package com.valkryst.Schillsaver.io;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
