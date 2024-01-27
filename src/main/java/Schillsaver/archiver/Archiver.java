@@ -72,13 +72,14 @@ public class Archiver extends Thread {
             final var fileOutputStream = Files.newOutputStream(archivePath, StandardOpenOption.CREATE);
             final var zipOutputStream = new ZipOutputStream(fileOutputStream);
         ) {
-            final var buffer = new byte[32_768];
+            final var baseDir = paths.getFirst().getParent();
+            final var buffer = new byte[128 * 1024];
             for (final Path path : paths) {
                 if (this.isInterrupted()) {
                     break;
                 }
 
-                final var entry = new ZipEntry(path.getFileName().toString() + (Files.isDirectory(path) ? "/" : ""));
+                final var entry = new ZipEntry(baseDir.relativize(path) + (Files.isDirectory(path) ? "/" : ""));
                 zipOutputStream.putNextEntry(entry);
 
                 if (Files.isDirectory(path)) {
