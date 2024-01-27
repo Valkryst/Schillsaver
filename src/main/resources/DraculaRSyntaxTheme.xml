@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE RSyntaxTheme SYSTEM "theme.dtd">
+
+<!-- "Dracula" inspired theme for use with RSyntaxTextArea. -->
+
+<RSyntaxTheme version="1.0">
+    
+    <!--  General editor colors. -->
+    <background color="282A36"/>
+    <caret color="F8F8F2"/>
+    <selection useFG="false" bg="6272A4" roundedEdges="false"/>
+    <currentLineHighlight color="44475A" fade="false"/>
+    <marginLine fg="6272A4"/>
+    <markAllHighlight color="44475A"/>
+    <markOccurrencesHighlight color="44475A" border="false"/>
+    <matchedBracket fg="F8F8F2" bg="6272A4" highlightBoth="true" animate="true"/>
+    <hyperlinks fg="FF79C6"/>
+    <secondaryLanguages>
+        <language index="1" bg="282A36"/>
+        <language index="2" bg="282A36"/>
+        <language index="3" bg="282A36"/>
+    </secondaryLanguages>
+
+    <!-- Gutter styling. -->
+    <gutterBorder color="6272A4"/>
+    <lineNumbers fg="6272A4" currentFG="F8F8F2"/>
+    <foldIndicator fg="FF79C6" armedFg="F8F8F2" iconBg="6272A4" iconArmedBg="44475A"/>
+    <iconRowHeader activeLineRange="44475A"/>
+
+    <!-- Syntax tokens. -->
+    <tokenStyles>
+        <style token="IDENTIFIER" fg="F8F8F2"/>
+        <style token="RESERVED_WORD" fg="50FA7B" bold="false"/>
+        <style token="RESERVED_WORD_2" fg="F8F8F2" bold="true"/>
+        <style token="ANNOTATION" fg="F8F8F2"/>
+        <style token="COMMENT_DOCUMENTATION" fg="6272A4"/>
+        <style token="COMMENT_EOL" fg="6272A4"/>
+        <style token="COMMENT_MULTILINE" fg="6272A4"/>
+        <style token="COMMENT_KEYWORD" fg="F8F8F2"/>
+        <style token="COMMENT_MARKUP" fg="F8F8F2"/>
+        <style token="FUNCTION" fg="FF79C6"/>
+        <style token="DATA_TYPE" fg="FFB86C" bold="true"/>
+        <style token="LITERAL_BOOLEAN" fg="BD93F9" bold="true"/>
+        <style token="LITERAL_NUMBER_DECIMAL_INT" fg="BD93F9"/>
+        <style token="LITERAL_NUMBER_FLOAT" fg="BD93F9"/>
+        <style token="LITERAL_NUMBER_HEXADECIMAL" fg="BD93F9"/>
+        <style token="LITERAL_STRING_DOUBLE_QUOTE" fg="F1FA8C"/>
+        <style token="LITERAL_CHAR" fg="FF79C6"/>
+        <style token="LITERAL_BACKQUOTE" fg="FFB86C"/>
+        <style token="MARKUP_TAG_DELIMITER" fg="FF79C6"/>
+        <style token="MARKUP_TAG_NAME" fg="50FA7B" bold="true"/>
+        <style token="MARKUP_TAG_ATTRIBUTE" fg="F8F8F2"/>
+        <style token="MARKUP_TAG_ATTRIBUTE_VALUE" fg="F8F8F2"/>
+        <style token="MARKUP_COMMENT" fg    ="6272A4"/>
+        <style token="MARKUP_DTD" fg="FF79C6"/>
+        <style token="MARKUP_PROCESSING_INSTRUCTION" fg="FF79C6"/>
+        <style token="MARKUP_CDATA" fg="F8F8F2"/>
+        <style token="MARKUP_CDATA_DELIMITER" fg="FF79C6"/>
+        <style token="MARKUP_ENTITY_REFERENCE" fg="FF79C6"/>
+        <style token="OPERATOR" fg="FF79C6"/>
+        <style token="PREPROCESSOR" fg="FF79C6"/>
+        <style token="REGEX" fg="BD93F9"/>
+        <style token="SEPARATOR" fg="F8F8F2"/>
+        <style token="VARIABLE" fg="F8F8F2" bold="false"/>
+        <style token="WHITESPACE" fg="F8F8F2"/>
+
+        <style token="ERROR_IDENTIFIER" fg="F8F8F2" bg="FF5555"/>
+        <style token="ERROR_NUMBER_FORMAT" fg="F8F8F2" bg="FF5555"/>
+        <style token="ERROR_STRING_DOUBLE" fg="F8F8F2" bg="FF5555"/>
+        <style token="ERROR_CHAR" fg="F8F8F2" bg="FF5555"/>
+    </tokenStyles>
+</RSyntaxTheme>
