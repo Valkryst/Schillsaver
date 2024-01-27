@@ -6,11 +6,12 @@
 
     <groupId>com.github.Valkryst</groupId>
     <artifactId>Schillsaver</artifactId>
-    <version>13.0.0</version>
+    <version>14.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Schillsaver</name>
 
     <properties>
+        <mainClass>Schillsaver.Main</mainClass>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>
@@ -127,17 +128,12 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.java.Schillsaver.Main</mainClass>
+                            <mainClass>${mainClass}</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
-                    <!--
-                    The finalName is required to prevent the "Cannot include
-                    project artifact [...] it doesn't have an associated file
-                    or directory." error.
-                    -->
                     <finalName>Schillsaver</finalName>
                 </configuration>
                 <executions>
