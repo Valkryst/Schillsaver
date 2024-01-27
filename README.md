@@ -22,9 +22,9 @@ recommend using YouTube or any other platform for free file storage.
 
 ## Notes
 
-* For successful decoding, you must use the same block size setting and codec that you used during encoding. For
-  example, if you've encoded a video with block size 8 and libx264, then it must be decoded with block size 8 and
-  libx264. Any other size or codec will result in a corrupt decode.
+* For successful decoding, you must use the same block size and resolution settings that you used during encoding. For
+  example, if you've encoded a video with block size 8 at 1920x1080, then it must be decoded with block size 8 and
+  resolution 1920x1080. Any other block size or resolution will result in a corrupt decode.
 
 * On Linux, you may need to launch the program using the `java -jar Schillsaver.jar` command.
 
