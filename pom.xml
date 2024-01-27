@@ -127,7 +127,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>main.java.Schillsaver.Driver</mainClass>
+                            <mainClass>main.java.Schillsaver.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
