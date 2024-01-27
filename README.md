@@ -1,17 +1,14 @@
 [![Java CI with Maven](https://github.com/Valkryst/Schillsaver/actions/workflows/maven.yml/badge.svg)](https://github.com/Valkryst/Schillsaver/actions/workflows/maven.yml)
 [![CodeQL](https://github.com/Valkryst/Schillsaver/actions/workflows/codeql.yml/badge.svg)](https://github.com/Valkryst/Schillsaver/actions/workflows/codeql.yml)
 
-Schillsaver allows you to encode one or more files, from their native formats,
-into a single video. This video consists of black/white blocks that represent
-the bits of the input file(s).
+Schillsaver is a tool that allows you to encode one or more files into a single video. This video, consisting of black
+and white squares, represents the data of the input file(s). The video can then be uploaded to a hosting site, such
+as YouTube, for future re-download and decoding back into the original file(s).
 
-The resulting video can be uploaded to a hosting site, such as YouTube, where it
-can then be re-downloaded in the future and decoded back into the original file.
-This allows for free file storage.
+This provides a novel approach to free file storage.
 
-This program was written as a proof-of-concept, and I am not recommending that
-you utilize YouTube for free file storage. However, what you do with this program
-is up to you.
+While Schillsaver was developed as a proof-of-concept, its usage is entirely up to you. However, we do not explicitly
+recommend using YouTube or any other platform for free file storage.
 
 ## Table of Contents
 
@@ -25,19 +22,12 @@ is up to you.
 
 ## Notes
 
-* For a decode to work successfully, you *must* use the same block size setting
-  and codec that you encoded with, the other settings don't matter.
+* For successful decoding, you must use the same block size setting and codec that you used during encoding. For
+  example, if you've encoded a video with block size 8 and libx264, then it must be decoded with block size 8 and
+  libx264. Any other size or codec will result in a corrupt decode.
 
-  So, if you've encoded a video with block size 8 and libx264, then it has to be decoded with
-  block size 8 and libx264. Any other size will result in a corrupt decode.
+* On Linux, you may need to launch the program using the `java -jar Schillsaver.jar` command.
 
-* To run the program on Linux, you may need launch the program using the `java -jar Schillsaver.jar` command.
-
-* YouTube does not support 60 FPS for videos below 720p.
-
-* When downloading your stored videos from YouTube, or whatever other service you
-  use, ensure that you download the video at the same resolution that you encoded
-  the video at.
-
-  If you've encoded a 1080p video, then download it as 720p and try to decode the
-  video, you'll get a corrupt decode.
+* When downloading your stored videos, ensure that you download the video at the same resolution that you encoded the
+  video at. For example, if you've encoded a 1080p video, then download it as 1080p. Downloading it at a lower
+  resolution (e.g. 720p) will result in a corrupt decode.
