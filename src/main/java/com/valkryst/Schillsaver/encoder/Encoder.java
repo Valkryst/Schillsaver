@@ -40,7 +40,7 @@ public class Encoder extends Thread {
         try (
             final var inputStream = process.getInputStream();
             final var inputStreamReader = new InputStreamReader(inputStream);
-            final var bufferedReader = new BufferedReader(inputStreamReader);
+            final var bufferedReader = new BufferedReader(inputStreamReader)
         ) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {

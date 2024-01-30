@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Objects;
 
 public class SettingsTabView extends View<SettingsTabController> {
     /**
@@ -181,7 +182,7 @@ public class SettingsTabView extends View<SettingsTabController> {
 
         comboBox.addActionListener(e -> {
             try {
-                controller.setFramerate((FrameRate) comboBox.getSelectedItem());
+                controller.setFramerate((FrameRate) Objects.requireNonNull(comboBox.getSelectedItem()));
             } catch (final IOException | NullPointerException ex) {
                 Display.displayError(comboBox.getParent(), ex);
             }
@@ -203,7 +204,7 @@ public class SettingsTabView extends View<SettingsTabController> {
 
         comboBox.addActionListener(e -> {
             try {
-                controller.setResolution((FrameResolution) comboBox.getSelectedItem());
+                controller.setResolution((FrameResolution) Objects.requireNonNull(comboBox.getSelectedItem()));
             } catch (final IOException | NullPointerException ex) {
                 Display.displayError(comboBox.getParent(), ex);
             }
@@ -225,7 +226,7 @@ public class SettingsTabView extends View<SettingsTabController> {
 
         comboBox.addActionListener(e -> {
             try {
-                controller.setBlockSize((BlockSize) comboBox.getSelectedItem());
+                controller.setBlockSize((BlockSize) Objects.requireNonNull(comboBox.getSelectedItem()));
             } catch (final IOException | NullPointerException ex) {
                 Display.displayError(comboBox.getParent(), ex);
             }
@@ -247,7 +248,7 @@ public class SettingsTabView extends View<SettingsTabController> {
 
         comboBox.addActionListener(e -> {
             try {
-                controller.setSwingTheme((SwingTheme) comboBox.getSelectedItem());
+                controller.setSwingTheme((SwingTheme) Objects.requireNonNull(comboBox.getSelectedItem()));
                 Display.displayInfo(comboBox.getParent(), "Restart the application for the theme to take effect.");
             } catch (final IOException | NullPointerException ex) {
                 Display.displayError(comboBox.getParent(), ex);

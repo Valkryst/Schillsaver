@@ -24,25 +24,25 @@ public class SettingsTabModel extends Model<SettingsTabController, SettingsTabVi
     private static final Path FILE_PATH = FileIO.getFilePath(FolderIO.getFolderPath("Settings"), "settings.json");
 
     /** Path to FFMPEG executable. */
-    @Getter @Setter private Path ffmpegPath = Path.of("");
+    @Setter private Path ffmpegPath = Path.of("");
 
     /** Path to output folder. */
-    @Getter @Setter private Path outputFolderPath = Path.of("");
+    @Setter private Path outputFolderPath = Path.of("");
 
     /** Encoding codec. */
-    @Getter @Setter private String codec = "libx264";
+    @Setter private String codec = "libx264";
 
     /** Video resolution. */
-    @Getter @Setter private FrameResolution resolution = FrameResolution.P1080;
+    @Setter private FrameResolution resolution = FrameResolution.P1080;
 
     /** Video framerate. */
-    @Getter @Setter private FrameRate framerate = FrameRate.FPS_30;
+    @Setter private FrameRate framerate = FrameRate.FPS_30;
 
     /** Video block size. */
-    @Getter @Setter private BlockSize blockSize = BlockSize.S6;
+    @Setter private BlockSize blockSize = BlockSize.S6;
 
     /** Swing theme to use. */
-    @Getter @Setter private SwingTheme swingTheme = SwingTheme.DARK;
+    @Setter private SwingTheme swingTheme = SwingTheme.DARK;
 
     /**
      * Constructs a new {@code SettingsTabModel}.
