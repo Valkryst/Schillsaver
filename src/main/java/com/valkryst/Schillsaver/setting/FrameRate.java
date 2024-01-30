@@ -1,13 +1,12 @@
 package com.valkryst.Schillsaver.setting;
 
-import lombok.Getter;
-
 public enum FrameRate {
-    FPS30(30),
-    FPS60(60);
+    FPS_30(30),
+    FPS_60(60),
+    FPS_120(120);
 
     /** The frame rate. */
-    @Getter private final int frameRate;
+    public final int frameRate;
 
     /**
      * Constructs a new FrameRate enum.
@@ -24,5 +23,10 @@ public enum FrameRate {
         }
 
         this.frameRate = frameRate;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%d FPS", frameRate);
     }
 }

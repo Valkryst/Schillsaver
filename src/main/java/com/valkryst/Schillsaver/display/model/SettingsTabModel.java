@@ -1,7 +1,7 @@
 package com.valkryst.Schillsaver.display.model;
 
+import com.valkryst.Schillsaver.setting.FrameRate;
 import com.valkryst.Schillsaver.setting.FrameResolution;
-import com.valkryst.Schillsaver.Framerate;
 import com.valkryst.Schillsaver.display.controller.SettingsTabController;
 import com.valkryst.Schillsaver.display.view.SettingsTabView;
 import com.valkryst.Schillsaver.io.FileIO;
@@ -36,7 +36,7 @@ public class SettingsTabModel extends Model<SettingsTabController, SettingsTabVi
     @Getter @Setter private FrameResolution resolution = FrameResolution.P1080;
 
     /** Video framerate. */
-    @Getter @Setter private Framerate framerate = Framerate.FPS_30;
+    @Getter @Setter private FrameRate framerate = FrameRate.FPS_30;
 
     /** Video block size. */
     @Getter @Setter private BlockSize blockSize = BlockSize.S6;
@@ -92,7 +92,7 @@ public class SettingsTabModel extends Model<SettingsTabController, SettingsTabVi
         outputFolderPath = Path.of(loadSetting(json, "outputFolderPath", ""));
         codec = loadSetting(json, "codec", "libx264");
         resolution = FrameResolution.valueOf(loadSetting(json, "resolution", FrameResolution.P1080.name()));
-        framerate = Framerate.valueOf(loadSetting(json, "framerate", Framerate.FPS_30.name()));
+        framerate = FrameRate.valueOf(loadSetting(json, "framerate", FrameRate.FPS_30.name()));
         blockSize = BlockSize.valueOf(loadSetting(json, "blockSize", BlockSize.S6.name()));
         swingTheme = SwingTheme.valueOf(loadSetting(json, "theme", SwingTheme.DARK.name()));
 

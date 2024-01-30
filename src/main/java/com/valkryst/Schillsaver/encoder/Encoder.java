@@ -86,7 +86,7 @@ public class Encoder extends Thread {
                 " -f rawvideo" +
                 " -pix_fmt monob" +
                 " -s " + resolution.width / blockSize.blockSize + "x" + resolution.height / blockSize.blockSize +
-                " -r " + frameRate.framerate +
+                " -r " + frameRate.frameRate +
                 " -i \"" + inputFilePath + "\"" +
                 " -vf scale=iw*" + blockSize.blockSize + ":-1" +
                 " -sws_flags neighbor" +

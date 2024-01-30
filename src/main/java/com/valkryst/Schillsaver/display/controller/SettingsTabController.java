@@ -1,7 +1,7 @@
 package com.valkryst.Schillsaver.display.controller;
 
+import com.valkryst.Schillsaver.setting.FrameRate;
 import com.valkryst.Schillsaver.setting.FrameResolution;
-import com.valkryst.Schillsaver.Framerate;
 import com.valkryst.Schillsaver.display.model.SettingsTabModel;
 import com.valkryst.Schillsaver.setting.BlockSize;
 import com.valkryst.Schillsaver.setting.SwingTheme;
@@ -71,7 +71,7 @@ public class SettingsTabController extends Controller<SettingsTabModel> {
      *
      * @return The framerate.
      */
-    public Framerate getFramerate() {
+    public FrameRate getFramerate() {
         return model.getFramerate();
     }
 
@@ -135,7 +135,7 @@ public class SettingsTabController extends Controller<SettingsTabModel> {
      * @param framerate The new framerate.
      * @throws IOException If an IO error occurs.
      */
-    public void setFramerate(final @NonNull Framerate framerate) throws IOException {
+    public void setFramerate(final @NonNull FrameRate framerate) throws IOException {
         model.setFramerate(framerate);
         model.save();
     }

@@ -1,7 +1,7 @@
 package com.valkryst.Schillsaver.display.view;
 
+import com.valkryst.Schillsaver.setting.FrameRate;
 import com.valkryst.Schillsaver.setting.FrameResolution;
-import com.valkryst.Schillsaver.Framerate;
 import com.valkryst.Schillsaver.display.Display;
 import com.valkryst.Schillsaver.display.controller.SettingsTabController;
 import com.valkryst.Schillsaver.setting.BlockSize;
@@ -174,14 +174,14 @@ public class SettingsTabView extends View<SettingsTabController> {
      * @param controller The controller.
      * @return The combo box.
      */
-    private JComboBox<Framerate> createFramerateComboBox(final @NonNull SettingsTabController controller) {
-        final var comboBox = new JComboBox<>(Framerate.values());
+    private JComboBox<FrameRate> createFramerateComboBox(final @NonNull SettingsTabController controller) {
+        final var comboBox = new JComboBox<>(FrameRate.values());
         comboBox.setSelectedItem(controller.getFramerate());
         // todo Add tooltip text.
 
         comboBox.addActionListener(e -> {
             try {
-                controller.setFramerate((Framerate) comboBox.getSelectedItem());
+                controller.setFramerate((FrameRate) comboBox.getSelectedItem());
             } catch (final IOException | NullPointerException ex) {
                 Display.displayError(comboBox.getParent(), ex);
             }
