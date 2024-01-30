@@ -1,6 +1,6 @@
 package com.valkryst.Schillsaver.display.model;
 
-import com.valkryst.Schillsaver.FrameResolution;
+import com.valkryst.Schillsaver.setting.FrameResolution;
 import com.valkryst.Schillsaver.Framerate;
 import com.valkryst.Schillsaver.display.controller.SettingsTabController;
 import com.valkryst.Schillsaver.display.view.SettingsTabView;

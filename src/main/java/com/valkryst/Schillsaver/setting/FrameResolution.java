@@ -1,4 +1,4 @@
-package com.valkryst.Schillsaver;
+package com.valkryst.Schillsaver.setting;
 
 /**
  * <p>Represents frame resolutions supported by YouTube.</p>
