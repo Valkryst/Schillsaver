@@ -17,6 +17,9 @@ public class Display {
 
     /** Constructs a new Display. */
     private Display() {
+        final var icon = new ImageIcon(Display.class.getResource("/icon.png"));
+        frame.setIconImage(icon.getImage());
+
         frame.setBackground(Color.BLACK);
         frame.setTitle("Schillsaver - Powered by /g/entoomen©®");
         frame.setIgnoreRepaint(false);
