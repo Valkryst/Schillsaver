@@ -9,10 +9,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 import java.util.function.Consumer;
 
 public class Encoder extends Thread {
+    /** Formatter used to generate unique output file names. */
+    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+
     /** Consumer to call when encoding is complete. */
     @Setter private Consumer<Path> onCompletion = (final Path path) -> {};
 
@@ -32,7 +37,7 @@ public class Encoder extends Thread {
     // todo Handle interruption and delete temp files.
     public void encode() throws IOException {
         final var outputDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
-        final var outputFilePath = outputDirectory.resolve("output.mp4");
+        final var outputFilePath = outputDirectory.resolve(LocalDateTime.now().format(DATE_TIME_FORMATTER) + ".mp4");
         updateProgress.accept("Created temporary directory: " + outputDirectory + "\n");
 
         final var process = getFfmpegProcess(outputFilePath);
