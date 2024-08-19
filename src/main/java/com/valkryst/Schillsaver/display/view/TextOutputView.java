@@ -59,6 +59,7 @@ public class TextOutputView extends View<TextOutputController> {
     private JButton createSaveButton() {
         final var button = new JButton("Save");
         button.setEnabled(false);
+        button.setToolTipText("Save the output messages to a text file.");
         button.addActionListener(e -> {
             final var fileChooser = new JFileChooser();
             fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
