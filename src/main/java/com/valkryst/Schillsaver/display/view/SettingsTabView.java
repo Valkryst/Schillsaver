@@ -248,7 +248,7 @@ public class SettingsTabView extends View<SettingsTabController> {
     public JComboBox<BlockSize> createBlockSizeComboBox(final @NonNull SettingsTabController controller) {
         final var comboBox = new JComboBox<>(BlockSize.values());
         comboBox.setSelectedItem(controller.getBlockSize());
-        // todo Add tooltip text.
+        comboBox.setToolTipText("This is the size of the black and white squares used to encode data in the video.");
 
         comboBox.addActionListener(e -> {
             try {
