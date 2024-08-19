@@ -6,7 +6,7 @@
 
     <groupId>com.github.Valkryst</groupId>
     <artifactId>Schillsaver</artifactId>
-    <version>14.0.0-beta</version>
+    <version>14.0.0-beta2</version>
     <packaging>jar</packaging>
     <name>Schillsaver</name>
 
