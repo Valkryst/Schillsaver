@@ -112,11 +112,11 @@ public class SettingsTabModel extends Model<SettingsTabController, SettingsTabVi
      */
     public void validateSettings() throws IllegalStateException {
         if (ffmpegPath == null || ffmpegPath.toString().isBlank()) {
-            throw new IllegalStateException("The path to the FFMPEG executable is blank.");
+            throw new IllegalStateException("The path to the FFMPEG executable is blank. Please select it in the Settings menu.");
         }
 
         if (outputFolderPath == null || outputFolderPath.toString().isBlank()) {
-            throw new IllegalStateException("The path to the output folder is blank.");
+            throw new IllegalStateException("The path to the output folder is blank. Please select it in the Settings menu.");
         }
 
         if (Files.notExists(ffmpegPath)) {
