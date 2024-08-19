@@ -204,7 +204,7 @@ public class SettingsTabView extends View<SettingsTabController> {
     private JComboBox<FrameRate> createFramerateComboBox(final @NonNull SettingsTabController controller) {
         final var comboBox = new JComboBox<>(FrameRate.values());
         comboBox.setSelectedItem(controller.getFramerate());
-        // todo Add tooltip text.
+        comboBox.setToolTipText("This is the output framerate of the encoded video.");
 
         comboBox.addActionListener(e -> {
             try {
