@@ -226,7 +226,7 @@ public class SettingsTabView extends View<SettingsTabController> {
     private JComboBox<FrameResolution> createResolutionComboBox(final @NonNull SettingsTabController controller) {
         final var comboBox = new JComboBox<>(FrameResolution.values());
         comboBox.setSelectedItem(controller.getResolution());
-        // todo Add tooltip text.
+        comboBox.setToolTipText("This is the output resolution of the encoded video.");
 
         comboBox.addActionListener(e -> {
             try {
