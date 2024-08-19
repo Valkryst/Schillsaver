@@ -29,43 +29,87 @@ public class SettingsTabView extends View<SettingsTabController> {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.insets = new Insets(5, 5, 5, 5);
 
+        // Swing theme label and combo box.
+        final var themeLabel = new JLabel("Theme:");
+        c.gridx = 0;
+        c.gridy = 0;
+        add(themeLabel, c);
+
+        final var themeComboBox = createSwingThemeComboBox(controller);
+        c.gridx++;
+        add(themeComboBox, c);
+
+        // Encoder Settings
+
         // FFMPEG executable file path label and button
         final var ffmpegLabel = new JLabel("FFMPEG executable file path:");
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy++;
         add(ffmpegLabel, c);
 
         final var ffmpegField = new JTextField();
         ffmpegField.setEditable(false);
         ffmpegField.setText(controller.getFfmpegPath().toString());
         ffmpegField.setToolTipText(controller.getFfmpegPath().toString());
-        c.gridx = 1;
+        c.gridx++;
         add(ffmpegField, c);
 
-        c.gridx = 2;
+        c.gridx++;
         add(createFfmpegExecutableSelectionButton(controller, ffmpegField), c);
 
         // Output folder path label and button
         final var outputFolderLabel = new JLabel("Output folder path:");
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy++;
         add(outputFolderLabel, c);
 
         final var outputFolderField = new JTextField();
         outputFolderField.setEditable(false);
         outputFolderField.setText(controller.getOutputFolderPath().toString());
         outputFolderField.setToolTipText(controller.getOutputFolderPath().toString());
-        c.gridx = 1;
+        c.gridx++;
         add(outputFolderField, c);
 
-        c.gridx = 2;
+        c.gridx++;
         add(createOutputFolderSelectionButton(controller, outputFolderField), c);
+
+        // Block size label and combo box.
+        final var blockSizeLabel = new JLabel("Block size:");
+        c.gridx = 0;
+        c.gridy++;
+        add(blockSizeLabel, c);
+
+        final var blockSizeComboBox = createBlockSizeComboBox(controller);
+        c.gridx++;
+        add(blockSizeComboBox, c);
+
+        // Encoder Settings Panel
+        c.gridx = 0;
+        c.gridy++;
+        c.gridwidth = GridBagConstraints.REMAINDER;
+        add(createEncoderSettingsPanel(), c);
+    }
+
+    /**
+     * Creates a panel containing the encoder settings.
+     *
+     * @return The panel.
+     */
+    private JPanel createEncoderSettingsPanel() {
+        final var panel = new JPanel();
+        panel.setBorder(BorderFactory.createTitledBorder("Encoder Settings"));
+        panel.setLayout(new GridBagLayout());
+
+        final var c = new GridBagConstraints();
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = new Insets(5, 5, 5,5);
+        c.weightx = 1;
 
         // Codec label and field
         final var codecLabel = new JLabel("Codec:");
         c.gridx = 0;
-        c.gridy = 2;
-        add(codecLabel, c);
+        c.gridy++;
+        panel.add(codecLabel, c);
 
         final var codecField = new JTextField();
         codecField.setEnabled(false);
@@ -73,47 +117,29 @@ public class SettingsTabView extends View<SettingsTabController> {
         codecField.setText(controller.getCodec());
         codecField.setToolTipText(controller.getCodec());
         c.gridx = 1;
-        add(codecField, c);
+        panel.add(codecField, c);
 
         // Frame rate label and combo box.
         final var framerateLabel = new JLabel("Frame rate:");
         c.gridx = 0;
-        c.gridy = 3;
-        add(framerateLabel, c);
+        c.gridy++;
+        panel.add(framerateLabel, c);
 
         final var framerateComboBox = createFramerateComboBox(controller);
         c.gridx = 1;
-        add(framerateComboBox, c);
+        panel.add(framerateComboBox, c);
 
         // Resolution label and combo box.
         final var resolutionLabel = new JLabel("Resolution:");
         c.gridx = 0;
-        c.gridy = 4;
-        add(resolutionLabel, c);
+        c.gridy++;
+        panel.add(resolutionLabel, c);
 
         final var resolutionComboBox = createResolutionComboBox(controller);
         c.gridx = 1;
-        add(resolutionComboBox, c);
+        panel.add(resolutionComboBox, c);
 
-        // Block size label and combo box.
-        final var blockSizeLabel = new JLabel("Block size:");
-        c.gridx = 0;
-        c.gridy = 5;
-        add(blockSizeLabel, c);
-
-        final var blockSizeComboBox = createBlockSizeComboBox(controller);
-        c.gridx = 1;
-        add(blockSizeComboBox, c);
-
-        // Swing theme label and combo box.
-        final var themeLabel = new JLabel("Theme:");
-        c.gridx = 0;
-        c.gridy = 6;
-        add(themeLabel, c);
-
-        final var themeComboBox = createSwingThemeComboBox(controller);
-        c.gridx = 1;
-        add(themeComboBox, c);
+        return panel;
     }
 
     /**
