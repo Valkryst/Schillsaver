@@ -31,6 +31,7 @@ public class TextOutputView extends View<TextOutputController> {
         super(controller);
 
         copyButton.setEnabled(false);
+        copyButton.setToolTipText("Copy the output messages to the clipboard.");
 
         this.setLayout(new BorderLayout());
 
