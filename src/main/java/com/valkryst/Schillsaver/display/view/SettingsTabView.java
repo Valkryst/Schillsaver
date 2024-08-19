@@ -115,7 +115,7 @@ public class SettingsTabView extends View<SettingsTabController> {
         codecField.setEnabled(false);
         codecField.setEditable(false); // todo Should the user be allowed to change this?
         codecField.setText(controller.getCodec());
-        codecField.setToolTipText(controller.getCodec());
+        codecField.setToolTipText("This is the codec used to encode the video. You should not need to change this.");
         c.gridx = 1;
         panel.add(codecField, c);
 
