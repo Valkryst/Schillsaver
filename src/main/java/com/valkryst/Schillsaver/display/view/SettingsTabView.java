@@ -270,7 +270,7 @@ public class SettingsTabView extends View<SettingsTabController> {
     public JComboBox<SwingTheme> createSwingThemeComboBox(final @NonNull SettingsTabController controller) {
         final var comboBox = new JComboBox<>(SwingTheme.values());
         comboBox.setSelectedItem(controller.getSwingTheme());
-        // todo Add tooltip text.
+        comboBox.setToolTipText("This is the theme used to display the UI.");
 
         comboBox.addActionListener(e -> {
             try {
