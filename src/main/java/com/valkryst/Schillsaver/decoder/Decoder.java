@@ -3,6 +3,7 @@ package com.valkryst.Schillsaver.decoder;
 import com.valkryst.Schillsaver.display.model.SettingsTabModel;
 import lombok.NonNull;
 import lombok.Setter;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class Decoder extends Thread {
     // todo Handle interruption and delete temp files.
     public void decode() throws IOException {
         final var outputDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
-        final var outputFilePath = outputDirectory.resolve("output.zip");
+        final var outputFilePath = outputDirectory.resolve(FilenameUtils.getBaseName(inputFilePath.toString()) + ".zip");
         updateProgress.accept("Created temporary directory: " + outputDirectory + "\n");
 
         final var process = getFfmpegProcess(outputFilePath);
