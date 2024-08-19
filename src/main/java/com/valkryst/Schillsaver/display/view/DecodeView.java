@@ -79,9 +79,7 @@ public class DecodeView extends View<DecodeController> {
 
             if (decodeButton.isSelected()) {
                 outputView.clearText();
-                for (final var path : pathList.getPaths()) {
-                    controller.startDecoding(path, enableUi, disableUi, outputView.getAppendTextConsumer());
-                }
+                controller.startDecoding(pathList.getPaths(), enableUi, disableUi, outputView.getAppendTextConsumer());
             } else {
                 controller.stopDecoding(enableUi);
             }
