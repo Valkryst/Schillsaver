@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 
 public class Display {
     /** Singleton instance. */
@@ -17,9 +18,8 @@ public class Display {
 
     /** Constructs a new Display. */
     private Display() {
-        // todo This does not work when packaged as a JAR file.
-//        final var icon = new ImageIcon(Display.class.getResource("/icon.png"));
-//        frame.setIconImage(icon.getImage());
+        final var icon = new ImageIcon(Objects.requireNonNull(Display.class.getResource("/icon.png")));
+        frame.setIconImage(icon.getImage());
 
         frame.setBackground(Color.BLACK);
         frame.setTitle("Schillsaver - Powered by /g/entoomen©®");
