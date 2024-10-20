@@ -14,11 +14,8 @@ public enum BlockSize {
     /**
      * Constructs a new BlockSize enum.
      *
-     * @param blockSize
-     *          The the block size.
-     *
-     * @throws IllegalArgumentException
-     *          If the size is less than one.
+     * @param blockSize The block size.
+     * @throws IllegalArgumentException If the size is less than one.
      */
     BlockSize(final int blockSize) {
         if (blockSize < 1) {
