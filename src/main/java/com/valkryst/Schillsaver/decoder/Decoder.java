@@ -81,6 +81,7 @@ public class Decoder extends Thread {
         final var blockSize = settings.getBlockSize();
 
         return "\"" + settings.getFfmpegPath() + "\"" +
+                " -hwaccel auto" +
                 " -i \"" + inputFilePath + "\"" +
                 " -vf format=pix_fmts=monob,scale=iw*" + (1.0 / blockSize.blockSize) + ":-1" +
                 " -sws_flags area" +
