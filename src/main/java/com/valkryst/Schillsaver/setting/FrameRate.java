@@ -11,11 +11,8 @@ public enum FrameRate {
     /**
      * Constructs a new FrameRate enum.
      *
-     * @param frameRate
-     *          The frame rate.
-     *
-     * @throws IllegalArgumentException
-     *          If the frameRate is less than one.
+     * @param frameRate The frame rate.
+     * @throws IllegalArgumentException If the frameRate is less than one.
      */
     FrameRate(final int frameRate) {
         if (frameRate < 1) {
