@@ -1,5 +1,4 @@
 [![Java CI with Maven](https://github.com/Valkryst/Schillsaver/actions/workflows/maven.yml/badge.svg)](https://github.com/Valkryst/Schillsaver/actions/workflows/maven.yml)
-[![CodeQL](https://github.com/Valkryst/Schillsaver/actions/workflows/codeql.yml/badge.svg)](https://github.com/Valkryst/Schillsaver/actions/workflows/codeql.yml)
 
 Schillsaver is a tool that allows you to encode one or more files into a single video. This video, consisting of black
 and white squares, represents the data of the input file(s). The video can then be uploaded to a hosting site, such
