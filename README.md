@@ -31,3 +31,6 @@ recommend using YouTube or any other platform for free file storage.
 * When downloading your stored videos, ensure that you download the video at the same resolution that you encoded the
   video at. For example, if you've encoded a 1080p video, then download it as 1080p. Downloading it at a lower
   resolution (e.g. 720p) will result in a corrupt decode.
+
+* Windows' default zip utility will likely throw an error, when you open a decoded zip file. I recommend using 7zip to
+  instead, as it does not have this issue.
