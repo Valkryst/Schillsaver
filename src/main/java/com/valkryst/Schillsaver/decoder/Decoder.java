@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -76,25 +78,33 @@ public class Decoder extends Thread {
         }
     }
 
-    private String getFfmpegCommand(final @NonNull Path outputFilePath) throws IOException {
+    private List<String> getFfmpegCommand(final @NonNull Path outputFilePath) throws IOException {
         final var settings = new SettingsTabModel();
         final var blockSize = settings.getBlockSize();
 
-        return "ffmpeg" +
-                " -hwaccel auto" +
-                " -i \"" + inputFilePath + "\"" +
-                " -vf format=pix_fmts=monob,scale=iw*" + (1.0 / blockSize.blockSize) + ":-1" +
-                " -sws_flags area" +
-                " -f rawvideo" +
-                " -loglevel verbose" +
-                " -preset ultrafast" +
-                " -y" +
-                " \"" + outputFilePath + "\"";
+        final var command = new ArrayList<String>();
+        command.add("ffmpeg");
+        command.add("-hwaccel");
+        command.add("auto");
+        command.add("-i");
+        command.add(inputFilePath.toString());
+        command.add("-vf");
+        command.add("format=pix_fmts=monob,scale=iw*" + (1.0 / blockSize.blockSize) + ":-1");
+        command.add("-sws_flags");
+        command.add("area");
+        command.add("-f");
+        command.add("rawvideo");
+        command.add("-loglevel");
+        command.add("verbose");
+        command.add("-preset");
+        command.add("ultrafast");
+        command.add("-y");
+        command.add(outputFilePath.toString());
+        return command;
     }
 
     private Process getFfmpegProcess(final @NonNull Path outputFilePath) throws IOException {
         final var ffmpegCommand = getFfmpegCommand(outputFilePath);
-        // output ffmpeg command, concat with spaces
         updateProgress.accept("FFMPEG Command: " + String.join(" ", ffmpegCommand) + "\n");
 
         final var processBuilder = new ProcessBuilder(ffmpegCommand);

@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.function.Consumer;
 
@@ -80,27 +82,40 @@ public class Encoder extends Thread {
         }
     }
 
-    private String getFfmpegCommand(final @NonNull Path outputFilePath) throws IOException {
+    private List<String> getFfmpegCommand(final @NonNull Path outputFilePath) throws IOException {
         final var settings = new SettingsTabModel();
 
         final var blockSize = settings.getBlockSize();
         final var resolution = settings.getResolution();
         final var frameRate = settings.getFramerate();
 
-        return "ffmpeg" +
-                " -hwaccel auto" +
-                " -f rawvideo" +
-                " -pix_fmt monob" +
-                " -s " + resolution.width / blockSize.blockSize + "x" + resolution.height / blockSize.blockSize +
-                " -r " + frameRate.frameRate +
-                " -i \"" + inputFilePath + "\"" +
-                " -vf scale=iw*" + blockSize.blockSize + ":-1" +
-                " -sws_flags neighbor" +
-                " -c:v " + settings.getCodec() +
-                " -loglevel verbose" +
-                " -preset veryfast" +
-                " -y" +
-                " \"" + outputFilePath + "\"";
+        final var command = new ArrayList<String>();
+        command.add("ffmpeg");
+        command.add("-hwaccel");
+        command.add("auto");
+        command.add("-f");
+        command.add("rawvideo");
+        command.add("-pix_fmt");
+        command.add("monob");
+        command.add("-s");
+        command.add((resolution.width / blockSize.blockSize) + "x" + (resolution.height / blockSize.blockSize));
+        command.add("-r");
+        command.add(String.valueOf(frameRate.frameRate));
+        command.add("-i");
+        command.add(inputFilePath.toString());
+        command.add("-vf");
+        command.add("scale=iw*" + blockSize.blockSize + ":-1");
+        command.add("-sws_flags");
+        command.add("neighbor");
+        command.add("-c:v");
+        command.add(settings.getCodec());
+        command.add("-loglevel");
+        command.add("verbose");
+        command.add("-preset");
+        command.add("veryfast");
+        command.add("-y");
+        command.add(outputFilePath.toString());
+        return command;
     }
 
     private Process getFfmpegProcess(final @NonNull Path outputFilePath) throws IOException {
