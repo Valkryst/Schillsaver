@@ -41,22 +41,6 @@ public class SettingsTabView extends View<SettingsTabController> {
 
         // Encoder Settings
 
-        // FFMPEG executable file path label and button
-        final var ffmpegLabel = new JLabel("FFMPEG executable file path:");
-        c.gridx = 0;
-        c.gridy++;
-        add(ffmpegLabel, c);
-
-        final var ffmpegField = new JTextField();
-        ffmpegField.setEditable(false);
-        ffmpegField.setText(controller.getFfmpegPath().toString());
-        ffmpegField.setToolTipText(controller.getFfmpegPath().toString());
-        c.gridx++;
-        add(ffmpegField, c);
-
-        c.gridx++;
-        add(createFfmpegExecutableSelectionButton(controller, ffmpegField), c);
-
         // Output folder path label and button
         final var outputFolderLabel = new JLabel("Output folder path:");
         c.gridx = 0;
@@ -140,33 +124,6 @@ public class SettingsTabView extends View<SettingsTabController> {
         panel.add(resolutionComboBox, c);
 
         return panel;
-    }
-
-    /**
-     * Creates a button for selecting the FFMPEG executable.
-     *
-     * @param controller The controller.
-     *
-     * @return The button.
-     */
-    private JButton createFfmpegExecutableSelectionButton(final @NonNull SettingsTabController controller, final @NonNull JTextField textField) {
-        final var button = new JButton("Browse");
-        button.addActionListener(e -> {
-            final var path = showFileChooser(controller.getFfmpegPath());
-
-            if (path != null) {
-                try {
-                    textField.setText(path.toString());
-                    textField.setToolTipText(path.toString());
-
-                    controller.setFfmpegPath(path);
-                } catch (final IOException ex) {
-                    Display.displayError(button.getParent(), ex);
-                }
-            }
-        });
-
-        return button;
     }
 
     /**

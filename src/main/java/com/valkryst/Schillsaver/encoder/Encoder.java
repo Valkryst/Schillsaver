@@ -87,7 +87,7 @@ public class Encoder extends Thread {
         final var resolution = settings.getResolution();
         final var frameRate = settings.getFramerate();
 
-        return "\"" + settings.getFfmpegPath() + "\"" +
+        return "ffmpeg" +
                 " -hwaccel auto" +
                 " -f rawvideo" +
                 " -pix_fmt monob" +

@@ -80,7 +80,7 @@ public class Decoder extends Thread {
         final var settings = new SettingsTabModel();
         final var blockSize = settings.getBlockSize();
 
-        return "\"" + settings.getFfmpegPath() + "\"" +
+        return "ffmpeg" +
                 " -hwaccel auto" +
                 " -i \"" + inputFilePath + "\"" +
                 " -vf format=pix_fmts=monob,scale=iw*" + (1.0 / blockSize.blockSize) + ":-1" +

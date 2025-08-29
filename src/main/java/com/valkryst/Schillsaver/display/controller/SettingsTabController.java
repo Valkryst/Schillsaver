@@ -22,15 +22,6 @@ public class SettingsTabController extends Controller<SettingsTabModel> {
     }
 
     /**
-     * Retrieves the path to the FFMPEG executable.
-     *
-     * @return The path to the FFMPEG executable.
-     */
-    public Path getFfmpegPath() {
-        return model.getFfmpegPath();
-    }
-
-    /**
      * Retrieves the path to the output folder.
      *
      * @return The path to the output folder.
@@ -82,17 +73,6 @@ public class SettingsTabController extends Controller<SettingsTabModel> {
      */
     public SwingTheme getSwingTheme() {
         return model.getSwingTheme();
-    }
-
-    /**
-     * Sets the path to the FFMPEG executable.
-     *
-     * @param path The new path.
-     * @throws IOException If an IO error occurs.
-     */
-    public void setFfmpegPath(final @NonNull Path path) throws IOException {
-        model.setFfmpegPath(path);
-        model.save();
     }
 
     /**

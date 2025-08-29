@@ -1,14 +1,15 @@
 package com.valkryst.Schillsaver.display.model;
 
-import com.valkryst.Schillsaver.setting.FrameRate;
-import com.valkryst.Schillsaver.setting.FrameResolution;
+import com.google.gson.JsonObject;
+import com.valkryst.Schillsaver.display.Display;
 import com.valkryst.Schillsaver.display.controller.SettingsTabController;
 import com.valkryst.Schillsaver.display.view.SettingsTabView;
 import com.valkryst.Schillsaver.io.FileIO;
 import com.valkryst.Schillsaver.io.FolderIO;
 import com.valkryst.Schillsaver.setting.BlockSize;
+import com.valkryst.Schillsaver.setting.FrameRate;
+import com.valkryst.Schillsaver.setting.FrameResolution;
 import com.valkryst.Schillsaver.setting.SwingTheme;
-import com.google.gson.JsonObject;
 import com.valkryst.VMVC.model.Model;
 import lombok.Getter;
 import lombok.NonNull;
@@ -22,9 +23,6 @@ import java.nio.file.Path;
 public class SettingsTabModel extends Model<SettingsTabController, SettingsTabView> {
     /** The path to the settings file. */
     private static final Path FILE_PATH = FileIO.getFilePath(FolderIO.getFolderPath("Settings"), "settings.json");
-
-    /** Path to FFMPEG executable. */
-    @Setter private Path ffmpegPath = Path.of("");
 
     /** Path to output folder. */
     @Setter private Path outputFolderPath = Path.of("");
@@ -70,7 +68,6 @@ public class SettingsTabModel extends Model<SettingsTabController, SettingsTabVi
      */
     public void save() throws IOException {
         final var json = new JsonObject();
-        json.addProperty("ffmpegPath", ffmpegPath.toString());
         json.addProperty("outputFolderPath", outputFolderPath.toString());
         json.addProperty("codec", codec);
         json.addProperty("resolution", resolution.name());
@@ -86,9 +83,13 @@ public class SettingsTabModel extends Model<SettingsTabController, SettingsTabVi
             save();
         }
 
+        if (!this.isFfmpegAvailable()) {
+            Display.displayWarning(null, "FFmpeg is not installed or not available in the PATH. Please install FFmpeg to use this application.");
+            return;
+        }
+
         final var json = FileIO.loadJsonFromDisk(FILE_PATH);
 
-        ffmpegPath = Path.of(loadSetting(json, "ffmpegPath", ""));
         outputFolderPath = Path.of(loadSetting(json, "outputFolderPath", ""));
         codec = loadSetting(json, "codec", "libx264");
         resolution = FrameResolution.valueOf(loadSetting(json, "resolution", FrameResolution.P1080.name()));
@@ -111,16 +112,22 @@ public class SettingsTabModel extends Model<SettingsTabController, SettingsTabVi
      * @throws IllegalStateException If a setting is invalid.
      */
     public void validateSettings() throws IllegalStateException {
-        if (ffmpegPath == null || ffmpegPath.toString().isBlank()) {
-            throw new IllegalStateException("The path to the FFMPEG executable is blank. Please select it in the Settings menu.");
-        }
-
         if (outputFolderPath == null || outputFolderPath.toString().isBlank()) {
             throw new IllegalStateException("The path to the output folder is blank. Please select it in the Settings menu.");
         }
+    }
 
-        if (Files.notExists(ffmpegPath)) {
-            throw new IllegalStateException("The path to the FFMPEG executable points to a non-existent file.");
+    /**
+     * Attempts to determine whether FFmpeg is available in the system PATH.
+     *
+     * @return Whether FFmpeg is available in the system PATH.
+     */
+    private boolean isFfmpegAvailable() {
+        try {
+            final var process = new ProcessBuilder("ffmpeg", "-version").start();
+            return process.waitFor() == 0;
+        } catch (final IOException | InterruptedException e) {
+            return false;
         }
     }
 }
