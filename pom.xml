@@ -64,7 +64,7 @@
         <dependency>
             <groupId>com.github.Valkryst</groupId>
             <artifactId>VMVC</artifactId>
-            <version>0d3561d613db3f790f1639a04fb22a7a63ad44f0</version>
+            <version>0.9.6</version>
         </dependency>
 
         <!-- UI Theme -->
